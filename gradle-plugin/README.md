@@ -3,6 +3,27 @@
 This module contains a simple Gradle plugin that extracts settings from a build and emits a Conveyor config snippet. This makes it easy
 to keep metadata and dependencies from your source build and packaging build in sync.
 
+To apply:
+
+```
+plugins {
+	  id("dev.hydraulic.conveyor") version "0.9"
+}
+```
+
+For now you will also need to add our repository to your `settings.gradle`:
+
+```
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven {
+            url = uri("https://maven.hq.hydraulic.software")
+        }
+    }
+}
+```
+
 It adds two tasks:
 
 * `printConveyorConfig` - emits the generated config to standard out where it's easy to examine, or can be immediately included into the
