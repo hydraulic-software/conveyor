@@ -1,0 +1,44 @@
+---
+hide:
+- toc
+---
+
+# Welcome
+
+!!! warning
+    Conveyor is not yet public. **DO NOT DISTRIBUTE YOUR LINK TO THIS SITE.**
+
+Conveyor makes distributing desktop and command line apps as easy as shipping a web app. It's a tool not a service, it generates [self-upgrading packages for Windows, macOS and Linux using each platform's native package formats](outputs.md) without requiring you to have those operating systems, and it looks like this:
+
+<video width="100%" poster="https://docs.hydraulic.dev/assets/promo.jpg" controls><source src="https://docs.hydraulic.dev/assets/promo.mp4" type="video/mp4"></video>
+
+## Try it
+
+![Screenshot of the Music Sample](https://media.giphy.com/media/NMLgK1lJ8UGtNxx3ja/giphy.gif)
+
+[Try an app that uses it](https://downloads.hydraulic.dev/compose-sample/download.html){ .md-button .md-button--primary }
+
+This app uses the new JetPack Compose Desktop UI toolkit to mock up a slick, Material Design based music app. [Try installing it](https://public.hq.hydraulic.software/~mike/compose-music-sample/download.html) and then [get the source and packaging config](https://github.com/hydraulic-software/compose-music-app).
+
+## Get started
+
+[ :material-arrow-up-box: Get set up!](setting-up.md){ .md-button .md-button--primary } [ :material-forum: Discussion forum](https://github.com/hydraulic-software/conveyor/discussions){ .md-button .md-button--primary } [ :material-chat: Chat room](https://gitter.im/hydraulic-software/community){ .md-button .md-button--primary }
+
+## Features
+
+* Create packages for every OS on any OS - Conveyor implements everything itself so doesn't rely on platform native tooling.
+    * Build Windows applications that use the built-in [Windows 10 MSIX/AppInstaller system](outputs.md).
+        * Apps launch direct from the web.
+        * Windows keeps them up to date in the background automatically.
+        * Has everything IT departments need to easily deploy to managed networks.
+    * Build Mac applications that use the popular [Sparkle 2 update framework](https://sparkle-project.org/).
+        * Signing and notarization without needing macOS.
+    * Build apt repositories for Debian/Ubuntu.
+        * Integrates with systemd for servers and cron jobs.
+        * Servers automatically (re)started on upgrade/reboot.
+* Generate a static download site that detects the user's operating system and CPU architecture.
+* [Deep support for JVM applications](outputs.md#jvm-applications).
+* Pierce the abstraction! Cross platform tooling doesn't mean giving up platform specific features. You can precisely configure OS specific files to get the perfectly tuned experience, such as:
+    * Mac `Info.plist` files
+    * Windows XML app manifests
+    * Linux `.desktop` files and package install/uninstall scripts.

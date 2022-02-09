@@ -1,0 +1,105 @@
+site_name: Hydraulic Conveyor
+
+extra:
+  version:
+    provider: mike
+
+nav:
+  - Welcome:
+    - Getting started: index.md
+    - Tutorial: tutorial.md
+    - Setting up: setting-up.md
+    - keys-and-certificates.md
+    - outputs.md
+    - running.md
+  - Configuration:
+    - configs/index.md
+    - configs/inputs.md
+    - configs/download-pages.md
+    - configs/jvm.md
+    - configs/linux.md
+    - configs/mac.md
+    - configs/windows.md
+    - HOCON:
+        - Specification: configs/hocon-spec.md
+        - Extensions: configs/hocon-extensions.md
+        - Syncing with Maven and Gradle: configs/maven-gradle.md
+    - Standard Library:
+      - stdlib/jdks.md
+      - stdlib/systemd.md
+      - stdlib/javafx.md
+      - stdlib/swt.md
+  - Samples:
+      - samples/index.md
+      - samples/jetpack-compose-desktop.md
+      - samples/teamcity.md
+      - samples/swt-file-explorer.md
+  - FAQ:
+    - faq/index.md
+    - faq/output-formats.md
+    - faq/making-packages.md
+    - faq/signing-and-certificates.md
+    - Tips and troubleshooting: tips-and-troubleshooting.md
+
+theme:
+  name: 'material'
+
+  features:
+    - navigation.instant
+    - navigation.tabs
+    - navigation.tracking
+    - navigation.sections
+#    - toc.integrate
+
+  palette:
+    - scheme: default
+      primary: 'darkgrey'
+      accent: 'blue'
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+
+  logo: 'images/logo-white.svg'
+
+  font:
+    text: Titillium Web
+    code: Roboto Mono
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - meta
+  - footnotes
+  - attr_list
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.highlight:
+      linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tabbed
+  - pymdownx.tilde
+
+plugins:
+  - search
+
+extra_css:
+  - stylesheets/guidebook.css
