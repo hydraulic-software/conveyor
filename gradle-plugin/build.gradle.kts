@@ -1,0 +1,57 @@
+plugins {
+    `java-gradle-plugin`
+    `maven-publish`
+    id("com.gradle.plugin-publish") version "0.20.0"
+    kotlin("jvm") version "1.5.30"
+}
+
+group = "dev.hydraulic"
+version = "0.9"
+
+repositories {
+    mavenCentral()
+    maven {
+        url = uri("https://maven.hq.hydraulic.software")
+    }
+}
+
+dependencies {
+    implementation("dev.hydraulic:hydraulic.types:0.9.2") {
+        because("Machine, OperatingSystem, CPUArchitecture types.")
+    }
+    compileOnly("org.jetbrains.compose:compose-gradle-plugin:1.0.1") {
+        because("Supporting JetPack Compose Desktop apps.")
+    }
+}
+
+kotlin {
+    jvmToolchain {
+        (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(11))
+    }
+}
+
+gradlePlugin {
+    plugins {
+        create("conveyorPlugin") {
+            id = "dev.hydraulic.conveyor"
+            displayName = "Conveyor Gradle Plugin"
+            description = "Generates snippets of configuration for the Conveyor packaging tool."
+            implementationClass = "hydraulic.conveyor.gradle.ConveyorGradlePlugin"
+        }
+    }
+}
+
+pluginBundle {
+    website = "https://www.hydraulic.dev"
+    vcsUrl = "https://github.com/hydraulic-software/conveyor"
+    tags = listOf("conveyor", "packaging", "hydraulic", "deb", "mac", "dmg", "msi", "msix")
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "localPluginRepository"
+            url = uri("../../local-plugin-repository")
+        }
+    }
+}
