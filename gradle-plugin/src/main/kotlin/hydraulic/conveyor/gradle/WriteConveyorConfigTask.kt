@@ -14,6 +14,9 @@ abstract class WriteConveyorConfigTask : ConveyorConfigTask() {
     init {
         group = "Conveyor"
         description = "Writes a snippet of Conveyor configuration to the destination file."
+
+        // This task is so fast, it's not worth trying to optimize whether it runs or not.
+        outputs.upToDateWhen { false }
     }
 
     @TaskAction

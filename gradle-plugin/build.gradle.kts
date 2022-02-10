@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "dev.hydraulic"
-version = "0.9"
+version = "0.9.1"
 
 repositories {
     mavenCentral()
@@ -50,8 +50,8 @@ pluginBundle {
 publishing {
     repositories {
         maven {
-            name = "localPluginRepository"
-            url = uri("../../local-plugin-repository")
+            name = "localPlugin"
+            url = uri(rootProject.projectDir.resolve("build/repo").toURI())
         }
     }
 }
