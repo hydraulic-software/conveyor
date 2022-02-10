@@ -38,13 +38,20 @@ Render the config to raw JSON.
 conveyor json
 ```
 
-Create a Mac bundle from a JVM app, an unnotarized zip of it, and 
+Create a Mac bundle from a JVM app matching the CPU of the host, an unnotarized zip of it, and 
 a notarized version:
 
 ```bash
 conveyor make mac-app
 conveyor make unnotarized-mac-zip
 conveyor make notarized-mac-zip
+```
+
+Create an Intel Mac app or ARM Mac app specifically:
+
+```
+conveyor -m mac.amd64 make mac-app
+conveyor -m mac.aarch64 make mac-app
 ```
 
 Create a Windows JVM app as a directory tree, a ZIP and an MSIX package.
