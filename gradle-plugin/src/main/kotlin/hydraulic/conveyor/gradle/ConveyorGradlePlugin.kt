@@ -40,6 +40,7 @@ class ConveyorGradlePlugin : Plugin<Project> {
             Machine.MACOS_AMD64, Machine.MACOS_AARCH64
         )) machineConfig(project, m)
 
+        // Register the two tasks.
         project.tasks.register("writeConveyorConfig", WriteConveyorConfigTask::class.java) {
             it.machineConfigs = machineConfigs
             it.destination.set(project.layout.projectDirectory.file("generated.conveyor.conf"))

@@ -10,6 +10,7 @@ version = "0.9.1"
 
 repositories {
     mavenCentral()
+    gradlePluginPortal()
     maven {
         url = uri("https://maven.hq.hydraulic.software")
     }
@@ -21,6 +22,9 @@ dependencies {
     }
     compileOnly("org.jetbrains.compose:compose-gradle-plugin:1.0.1") {
         because("Supporting JetPack Compose Desktop apps.")
+    }
+    compileOnly("org.openjfx:javafx-plugin:0.0.11") {
+        because("Supporting projects that use the OpenJFX Gradle plugin.")
     }
 }
 
