@@ -13,8 +13,8 @@ Conveyor adds the following features to base HOCON:
 Config placed in the following paths will be merged into every build file:
 
 * **Windows:** `%USERPROFILE%\Hydraulic\Conveyor\defaults.conf`
-* **Linux:** `~/.local/hydraulic/conveyor/defaults.conf`
-* **macOS:** `~/Library/Application Support/Hydraulic/Conveyor/defaults.conf`
+* **Linux:** `~/.config/hydraulic/conveyor/defaults.conf`
+* **macOS:** `~/Library/Preferences/Hydraulic/Conveyor/defaults.conf`
 
 ## Smart string lists
 
