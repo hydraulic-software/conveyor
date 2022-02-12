@@ -49,7 +49,7 @@ To learn more about configuring keys and certificates see [signing configuration
 
 **Step 1.** Open Keychain Access and locate your developer ID certificate and associated private key:
 
-![Keychain Access](/images/keychain-access-1.png)
+![Keychain Access](images/keychain-access-1.png)
 
 **Step 2.** Select both, right click and choose "Export 2 items". Save as .p12 format.
 
@@ -114,4 +114,3 @@ app.windows.signing-key = /Library/Frameworks/eToken.framework/Versions/Current/
 ```
 
 Then make sure to use the `--passphrase` flag, and you should be set.
-
