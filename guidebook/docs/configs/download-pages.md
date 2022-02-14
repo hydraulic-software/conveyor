@@ -30,7 +30,7 @@ app.site {
 
 The download site is generated from a set of input files. If none are specified then a default template is used, but you can replace it and add your own files too. The template should be called `download.html` and use [Thymeleaf](https://www.thymeleaf.org/) to parameterize it with data from your configuration.
 
-The `app.site.icons` key works the same way as the other icon keys do (in the `windows`, `mac` and `linux` sections respectively). The default `app.site.inputs` list contains the value of `${app.site.icons}` so you can use alternative file names by just setting the image name here. The icons need to be found in the root of the resolved inputs. If you have a file named `icon.svg` as an input, it'll be used as the icon instead of the rendered files.
+The `app.site.icons` key works the same way as the other icon keys do (in the `windows`, `mac` and `linux` sections respectively). The default `app.site.inputs` list contains the value of `${app.site.icons}` so you can use alternative file names by just setting the image name here. The icons need to be found in the root of the resolved inputs. If you have a file named `icon.svg` as an input, it'll be used as the icon instead of the rendered files.
 
 Here's an example of how to import icons from a different directory than the one containing the config and use it at the top of the generated HTML.
 
@@ -59,8 +59,20 @@ There are multiple kinds of substitution syntax. Use `${}` for variables and `#{
 * `data.latestVersion` - set to whatever the version of the app being built and installed to the repository is.
 * `data.generatorName` - a string like "Hydraulic Conveyor 1.0"
 
-## Translations
+## Publishing through GitHub
 
-In the inputs you may specify `.properties` files for different languages. To add a language, take the `download.properties` file as a base and translate each string. Call the result `download_pl.properties` if for example you're translating to Polish, then add the language code to the `site.download-page.languages` list in your site config. Re-run the `site` task and you should now have a translated version of the page.
+Conveyor's repository sites are designed to be compatible with GitHub releases. Using them is easy:
 
-TODO(high): Once Conveyor is self-packaged, update this section to show how to find the default templates and properties files.
+1. Set your `app.site.base-url` config key to be `github.com/$user/$repo/releases/latest/download`
+2. Run `conveyor make site` as usual to get an output directory.
+3. Create a new release and upload the contents of the output directory, minus `download.html` and any extra files you used, like icon files. [Take a look at this example release to see what you should have.](https://github.com/hydraulic-software/compose-music-app/)
+4. Take the generated `download.html` file and stick it on your website somewhere.
+
+That's it! To upgrade your users just create a new GitHub release as normal. The auto-update engines will be checking the metadata files on whatever your latest release is to discover what to download.
+
+Be aware of these caveats:
+
+* Your users will upgrade to whatever the `/releases/latest` URL points to. Therefore, you shouldn't do beta releases or other forms of pre-release this way. Stick those files somewhere else or use draft releases, etc.
+* The `download.html` file contains links to the "latest" files but their file names will contain the version number. Therefore you should copy the HTML to your website each time you do a release, otherwise users will get 404 errors.
+
+Future versions of Conveyor might automate the process of doing the uploads to GitHub.

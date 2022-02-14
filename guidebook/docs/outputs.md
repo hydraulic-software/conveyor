@@ -1,13 +1,13 @@
 # Outputs
 
-Conveyor generates packages for Windows, macOS and Debian/Ubuntu based Linux distributions. More package formats may be added in future. 
+Conveyor generates packages for Windows, macOS and Debian/Ubuntu based Linux distributions, along with a download HTML page that detects the user's operating system and CPU architecture. More package formats may be added in future. 
 
 ## Windows
 
-Conveyor doesn't create installer EXEs. Instead it uses Microsoft's newest packaging technology, called MSIX. Although you've probably never heard of MSIX all Windows 10/11 systems support it, and Microsoft have also backported it to Windows 7.[^1] MSIX files are enhanced ZIP files with several features that make it a good fit for modern desktop app distribution:
+Conveyor doesn't create installer EXEs. Instead it uses Microsoft's newest packaging technology, called MSIX. Like the older MSI technology it's built in to Windows, but represents a complete redesign with different formats and capabilities. All Windows 10/11 systems support it, and Microsoft have also backported it to Windows 7.[^1] MSIX files are enhanced ZIP files with several features that make it a good fit for modern desktop app distribution:
 
-* **Two-click start.** App installation or upgrade can be launched direct from the web. Users download an `.appinstaller` file and open it, then click launch. It's actually the same number of clicks as getting an app on mobile platforms.
-* **Delta downloads.** MSIX breaks apps into 64kb chunks and Windows only downloads those it hasn't already got. This works for *new installs* and *across unrelated vendors and apps*, meaning if the user has already downloaded some app using a popular runtime, your app using the same runtime will install near-instantly as only the unique program data will need to be fetched. Files on disk are also de-duplicated when possible by using hard links.
+* **Two-click start.** App installation or upgrade can be launched direct from the web. Users download an `.appinstaller` file  and open it, then click launch. It's actually the same number of clicks as getting an app on mobile platforms.
+* **Delta downloads.** MSIX breaks apps into 64kb chunks and Windows only downloads those it hasn't already got. This works for *new installs* and *across unrelated vendors and apps*, meaning if the user has already downloaded some app using a popular runtime, your app using the same runtime will install near-instantly as only the unique program data will need to be fetched. Files on disk are also de-duplicated when possible by using hard links. This works because the "installer" the user downloads is in reality a small XML file that points to the real underlying file, which is itself indexed by hash.
 * **Automatic upgrades**. Windows keeps MSIX apps up to date in the background, even if they aren't running. You can also force Windows to check for an update on every launch, if you need your app to stay tightly synchronized with a remote server.
 * **Containerization.** Apps packaged with MSIX are run inside a form of lightweight container that virtualizes storage and the registry. This ensures apps can't alter the OS and that uninstalls are always 100% clean. It's backwards compatible and apps don't notice it's happening. This form of virtualization isn't a sandbox and doesn't stop apps interacting with each other or integrating with the operating system, so no features are lost, but it does stop the app's files being tampered with.
 * **Slick enterprise IT integration.** Historically on Windows every app has rolled its own installer and update system, but IT teams need a unified system they can easily manage. To get it they must engage in a slow and painful "repackaging" process. That's bad for everyone, and leads to desktop apps having a reputation for being painful to deploy inside large enterprises. Because it's managed by Windows, MSIX gives IT teams [everything they need](https://docs.microsoft.com/en-us/windows/msix/desktop/managing-your-msix-deployment-overview) to manage app rollouts, rollbacks and access control, all fully integrated with Active Directory, InTune and Azure.
@@ -27,7 +27,7 @@ Conveyor outputs signed, notarized and [Sparkle-ized](https://sparkle-project.or
 
 ZIPs give users the experience of simply clicking the download link and having the app immediately extracted and ready for use. 
 
-Conveyor doesn't currently generate fat binaries. Two separate packages are created and the download page selects between them by asking the browser what the user's CPU architecture is, which avoids downloading unnecessary code. Unfortunately whilst Chrome provides the necessary information, Safari currently provides no way to detect whether the user is on Apple Silicon or not, and thus on this browser users will be asked to pick.
+Conveyor doesn't currently generate fat binaries. Two separate packages are created and on Chrome the download page selects between them by asking the browser what the user's CPU architecture is, which avoids downloading unnecessary code. 
 
 !!! note
     Future versions of Conveyor will make apps automatically relocate themselves to /Applications if started from the downloads directory, thus automating the entire installation process.
@@ -74,8 +74,10 @@ Conveyor has integrated support for apps that run on the JVM (for any supported 
     * Usage of `jlink` and `jdeps` to create minimal JVM distributions, containing only the modules that your app needs. 
     * Fully modular JARs are detected and linked into the `modules` file, yielding faster startup and smaller downloads.
 * Native libraries are extracted from JARs so they can be either signed, or discarded if they're for the wrong OS/CPU. This improves download times.
-* Integrated support for GUI frameworks like JavaFX, Compose Desktop, Swing and SWT. See the [standard library](stdlib/index.md).
+* [Maven and Gradle integration](configs/maven-gradle.md):
+    * A Gradle plugin that automatically generates configuration snippets. 
+    * Maven projects can have their classpath read directly, without needing a plugin.
 
-There's also integration with [Maven and Gradle](configs/maven-gradle.md).
+* Integrated support for GUI frameworks like JavaFX and Compose Desktop.
 
 [^1]: In case you're wondering, marketshare for Windows 8 is so small that it can be safely ignored.
