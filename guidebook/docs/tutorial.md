@@ -109,6 +109,14 @@ Now copy this directory to your web server using a tool like `scp`, `rsync` or h
 
 To release a new version just adjust the version number in your build system or the `app.version` / `app.revision` keys, rerun `conveyor make site` and re-upload the results. Remember to compile and re-JAR your app first!
 
+By default the update engines wait some hours between upgrades, so your installed copies won't upgrade immediately. To short-circuit this for testing:
+
+1. On Windows, re-open the .appinstaller file you downloaded. That should offer an upgrade button.
+
+2. On macOS, from the command line run the program with the `FORCE_UPDATE_CHECK=1` environment variable set, e.g. `FORCE_UPDATE_CHECK=1 /Applications/YourApp.app/Contents/MacOS/YourApp`. This should immediately offer to let you upgrade.
+
+3. On Debian/Ubuntu, run `apt update; apt upgrade` and check that your app is in the list of things that will be upgraded.
+
 ## Step 5. Refine your configuration
 
 Not happy with the defaults? There are [lots of settings](configs/index.md) available, including settings that expose platform specific metadata and features.
