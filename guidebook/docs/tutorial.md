@@ -8,6 +8,9 @@ If you haven't already done so, follow the instructions in [Getting set up](sett
 
 ## Step 2. Write your first build config
 
+!!! tip "Build systems"
+    If you're using Gradle or Maven then you have special support, but it's still worth reading this section so you understand what's happening later.
+
 Put the following into a file called `conveyor.conf` in your project.
 
 ```hocon
@@ -26,7 +29,7 @@ app {
 ??? note "GUI apps using JavaFX or SWT"
     These frameworks have special support in the [standard library](stdlib/index.md). Check there to learn what else you'll want to add, or look at the [samples](samples/index.md).
 
-??? note "Config location"
+??? note "File paths"
     If your application is a sub-module you can choose whether to put your conveyor.conf file in the repository root or the directory where your application module is defined. Just make sure that the inputs directory is correct relative to the config file itself.
 
 This configuration adds your app's main JAR as the first input, allowing package metadata like version numbers to be derived from the file name. Then it adds the directory containing all the app  JARs (duplicates are ignored), and finally a set of icon files.
@@ -35,7 +38,7 @@ That's all you need! The display name and version of your application will be ta
 
 **Inputs.** You can use globs, brace expansion, specify HTTP[S] URLs, extract archives and remap the contents of directory trees all from the inputs list. [Learn more](configs/inputs.md).
 
-**Download URL.** You'll need to pick a URL where your downloads will be hosted before you create packages, so they know where to look for updates. It should be a dedicated directory on the web server. [Learn more](configs/download-pages.md).
+**Download URL.** You'll need to pick a URL where your downloads will be hosted before you create packages, so they know where to look for updates. It should be a dedicated directory on the web server, or you can use GitHub Releases. [Learn more](configs/download-pages.md).
 
 **Naming.** If you need to control your branding better define the `app.display-name` and  `app.vendor` keys. You might also want to set the `app.fsname` key to control the naming of directories and executables on Linux, for example, if your app JAR isn't named as the user should see the app. [Learn more](configs/index.md).
 
@@ -56,11 +59,22 @@ For **Gradle** projects you have two options:
 
 1. **Simple.** Use the `application` plugin and run `installDist` before invoking Conveyor. The JARs can be found in the `build/install/<appname>/lib` directory. In that case, adjust the input paths in the config from `build/all-jars` to `build/install/<appname>/lib`.
 
-2. **Better.** Or you can use [the Conveyor Gradle plugin](configs/maven-gradle.md#reading-configuration-from-gradle) to generate a config snippet. This lets you extract any configuration from your Gradle build into your packages. For JetPack Compose apps this is required, as the Compose plugin doesn't provide a direct equivalent to the `installDist` command.. 
+2. **Better.** Or you can use [the Conveyor Gradle plugin](configs/maven-gradle.md#reading-configuration-from-gradle) to generate a config snippet. This extracts configuration from your Gradle build and also understands other common plugins, especially for GUI frameworks like JavaFX or JetPack Compose. For JetPack Compose apps this is required, as the Compose plugin doesn't provide a direct equivalent to the `installDist` command.
+
+Let's assume you're using [the open source Gradle plugin](https://github.com/hydraulic-software/conveyor/tree/master/gradle-plugin). Do the following:
+
+1. In your `settings.gradle{.kts}` file, add the repository `maven.hq.hydraulic.software` along with `gradlePluginPortal()`.
+1. In your `build.gradle{.kts}` file, apply the plugin with id `dev.hydraulic.conveyor`. [Find the latest version number here](https://plugins.gradle.org/plugin/dev.hydraulic.conveyor).
+3. The plugin generates Conveyor configuration. You now face a choice of how to use it:
+    1. Add `include required("#!./gradlew -q printConveyorConfig")` to the top of your config. This will invoke Gradle each time you invoke Conveyor and import settings from your build. Therefore this adds a slight delay to each Conveyor run, because even with the Gradle daemon this is a bit slow, but it means your config is always synced.
+    2. Or, add `include required("generated.conveyor.conf")` and run `gradle writeConveyorConfig` when you change your Gradle build. This avoids any delay from invoking Gradle but means your settings can get out of sync.
+
+
+When experimenting locally it may be worth using the faster form and then switching to the slower form when done.
 
 ## Step 3. Build your app for each platform and test
 
-You don't technically have to test on each platform, especially if you trust your runtime's cross-platform abstraction. But it's best to do so, no different to how it's good to test on all the major browsers when writing a website.
+You don't  have to do this step if you trust your runtime's cross-platform abstraction. But it's best to do so at least once, no different to how it's good to test on all the major browsers when writing a website.
 
 Run:
 
@@ -70,7 +84,7 @@ Run:
 
 If you want a single file:
 
-* `conveyor make windows-msix` to create an installable Windows package.
+* `conveyor make windows-msix` to create an installable Windows package (this requires signing keys).
 * `conveyor make unnotarized-mac-zip` to create a zip with your Mac app in it.
 * `conveyor make linux-tarball` or `conveyor make debian-package` to create a tarball or deb.
 
@@ -79,8 +93,8 @@ The results will be in the `output` directory. You can change that location with
 Conveyor builds are incremental and parallel. You should find that building the second and third app is quicker than the first, and once built switching between them is nearly instant. This lets you rapidly iterate on your packages, because once built it normally only takes a few seconds to create a new spin of your app.
 
 !!! tip "Faster builds"
-    1. Set `app.sign = false` during development to disable code signing and notarization, which can be slow for macOS.
-    2. Set `app.linux.compression = low` or `none` to switch to gzip or no compression when building Linux packages. The resulting packages are bigger but much faster to build than with the default codec (LZMA).
+    1. Set `app.sign = false` during development to disable code signing and notarization, which can be slow.
+    2. Set `app.linux.compression = low` or `none` to switch to gzip or no compression when building Linux packages. The resulting packages are bigger but much faster to build than with the default LZMA codec.
 
 ## Step 4. Build a download site
 
@@ -88,10 +102,15 @@ Conveyor builds are incremental and parallel. You should find that building the 
 
 Now copy this directory to your web server using a tool like `scp`, `rsync` or however else you normally publish static web files.
 
-To release a new version just adjust the version number in the first file name or the `app.version` / `app.revision` keys, rerun `conveyor make site` and re-upload the results.
+!!! tip "GitHub Releases"
+    You can use [GitHub Releases and Pages](configs/download-pages.md#publishing-through-github) to host your repository. Upgrading your users then just involves making a new release.
+
+## Step 5. Release a new version
+
+To release a new version just adjust the version number in your build system or the `app.version` / `app.revision` keys, rerun `conveyor make site` and re-upload the results. Remember to compile and re-JAR your app first!
 
 ## Step 5. Refine your configuration
 
 Not happy with the defaults? There are [lots of settings](configs/index.md) available, including settings that expose platform specific metadata and features.
 
-Conveyor supports servers with full Linux `systemd` integration. Take a look at the [Linux config sections](configs/linux.md) to learn more.
+Conveyor also supports servers with full Linux `systemd` integration. Take a look at the [Linux config sections](configs/linux.md) to learn more.

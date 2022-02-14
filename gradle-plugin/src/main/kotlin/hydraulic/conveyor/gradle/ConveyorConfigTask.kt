@@ -42,7 +42,6 @@ abstract class ConveyorConfigTask : DefaultTask() {
 
         // TODO(low): Import more stuff, including:
         //
-        // - JVM version
         // - Notarization details?
         // - Icons?
     }
@@ -55,6 +54,7 @@ abstract class ConveyorConfigTask : DefaultTask() {
             runtimeConfigCopy.dependencies.removeAll { it.group == "org.openjfx" }
             appendLine("include required(\"/stdlib/jvm/javafx/from-jmods.conf\")")
             appendLine("javafx.version = ${jfxExtension.version}")
+            appendLine("app.jvm.modules = ${'$'}{app.jvm.modules} " + jfxExtension.modules.joinToString(", ", prefix = "[ ", postfix = " ]"))
         }
     }
 
@@ -86,6 +86,8 @@ abstract class ConveyorConfigTask : DefaultTask() {
     }
 
     private fun StringBuilder.importFromJavaPlugin(project: Project) {
+        // TODO: Import JVM version and vendor from the toolchain.
+
         val appExtension = project.extensions.findByName("application") as? JavaApplication
         if (appExtension != null) {
             appendLine("app.jvm.main-class = ${appExtension.mainClass.get()}")

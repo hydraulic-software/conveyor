@@ -3,11 +3,11 @@
 This module contains a simple Gradle plugin that extracts settings from a build and emits a Conveyor config snippet. This makes it easy
 to keep metadata and dependencies from your source build and packaging build in sync.
 
-To apply:
+To apply, [look up the latest version](https://plugins.gradle.org/plugin/dev.hydraulic.conveyor):
 
 ```
 plugins {
-	  id("dev.hydraulic.conveyor") version "0.9"
+    id("dev.hydraulic.conveyor") version "0.9.3"
 }
 ```
 
@@ -38,6 +38,7 @@ The plugin extracts the following:
 * `project.group`
 * From the `application` plugin: the main class and JVM arguments are extracted.
 * From the JetPack Compose Desktop plugin: main class, JVM arguments, description, vendor.
+* From the JavaFX plugin: the version you're using and which modules.
 
 It defines machine specific dependency configurations that can be used to add dependencies which should only take effect on particular
 platforms:

@@ -17,7 +17,7 @@ This will use the [`dependency:build-classpath`](https://maven.apache.org/plugin
 
 ## Reading configuration from Gradle
 
-Conveyor provides a Gradle plugin which extracts configuration from your build and emits it as HOCON. It also lets you configure machine-specific dependencies that are automatically put into the right section of the input hierarchy.
+Conveyor provides an [open source Gradle plugin](https://github.com/hydraulic-software/conveyor/tree/master/gradle-plugin) which extracts configuration from your build and emits it as HOCON. It also lets you configure machine-specific dependencies that are automatically put into the right section of the input hierarchy.
 
 ??? info "Which tool on top?"
     The Gradle plugin restricts itself to generating configuration for a few different reasons:
@@ -27,11 +27,11 @@ Conveyor provides a Gradle plugin which extracts configuration from your build a
     * Only generating configuration keeps the integration transparent and easy to understand, which is important when working with a complex system like Gradle.
     * A minimalist plugin makes it less likely to break as Gradle evolves its APIs, which has frequently been a problem in the past with other plugins.
 
-To use it, apply the plugin in your Gradle build:
+To use it, [look up the latest version](https://plugins.gradle.org/plugin/dev.hydraulic.conveyor) and then apply the plugin in your Gradle build:
 
 ```
 plugins {
-	  id("dev.hydraulic.conveyor") version "0.9"
+	  id("dev.hydraulic.conveyor") version "0.9.3"
 }
 ```
 
@@ -67,6 +67,7 @@ The plugin extracts information from other plugins:
 * The `group` becomes `app.rdns-name`
 * From the `application` plugin: main class,  JVM arguments.
 * From the JetPack Compose Desktop plugin: main class, JVM arguments, description, vendor.
+* From the JavaFX plugin: the modules you're using.
 
 Here's a worked example for a Compose Desktop app:
 
@@ -79,11 +80,10 @@ plugins {
     kotlin("jvm") version "1.6.10"
     kotlin("kapt") version "1.6.10"
     id("org.jetbrains.compose") version "1.0.1"
+    id("dev.hydraulic.conveyor") version "0.9.3"
 }
 
-apply<ConveyorGradlePlugin>()
-
-version = "0.9.3"
+version = "1.0"
 group = "dev.hydraulic.samples"
 
 repositories {
@@ -136,7 +136,7 @@ app { ... }
 The first form will invoke Gradle each time to read the config. It means you will never be out of sync, but even with the Gradle daemon this is slow and takes a moment. The second form reads the generated file from disk, so Gradle doesn't get involved and it's nice and fast.
 
 ??? tip "Best of both worlds"
-You can of course create two conf files, one for each approach, and switch between them using the `-f` flag. Each conf only contains includes from Gradle and a base config. Then your CI can use the version that always invokes Gradle, and for local iteration you can use the fast one.
+    You can of course create two conf files, one for each approach, and switch between them using the `-f` flag. Each conf only contains includes from Gradle and a base config. Then your CI can use the version that always invokes Gradle, and for local iteration you can use the fast one.
 
 You can easily extend this by just adding some code to the end of the relevant tasks that appends to the file, like this:
 
@@ -151,11 +151,11 @@ tasks.named<hydraulic.conveyor.gradle.WriteConveyorConfigTask>("writeConveyorCon
 
 If you want Gradle to run Conveyor as well, just define a normal execution task using words to this effect:
 
-```
+```kotlin
 tasks.register<Exec>("convey") {
     val dir = layout.buildDirectory.dir("conveyor.out")
     outputs.dir(dir)
-    commandLine("conveyor", "make", "--output-dir", dir.get(), "mac-app")
+    commandLine("conveyor", "make", "--output-dir", dir.get(), "site")
     dependsOn("jar", "writeConveyorConfig")
 }
 ```
