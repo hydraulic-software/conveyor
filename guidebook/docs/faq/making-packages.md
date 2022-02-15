@@ -24,12 +24,12 @@ Something like:
 
 ```
 app {
-  // Get the number of commits in the current branch.
+    // Get the number of commits in the current branch.
 	include "#!=revision git rev-list --count --first-parent HEAD"
 }
 ```
 
-and then just trigger Conveyor from your CI system. This is an example of [a hashbang include](configs/hocon-extensions).
+and then just trigger Conveyor from your CI system. This is an example of [a hashbang include](../configs/hocon-extensions).
 
 !!! important "Revision numbers vs commit hashes"
     Note that revision must be a number. You can't set it to be a commit hash. This is because package managers don't generally allow non-integer versions, and for Windows and macOS this is a hard rule.
