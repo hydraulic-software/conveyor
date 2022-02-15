@@ -124,7 +124,7 @@ Normally you don't need to fill this out. It will be calculated for you based on
 app.signing-key = "9a65621705d4ecb4a570f42167f757a04604a532b7b0834ea76fdc275166f8e1/2022-01-14T17:49:47+01:00"
 ```
 
-A line of config like this can be generated with the `conveyor keys generate` command (see [Getting set up](../setting-up.md#keys-and-certificates)) and then included into your main config (don't check it into version control). The random value isn't used as a private key directly, it's used to derive any other keys that aren't explicitly provided. The following keys can be derived from this root entropy (randomness) are:
+A line of config like this can be generated with the `conveyor keys generate` command (see [Keys and certificates](../keys-and-certificates.md)) and then included into your main config (don't check it into version control). The random value isn't used as a private key directly, it's used to derive any other keys that aren't explicitly provided. The following keys can be derived from this root entropy (randomness) are:
 
 1. Windows and Mac code signing keys.
 2. PGP keys for signing Debian apt repositories.

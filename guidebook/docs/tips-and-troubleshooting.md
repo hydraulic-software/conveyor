@@ -58,7 +58,7 @@ Use individual JARs as inputs. This will work much better with delta compression
 
 ### Problems loading native libraries
 
-You should always try to load native libraries using `System.loadLibrary` because [Conveyor moves libraries out of JARs](/configs/jvm.md#native-libraries). Don't use custom packing/unpacking code until `loadLibrary` has failed.
+You should always try to load native libraries using `System.loadLibrary` because [Conveyor moves libraries out of JARs](configs/jvm.md#native-libraries). Don't use custom packing/unpacking code until `loadLibrary` has failed.
 
 ### Reading app files
 

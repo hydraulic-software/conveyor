@@ -8,7 +8,7 @@ Here's what you need to know:
     * **Linux:** apt repositories are always self-signed (no certificate is necessary). The DEB installs the GPG public key and apt sources file for the repository, thus, the user gets your app by just downloading the DEB and installing it with `apt install ./yourapp*.deb`. The generated download page gives the command to use.
 * **Key derivation.** Conveyor can create a single private key and derive all the different platform keys from it, so there's only one thing to back up.
 * **Using existing keys.** Conveyor can use your existing Windows and Apple code signing keys if you have them. You'll still need to back up your Conveyor root key because it's also used to generate Linux and Mac repository signing keys.
-* **Passphrase protection.** Conveyor can use encrypted private keys. [See below](#pkcs12-and-passphrases).
+* **Passphrase protection.** Conveyor can use encrypted private keys. [See below](#passphrases).
 * **Hardware tokens / HSMs.** Conveyor can use private keys protected by HSMs. [See below](#hardware-security-modules).
 
 ??? question "Is signing worth it?"
@@ -43,7 +43,7 @@ There's also a commented out section where you can place your Apple notarization
 * **macOS:** Export the keys from Keychain Access to a .p12 file (see below). Set `app.mac.signing-key` to point to that file. If you have a separate key and certificate file, set `app.mac.certificate` to point to the `.cer` file.
 * **Windows:** Set `app.windows.signing-key` to the path of either a .p12/.pfx file containing your private key and certificate, or set `app.windows.signing-key` and `app.windows.certificate` separately.
 
-To learn more about configuring keys and certificates see [signing configuration](configs/index.md#signing). Conveyor can read most common ways to encode keys and certificates, including ASCII format (PEM, meaning `---BEGIN PRIVATE KEY---` style). When using a `.p12` or `.pfx` file, you must supply [a passphrase](#pkcs12-and-passphrases). 
+To learn more about configuring keys and certificates see [signing configuration](configs/index.md#signing). Conveyor can read most common ways to encode keys and certificates, including ASCII format (PEM, meaning `---BEGIN PRIVATE KEY---` style). When using a `.p12` or `.pfx` file, you must supply [a passphrase](#passphrases). 
 
 ### Exporting keys from Mac Keychain Access
 

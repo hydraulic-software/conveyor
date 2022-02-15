@@ -44,7 +44,7 @@ Not at this time. Snaps are a format specific to the Ubuntu app store. If you wa
 
 ## 10. Docker?
 
-Conveyor supports making Linux servers with full [systemd integration](/configs/linux.md#systemd). It doesn't produce Docker images at this time. We prefer using systemd with native packages for our own servers because we feel that:
+Conveyor supports making Linux servers with full [systemd integration](../configs/linux.md#systemd-units). It doesn't produce Docker images at this time. We prefer using systemd with native packages for our own servers because we feel that:
 
 1. SystemD has better service management features like task dependencies, activation, logging etc.
 2. SystemD has better command line tools, including neat third party tools like [sysz](https://github.com/joehillen/sysz).
