@@ -39,7 +39,7 @@ This app uses the new JetPack Compose Desktop UI toolkit to mock up a slick, Mat
 * Generate a static download site
     * Detects the user's operating system and CPU architecture.
     * [Release via GitHub releases](configs/download-pages#publishing-through-github).
-* [Deep support for JVM applications](outputs.md#jvm-applications).
+* [Deep support for JVM applications](configs/jvm.md).
 * Pierce the abstraction! Cross platform tooling doesn't mean giving up platform specific features. You can precisely configure OS specific files to get the perfectly tuned experience, such as:
     * Mac `Info.plist` files
     * Windows XML app manifests

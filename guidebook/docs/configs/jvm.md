@@ -2,10 +2,23 @@
 
 ## Overview
 
+Conveyor has integrated support for apps that run on the JVM (for any supported language). You get the following features:
+
+* A custom launcher that replaces the `java` command and adds [extra features](#launcher).
+* Full support for the module system:
+    * Usage of `jlink` and `jdeps` to create minimal JVM distributions, containing only the modules that your app needs.
+    * Fully modular JARs are detected and linked into the `modules` file, yielding faster startup and smaller downloads.
+* Native libraries are extracted from JARs so they can be either signed, or discarded if they're for the wrong OS/CPU. This improves download times.
+* [Maven and Gradle integration](maven-gradle.md):
+    * A Gradle plugin that automatically generates configuration snippets.
+    * Maven projects can have their classpath read directly, without needing a plugin.
+* Integrated support for GUI frameworks like JavaFX and Compose Desktop.
+
 To package an app that uses the JVM, you must choose a JDK and at least one JAR.
 
-!!! note
-    Conveyor only supports apps that use Java 11 or later - Java 8 won't work. All classes must be inside a JAR.
+??? note "Java versions"
+    Conveyor only supports apps that use Java 11 or later - Java 8 won't work. All classes must be inside a JAR. If you need Java 8 support
+    please [let us know](mailto:contact@hydraulic.software).
 
 ## Synopsis
 
@@ -53,7 +66,7 @@ app.jvm.constant-app-arguments = [ --app-version, ${app.version} ]
 **`app.jvm.options`** A list of arguments to pass to the JVM on startup. Useful for configuring max heap size and system properties, amongst other things. Within JVM options the `&&` token is special and will be replaced at startup with the path to the directory where the app's root input files are stored (there may be other files in there as well). By default, the `app.dir` system property points at `&&`.
 
 !!! warning
-    * Watch out for accidental mis-use of HOCON syntax when writing something like `jvm-arguments = [ --one --two ]`. This creates a _single_ argument containing "--one --two" which is unlikely to be what you want. Instead write `jvm-arguments = [ --one, --two ]` or put each argument on a separate line.
+    * Watch out for accidental mis-use of HOCON syntax when writing something like `jvm-arguments = [ --one --two ]`. This creates a _single_ argument containing "--one --two" which is unlikely to be what you want. Instead write `jvm-arguments = [ --one, --two ]` or put each argument on a separate line. Conveyor will warn you if you seem to be doing this.
 
 !!! important
     When a JVM app is signed on macOS or Windows the JVM attach mechanism is disabled using the `-XX:+DisableAttachMechanism` flag. That's because the attach mechanism allows any local user to overwrite the app's code in memory without needing to alter files on disk, thus defeating code signing.
@@ -144,22 +157,25 @@ When adding module related flags to the `app.jvm.options` key, be aware that the
 
 **Diagnosing issues.** If you'd like to see what decisions Conveyor has made about your app, you can make the `repacked-jars` task for some machine and look at the files called `required-jdk-modules.txt` (this is the output of jdeps run over your jars) and `modular-jars.txt` which is a list of the JARs that will be linked in to the optimized JVM.
 
-**Main modules.** Unfortunately, at this time starting your application from a main JPMS module isn't supported. Apps can only be started from code on the classpath. 
-
 ## Launcher
 
 JVM apps packaged with Conveyor use a custom native program to start the JVM. It adds the following features:
-
 
 * Initializes the Sparkle update engine on macOS.
 * Improved command line support for Windows:
     * ANSI escapes (colors) are enabled, and [the popular PicoCLI framework](https://www.picocli.info) is automatically configured to use them. Modern versions of Windows have much better terminal support than in the past, along with [a modern tabbed terminal emulator](https://www.microsoft.com/en-us/p/windows-terminal/9n0dx20hk701#activetab=pivot:overviewtab) that's also [open source](https://github.com/microsoft/terminal).
     * The console and default character encoding are both set to UTF-8 by default. This matches Linux and macOS, and means that drawing with Unicode symbols and emoji should work. [See here for details](index.md#character-encodings).
-    * The `$HOME` environment variable is set to the user's home directory (normally called `%USERPROFILE%`).
+    * The `$HOME` environment variable is set to the user's home directory (normally called `%USERPROFILE%` on Windows). This makes it easier to use native code.
 * Exceptions that escape `main` are shown in a GUI alert box on macOS and Windows.
-* On Windows, `%APPDATA%` and `%LOCALAPPDATA%` are rewritten to point to the private containerized locations used by MSIX packaging. This means files you create under these directories will be findable by other apps you start.
 * Supports hard-wired command line arguments set from the build configuration, e.g. to tell the app its own version.
 * Improves security by ensuring JVM configuration options are signed, and disabling features that can be used to inject code into a running program. This makes it harder for malware to use your app to subvert code signing.
+* On Windows, `%APPDATA%` and `%LOCALAPPDATA%` are rewritten to point to the private containerized locations used by MSIX packaging. This means files you create under these directories will be findable by other apps you start, rather than shielded from them as is the default.
 * Exposes the app's install location via the `app.dir` system property.
 
-The launcher supports some of the same features as the java launcher, for example JavaFX apps don't need a main method, the Mac specific `-XstartOnFirstThread` flag is understood and the initial stack size can be set.
+The launcher supports some of the same features as the java launcher, for example JavaFX apps don't need a main method, the Mac specific `-XstartOnFirstThread` flag is understood and the initial stack size can be set.
+
+!!! note "Future features"
+    The custom launcher enables many useful features to be added in the future. Ideas include startup time optimization via automatically 
+    configured [AppCDS](https://openjdk.java.net/jeps/310), exposing APIs to control and monitor the update process, integrating
+    NodeJS and using JavaScript modules through it, automatically moving apps to `/Applications` on macOS and regularizing how file/URL
+    open requests are exposed to the OS (which currently requires operating-system specific approaches and APIs).

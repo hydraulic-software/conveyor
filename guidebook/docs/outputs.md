@@ -65,19 +65,4 @@ Future versions of Conveyor are planned to support:
 1. RPMs.
 3. Eventually, Snaps and FlatPaks.
 
-## JVM applications
-
-Conveyor has integrated support for apps that run on the JVM (for any supported language). You get the following features:
-
-* A [custom launcher](configs/jvm.md#launcher) that replaces the `java` command.
-* Full support for the module system:
-    * Usage of `jlink` and `jdeps` to create minimal JVM distributions, containing only the modules that your app needs. 
-    * Fully modular JARs are detected and linked into the `modules` file, yielding faster startup and smaller downloads.
-* Native libraries are extracted from JARs so they can be either signed, or discarded if they're for the wrong OS/CPU. This improves download times.
-* [Maven and Gradle integration](configs/maven-gradle.md):
-    * A Gradle plugin that automatically generates configuration snippets. 
-    * Maven projects can have their classpath read directly, without needing a plugin.
-
-* Integrated support for GUI frameworks like JavaFX and Compose Desktop.
-
 [^1]: In case you're wondering, marketshare for Windows 8 is so small that it can be safely ignored.

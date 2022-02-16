@@ -99,6 +99,10 @@ conveyor --rerun=mac-app make mac-app
 
 **Machines.** Each native target is identified by an identifier formatted like `$operating_system.$cpu[.$libc]`, for example `mac.aarch64` (Apple Silicon Macs), or `windows.amd64` (Intel Windows machines), or `linux.amd64.glibc` for a typical Linux box. When using the `site` task the machines to use are taken from the `app.machines` config key. When using other tasks you can pick the machine you wish to build tasks for by passing it using the `--machine` or `-m` flag. 
 
+## Controlling parallelism
+
+The `--parallelism` flag allows you to control how many tasks run simultaneously. Be aware that setting this too high may not yield performance improvements, or may use too much memory. Experiment a bit and see what works best for you. 
+
 ## Viewing task dependencies
 
 The `task-dependencies` command takes a task command-line name and prints all the dependencies. Try running `conveyor task-dependencies site` to see how the site is made up. Dimmed out tasks are being hidden either because they appeared elsewhere in the tree already (it's really a graph), or because the task is disabled for some reason, which will be explained next to the task's entry.
