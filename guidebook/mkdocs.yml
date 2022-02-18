@@ -15,11 +15,11 @@ nav:
   - Configuration:
     - configs/index.md
     - configs/inputs.md
-    - configs/download-pages.md
     - configs/jvm.md
     - configs/linux.md
     - configs/mac.md
     - configs/windows.md
+    - Download pages: configs/download-pages.md
     - HOCON:
         - Specification: configs/hocon-spec.md
         - Extensions: configs/hocon-extensions.md
