@@ -10,7 +10,7 @@ hide:
 
 Conveyor makes distributing desktop and command line apps as easy as shipping a web app. It's a tool not a service, it generates [self-upgrading packages for Windows, macOS and Linux using each platform's native package formats](outputs.md) without requiring you to have those operating systems, and it looks like this:
 
-<video width="100%" poster="https://docs.hydraulic.dev/assets/promo.jpg" controls><source src="https://docs.hydraulic.dev/assets/promo.mp4" type="video/mp4"></video>
+<video width="100%" poster="https://conveyor.hydraulic.dev/assets/promo.jpg" controls><source src="https://conveyor.hydraulic.dev/assets/promo.mp4" type="video/mp4"></video>
 
 ## Try it
 
