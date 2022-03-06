@@ -28,7 +28,6 @@ This app uses the new JetPack Compose Desktop UI toolkit to mock up a slick, Mat
 
 * Create packages for every OS on any OS - Conveyor implements everything itself so doesn't rely on platform native tooling.
     * Build Windows applications that use the built-in [Windows 10 MSIX/AppInstaller system](outputs.md).
-        * Apps launch direct from the web.
         * Windows keeps them up to date in the background automatically.
         * Has everything IT departments need to easily deploy to managed networks.
     * Build Mac applications that use the popular [Sparkle 2 update framework](https://sparkle-project.org/).
