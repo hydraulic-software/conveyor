@@ -1,13 +1,26 @@
 # General FAQ
 
-## 1. Why isn't Conveyor a service?
+## 1. What does Conveyor do?
 
-Services can sometimes be convenient and if you'd like to have Conveyor-as-a-service, please let us know. And if you'd like to
-incorporate Conveyor into your own code hosting service then get in touch and ask for a reseller license.
+It builds packages for desktop/CLI apps targeting Windows, macOS and Linux. These packages self update using the native package management
+or Sparkle on macOS, and are fully signed/notarized. You can build these packages from any OS, meaning you can sign and notarize Mac
+apps from Linux or Windows, and Windows apps from macOS or Linux. It can also create simple server packages for Debian/Ubuntu that use
+systemd as a service manager.
 
-Conveyor isn't designed as a service because, like many, we feel that the service-ification of the software industry has swung too far. Many
-programs are now offered exclusively as hosted services when it's not technically justifiable, and even when it makes things worse for
-users. Being a tool means you get:
+## 2. Is Conveyor free?
+
+It's free for open source projects, and during the early access period it's free for everyone else too. Once the early access period ends,
+it will become a commercial product when used on proprietary apps.
+
+## 3. Why isn't Conveyor a service?
+
+Services can sometimes be convenient and if you'd like to have Conveyor-as-a-service, please [let us know](mailto:contact@hydraulic.software). 
+Also, if you work on a code hosting service/forge of some kind and you'd like to incorporate Conveyor's features into your site,
+then get in touch and ask for a reseller license.
+
+Conveyor isn't designed as a service because, like many, we feel that the service-ification of the software industry has swung a bit too far. 
+Many programs are now offered exclusively as hosted services when it's not technically justifiable, and even when it makes things worse for
+users. Being a local tool means you get:
 
 * Ultra-fast turnaround times on rebuilds, so you can quickly experiment and polish your package.
 * No outages - a tool is as available as your own hardware.
@@ -22,26 +35,26 @@ It has advantages for us too:
   pass on to you.
 * No need to hold people's private keys, which would create a tempting target for attackers.
 
-## 2. Is Conveyor only for JVM apps?
+## 4. Is Conveyor only for JVM apps?
 
-No! You can package any kind of app, Conveyor just happens to have great support for the JVM. It makes sense to integrate support for
+Nope. You can package any kind of app, Conveyor just happens to have great support for the JVM. It makes sense to integrate support for
 the JVM because a cross-platform runtime is when the ability to create packages for other operating systems really shines. You don't need to
-mess with cross compilers or running virtualized operating systems - just develop your app on your preferred platform and then ship to
+mess with cross-compilers or running virtualized operating systems - just develop your app on your preferred platform and then ship to
 everyone with a single command.
 
-## 3. Is Conveyor only for desktop apps?
+## 5. Is Conveyor only for desktop apps?
 
-No! It also has great support for:
+It also has great support for:
 
 1. Deeply system integrated servers. See the [TeamCity sample](../samples/teamcity.md) for an example that demonstrates systemd integration,
    Apache 2 integration and adding a dependency on Postgres.
 2. Command line apps. Conveyor is packaged with itself, in fact.
 
-## 4. Does it support Electron/native apps?
+## 6. Does it support Electron or native apps?
 
-Maybe - see question (2) - but we don't have any samples or integrated support yet. Working on it!
+It should do, but we don't have any samples or integrated support yet. Working on it!
 
-## 5. Why should I make a desktop app?  
+## 7. Why should I make a desktop app?  
 
 Desktops are a fantastically important and critical part of our infrastructure - they're the beating heart of our economy where work gets
 done and things get made. Flexible, comfy, ergonomic and incredibly powerful, the machines sitting in front of us are truly magnificent
@@ -61,3 +74,7 @@ outside the browser:
 * Be always available even in the most challenging conditions. Users will learn to rely on your app everywhere, at any time, whether
   that's in the middle of a storm on an oil rig, on holiday in the middle of the savannah, during a business trip with spotty connectivity  
   or during a delicate hospital operation where a server outage could be a matter of life and death.
+
+If you're interested in these ideas, check out the essay ["Our Glorious Post Web Future"](https://www.hydraulic.software/blog/2-our-glorious-post-web-future.html)
+on the Hydraulic blog. We plan to write more about reinvigorating the desktop there, and hopefully organize a podcast with other people doing
+interesting work in the post-web space.
