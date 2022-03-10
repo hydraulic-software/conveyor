@@ -1,6 +1,7 @@
 site_name: Hydraulic Conveyor
 
 extra:
+  homepage: https://www.hydraulic.software
   version:
     provider: mike
 
@@ -43,6 +44,7 @@ nav:
 
 theme:
   name: 'material'
+  custom_dir: overrides
 
   features:
     - navigation.instant
@@ -52,9 +54,8 @@ theme:
 #    - toc.integrate
 
   palette:
-    - scheme: default
-      primary: 'darkgrey'
-      accent: 'blue'
+    - scheme: hydraulic
+      accent: blue
       toggle:
         icon: material/toggle-switch-off-outline
         name: Switch to dark mode

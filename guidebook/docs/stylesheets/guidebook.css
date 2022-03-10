@@ -30,3 +30,13 @@
 .md-typeset :is(.emojione,.twemoji,.gemoji) {
     vertical-align: middle;
 }
+
+[data-md-color-scheme="hydraulic"] {
+    --md-primary-fg-color:        #361cc1;
+    --md-primary-fg-color--light: #6c50f9;
+    --md-primary-fg-color--dark:  #0d016c;
+}
+
+.md-header, .md-tabs {
+    background: linear-gradient(91deg, var(--md-primary-fg-color), var(--md-primary-fg-color--light));
+}
