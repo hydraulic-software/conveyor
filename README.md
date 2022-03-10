@@ -2,13 +2,13 @@
 
 [![Gitter](https://badges.gitter.im/hydraulic-software/community.svg)](https://gitter.im/hydraulic-software/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-[Conveyor](https://docs.hydraulic.dev) makes distributing desktop and command line apps as easy as shipping a web app. It's a tool not a
-service, it generates [self-upgrading packages for Windows, macOS and Linux using each platform's native package formats](https://docs.hydraulic.dev/prerelease/outputs.md)
+8[Conveyor](https://conveyor.hydraulic.dev) makes distributing desktop and command line apps as easy as shipping a web app. It's a tool not a
+service, it generates [self-upgrading packages for Windows, macOS and Linux using each platform's native package formats](https://conveyor.hydraulic.dev/latest/outputs.md)
 without requiring you to have those operating systems.
 
-**[ ➡️ See what it looks like ](https://docs.hydraulic.dev/assets/promo.mp4)**
+**[ ➡️ See what it looks like ](https://conveyor.hydraulic.dev/assets/promo.mp4)**
 
-**[ ➡️ Get started!](https://docs.hydraulic.dev)**
+**[ ➡️ Get started!](https://conveyor.hydraulic.dev)**
 
 ## This repository
 
@@ -32,7 +32,7 @@ to [Gurupreet Singh](https://github.com/Gurupreet) for the original code that it
 ## Features
 
 * Create packages for every OS on any OS - Conveyor implements everything itself so doesn't rely on platform native tooling.
-    * Build Windows applications that use the built-in [Windows 10 MSIX/AppInstaller system](https://docs.hydraulic.dev/prerelease/outputs.md).
+    * Build Windows applications that use the built-in [Windows 10 MSIX/AppInstaller system](https://conveyor.hydraulic.dev/latest/outputs.md).
         * Apps launch direct from the web.
         * Windows keeps them up to date in the background automatically.
         * Has everything IT departments need to easily deploy to managed networks.
@@ -42,7 +42,7 @@ to [Gurupreet Singh](https://github.com/Gurupreet) for the original code that it
         * Integrates with systemd for servers and cron jobs.
         * Servers automatically (re)started on upgrade/reboot.
 * Generate a static download site that detects the user's operating system and CPU architecture.
-* [Deep support for JVM applications](https://docs.hydraulic.dev/prerelease/outputs.md#jvm-applications).
+* [Deep support for JVM applications](https://conveyor.hydraulic.dev/latest/outputs.md#jvm-applications).
 * Pierce the abstraction! Cross platform tooling doesn't mean giving up platform specific features. You can precisely configure OS specific files to get the perfectly tuned experience, such as:
     * Mac `Info.plist` files
     * Windows XML app manifests
