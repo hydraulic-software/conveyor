@@ -2,7 +2,7 @@
 
 [![Gitter](https://badges.gitter.im/hydraulic-software/community.svg)](https://gitter.im/hydraulic-software/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-8[Conveyor](https://conveyor.hydraulic.dev) makes distributing desktop and command line apps as easy as shipping a web app. It's a tool not a
+[Conveyor](https://conveyor.hydraulic.dev) makes distributing desktop and command line apps as easy as shipping a web app. It's a tool not a
 service, it generates [self-upgrading packages for Windows, macOS and Linux using each platform's native package formats](https://conveyor.hydraulic.dev/latest/outputs.md)
 without requiring you to have those operating systems.
 
