@@ -9,6 +9,10 @@ To understand every setting that went into your app run the `conveyor json` comm
 !!! important
     When working with lists it's good style to always add to them rather than overriding them. If you assign directly importing other configs from (for example) the Conveyor standard library won't work as you'll overwrite the values they place in shared lists. In other words write `key += value` rather than `key = [ value ]`. The first form adds to whatever `key` currently holds, the second replaces it.
 
+## Schema versions
+
+The Conveyor config schema may change over time. To ensure backwards compatibility, when you build a config for the first time a new key called `schema-version` will be added to it, if not already present. This records the latest schema version at the time you ran the program, ensuring that old configs can be read by new versions of the tool. When a new release changes the schema that'll be mentioned in the release notes and you can then choose when and whether to upgrade.
+
 ## Minimal app
 
 Apps are built from [inputs](inputs.md). A config must specify at least one input file and the address where the downloads will be served from (as the packages need to know this to configure online updates). If the file name follows a conventional form all other app metadata can be derived from it:
