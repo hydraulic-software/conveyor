@@ -57,6 +57,8 @@ application metadata on macOS. You normally don't need to alter this, but if you
 
 **`app.mac.sparkle-inputs`** An input definition that points to a release of the [Sparkle 2 update framework](https://sparkle-project.org/). You can normally leave this at the default unless you want to use a custom fork of Sparkle for some reason.
 
+**`app.mac.updates`** If "background" (the default), then the app will check for updates on a schedule. The first time an update is available the user will be asked to apply it, and given the option to apply updates silently in future. If "aggressive" then an update check is triggered on every app start, and the user will be notified that there's an update available within a few seconds of startup. They'll be given an option to skip it, be reminded later or apply it immediately. If "none" then update functionality isn't included. The exact UX implied by these names may change in future releases. 
+
 **`app.mac.sparkle-options`** An object whose values are put in the `Info.plist` that controls Sparkle's behavior. [See here for a reference guide](https://sparkle-project.org/documentation/customization/). You should normally leave this alone unless you want precise behavioral control.
 
 **`app.mac.sign`** Controls whether signing is done after bundling. Defaults to true. If you don't have signing keys and this is true, you'll get a warning but it'll work if you're targeting Intel machines. If you're targeting Apple Silicon it won't build because all code on Apple Silicon must be signed.
@@ -65,7 +67,7 @@ application metadata on macOS. You normally don't need to alter this, but if you
 
 ## Notarization
 
-Apple require all apps for macOS to be both signed and uploaded to them for a form of ahead-of-time virus scanning, called notarization. This is different to the app store: approval is automatic with no humans in the loop and takes only a minute or two. Conveyor handles all this for you but needs to be provided with an Apple ID and credentials for the notarization service. Any Apple ID registered with the developer programme can get these.
+Apple requires all apps for macOS to be both signed and uploaded to them for a form of ahead-of-time virus scanning, called notarization. This is different to the app store: approval is automatic with no humans in the loop and takes only a minute or two. Conveyor handles all this for you but needs to be provided with an Apple ID and credentials for the notarization service. Any Apple ID registered with the developer programme can get these.
 
 Just add the following to your config:
 
