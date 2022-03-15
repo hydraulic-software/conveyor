@@ -40,7 +40,7 @@ app.jvm {
 }
 
 # Set the main class.
-app.jvm.main-class = com.foobar.Main
+app.jvm.main-gui-class = com.foobar.Main
 
 # Request extra modules that weren't auto-detected by jdeps.
 app.jvm.modules += java.{desktop,logging,net.http}
@@ -59,7 +59,7 @@ app.jvm.constant-app-arguments = [ --app-version, ${app.version} ]
 
 **`app.jvm`** An [input hierarchy](inputs.md) in the same manner as the top level `app` object. The inputs will be resolved (copied/downloaded/extracted) and any JMOD files anywhere in the result will be found and aggregated. Then a JVM will be created using those jmods and the jlink tool. As a consequence, if you have JMODs to add to the jlinked image (e.g. JavaFX), you should add them here alongside the JVM itself.
 
-**`app.jvm.main-class`**  The main class name to invoke at startup. If left blank the JARs will be scanned to find a main class advertised in the manifest. If more than one JAR advertises a main class, an exception will be thrown.
+**`app.jvm.main-gui-class`**  The main class invoked when the app is started via the operating system GUI (e.g. start menu, Mission Control, etc). If left blank the JARs will be scanned to find a main class advertised in the manifest. If more than one JAR advertises a main class, an exception will be thrown.
 
 **`app.jvm.constant-app-arguments`** A list of arguments that will always be passed to the app in addition to whatever the user specifies. Can be useful to plumb metadata from the app definition through to the app itself, like by telling it its own version number.
 

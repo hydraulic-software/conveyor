@@ -44,7 +44,7 @@ That's all you need! The display name and version of your application will be ta
 
 **Icons.** You'll need to render a few icon images, at least for common sizes like 128x128, 256x256 and 512x512. Put them next to your config file with names like `icon-256.png`, `icon-512.png`. The more sizes you have the better, as the operating systems won't have to downscale them on the fly and you can tweak the artwork to look better. They must be in PNG format. [Learn more](configs/index.md#icons).
 
-**Main class.** The above config assumes your app JAR has a `Main-Class` manifest attribute. If it doesn't you'll need to add a line like `jvm.main-class = com.foobar.Main` inside the `app{}` section. Your config can control many aspects of how a JVM app runs. [Learn more](configs/jvm.md).
+**Main class.** The above config assumes your app JAR has a `Main-Class` manifest attribute. If it doesn't you'll need to add a line like `jvm.main-gui-class = com.foobar.Main` inside the `app{}` section. Your config can control many aspects of how a JVM app runs. [Learn more](configs/jvm.md).
 
 ## Step 2. Integrate with your build system
 

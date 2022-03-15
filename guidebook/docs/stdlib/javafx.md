@@ -25,7 +25,7 @@ app {
   inputs += "build/install/demoapp/lib/*.jar"
 
   jvm {
-    main-class = hydraulic.demoapp.Demo
+    main-gui-class = hydraulic.demoapp.Demo
     modules += "javafx.{controls,fxml,media,swing,web}"  3️⃣
   }
 }

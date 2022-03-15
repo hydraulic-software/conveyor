@@ -33,7 +33,7 @@ abstract class ConveyorConfigTask : DefaultTask() {
         val composeExt: ComposeExtension = project.extensions.findByName("compose") as? ComposeExtension ?: return
         val desktopExt: DesktopExtension = composeExt.extensions.findByName("desktop") as? DesktopExtension ?: return
         val app = desktopExt.application
-        appendLine("app.jvm.main-class = ${app.mainClass}")
+        appendLine("app.jvm.main-gui-class = ${app.mainClass}")
         importJVMArgs(app.jvmArgs, project)
 
         appendLine("app.fsname = " + quote(app.name))
@@ -90,7 +90,7 @@ abstract class ConveyorConfigTask : DefaultTask() {
 
         val appExtension = project.extensions.findByName("application") as? JavaApplication
         if (appExtension != null) {
-            appendLine("app.jvm.main-class = ${appExtension.mainClass.get()}")
+            appendLine("app.jvm.main-gui-class = ${appExtension.mainClass.get()}")
             val jvmArgs = appExtension.applicationDefaultJvmArgs
             importJVMArgs(jvmArgs, project)
         }

@@ -17,7 +17,7 @@ app {
   // Just grab an icon off the web.
   inputs += www.iconfinder.com/icons/79514/download/png/512 -> icon-512x512.png
 
-  jvm.main-class = org.eclipse.swt.examples.fileviewer.FileViewer
+  jvm.main-gui-class = org.eclipse.swt.examples.fileviewer.FileViewer
 
   // Host it off localhost
   site.base-url = "https://localhost/"${app.fsname}
