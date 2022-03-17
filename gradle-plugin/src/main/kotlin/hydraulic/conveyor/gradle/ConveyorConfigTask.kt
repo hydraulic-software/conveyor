@@ -46,7 +46,7 @@ abstract class ConveyorConfigTask : DefaultTask() {
         // - Icons?
     }
 
-    private val runtimeConfigCopy: Configuration = project.configurations.getByName("runtimeClasspath").copyRecursive()
+    private val runtimeConfigCopy: Configuration by lazy { project.configurations.getByName("runtimeClasspath").copyRecursive() }
 
     private fun StringBuilder.importFromJavaFXPlugin(project: Project) {
         val jfxExtension: JavaFXOptions? = project.extensions.findByName("javafx") as? JavaFXOptions
@@ -59,22 +59,20 @@ abstract class ConveyorConfigTask : DefaultTask() {
     }
 
     private fun StringBuilder.importFromDependencyConfigurations(project: Project) {
-        val crossPlatformDeps: Set<File> = (listOf(runtimeConfigCopy) + machineConfigs.values)
-            .map { it.files }
-            .filterNot { it.isEmpty() }
-            .reduce { left: Set<File>, right: Set<File> -> left.intersect(right) }
-
         // Emit app JAR input.
         appendLine("app.inputs += " + quote(project.tasks.getByName("jar").outputs.files.singleFile.toString()))
         appendLine()
 
-        // Emit cross-platform JARs.
-        appendLine("app.inputs = ${'$'}{app.inputs} [")
-        for (entry in crossPlatformDeps.sorted())
-            appendLine("    " + quote(entry.toString()))
-        appendLine("]")
+        // Emit cross-platform artifacts.
+        val crossPlatformDeps: Set<File> = runtimeConfigCopy.files - machineConfigs[Machine.current()]!!.files
+        if (crossPlatformDeps.isNotEmpty()) {
+            appendLine("app.inputs = ${'$'}{app.inputs} [")
+            for (entry in crossPlatformDeps.sorted())
+                appendLine("    " + quote(entry.toString()))
+            appendLine("]")
+        }
 
-        // Emit platform specific JARs into the right config sections.
+        // Emit platform specific artifacts into the right config sections.
         for ((platform, config) in machineConfigs) {
             if (config.isEmpty) continue
             appendLine()

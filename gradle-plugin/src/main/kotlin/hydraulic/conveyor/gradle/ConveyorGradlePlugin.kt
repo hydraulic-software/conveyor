@@ -19,14 +19,13 @@ class ConveyorGradlePlugin : Plugin<Project> {
     private fun String.capitalize(): String = this.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
 
     private fun machineConfig(project: Project, machine: Machine): Configuration {
+        val impl = project.configurations.asMap["implementation"]!!
         return machineConfigs.getOrPut(machine) {
-            val isCurrent = machine == currentMachine
             var configName = "${machine.os.identifier}${machine.cpu.identifier.capitalize()}"
             if (machine is LinuxMachine && machine.cLibrary != CLibraries.GLIBC)
                 configName += machine.cLibrary.identifier.capitalize()
-            val impl = project.configurations.asMap["implementation"]!!
             project.configurations.create(configName).also {
-                if (isCurrent)
+                if (machine == currentMachine)
                     impl.extendsFrom(it)
             }
         }

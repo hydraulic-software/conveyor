@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "dev.hydraulic"
-version = "0.9.3"
+version = "0.9.4"
 
 repositories {
     mavenCentral()
@@ -20,7 +20,7 @@ dependencies {
     implementation("dev.hydraulic:hydraulic.types:0.9.2") {
         because("Machine, OperatingSystem, CPUArchitecture types.")
     }
-    compileOnly("org.jetbrains.compose:compose-gradle-plugin:1.0.1") {
+    compileOnly("org.jetbrains.compose:compose-gradle-plugin:1.1.0") {
         because("Supporting JetPack Compose Desktop apps.")
     }
     compileOnly("org.openjfx:javafx-plugin:0.0.11") {
