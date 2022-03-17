@@ -26,15 +26,15 @@ nav:
         - Extensions: configs/hocon-extensions.md
         - Syncing with Maven and Gradle: configs/maven-gradle.md
     - Standard Library:
+      - Index: stdlib/index.md
       - stdlib/jdks.md
       - stdlib/systemd.md
       - stdlib/javafx.md
-      - stdlib/swt.md
   - Samples:
       - samples/index.md
       - samples/jetpack-compose-desktop.md
       - samples/teamcity.md
-      - samples/swt-file-explorer.md
+      - samples/swt.md
   - FAQ:
     - faq/index.md
     - faq/output-formats.md

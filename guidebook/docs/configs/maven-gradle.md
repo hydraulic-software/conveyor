@@ -2,7 +2,7 @@
 
 Conveyor can run external commands whilst evaluating config files, see the [modified HOCON spec](hocon-spec.md) for details. This makes it easy to dynamically calculate config from any script or program, including external build systems.
 
-## Reading input lists from Maven
+## Maven
 
 Instead of "installing" your app somewhere locally to get a directory of JARs, you can make Conveyor  get the classpath of your project directly from Maven. Add this to the top of your config file:
 
@@ -15,7 +15,7 @@ This will use the [`dependency:build-classpath`](https://maven.apache.org/plugin
 !!! note
     The above command will only work on UNIX.
 
-## Reading configuration from Gradle
+## Gradle
 
 Conveyor provides an [open source Gradle plugin](https://github.com/hydraulic-software/conveyor/tree/master/gradle-plugin) which extracts configuration from your build and emits it as HOCON. It also lets you configure machine-specific dependencies that are automatically put into the right section of the input hierarchy.
 

@@ -54,3 +54,66 @@ platforms:
 
 The results are emitted to the right section of config. Also, the host machine running Gradle is examined and the `implementation`
 configuration is made to extend the appropriate machine-specific configuration. This can be helpful even if you don't use Conveyor.
+
+## Example 1
+
+A simple app that depends on [Conscrypt](https://github.com/google/conscrypt), an arbitrarily chosen library with native code:
+
+```kotlin
+plugins {
+    `java-library`
+    application
+    id("dev.hydraulic.conveyor") version "0.9.3"
+}
+
+dependencies {
+    val conscryptVersion = "2.5.2"
+    windowsAmd64("org.conscrypt:conscrypt-openjdk:$conscryptVersion:windows-x86_64")
+    macAmd64("org.conscrypt:conscrypt-openjdk:$conscryptVersion:osx-x86_64")
+    linuxAmd64("org.conscrypt:conscrypt-openjdk:$conscryptVersion:linux-x86_64")
+}
+
+application {
+  mainClass.set("yourMainClass")
+}
+```
+
+## Example 2
+
+A more sophisticated example showing how to exclude a platform independent grouping dependency, and add all the platform 
+specific dependencies using a bit of refactored generic code. It's for an app that uses the SWT GUI toolkit:
+
+```kotlin
+plugins {
+    `java-library`
+    application
+    id("dev.hydraulic.conveyor") version "0.9.3"
+}
+
+repositories {
+    mavenCentral()
+}
+
+val swt_version = "3.119.0"
+
+fun DependencyHandlerScope.swt(platformConveyor: String, platformSwt: String) {
+    // Add the platform specific SWT dependency to the platform specific dependency configuration.
+    add(platformConveyor, "org.eclipse.platform:org.eclipse.swt.$platformSwt:$swt_version") {
+        // We don't need the empty grouping artifact and it gets in the way.
+        exclude("org.eclipse.platform", "org.eclipse.swt.\${osgi.platform}")
+    }
+}
+
+dependencies {
+    swt("macAmd64", "cocoa.macosx.x86_64")
+    swt("macAarch64", "cocoa.macosx.aarch64")
+    swt("windowsAmd64", "win32.win32.x86_64")
+    swt("linuxAmd64", "gtk.linux.x86_64")
+}
+
+application {
+    mainClass.set("yourMainClass")
+    // SWT needs this JVM flag.
+    applicationDefaultJvmArgs = listOf("-XstartOnFirstThread")
+}
+```
