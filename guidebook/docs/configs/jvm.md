@@ -45,11 +45,14 @@ app.jvm.modules += java.{desktop,logging,net.http}
 # Set the main GUI class.
 app.jvm.gui = com.foobar.Main
 
-# Add a system property and max heap size.
-app.jvm.options = ${app.jvm.options} [
-    -Xmx1024m
-    -Dfoo.bar=baz
-]
+# Add a JVM argument.
+app.jvm.options += -Xmx1024m
+
+# Set system properties. Keys must be quoted to stop them being treated as paths.
+app.jvm.system-properties {
+	"foo" = bar
+	"dots.in.quotes" = baz
+}
 
 # Plumb the app version through to the app using constant command line arguments.
 app.jvm.constant-app-arguments = [ --app-version, ${app.version} ]
@@ -78,7 +81,16 @@ app.jvm.cli {
 
 **`app.jvm.constant-app-arguments`** A list of arguments that will always be passed to the app in addition to whatever the user specifies. Can be useful to plumb metadata from the app definition through to the app itself, like by telling it its own version number.
 
-**`app.jvm.options`** A list of arguments to pass to the JVM on startup. Useful for configuring max heap size and system properties, amongst other things. Within JVM options the `&&` token is special and will be replaced at startup with the path to the directory where the app's root input files are stored (there may be other files in there as well). By default, the `app.dir` system property points at `&&`.
+**`app.jvm.system-properties`** A map of system properties. The default properties are:
+
+* `app.dir` - points at the install directory where input files are placed.
+* `app.displayName` - equal to the `${app.display-name}` key.
+* `app.version` - equal to the `${app.version}` key.
+* `app.vendor` - equal to the `${app.vendor}` key.
+* `jna.nosys` - set to false, which makes JNA work in the packaged environment.
+* `picocli.ansi` - set to `tty`, to make sure PicoCLI always uses colors even on Windows.
+
+**`app.jvm.options`** A list of arguments to pass to the JVM on startup. Useful for configuring max heap size and system properties, amongst other things. Within JVM options the `&&` token is special and will be replaced at startup with the path to the directory where the app's root input files are stored (there may be other files in there as well).
 
 !!! warning
     * Watch out for accidental mis-use of HOCON syntax when writing something like `jvm-arguments = [ --one --two ]`. This creates a _single_ argument containing "--one --two" which is unlikely to be what you want. Instead write `jvm-arguments = [ --one, --two ]` or put each argument on a separate line. Conveyor will warn you if you seem to be doing this.
