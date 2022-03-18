@@ -2,13 +2,13 @@
 
 ## Overview
 
-Conveyor has integrated support for apps that run on the JVM (for any supported language). You get the following features:
+Conveyor has integrated support for apps that run on the JVM (for any supported language). You get the following:
 
 * A custom launcher that replaces the `java` command and adds [extra features](#launcher).
-* Full support for the module system:
+* Support for the module system:
     * Usage of `jlink` and `jdeps` to create minimal JVM distributions, containing only the modules that your app needs.
     * Fully modular JARs are detected and linked into the `modules` file, yielding faster startup and smaller downloads.
-* Native libraries are extracted from JARs so they can be either signed, or discarded if they're for the wrong OS/CPU. This improves download times.
+* Native libraries are extracted from JARs so they can be either signed, or discarded if they're for the wrong OS/CPU.
 * [Maven and Gradle integration](maven-gradle.md):
     * A Gradle plugin that automatically generates configuration snippets.
     * Maven projects can have their classpath read directly, without needing a plugin.
@@ -53,13 +53,28 @@ app.jvm.options = ${app.jvm.options} [
 
 # Plumb the app version through to the app using constant command line arguments.
 app.jvm.constant-app-arguments = [ --app-version, ${app.version} ]
+
+# Add a supplementary CLI tool that'll be a part of the same package.
+# It'll be named foo-tool[.exe] based on the class name. Any Kt suffix is stripped.
+app.jvm.cli = [ com.foobar.FooTool ]
+
+# You can control the name:
+app.jvm.cli.foo-cli.main-class = com.foobar.FooTool
+
+# And have more than one.
+app.jvm.cli {
+	foo-cli.main-class = com.foobar.FooTool
+	foo-dump.main-class = com.foobar.FooDumper
+}
 ```
 
 ## Keys
 
 **`app.jvm`** An [input hierarchy](inputs.md) in the same manner as the top level `app` object. The inputs will be resolved (copied/downloaded/extracted) and any JMOD files anywhere in the result will be found and aggregated. Then a JVM will be created using those jmods and the jlink tool. As a consequence, if you have JMODs to add to the jlinked image (e.g. JavaFX), you should add them here alongside the JVM itself.
 
-**`app.jvm.gui`** The GUI entry point. If set to a string then it's the main class invoked when the app is started via the operating system GUI (e.g. start menu, Mission Control, etc). If left blank the JARs will be scanned to find a main class advertised in the manifest. If more than one JAR advertises a main class, an error is reported.
+**`app.jvm.gui`** The GUI launcher. If set to a string then it's the main class invoked when the app is started via the operating system GUI (e.g. start menu, Mission Control, etc). If left at the default, the JARs will be scanned to find a main class advertised in the manifest. If more than one JAR advertises a main class, an error is reported.
+
+**`app.jvm.cli`** Either a list of command line main class names, or an object in which the keys are the names of the generated launchers and the values are class names. Additional launchers are generated alongside the GUI launcher that share the same classpath/modules, but which have different names and will run in console mode on Windows.
 
 **`app.jvm.constant-app-arguments`** A list of arguments that will always be passed to the app in addition to whatever the user specifies. Can be useful to plumb metadata from the app definition through to the app itself, like by telling it its own version number.
 
