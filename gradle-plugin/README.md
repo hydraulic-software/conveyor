@@ -11,7 +11,7 @@ plugins {
 }
 ```
 
-For now you will also need to add our repository to your `settings.gradle`:
+You will also need to add our repository to your `settings.gradle`:
 
 ```
 pluginManagement {
@@ -34,8 +34,10 @@ It adds two tasks:
 
 The plugin extracts the following:
 
-* `project.version`
-* `project.group`
+* `project.version`, assigned to `app.version`
+* `project.group`, assigned to `app.rdns-name`
+* `project.name`, assigned to `gradle.project-name`
+* `buildDir`, assigned to `gradle.build-dir`
 * From the `application` plugin: the main class and JVM arguments are extracted.
 * From the JetPack Compose Desktop plugin: main class, JVM arguments, description, vendor.
 * From the JavaFX plugin: the version you're using and which modules.

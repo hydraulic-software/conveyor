@@ -31,11 +31,11 @@ To use it, [look up the latest version](https://plugins.gradle.org/plugin/dev.hy
 
 ```
 plugins {
-	  id("dev.hydraulic.conveyor") version "0.9.4"
+	  id("dev.hydraulic.conveyor") version "0.9.5"
 }
 ```
 
-For now you will also need to add our repository to your `settings.gradle`:
+For now, you will also need to add our repository to your `settings.gradle`:
 
 ```
 pluginManagement {
@@ -63,8 +63,10 @@ to which you can add dependencies that should only be used on particular machine
 
 The plugin extracts information from other plugins:
 
-* The `version`
+* The `version` becomes `app.version`
 * The `group` becomes `app.rdns-name`
+* `buildDir` becomes `gradle.build-dir`
+* `project.name` becomes `gradle.project-name`
 * From the `application` plugin: main class,  JVM arguments.
 * From the JetPack Compose Desktop plugin: main class, JVM arguments, description, vendor.
 * From the JavaFX plugin: the modules you're using.
@@ -80,7 +82,7 @@ plugins {
     kotlin("jvm") version "1.6.10"
     kotlin("kapt") version "1.6.10"
     id("org.jetbrains.compose") version "1.0.1"
-    id("dev.hydraulic.conveyor") version "0.9.4"
+    id("dev.hydraulic.conveyor") version "0.9.5"
 }
 
 version = "1.0"
@@ -127,7 +129,7 @@ app { ... }
 ... or ...
 
 ```
-# Read the file generated using :generateConveyorConfig (fast)
+# Read the file generated using :writeConveyorConfig (fast)
 include required("generated.conveyor.conf")
 
 app { ... }
@@ -148,6 +150,8 @@ tasks.named<hydraulic.conveyor.gradle.WriteConveyorConfigTask>("writeConveyorCon
     }
 }
 ```
+
+You can change the `destination` property to control where the config file is written to.
 
 If you want Gradle to run Conveyor as well, just define a normal execution task using words to this effect:
 

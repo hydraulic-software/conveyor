@@ -24,10 +24,12 @@ abstract class ConveyorConfigTask : DefaultTask() {
 
     private fun hasHoconForbiddenChars(str: String) = str.any { it in hoconForbiddenChars }
 
-    private fun quote(str: String) = if (hasHoconForbiddenChars(str))
-        "\"" + str.replace("\\", "\\\\") + "\""
-    else
-        str
+    private fun quote(str: Any) = str.toString().let { str ->
+        if (hasHoconForbiddenChars(str))
+            "\"" + str.replace("\\", "\\\\") + "\""
+        else
+            str
+    }
 
     private fun StringBuilder.importFromComposePlugin(project: Project) {
         val composeExt: ComposeExtension = project.extensions.findByName("compose") as? ComposeExtension ?: return
@@ -119,6 +121,10 @@ abstract class ConveyorConfigTask : DefaultTask() {
             if (project.group.toString().isBlank())
                 throw Exception("You must set the 'group' property of the project to emit Conveyor configuration. Some platforms require a reverse DNS name.")
             appendLine("app.rdns-name = ${project.group}.${'$'}{app.fsname}")
+
+            // Emit Gradle build metadata - useful for importing built files as inputs.
+            appendLine("gradle.build-dir = ${quote(project.buildDir)}")
+            appendLine("gradle.project-name = ${quote(project.name)}")
 
             importFromJavaPlugin(project)
             importFromComposePlugin(project)
