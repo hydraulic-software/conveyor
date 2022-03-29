@@ -116,7 +116,26 @@ The `site` section controls the generation of the download site. Currently you m
 
 You can also identify machines with fewer than all components, for example `windows` is equivalent to Windows for all supported CPU architectures, and `linux.amd64` specifies that you want two packages, one for each C library found on Linux (muslc is used on Alpine Linux).
 
-Normally you don't need to fill this out. It will be calculated for you based on what [inputs](inputs.md) are specified.
+Normally you don't need to fill this key out. Reasonable defaults will be calculated for you based on whether your config lists inputs for those machine types. As a consequence, you can select what machines you want either additively:
+
+```
+// Only Linux, nothing else even if we could potentially build it
+app.machines = [ linux.amd64 ]
+```
+
+... or subtractively ...
+
+```
+app {
+  // Everything we have configured except macOS targets.
+	mac = null
+}
+```
+
+How to choose?
+
+* Setting `app.machines` explicitly means you're opting in to new platforms and formats. Pick this for best control.
+* Nulling out sections means you're opting out of existing platforms and formats. Pick this if you don't want to support a particular type of machine for some reason, but are OK with automatically getting as many packages as possible other than that.
 
 ## Signing
 
