@@ -109,7 +109,7 @@ If you don't specify all needed fields the file name of the first input will be 
 
 ## Machine specific inputs
 
-Conveyor calls the combination of an operating system, CPU architecture and (for Linux) libc a *machine*. A machine is identified by a dot separated triple `os.cpu[.libc]`. You can specify which machines to build packages for using the `--machines=<first>,<second>` flag and can see all the supported machine names by running `conveyor --machines`. A machine name is made of:
+Conveyor calls the combination of an operating system, CPU architecture and (for Linux) libc a *machine*. A machine is identified by a dot separated triple `os.cpu[.libc]`. You can specify which machines to build packages for using the `app.machines` key. A machine name is made of:
 
 * OS: Can be `linux`, `windows` or `mac`. Some common alternative names are also supported (e.g. `win`, `osx`, `macos` and `darwin`)
 * CPU: Can be `amd64` or `aarch64`. Again some common alternatives are supported.
