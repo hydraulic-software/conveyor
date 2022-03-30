@@ -69,7 +69,7 @@ app.jdk.linux.amd64.inputs += example.com/jdk-linux-17.tar.gz
 
 Certain keys are derived from the name of the first input if not specified, which works well if you use the convention that the first input contains the core software of the app (i.e. not a dependency).
 
-Paths should always use the UNIX path separator (`/`) and are interpreted relative to the location of the config file containing the input definition (i.e. if you include a file that specifies inputs, relative paths are relative to the *included* file, not the *including* file).
+Paths should always use the UNIX path separator (`/`) and are interpreted relative to the location of the config file containing the input definition (i.e. if you include a file that specifies inputs, relative paths are relative to the *included* file, not the *including* file).
 
 ## Object syntax
 
@@ -125,13 +125,3 @@ All platforms Conveyor supports implement symlinks, but on Windows they are call
 * If an input is a directory it's copied recursively, or if it's an archive it's extracted, and all symlinks within:
     * That point to a path outside that directory are followed, with the symlink being replaced by the file or directory tree it points to.
     * That point to a path inside that directory are left as is and will be packaged as symlinks.
-
-## Hash locked URLs
-
-Any URL can have a hash appended to it in the fragment area, like this:
-
-```
-foobar.com/baz.tar.gz#hash=<sha2 goes here>
-```
-
-It will be checked once the download is complete, thus you can "lock" your dependencies and guard against compromised mirrors.
