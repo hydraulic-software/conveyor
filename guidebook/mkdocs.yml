@@ -4,6 +4,7 @@ extra:
   homepage: https://www.hydraulic.software
   version:
     provider: mike
+  generator: false
 
 nav:
   - Welcome:
