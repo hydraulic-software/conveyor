@@ -101,41 +101,39 @@ Icons can be machine specific. Import the right icons for each platform the mach
 
 The `site` section controls the generation of the download site. Currently you must have a download site because it's where the packages will check for online updates, although you don't need to use the generated HTML file. [Learn more](download-pages.md).
 
-## Target machines
+## Machines
 
-**`app.machines`** A list of target machines for which packages should be built. The full list is:
+**`app.machines`** A list of target machines for which packages should be built. At this time the following machines are supported:
 
 * `windows.amd64`
-* `windows.aarch64`
-* `mac.amd64`
+* `mac.amd64` (Intel Macs)
 * `mac.aarch64`   (Apple Silicon)
 * `linux.amd64.glibc`
-* `linux.amd64.muslc`
-* `linux.aarch64.glibc`
-* `linux.aarch64.muslc`
 
-You can also identify machines with fewer than all components, for example `windows` is equivalent to Windows for all supported CPU architectures, and `linux.amd64` specifies that you want two packages, one for each C library found on Linux (muslc is used on Alpine Linux).
+Additional supported targets may be added in future, in particular ARM Linux distributions and muslc based Linux distributions.
 
-Normally you don't need to fill this key out. Reasonable defaults will be calculated for you based on whether your config lists inputs for those machine types. As a consequence, you can select what machines you want either additively:
+You can also write just `mac`, which expands to both Intel and Apple Silicon Macs. However if you request a short form like `windows` or `linux` then you'll get an error, because that expands to also request `windows.aarch64`, which isn't currently supported. To avoid being surprised by Conveyor updates that add such support, which could create packages targeting a CPU architecture you didn't want, you're required to be explicit about what you wish for here.
+
+Normally you don't need to fill this key out. Reasonable defaults will be calculated for you based on whether your config lists inputs for those machine types and whether the relevant config section for that OS is nulled out. As a consequence, you can select what machines you want either additively:
 
 ```
-// Only Linux, nothing else even if we could potentially build it
-app.machines = [ linux.amd64 ]
+// Only Intel Linux, nothing else even if we could potentially build it
+app.machines = [ linux.amd64.glibc ]
 ```
 
 ... or subtractively ...
 
 ```
 app {
-  // Everything we have configured except macOS targets.
+  // Everything we can support, except macOS.
 	mac = null
 }
 ```
 
 How to choose?
 
-* Setting `app.machines` explicitly means you're opting in to new platforms and formats. Pick this for best control.
-* Nulling out sections means you're opting out of existing platforms and formats. Pick this if you don't want to support a particular type of machine for some reason, but are OK with automatically getting as many packages as possible other than that.
+* Setting `app.machines` explicitly means you're opting in. Pick this for best control.
+* Nulling out sections means you're opting out. Pick this if you don't want to support a particular type of machine, but are OK with automatically getting newly supported package types other than that.
 
 ## Signing
 

@@ -48,9 +48,9 @@ conveyor json
 !!! tip
     The -K flag can be useful during development for turning off features, e.g. try `-Kapp.sign=false` to disable signing temporarily.
 
-**Machines.** Each native target is identified by an identifier formatted like `$operating_system.$cpu[.$libc]`, for example `mac.aarch64` (Apple Silicon Macs), or `windows.amd64` (Intel Windows machines), or `linux.amd64.glibc` for a typical Linux box. When using the `site` task the machines to use are taken from the `app.machines` config key. When using other tasks you can pick the machine you wish to build for by specifying it using `-Kapp.machines=id`. 
+**Machines.** The machines you can target are named using simple hierarchical identifiers that look like `mac.amd64` or `linux.aarch64.glibc`. You can pick the machines you wish to build for with the `app.machines` key. [Learn more](configs/index.md#machines).
 
-**Examples.** List all available tasks:
+**Example commands.** List all available tasks:
 
 ```
 conveyor make
