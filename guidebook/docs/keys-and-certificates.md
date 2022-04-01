@@ -2,21 +2,25 @@
 
 Here's what you need to know:
 
+* **Signing capabilities.** Conveyor can fully sign and (for macOS) notarize your software without requiring macOS or Windows. It can also generate keys and certificate signing request files. Those files can be traded for certificates for both platforms using only a browser and credit card.
 * **Signing requirements.** Conveyor can make unsigned packages but:
-    * **Windows:** only ZIPs can be unsigned so you won't get software updates, start menu integration or containerization. Microsoft requires that MSIX packages must be signed. They can be self-signed, but the user or their IT department would need to add your certificate to the root trust store. 
-    * **macOS:** ARM Macs can only run signed code, so unsigned code will be Intel only and run in emulation. Unsigned packages will require intervention from the command line before they can execute.
-    * **Linux:** apt repositories are always self-signed (no certificate is necessary). The DEB installs the GPG public key and apt sources file for the repository, thus, the user gets your app by just downloading the DEB and installing it with `apt install ./yourapp*.deb`. The generated download page gives the command to use.
+    * **Windows:** Microsoft requires that MSIX packages are signed. Conveyor can generate ZIPs with unsigned software but you won't get software updates, start menu integration or containerization. Antivirus products may interfere with your program if it isn't signed, because they will see each version as an independent program and won't learn that it's not malware.
+    * **macOS:** Apple Silicon Macs can only run signed code, so unsigned code will be Intel only and run in emulation. Unsigned packages will require intervention from the [Security settings panel](https://support.apple.com/en-us/HT202491) or command line before they can execute.
+    * **Linux:** apt repositories are always self-signed (no certificate is necessary). The generated DEBs install the GPG public key and apt sources file for the repository, thus, the user gets your app by just downloading the DEB and installing it with `apt install ./yourapp*.deb`. The generated download page gives the command to use.
 * **Key derivation.** Conveyor can create a single private key and derive all the different platform keys from it, so there's only one thing to back up.
 * **Using existing keys.** Conveyor can use your existing Windows and Apple code signing keys if you have them. You'll still need to back up your Conveyor root key because it's also used to generate Linux and Mac repository signing keys.
-* **Passphrase protection.** Conveyor can use encrypted private keys. [See below](#passphrases).
+* **Passphrase protection.** Conveyor can encrypt your private keys. [See below](#passphrases).
 * **Hardware tokens / HSMs.** Conveyor can use private keys protected by HSMs. [See below](#hardware-security-modules).
 
 ??? question "Is signing worth it?"
-    On macOS and Windows your signing key must be linked with an identity. Apple uses the name on your credit card and you can obtain personal certificates within a few minutes. For Windows you can use any certificate authority, but they may request to see personal ID. The effort involved in ID verification depends on whether you are signing as a person or as a company.
+    On macOS and Windows your signing key must be linked with an identity. Apple uses the name on your credit card and you can obtain personal certificates within a few minutes. For Windows you can use any certificate authority, but they may request to see government issued ID. The effort involved in ID verification depends on whether you are signing as a person or as a company.
 
-    In our view it's worth signing your code. It'll be significantly easier for users to download and run your software, on macOS it allows you to run natively on ARM chips and on Windows it helps avoid odd glitches caused by anti-virus products. Finally, it's not security theater: signing actually does make malware harder to produce and distribute, which is why modern virus writers often put so much effort into stealing signing keys.
+    In our view it's worth signing your code if you need full performance, are targeting non-developers, or are writing developer tools that might be blocked by Windows AV engines. For example, Conveyor is fully signed because we want it to be as easy to use as possible, and because otherwise Windows Defender can block filesystem operations (writing lots of JARs to disk triggers malware heuristics). Finally, it's not security theater: signing actually does make malware harder to produce and distribute, which is why modern virus writers put effort into stealing signing keys.
     
-    For open source apps all these arguments still apply but if you don't want to get a certificate you could consider recruiting a volunteer from your user community who will do it for you. Getting a signing key is simple way to contribute back that doesn't require any technical skills.
+    For open source apps all these arguments still apply, but if you don't want to get a certificate you can just distribute unsigned files. Alternatively, ask for volunteers from your user community who will sign them for you. Getting a signing certificate is simple way to contribute back that doesn't require any technical skills. 
+    
+??? info "Making unsigned apps easier to use"
+    Although Conveyor removes a lot of the technical effort involved in signing, the need for certificates remains. Over time we plan to make software distribution easier through a combination of sandboxing, developer/open source-focused CLI tooling, and better instructions to end users.
 
 ## Quick start: Create a root key
 
@@ -62,7 +66,7 @@ To learn more about configuring keys and certificates see [signing configuration
 When you ran `conveyor keys generate` it also produced two certificate signing request files. These can be uploaded to certificate authorities to get signing certificates.
 
 * If distributing to macOS: 
-    * Log in using an Apple ID in the [Apple developer programme](https://developer.apple.com/programs/). Joining will require a credit card payment. Then request an "Apple Distribution" certificate using the [Apple Developer console](https://developer.apple.com/account/). You can do this with any web browser and operating system. Upload the `apple.csr` file that was created next to your `defaults.conf` file when you created your root key above. You'll get a `.cer` file back immediately; there is no review or approval process because the verification is linked to your credit card details.
+    * Log in using an Apple ID in the [Apple developer programme](https://developer.apple.com/programs/). Joining will require a credit card payment. Then request an "Apple Distribution" certificate using the [Apple Developer console](https://developer.apple.com/account/). You can do this with any web browser and operating system. Upload the `apple.csr` file that was created next to your `defaults.conf` file when you created your root key above. You'll get a `.cer` file back immediately; there is no review or approval process because the verification is linked to your credit card details.
     * Now write the [app.mac.notarization section of your default config](configs/mac.md#notarization).
 * If distributing to Windows:
     * Pick a certificate authority that sells Authenticode certificates. [DigiCert](https://www.digicert.com) is a good choice.
