@@ -65,29 +65,6 @@ application metadata on macOS. You normally don't need to alter this, but if you
 
 **`app.mac.signing-key`**, **`app.mac.certificate`** See [signing keys](index.md#signing).
 
-## Notarization
-
-Apple requires all apps for macOS to be both signed and uploaded to them for a form of ahead-of-time virus scanning, called notarization. This is different to the app store: approval is automatic with no humans in the loop and takes only a minute or two. Conveyor handles all this for you but needs to be provided with an Apple ID and credentials for the notarization service. Any Apple ID registered with the developer programme can get these.
-
-Just add the following to your config:
-
-```
-app { 
-  mac {
-  	notarization {
-	  team-id = 1234567890
-  	  app-specific-password = xxxx-xxxx-xxxx-xxxx
-      apple-id = "your@email.com"
-    }
-  }
-}
-```
-
-You can generate an app specific password from the security section of your Apple ID account webpage, and the team ID can be found in the [Apple developer console](https://developer.apple.com/account/) under "Membership".
-
-!!! tip
-    You can use move your app specific password outside of the config by using an `include` statement.
-
 ## Entitlements
 
 Entitlements are a certain type of permission request that are baked into an application. They apply to both graphical and command line apps and may be required to enable certain types of operations on macOS. Apple provide [documentation on all available entitlements](https://developer.apple.com/documentation/bundleresources/entitlements).

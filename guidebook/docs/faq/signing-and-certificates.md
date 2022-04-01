@@ -2,7 +2,7 @@
 
 ## 1. Do I have to buy certificates?
 
-No, but it'll be much harder for your users to install your app if you don't. On Windows you'll lose online updates and virus scanners may interfere with the operation of your app (e.g. you may find file accesses randomly fail). On modern Apple Silicon Macs you'll be confined to running in Rosetta emulation and users need to do a [special dance](https://lapcatsoftware.com/articles/unsigned.html) to open the app. Thus in practice this is only feasible if you're distributing code to developers who are comfortable with the command line and doing extra work.
+No, but it'll be harder for your users to install your app if you don't. On Windows you'll lose online updates and virus scanners may interfere with the operation of your app (e.g. you may find file accesses randomly fail). On modern Apple Silicon Macs you'll be confined to running in Rosetta emulation and users need to do a [special dance](https://lapcatsoftware.com/articles/unsigned.html) to open the app. Thus in practice this is only feasible if you're distributing code to developers who are comfortable with the command line and doing extra work.
 
 If you're asking this because you're an open source developer, consider asking your user community to acquire a signing key for you, or to donate the funds for the keys. When people know what a donation will be used for they're much more likely to donate.
 
