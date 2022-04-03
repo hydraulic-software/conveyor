@@ -81,7 +81,7 @@ Apple requires all apps for macOS to be both signed and uploaded to them for a f
 
 Conveyor needs to be provided with an Apple ID and credentials for the notarization service. Any Apple ID registered with the developer programme can get these. 
 
-:octicons-tasklist-24: **Add the following to your config** (or your [defaults.config](config/hocon-extensions.md#per-user-defaults)):
+:octicons-tasklist-24: **Add the following to your config** (or your [defaults.config](configs/hocon-extensions.md#per-user-defaults)):
 
 ```
 app { 

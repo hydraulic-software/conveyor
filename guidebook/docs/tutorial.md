@@ -70,7 +70,7 @@ Alternatively use `include required("generated.conveyor.conf")` and run `gradle 
 
 !!! tip
     * When iterating on packages use the faster form, and then switch to the slower form when done.
-    * The second line is a [hashbang include](configs/hocon-extensions.md#including-the-output-of-external-commands) and can run any command. It's a very useful way to incorporate dynamic behaviour into your configuration, or use alternative config languages if you don't like the one Conveyor uses natively ([HOCON](configs/hocon.md)).
+    * The second line is a [hashbang include](configs/hocon-extensions.md#including-the-output-of-external-commands) and can run any command. It's a very useful way to incorporate dynamic behaviour into your configuration, or use alternative config languages if you don't like the one Conveyor uses natively ([HOCON](configs/hocon-spec.md)).
 
 ### Maven projects
 
