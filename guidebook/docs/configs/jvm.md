@@ -45,7 +45,7 @@ app.jvm.modules += java.{desktop,logging,net.http}
 # Set the main GUI class.
 app.jvm.gui = com.foobar.Main
 
-# Add a JVM argument.
+# Add a JVM argument used for every launcher.
 app.jvm.options += -Xmx1024m
 
 # Set system properties. Keys must be quoted to stop them being treated as paths.
@@ -69,6 +69,16 @@ app.jvm.cli {
 	foo-cli.main-class = com.foobar.FooTool
 	foo-dump.main-class = com.foobar.FooDumper
 }
+
+# And control some of the settings for each one independently.
+app.jvm.cli.foo-cli {
+	main-class = com.foobar.FooTool
+	# Set an explicit class path. You normally never need this because the
+	# default of *.jar is good enough. 
+  class-path = "some-prefix-*.jar"
+  # JVM options added to the global list.
+  options = [ -Xmx500M ]
+}
 ```
 
 ## Keys
@@ -77,7 +87,9 @@ app.jvm.cli {
 
 **`app.jvm.gui`** The GUI launcher. If set to a string then it's the main class invoked when the app is started via the operating system GUI (e.g. start menu, Mission Control, etc). If left at the default, the JARs will be scanned to find a main class advertised in the manifest. If more than one JAR advertises a main class, an error is reported.
 
-**`app.jvm.cli`** Either a list of command line main class names, or an object in which the keys are the names of the generated launchers and the values are class names. Additional launchers are generated alongside the GUI launcher that share the same classpath/modules, but which have different names and will run in console mode on Windows.
+**`app.jvm.cli`** Either a list of command line main class names, or an object in which the keys are the names of the generated launchers and the values are either main class names or objects that define per-launcher options (see synopsis). 
+
+Additional launchers are generated alongside the GUI launcher which have different names and will run in console mode on Windows. By default they all use the same classpath and JVM options, but that can be controlled independently.
 
 **`app.jvm.constant-app-arguments`** A list of arguments that will always be passed to the app in addition to whatever the user specifies. Can be useful to plumb metadata from the app definition through to the app itself, like by telling it its own version number.
 
