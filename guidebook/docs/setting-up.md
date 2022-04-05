@@ -8,6 +8,9 @@
 
 ## Download and install Conveyor
 
+!!! warning
+    **Conveyor is currently in private beta**. You will need a password to use the button below.
+
 [ :material-download-circle: Download for your OS](https://downloads.hydraulic.dev/conveyor/download.html){ .md-button .md-button--primary }
 
 !!! note 
