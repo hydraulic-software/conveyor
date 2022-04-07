@@ -110,7 +110,7 @@ abstract class ConveyorConfigTask : DefaultTask() {
             .filterNot { project.rootProject.rootDir.toString() in it }
         if (argsNotPointingIntoTree.isNotEmpty()) {
             appendLine("app.jvm.options = ${'$'}{app.jvm.options} " +
-                argsNotPointingIntoTree.joinToString(", ", "[ ", " ]") { '"' + it + '"' })
+                argsNotPointingIntoTree.joinToString(", ", "[ ", " ]") { quote(it) })
         }
     }
 
