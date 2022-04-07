@@ -72,12 +72,12 @@ app.jvm.cli {
 
 # And control some of the settings for each one independently.
 app.jvm.cli.foo-cli {
-	main-class = com.foobar.FooTool
-	# Set an explicit class path. You normally never need this because the
-	# default of *.jar is good enough. 
-  class-path = "some-prefix-*.jar"
-  # JVM options added to the global list.
-  options = [ -Xmx500M ]
+    main-class = com.foobar.FooTool
+    # Set an explicit class path. You normally never need this because the
+    # default of *.jar is good enough. 
+    class-path = "some-prefix-*.jar"
+    # JVM options added to the global list.
+    options = [ -Xmx500M ]
 }
 ```
 
