@@ -1,5 +1,19 @@
 # Windows
 
+Windows apps are laid out as follows:
+
+* `app`: Where non-binary input files are placed.
+    * `app\app.ico`: The icon of the program in standalone form. It's also embedded into your EXE but some app frameworks like JetPack Compose for Desktop prefer to have it be outside the EXE ([see how to use it](../samples/jetpack-compose-desktop.md)).
+* `bin`: Where EXE and DLL files are placed, along with any data files they expect to find in the same location as themselves.
+
+For JVM apps there are additionally:
+
+* `lib`: JVM data files.
+* `legal`: Open source license files.
+* `conf`: JVM config files.
+
+Inside an MSIX zip there are additionally some metadata files in the root, like the AppX Manifest.
+
 ## Synopsis
 
 ```properties
@@ -41,7 +55,7 @@ Or it can be an object containing the keys below:
 
 **`app.windows.timestamping-server`** URL of a cryptographic timestamping server (often called a timestamping authority or TSA). These are usually run by certificate authorities. Defaults to using DigiCert because their timestamping server is fast and well run, but you can use any TSA that is trusted by Windows.
 
-**`app.windows.sign`** Boolean, controls whether to sign the Windows EXE/DLL/package files or not. If false then you can't produce an MSIX file. Defaults to the value of `${app.sign}` (which is true).
+**`app.windows.sign`** Boolean, controls whether to sign the Windows EXE/DLL/package files or not. If false then you can't produce an MSIX file. Defaults to the value of `${app.sign}` (which is true).
 
 **`app.windows.signing-key`**, **`app.windows.certificate`** See [signing keys](index.md#signing).
 
