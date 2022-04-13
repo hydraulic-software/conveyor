@@ -81,7 +81,7 @@ Apple requires all apps for macOS to be both signed and uploaded to them for a f
 
 Conveyor needs to be provided with an Apple ID and credentials for the notarization service. Any Apple ID registered with the developer programme can get these. 
 
-:octicons-tasklist-24: **Add the following to your config** (or your [defaults.config](configs/hocon-extensions.md#per-user-defaults)):
+:octicons-tasklist-24: **Add the following to your config** (or your [defaults.config](configs/hocon-extensions.md#per-user-defaults)):
 
 ```
 app { 
@@ -124,7 +124,7 @@ app.mac.certificate = apple.cer
 app.windows.certificate = windows.cer
 ```
 
-The `apple.cer` and `windows.cer` files are then stored alongside the `defaults.config` file.
+The `apple.cer` and `windows.cer` files are then stored alongside the `defaults.config` file.
 
 ## Key derivation and export
 
@@ -132,7 +132,7 @@ For your convenience Conveyor by default derives all needed keys and certificate
 
 To get the platform-specific private keys in formats understood by other programs, use `conveyor keys export`. Use the `--passphrase` flag if necessary (see below). It will create:
 
-* `apple.key` PEM encoded (Base64/ASCII armoured) private key, RSA 2048 bits, which is the only type Apple accepts.
+* `apple.p12` A DER encoded PKCS#12 key store, encrypted under the password "conveyor" (note: *not* your regular passphrase - to change it you can use `keytool` or `openssl`, or just import it using Keychain Access and then delete it).
 * `windows.key` PEM encoded private key, RSA 4096 bits.
 * `sparkle.key` Ed25519 private key + public key point, base64 encoded. This format is the one used by the Sparkle `generate_keys` command.
 * `gpg.key` A GPG/PGP secret keyring that you can use with `gpg --import`.
