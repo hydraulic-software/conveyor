@@ -67,8 +67,9 @@ abstract class ConveyorConfigTask : DefaultTask() {
     private fun StringBuilder.importFromDependencyConfigurations(project: Project) {
         appendLine()
         appendLine("// Inputs from dependency configurations and the JAR task.")
-        // Emit app JAR input.
-        appendLine("app.inputs += " + quote(project.tasks.getByName("jar").outputs.files.singleFile.toString()))
+        // Emit app JAR input. jvmJar task is used by Compose Multiplatform projects.
+        val jarTask = project.tasks.findByName("jvmJar") ?: project.tasks.getByName("jar")
+        appendLine("app.inputs += " + quote(jarTask.outputs.files.singleFile.toString()))
 
         // Emit cross-platform artifacts.
         val crossPlatformDeps: Set<File> = runtimeConfigCopy.files - machineConfigs[Machine.current()]!!.files

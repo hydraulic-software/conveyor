@@ -19,14 +19,16 @@ class ConveyorGradlePlugin : Plugin<Project> {
     private fun String.capitalize(): String = this.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
 
     private fun machineConfig(project: Project, machine: Machine): Configuration {
-        val impl = project.configurations.asMap["implementation"]!!
+        val configsMap = project.configurations.asMap
+        // The Kotlin Multiplatform plugin puts dependencies in a different configuration than the normal Java plugin.
+        val impl: Configuration? = configsMap["implementation"] ?: configsMap["jvmMainImplementation"]
         return machineConfigs.getOrPut(machine) {
             var configName = "${machine.os.identifier}${machine.cpu.identifier.capitalize()}"
             if (machine is LinuxMachine && machine.cLibrary != CLibraries.GLIBC)
                 configName += machine.cLibrary.identifier.capitalize()
             project.configurations.create(configName).also {
                 if (machine == currentMachine)
-                    impl.extendsFrom(it)
+                    impl?.extendsFrom(it)
             }
         }
     }

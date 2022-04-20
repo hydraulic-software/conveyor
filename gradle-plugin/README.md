@@ -3,11 +3,13 @@
 This module contains a simple Gradle plugin that extracts settings from a build and emits a Conveyor config snippet. This makes it easy
 to keep metadata and dependencies from your source build and packaging build in sync.
 
-To apply, [look up the latest version](https://plugins.gradle.org/plugin/dev.hydraulic.conveyor):
+**If you want to learn how to package your app then [start with the main documentation](https://conveyor.hydraulic.dev/docs/packaging).**  
+
+To apply this plugin [look up the latest version](https://plugins.gradle.org/plugin/dev.hydraulic.conveyor) and then use code like this:
 
 ```
 plugins {
-    id("dev.hydraulic.conveyor") version "0.9.3"
+    id("dev.hydraulic.conveyor") version "0.9.8"
 }
 ```
 
@@ -17,9 +19,7 @@ You will also need to add our repository to your `settings.gradle`:
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        maven {
-            url = uri("https://maven.hq.hydraulic.software")
-        }
+        maven("https://maven.hq.hydraulic.software")
     }
 }
 ```
@@ -65,7 +65,7 @@ A simple app that depends on [Conscrypt](https://github.com/google/conscrypt), a
 plugins {
     `java-library`
     application
-    id("dev.hydraulic.conveyor") version "0.9.3"
+    id("dev.hydraulic.conveyor") version "0.9.8"
 }
 
 dependencies {
@@ -89,7 +89,7 @@ specific dependencies using a bit of refactored generic code. It's for an app th
 plugins {
     `java-library`
     application
-    id("dev.hydraulic.conveyor") version "0.9.3"
+    id("dev.hydraulic.conveyor") version "0.9.8"
 }
 
 repositories {
