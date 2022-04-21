@@ -26,7 +26,7 @@ Linux/Aarch64 may be added later. [Vote for support here](https://github.com/hyd
 
 ## 6. App stores?
 
-Not yet. [Vote for Mac App Store support here](https://github.com/hydraulic-software/conveyor/issues/9), and 
+Not yet. [Vote for Mac App Store support here](https://github.com/hydraulic-software/conveyor/issues/9).
 
 ## 7. Why does the Debian install process differ to normal?
 
@@ -59,7 +59,7 @@ Incidentally, Conveyor supports systemd because we use Conveyor-generated packag
 
 ## 11. A corporate IT department needs to repackage my app.
 
-MSIX files are fully supported by Windows network administration systems like Active Directory, but if an IT department doesn't want to use MSIX that's OK, Conveyor produces plain zips too. In fact MSIX files are also just signed zip files with extra metadata. IT departments can extract the MSIX and read the `AppxManifest.xml` file to learn what integration points are needed (e.g. start menu items), then repackage as needed.
+MSIX files are fully supported by Windows network administration systems like Active Directory, but if an IT department doesn't want to use MSIX that's OK. Conveyor produces plain zips too. In fact MSIX files are also just signed zip files with extra metadata. IT departments can extract the MSIX and read the `AppxManifest.xml` file to learn what integration points are needed (e.g. start menu items), then repackage as needed.
 
 ## 12. How do I find my app's install folder on Windows?
 
