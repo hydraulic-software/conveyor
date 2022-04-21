@@ -1,88 +1,211 @@
 # Tutorial
 
-We're going to start from the simplest possible config, then incrementally improve it. Along the way you'll learn about the features Conveyor has.
+In this tutorial we'll generate a fresh application using the templates built in to Conveyor. Then we'll compile a download site for it containing packages for every supported platform. Finally we'll take a look at how things are wired up and thus learn how to package a pre-existing project.
+
+This tutorial doesn't try to cover all the features Conveyor has, it's only here to get you started. Read through the rest of this guidebook to learn about the full range of possibilities.
 
 ## Step 1. Setting up
 
-:octicons-tasklist-24: If you haven't already done so, follow the instructions in [Setting up](setting-up.md) to install Conveyor and (optionally) create or supply signing keys.
+* [x] Follow the instructions in [Setting up](setting-up.md) to install Conveyor and (optionally) create or supply signing keys.
+* [x] Pick a URL for hosting your packages. All you need is a directory on a web server. You can use [GitHub Releases](configs/download-pages.md#publishing-through-github) to host your repository. Upgrading your users then just involves making a new release. For testing you can also use `localhost`.
 
-:octicons-tasklist-24: Pick a URL for hosting your packages. All you need is a directory on a web server. You can also use [GitHub Releases](configs/download-pages.md#publishing-through-github) to host your repository. Upgrading your users then just involves making a new release.
+## Step 2. Create a sample project
 
-:octicons-tasklist-24: Render a nice icon at 128x128, 256x256 and 512x512 and place them in files called `icon-128.png`, `icon-256.png` and `icon-512.png` in your project root directory.
+Conveyor has two pre-canned "Hello World" project templates. One is for a GUI app using JavaFX, and the other uses JetPack Compose for Desktop. This is the quickest way to try things out.
 
-??? tip "Alternate icon file locations"
-    Your icons are just input files like any other, but they must be imported into the root directory of your final app resources. If you want to put your icons elsewhere in your source tree, change the line where you import your icons to read `inputs += "your-images-dir/icon-*.png -> ."`. This tells Conveyor to grab files out of `your-images-dir` but that they shouldn't be placed in that location inside the package.
+* [x] Make sure you have a Java 17 or higher JDK installed so you can compile the samples.
+* [x] Run the following command with flags customized as you see fit:
+
+```
+conveyor generate {javafx,compose} \
+                          --output-dir=path/to/my-project \
+                          --site-url=https://mysite.com/downloads \
+                          --rdns=com.example.myproject \
+                          --display-name="My Amazing Project"
+```
+
+where you pick one of `javafx` or `compose`, `--rdns` should be set to a Java style package name, and `--site-url` can be `http://localhost` if you don't want to try uploading the results somewhere. The `--output-dir` will be created and populated with a buildable project.
+
+## Step 3. Build unpackaged apps
+
+* [ ] Change into the output directory you selected above and run `./gradlew jar` to compile the sample.
+* [ ] Now build a self-contained but unpackaged app for your current platform:
+
+```
+# If on Windows:
+conveyor make windows-app
+
+# If on Linux:
+conveyor make linux-app
+
+# If on macOS, one of the following for Intel/M1 Macs respectively:
+conveyor -Kapp.machines=mac.amd64 make mac-app
+conveyor -Kapp.machines=mac.aarch make mac-app
+```
+
+This will compile the project and then create an unzipped, unpackaged app in the `output` directory. Now run the generated program directly in the usual manner for your operating system to check it works.
+
+Because we generated a JVM app the above commands can be run on any OS in any combination. You should pick the one that matches your machine only so you can run the resulting output.
+
+The command for macOS is different to those for Windows and Linux because Conveyor supports two CPU architectures for macOS, so you have to disambiguate which you want. The `-K` switch sets a key in the config file for the duration of that command only. Here we're setting the `app.machines` key which controls which targets to create packages for.
+
+## Step 4. Build and upload the download site
+
+* [ ] Request a full build of the download / repository site:
+
+```
+conveyor make site
+```
+
+The previous contents of the output directory will be replaced. You'll now find there:
+
+* For Linux:
+    * A plain tarball (which doesn't auto update).
+    * A `.deb` package for Debian/Ubuntu derived distributions.
+    * `apt` control files like `InRelease` and `Packages`. The generated site is also an apt repository, and the `.deb` will install sources files that use it.
+* For macOS:
+    * Zips containing separate Intel and ARM .app folders. If you provided Apple signing certificates and a notarization service password in Step 1 then these will be signed and notarized.
+    * Two `appcast.rss` files, one for each CPU architecture. This controls updates.
+* For Windows:
+    * A plain zip file (which doesn't auto update).
+    * If you supplied an Authenticode signing certificate, an MSIX package and `.appinstaller` XML file. The latter can be opened on any Windows 10/11 install and will trigger the built-in "App Installer" app. That in turn will download the parts of the MSIX file that the user's system needs, and then install the package. The `.appinstaller` file is what's checked to find updates.
+* A `download.html` file that auto detects the user's operating system and CPU when possible.
+
+You can now copy the contents of the directory to the URL you specified when creating the project. Try downloading and installing the package for your developer machine to see it in action.
+
+## Step 5. Release an update
+
+The version of the packages is taken from the version defined in the build system. 
+
+* [ ] Open the source code of the app and change the message that's displayed when you click the button. Now change the line in  `build.gradle[.kts]`  that reads `version = "1.0"` to `version = "1.1"`. 
+* [ ] Run the following commands:
+
+```
+# Rebuild the app with the new version number.
+./gradlew jar   
+
+# Rebuild the site.
+conveyor make site
+```
+
+* [ ] Now copy this directory to your web server using a tool like `scp`, `rsync` or however else you normally publish static web files. If using GitHub Releases, just make a new release with the contents of the site output (don't add  `download.html` to the release, instead add it to your GitHub Pages or equivalent).
+
+??? tip "Faster builds"
+    Conveyor builds are incremental and parallel, so you should find that rebuilding the site is much quicker the second time you try it. You can also instantly 'check out' the intermediate files, such as unpacked directories. Run `conveyor make` to see what's available. This lets you rapidly iterate on your packages, because once built it normally only takes a few seconds to create a new spin of your app.
     
 
-    File paths in input lists are always relative to the config file location.    
+    Nonetheless there are ways to make builds faster:
+    
+    1. Set `app.sign = false` during development to disable code signing and notarization. Notarization takes about two minutes and is unnecessary whilst iterating.
+    2. Set `app.linux.compression = low` or `none` to switch to gzip or no compression when building Linux packages. The resulting packages are bigger, but build much faster than when using the default LZMA codec.
 
-## Step 2. Integrate with your build system
+Each operating system has its own approach to how and when updates are applied:
 
-Conveyor doesn't require you to use any particular build system, it only needs a directory of files to package. Nonetheless it can generate configuration snippets from Maven and Gradle projects, which is convenient for reducing duplication.
+* When using the Debian package, run `apt-get update && apt-get upgrade` as per normal, or use the graphical software update tool.
+* When using macOS updates are checked in the background when the app starts if:
+    * It's not the first start and it's been more than one hour since the last update check.
+    * *or* if the `FORCE_UPDATE_CHECK` environment variable is set. For example you can run `FORCE_UPDATE_CHECK=1 /Applications/YourApp.app/Contents/MacOS/YourApp` from a terminal to force an immediate update check.
+* When using Windows, updates are checked:
+    * If the user re-opens the `.appinstaller` XML file. This is the easiest way to test updates. You don't have to re-download it because the `.appinstaller` file contains its own URL and the "App Installer" app will re-download it from the download site when it's opened.
+    * Every 8 hours in the background by the OS, regardless of whether the app is being used or not.
+    * Optionally, on every app launch with a frequency you can specify. These update checks can be configured to block startup, ensuring that the user is always up to date. [Learn more here](configs/windows.md).
 
-??? warning "Uber-jars"
-    Don't use an uber/fat-jar for your program. It'll reduce the efficiency of delta download schemes like the one used by Windows. It also means modular JARs won't be encoded using the optimized `jimage` scheme. Use separate JARs for the best user experience.
+* [ ] You can now test the update procedure. 
+
+??? tip "Windows package management"
+    MSIX files are conceptually similar to Linux packages and they share many of the same features. An MSIX package is simply a signed zip with some additional metadata in XML files that define how the package should be integrated with the OS (e.g. start menu entries, adding programs to the %PATH% etc).
+    
+
+    MSIX and the features it offers are [described in the "Outputs" section](outputs.md). You can control MSIX packages from the command line using PowerShell, for example with the [Add-AppxPackage](https://docs.microsoft.com/en-us/powershell/module/appx/add-appxpackage?view=windowsserver2022-ps) cmdlet.
+    
+    A useful tool is [MSIX Hero](https://msixhero.net/), which is a sophisticated GUI tool for the package manager. It allows you to explore the contents of packages, force update checks, run apps inside the MSIX container and more.
+
+## Step 6. Explore the integration
+
+In this section you'll learn how to add Conveyor packaging to an existing project by studying how the sample projects are configured.
+
+* [ ] Open `conveyor.conf` in the project root directory. It's defined using a superset of JSON called [HOCON](configs/hocon-spec.md) with a few [Conveyor-specific extensions](configs/hocon-extensions.md). It should look like this:
+
+```javascript title="conveyor.conf"
+include "/stdlib/jdk/17/openjdk.conf"   // (1)!
+include "#!./gradlew -q printConveyorConfig"  // (2)!
+
+app {
+  display-name = My Amazing Project   // (3)!
+  site.base-url = downloads.myproject.org/some/path   // (4)!
+  
+  inputs += "icons/*.png"  // (5)!
+  icons = "icon-square-*.png"
+  mac.icons = "icon-rounded-*.png"
+}
+
+schema-version = 1   // (6)!
+```
+
+1. You can import JDKs by major version (optionally also the minor version) and by naming a specific distribution. [Learn more](stdlib/jdks.md).
+2. This is a [hashbang include](config/hocon-extensions.md#including-the-output-of-external-commands). The given program will be run and the output included as if it were a static HOCON file.
+3. You may not need to set this if the display name of your project is trivially derivable from the name of the Gradle project. Use `printConveyorConfig` to see what the plugin guessed.
+4. This is where the created packages will look for update metadata.
+5. The templates come with pre-rendered icons in both square and rounded rectangle styles. This bit of config uses square by default and rounded rects on macOS only, but that's just a style choice to fit in with the native expectations. You can use whatever icons you like. They should be rendered as PNGs in a range of square sizes, ideally 32x32, 64x64, 128x128 etc up to 1024x1024.
+6. This line will be added to a freshly written config if it's missing. Recording the schema/semantics expected by the config allows the format to evolve in future versions without breaking backwards compatibility.
+
+This sample is small, as most Conveyor configs are. A combination of sensible defaults, automatically derived values and (optionally) config extracted from your build system keeps it easy. Still, there are around 150 different settings available to customize packages if you need them. Consult the configuration section of this guide to learn more about what you can control.
 
 ### Gradle projects
 
-:octicons-tasklist-24: In your `settings.gradle{.kts}` file, add the repository `maven.hq.hydraulic.software` along with `gradlePluginPortal()`:
+You don't have to use any particular build system with Conveyor, but if you use Gradle then config can be extracted from your existing build using a simple plugin. The Gradle plugin doesn't replace or drive the package build process itself: you still do that using the `conveyor` command line tool. The plugin is narrowly scoped to generating configuration and nothing more. If you want Gradle to run Conveyor you can add a normal exec task to do so.
+
+The plugin adds two tasks, `printConveyorConfig` and `writeConveyorConfig`. The first prints the generated config to stdout, and the second writes it to an output file. By default this is called `generated.conveyor.conf` but can be changed.
+
+* [ ] Run `./gradlew -q printConveyorConfig` and examine the output. The plugin can read config from other plugins like the Java application plugin, the JetPack Compose plugin and the OpenJFX plugin.
+* [ ] Open `settings.gradle{.kts}` file. The following bit of code adds support for loading the Gradle plugin:
 
 ```kotlin title="settings.gradle.kts"
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        maven { url = uri("https://maven.hq.hydraulic.software") }
+        maven("https://maven.hq.hydraulic.software")
     }
 }
 ```
 
-:octicons-tasklist-24:  In your `build.gradle{.kts}` file, apply the plugin with id `dev.hydraulic.conveyor`. [Get the latest version number and code snippet here](https://plugins.gradle.org/plugin/dev.hydraulic.conveyor).
+* [ ] Open `build.gradle{.kts}` file. It should apply the Conveyor plugin at the top:
 
-The plugin adds two tasks, `printConveyorConfig` and `writeConveyorConfig`. The first prints the generated config to stdout, and the second writes it to an output file. By default this is called `generated.conveyor.conf` but can be changed.
-
-:octicons-tasklist-24: Run `./gradlew printConveyorConfig` to check it works and see how much config is being discovered.  
-
-:octicons-tasklist-24: Create `conveyor.conf` in your project root directory and add these two lines:
-
-```javascript title="conveyor.conf"
-include "/stdlib/jdk/17/openjdk.conf"  // (1)!
-include "#!./gradlew -q printConveyorConfig"
-
-app {
-    display-name = My Amazing Project   // (2)!
-    vendor = Global MegaCorp   // (3)!
-    site.base-url = downloads.myproject.org/some/path   // (4)!
-    inputs += "icon-*.png"
+```
+plugins {
+    id 'dev.hydraulic.conveyor' version '0.9.8'
 }
 ```
 
-1. You can import JDKs by major version, major/minor version, and by naming a specific distribution.
-2. You may not need to set this if the display name of your project is trivially derivable from the name of the Gradle project. Use `printConveyorConfig` to see what the plugin guessed.
-3. This is optional. It'll be prefixed to the display name and used as a directory name  in various places; skip it if you don't work for an organization.
-4. This is where the created packages will look for update metadata.
-5. See below for information on icons.
+[Get the latest version number and plugins code snippet here](https://plugins.gradle.org/plugin/dev.hydraulic.conveyor).
 
-Adjust the config for your project according to the annotations.
+The hashbang include you saw earlier will run Gradle each time you invoke Conveyor to extract config. This approach adds a slight delay to each Conveyor run, because even with the Gradle daemon this process isn't instant, but it does mean your config is always synced.
 
-The second line will invoke Gradle each time you invoke Conveyor and include the output text. This approach adds a slight delay to each Conveyor run, because even with the Gradle daemon this isn't instant, but it means your config is always synced.
-
-Alternatively use `include required("generated.conveyor.conf")` and run `gradle writeConveyorConfig` when you change your Gradle build. This avoids any delay from involving Gradle but means your settings can get out of sync.
+You can also write `include required("generated.conveyor.conf")` and run `gradle writeConveyorConfig` when you change your Gradle build. This avoids any delay from involving Gradle but means your settings can get out of sync.
 
 !!! tip
-    * When iterating on packages use the faster form, and then switch to the slower form when done.
-    * The second line is a [hashbang include](configs/hocon-extensions.md#including-the-output-of-external-commands) and can run any command. It's a very useful way to incorporate dynamic behaviour into your configuration, or use alternative config languages if you don't like the one Conveyor uses natively ([HOCON](configs/hocon-spec.md)).
+    When iterating on packages use the faster form, and then switch to the slower form when done.
+
+??? "Why does the plugin only generate config?"
+    Conveyor isn't implemented itself as a Gradle plugin because:
+    
+    * It will support non-JVM apps in the near future.
+    * It must support projects that use any build system.
+    * It needs a customized JVM that has various bug fixes backported to it, and which thus won't match the one being used to run Gradle.
+    * The Gradle API frequently changes in backwards-incompatible ways.
+
 
 ### Maven projects
 
-For Maven there's no plugin. Instead Conveyor will read the project classpath by running the output of the `mvn` command and using it directly as configuration.
+For Maven there's no plugin. Instead Conveyor will read the project classpath by running the output of the `mvn` command and using it directly as configuration. Other aspects like project name must be specified explicitly. Better import from Maven is planned in a future release.
 
 ??? warning "Maven on Windows"
-    Currently, automatic import from Maven only works on UNIX. On Windows you'll need to follow the instructions below for "other build systems". Better import from Maven is planned in a future release.
+    Currently, automatic import from Maven only works on UNIX. On Windows you'll need to follow the instructions below for "other build systems". 
 
 ??? note "JavaFX apps"
     This framework has special support in the [standard library](stdlib/javafx.md). Check there to learn what else you'll want to add, or look at the [samples](samples/index.md).
 
-:octicons-tasklist-24: Put the following into a file called `conveyor.conf` in your project.
+Here's an example of how to package a Maven project:
 
 ```javascript title="conveyor.conf" linenums="1"
 include "/stdlib/jdk/17/openjdk.conf"  // (1)!
@@ -100,7 +223,7 @@ app {
 ```
 
 1. You can import JDKs by major version, major/minor version, and by naming a specific distribution.
-2. This included file contains a single line, which runs Maven and tells it to print out the classpath. The results are then assigned to the `app.inputs` key, which is explained below: `include "#!=app.inputs mvn -q dependency:build-classpath -Dmdep.outputFile=/dev/stdout -Dmdep.pathSeparator=${line.separator}"`.
+2. This included file contains a single line, which runs Maven, tells it to print out the classpath and assigns the result to the `app.inputs` key: `include "#!=app.inputs mvn -q dependency:build-classpath -Dmdep.outputFile=/dev/stdout -Dmdep.pathSeparator=${line.separator}"`. 
 3. The `fsname` is what's used for names on Linux e.g. in the `bin` directory, for directories under `lib`. In fact when specified the vendor is also used, and the program will be called `global-megacorp-my-program` unless the `long-fsname` key is overridden.
 4. You may not need to set this if the display name of your project is trivially derivable from the fsname. The default here would be `My Program`.
 5. This is optional. It'll be prefixed to the display name and used as a directory name  in various places; skip it if you don't work for an organization.
@@ -108,7 +231,7 @@ app {
 
 ### Other build systems
 
-:octicons-tasklist-24: Create a `conveyor.conf` that looks like this:
+Create a `conveyor.conf` that looks like this:
 
 ```javascript title="conveyor.conf" linenums="1"
 include "/stdlib/jdk/17/openjdk.conf"  // (1)!
@@ -131,53 +254,12 @@ app {
 ??? note "File paths"
     Inputs are resolved relative to the location of the config file, not where Conveyor is run from.
 
+??? warning "Uber-jars"
+    Don't use an uber/fat-jar for your program. It'll reduce the efficiency of delta download schemes like the one used by Windows. It also means modular JARs won't be encoded using the optimized `jimage` scheme. Use separate JARs for the best user experience.
+
 This configuration adds your app's main JAR as the first input, allowing package metadata like version numbers and names to be derived from the file name. Then it adds the directory containing all the app  JARs (duplicates are ignored), and finally a set of icon files.
 
-That's all you need! The display name and version of your application will be taken from the file name by default ("My App" and "1.0" given the file name in the example above).
-
-## Step 4. Build your packages
-
-:octicons-tasklist-24: Run `conveyor make site`. If you set a passphrase when generating keys, pass the `--passphrase` flag before `make`. The results will be in the `output` directory.
-
-This command will build your packages with update repository metadata, and also generate a `download.html` file that provides the user with the fastest and simplest download experience possible given their browser and OS.
-
-Now copy this directory to your web server using a tool like `scp`, `rsync` or however else you normally publish static web files. If using GitHub Releases, just make a new release with the contents of the site output (don't bother with `download.html`).
-
-!!! tip "Faster builds"
-    Conveyor builds are incremental and parallel, so you should find that rebuilding the site is much quicker the second time you try it. You can also instantly 'check out' the intermediate files, such as unpacked directories. Run `conveyor make` to see what's available. This lets you rapidly iterate on your packages, because once built it normally only takes a few seconds to create a new spin of your app.
-    
-    Nonetheless there are ways to make builds faster:
-    
-    1. Set `app.sign = false` during development to disable code signing and notarization. Notarization takes about two minutes and is unnecessary whilst iterating.
-    2. Set `app.linux.compression = low` or `none` to switch to gzip or no compression when building Linux packages. The resulting packages are bigger, but build much faster than when using the default LZMA codec.
-
-### Building unpacked apps
-
-For testing it's convenient to create unarchived versions of the app.
-
-:octicons-tasklist-24: Run one of these commands:
-
-* `conveyor make windows-app` to create an unpacked Windows install.
-* `conveyor -Kapp.machines=mac.amd64 make mac-app` to create an unpacked `.app` directory. Change `amd64` to `aarch64` to make an app folder for Apple Silicon instead of Intel Macs (Conveyor doesn't generate fat apps for download size reasons).
-* `conveyor make linux-app` to create an unpacked Linux app .
-
-If you want a package for a single platform:
-
-* `conveyor make windows-zip` to get a zip, or `conveyor make windows-msix` to create an installable Windows package (this requires signing keys).
-* `conveyor -Kapp.machines=mac.amd64 make unnotarized-mac-zip` to create a zip with your Mac app in it (again, change `amd64` to `aarch64` if you want an Apple Silicon build).
-* `conveyor make linux-tarball` or `conveyor make debian-package` to create a tarball or deb.
-
-## Step 6. Release a new version
-
-To release a new version just adjust the version number in your build system or the `app.version` / `app.revision` keys, rerun `conveyor make site` and re-upload the results.
-
-By default the update engines wait some hours between upgrades, so your installed copies won't upgrade immediately. To short-circuit this for testing:
-
-1. On Windows, re-open the .appinstaller file you downloaded. That should offer an upgrade button.
-
-2. On macOS, from the command line run the program with the `FORCE_UPDATE_CHECK=1` environment variable set, e.g. `FORCE_UPDATE_CHECK=1 /Applications/YourApp.app/Contents/MacOS/YourApp`. This should immediately offer to let you upgrade.
-
-3. On Debian/Ubuntu, run `apt update; apt upgrade` and check that your app is in the list of things that will be upgraded.
+That's all you need! The display name and version of your application will be taken from the file name by default ("My App" and "1.0" given the file name in the example above). The `schema-version` key will be added automatically on first run.
 
 ## Next steps
 
@@ -186,3 +268,55 @@ Not happy with the defaults? There are [lots of settings](configs/index.md) avai
 Conveyor also supports servers with full Linux `systemd` integration. Take a look at the [Linux config sections](configs/linux.md) to learn more.
 
 Stuck? Try asking in our [GitHub Discussions forum](https://github.com/hydraulic-software/conveyor/discussions).
+
+
+<script>
+
+// A little bit of code to make the task checkmarks sticky.
+
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(';');
+  for(let i = 0; i <ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+function setCookie(cname, cvalue, exdays) {
+  const d = new Date();
+  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  let expires = "expires="+ d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+let ticks = Array.from(document.querySelectorAll(".task-list-control > input[type=checkbox]"));
+
+var initialCheckedIndexes = getCookie("completed-tasks").split(",");
+
+for (var i = 0; i < ticks.length; i++) { 
+  let cb = ticks[i];
+	cb.removeAttribute("disabled"); 
+	if (!initialCheckedIndexes.includes(""+i))
+		cb.removeAttribute("checked");
+	cb.addEventListener("click", function(e) { 
+	  const nowCheckedIndexes = ticks.map((control, index) => { 
+	      if (control.checked) { return index } else { return -1 }     
+	  }).filter(el => el != -1);
+	  setCookie("completed-tasks", nowCheckedIndexes.join(","));
+  });
+}
+</script>
+
+<style>
+.task-list-control {
+  cursor: pointer;
+}
+</style>

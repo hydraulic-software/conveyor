@@ -5,19 +5,44 @@ Conveyor is a build system. You give it a configuration file (`-f=conveyor.conf`
 ??? warning "Output overwrite modes"
     By default Conveyor will replace the contents of the output directory if that directory was created by Conveyor itself and the contents haven't been changed. If the output directory already exists but either wasn't created by Conveyor itself, or you changed something inside it, then the tool won't proceed.
     
-    You can use `--overwrite-mode=OVERWRITE` to replace any files the build produced but leave other files alone, but be aware that this may result in old files hanging around in the output directory, and any read only files will cause an error.
+    You can use `--overwrite-mode=HARD_REPLACE` to replace any files the build produced but leave other files alone, but be aware that this may result in old files hanging around in the output directory, and any read only files will cause an error.
     
     `--overwrite-mode=STOP` can be useful in scripts: it will prevent the tool from proceeding if the output directory already exists, even if it was created by Conveyor.
 
+## Initial setup
+
+The first time you use Conveyor you will need to run:
+
+```
+conveyor keys generate
+```
+
+optionally giving this command a `--passphrase`. See [Setting up](setting-up.md) for more information on this command and why it's necessary.
+
+## Template projects
+
+Conveyor has a simple project generation command that creates self-contained GUI projects complete with source code, build system and Conveyor configuration:
+
+````sh
+# Generate a JetPack Compose for Desktop app, or a JavaFX app.
+conveyor generate {compose,javafx} \
+                          --output-dir=path/to/my-project \
+                          --site-url=https://mysite.com/downloads \
+                          --rdns=com.example.myproject \
+                          --display-name="My Amazing Project"
+````
+
+To learn more see the [tutorial](tutorial.md).
+
 ## Common tasks
 
-**This is the primary command:** Build a download site plus packages for all available platforms in a directory called `output`.
+**Build a download site for all available platforms in a directory called `output`:**
 
 ```bash
 conveyor make site
 ```
 
-Build the app with an adjusted configuration key.
+**Adjust a configuration key for one build only:**
 
 ```bash
 conveyor -Kapp.revision=2 make site
@@ -27,13 +52,15 @@ conveyor -Kapp.sign=false make site
 conveyor "-Kapp.sign=false" make site
 ```
 
-Show all invokable task names, using a different config file to the default:
+**Show all invokable task names, using a different config file to the default:**
 
 ```bash
 conveyor -f myapp.conveyor.conf make
 ```
 
-Render the config to raw JSON.
+Tasks labelled as "ambiguous" apply to more than one machine. You can run them by temporarily narrowing the machines your config supports by setting the `app.machines` key, e.g. by passing `-Kapp.machines=mac.amd64` on the command line.
+
+**Render the config to raw JSON.**
 
 ```bash
 conveyor json
@@ -50,13 +77,15 @@ conveyor json
 
 **Machines.** The machines you can target are named using simple hierarchical identifiers that look like `mac.amd64` or `linux.aarch64.glibc`. You can pick the machines you wish to build for with the `app.machines` key. [Learn more](configs/index.md#machines).
 
-**Example commands.** List all available tasks:
+## Example commands
+
+**List all available tasks:**
 
 ```
 conveyor make
 ```
 
-Create a Mac .app directory for Apple Silicon, an unnotarized zip of it, and then a notarized zip for Intel CPUs:
+**Create a Mac .app directory for Apple Silicon, an unnotarized zip of it, and then a notarized zip for Intel CPUs:**
 
 ```bash
 conveyor -Kapp.machines=mac.aarch64 make mac-app
@@ -64,7 +93,7 @@ conveyor -Kapp.machines=mac.aarch64 make unnotarized-mac-zip
 conveyor -Kapp.machines=mac.amd64 make notarized-mac-zip
 ```
 
-Create a Windows app as a directory tree, a ZIP and an MSIX package. This doesn't need you to set `app.machines` because currently only Intel/AMD64 targets are supported for Windows.
+**Create a Windows app as a directory tree, a ZIP and an MSIX package:** 
 
 ```bash
 conveyor make windows-app
@@ -72,7 +101,9 @@ conveyor make windows-zip
 conveyor make windows-msix
 ```
 
-Create a Linux JVM app as a directory tree, tarball and a Debian package.
+This doesn't need you to set `app.machines` because currently only Intel/AMD64 targets are supported for Windows.
+
+**Create a Linux JVM app as a directory tree, tarball and a Debian package:**
 
 ```bash
 conveyor make linux-app
@@ -80,7 +111,7 @@ conveyor make linux-tarball
 conveyor make debian-package
 ```
 
-Show a dependency tree explaining what tasks will or will not be run.
+**Show a dependency tree explaining what tasks will or will not be run:**
 
 ```bash
 conveyor task-dependencies site
