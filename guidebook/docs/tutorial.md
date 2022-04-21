@@ -143,7 +143,7 @@ schema-version = 1   // (6)!
 ```
 
 1. You can import JDKs by major version (optionally also the minor version) and by naming a specific distribution. [Learn more](stdlib/jdks.md).
-2. This is a [hashbang include](config/hocon-extensions.md#including-the-output-of-external-commands). The given program will be run and the output included as if it were a static HOCON file.
+2. This is a [hashbang include](configs/hocon-extensions.md#including-the-output-of-external-commands). The given program will be run and the output included as if it were a static HOCON file.
 3. You may not need to set this if the display name of your project is trivially derivable from the name of the Gradle project. Use `printConveyorConfig` to see what the plugin guessed.
 4. This is where the created packages will look for update metadata.
 5. The templates come with pre-rendered icons in both square and rounded rectangle styles. This bit of config uses square by default and rounded rects on macOS only, but that's just a style choice to fit in with the native expectations. You can use whatever icons you like. They should be rendered as PNGs in a range of square sizes, ideally 32x32, 64x64, 128x128 etc up to 1024x1024.
