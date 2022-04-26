@@ -55,37 +55,18 @@ conveyor "-Kapp.sign=false" make site
 **Show all invokable task names, using a different config file to the default:**
 
 ```bash
-conveyor -f myapp.conveyor.conf make
+conveyor make
 ```
 
-Tasks labelled as "ambiguous" apply to more than one machine. You can run them by temporarily narrowing the machines your config supports by setting the `app.machines` key, e.g. by passing `-Kapp.machines=mac.amd64` on the command line.
+Tasks labelled as "ambiguous" apply to more than one machine. You can run them by temporarily narrowing the machines your config supports by setting the `app.machines` key, e.g. by passing `-Kapp.machines=mac.amd64` on the command line.  The machines you can target are named using simple hierarchical identifiers that look like `mac.amd64` or `linux.aarch64.glibc`. You can pick the machines you wish to build for with the `app.machines` key. [Learn more](configs/index.md#machines).
 
-**Render the config to raw JSON.**
+**Render the config to JSON:**
 
 ```bash
 conveyor json
 ```
 
-## Tasks and machines
-
-**Tasks.** A list of available tasks can be listed by just not specifying a task to the `make` command. The selected tasks will generate files or directory trees and put them in the `--output` directory. Intermediate work is cached, so running it again will be instant as the same outputs from last time will be reused. Use `--rerun` if for some reason you need to force a re-execution.
-
-**Configs.** The tool config file can be specified with the `-c` flag or will be taken from `conveyor.conf` in the same directory. The `-K` flag can be used to add/override keys in the configuration.
-
-!!! tip
-    The -K flag can be useful during development for turning off features, e.g. try `-Kapp.sign=false` to disable signing temporarily.
-
-**Machines.** The machines you can target are named using simple hierarchical identifiers that look like `mac.amd64` or `linux.aarch64.glibc`. You can pick the machines you wish to build for with the `app.machines` key. [Learn more](configs/index.md#machines).
-
-## Example commands
-
-**List all available tasks:**
-
-```
-conveyor make
-```
-
-**Create a Mac .app directory for Apple Silicon, an unnotarized zip of it, and then a notarized zip for Intel CPUs:**
+**Create a Mac .app directory for Apple Silicon, an unnotarized zip of it, and a notarized zip for Intel CPUs:**
 
 ```bash
 conveyor -Kapp.machines=mac.aarch64 make mac-app
@@ -111,15 +92,9 @@ conveyor make linux-tarball
 conveyor make debian-package
 ```
 
-**Show a dependency tree explaining what tasks will or will not be run:**
-
-```bash
-conveyor task-dependencies site
-```
-
 ## Controlling parallelism
 
-The `--parallelism` flag allows you to control how many tasks run simultaneously. Be aware that setting this too high may not yield performance improvements, or may use too much memory. Experiment a bit and see what works best for you. 
+The `--parallelism` flag allows you to control how many tasks run simultaneously. It defaults to four, which works well enough for us. Be aware that setting this too high may not yield performance improvements, or may use too much memory. Experiment a bit and see what works best for you. 
 
 ## Viewing task dependencies
 

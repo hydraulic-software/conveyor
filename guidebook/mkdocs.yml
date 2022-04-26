@@ -14,6 +14,7 @@ nav:
     - keys-and-certificates.md
     - outputs.md
     - running.md
+    - release-notes.md
   - Configuration:
     - configs/index.md
     - configs/inputs.md

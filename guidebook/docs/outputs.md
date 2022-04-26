@@ -4,7 +4,7 @@ Conveyor generates packages for Windows, macOS and Debian/Ubuntu based Linux dis
 
 ## Windows
 
-Conveyor doesn't create installer EXEs. Instead it uses Microsoft's newest packaging technology, called MSIX. Like the older MSI technology it's built in to Windows, but represents a complete redesign with different formats and capabilities. All Windows 10/11 systems support it, and Microsoft have also backported it to Windows 7.[^1] MSIX files are enhanced ZIP files with several features that make it a good fit for modern desktop app distribution:
+Conveyor doesn't create installer EXEs. Instead it uses Microsoft's newest packaging technology, [MSIX](https://docs.microsoft.com/en-us/windows/msix/). Like the older MSI format support is built in to Windows, but MSIX is a complete redesign with a different format, approach and capabilities. All Windows 10/11 systems support it and Microsoft have also backported it to Windows 7.[^1] MSIX files are enhanced ZIP files with several features that make it a good fit for modern desktop app distribution:
 
 * **Two-click start.** App installation or upgrade can be launched direct from the web. Users download an `.appinstaller` file  and open it, then click launch. It's actually the same number of clicks as getting an app on mobile platforms.
 * **Delta downloads.** MSIX breaks apps into 64kb chunks and Windows only downloads those it hasn't already got. This works for *new installs* and *across unrelated vendors and apps*, meaning if the user has already downloaded some app using a popular runtime, your app using the same runtime will install near-instantly as only the unique program data will need to be fetched. Files on disk are also de-duplicated when possible by using hard links. This works because the "installer" the user downloads is in reality a small XML file that points to the real underlying file, which is itself indexed by hash.
@@ -23,7 +23,7 @@ Conveyor outputs signed, notarized and [Sparkle-ized](https://sparkle-project.or
 
 1. **Drastically faster.** On fast internet connections a DMG can take longer to verify and mount than download!
 2. **Fewer steps for users.** Browsers will detect zips that contain app bundles and automatically extract them. The user can then simply open the app from the download pile in their dock to get started.
-3. **Better usability.** The DMG system that macOS uses for app installs dates from NeXTStep in the early 90s and has never been improved. As such the usability of DMGs is quite poor. The user must master unusual actions like drag-and-drop, must understand how to "eject" the "disk" even though it's not a disk, must know that they actually should do so, and must understand that although the app *can* be run from the DMG it should actually *not* be run from there ... and so on.
+3. **Better usability.** The DMG system that macOS uses for app installs dates from NeXTStep in the early 90s and has never been improved. As such the usability of DMGs is quite poor. The user must master unusual actions like drag-and-drop, must understand how to "eject" the "disk" by dragging it to the trash can even though it's not a disk and they don't want to remove the app, must know that they actually should do so, and must understand that although the app *can* be run from the DMG it should actually *not* be run from there ... and so on.
 
 ZIPs give users the experience of simply clicking the download link and having the app immediately extracted and ready for use. 
 

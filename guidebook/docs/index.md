@@ -15,7 +15,7 @@ Conveyor makes distributing desktop and command line apps as easy as shipping a 
 
 [Try an app that uses it](https://downloads.hydraulic.dev/compose-sample/download.html){ .md-button .md-button--primary }
 
-This app uses the new JetPack Compose Desktop UI toolkit to mock up a slick, Material Design based music app. [Try installing it](https://public.hq.hydraulic.software/~mike/compose-music-sample/download.html) and then [get the source and packaging config](https://github.com/hydraulic-software/compose-music-app).
+This app uses the new JetPack Compose Desktop UI toolkit to mock up a slick, Material Design based music app. [Try installing it](https://public.hq.hydraulic.software/~mike/compose-music-sample/download.html) and then [get the source and packaging config](https://github.com/hydraulic-software/compose-music-app). Or use the `conveyor generate` command to create an out-of-the-box template app.
 
 ## Get started
 
@@ -26,17 +26,19 @@ This app uses the new JetPack Compose Desktop UI toolkit to mock up a slick, Mat
 * Create packages for every OS on any OS - Conveyor implements everything itself so doesn't rely on platform native tooling.
     * Build Windows applications that use the built-in [Windows 10 MSIX/AppInstaller system](outputs.md).
         * Windows keeps them up to date in the background automatically.
+        * Updates use delta downloads and data is shared between apps, even from different vendors.
         * Has everything IT departments need to easily deploy to managed networks.
     * Build Mac applications that use the popular [Sparkle 2 update framework](https://sparkle-project.org/).
-        * Signing and notarization without needing macOS.
+        * Sign and notarize them without needing macOS.
     * Build apt repositories for Debian/Ubuntu.
         * Integrates with systemd for servers and cron jobs.
         * Servers automatically (re)started on upgrade/reboot.
-* Generate a static download site
+* Generate a static download site with convenient HTML.
     * Detects the user's operating system and CPU architecture.
     * [Release via GitHub releases](configs/download-pages#publishing-through-github).
 * [Deep support for JVM applications](configs/jvm.md).
-* Pierce the abstraction! Cross platform tooling doesn't mean giving up platform specific features. You can precisely configure OS specific files to get the perfectly tuned experience, such as:
-    * Mac `Info.plist` files
-    * Windows XML app manifests
+* Pierce the abstraction! Cross platform tooling doesn't mean giving up platform-specific features. Over 120 different settings let you precisely configure your packages, including your:
+    * Mac `Info.plist` files.
+    * Windows XML app manifests.
     * Linux `.desktop` files and package install/uninstall scripts.
+
