@@ -9,9 +9,9 @@ To understand every setting that went into your app run the `conveyor json` comm
 !!! important
     When working with lists it's good style to always add to them rather than overriding them. If you assign directly importing other configs from (for example) the Conveyor standard library won't work as you'll overwrite the values they place in shared lists. In other words write `key += value` rather than `key = [ value ]`. The first form adds to whatever `key` currently holds, the second replaces it.
 
-## Schema versions
+## Compatibility levels
 
-The Conveyor config schema may change over time. To ensure backwards compatibility, when you build a config for the first time a new key called `schema-version` will be added to it, if not already present. This records the latest schema version at the time you ran the program, ensuring that old configs can be read by new versions of the tool. When a new release changes the schema that'll be mentioned in the release notes and you can then choose when and whether to upgrade.
+The `conveyor.compatibility-level` key will be added automatically on first run if you don't specify it. If new versions of Conveyor change the config layout or make other changes that would be backwards incompatible, they will only take effect if you opt in by incrementing your compatibility level. Otherwise, the old behaviours will be preserved.
 
 ## Minimal app
 

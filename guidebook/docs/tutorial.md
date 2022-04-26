@@ -139,7 +139,7 @@ app {
   mac.icons = "icon-rounded-*.png"
 }
 
-schema-version = 1   // (6)!
+conveyor.compatibility-level = 1   // (6)!
 ```
 
 1. You can import JDKs by major version (optionally also the minor version) and by naming a specific distribution. [Learn more](stdlib/jdks.md).
@@ -259,7 +259,7 @@ app {
 
 This configuration adds your app's main JAR as the first input, allowing package metadata like version numbers and names to be derived from the file name. Then it adds the directory containing all the app  JARs (duplicates are ignored), and finally a set of icon files.
 
-That's all you need! The display name and version of your application will be taken from the file name by default ("My App" and "1.0" given the file name in the example above). The `schema-version` key will be added automatically on first run.
+That's all you need! The display name and version of your application will be taken from the file name by default ("My App" and "1.0" given the file name in the example above).  
 
 ## Next steps
 
