@@ -32,7 +32,7 @@ conveyor generate {compose,javafx} \
                           --display-name="My Amazing Project"
 ````
 
-To learn more see the [tutorial](tutorial.md).
+To learn more see the [tutorial](tutorial.md).
 
 ## Common tasks
 
@@ -58,7 +58,7 @@ conveyor "-Kapp.sign=false" make site
 conveyor make
 ```
 
-Tasks labelled as "ambiguous" apply to more than one machine. You can run them by temporarily narrowing the machines your config supports by setting the `app.machines` key, e.g. by passing `-Kapp.machines=mac.amd64` on the command line.  The machines you can target are named using simple hierarchical identifiers that look like `mac.amd64` or `linux.aarch64.glibc`. You can pick the machines you wish to build for with the `app.machines` key. [Learn more](configs/index.md#machines).
+Tasks labelled as "ambiguous" apply to more than one machine. You can run them by temporarily narrowing the machines your config supports by setting the `app.machines` key, e.g. by passing `-Kapp.machines=mac.amd64` on the command line.  The machines you can target are named using simple hierarchical identifiers that look like `mac.amd64` or `linux.aarch64.glibc`. You can pick the machines you wish to build for with the `app.machines` key. [Learn more](configs/index.md#machines).
 
 **Render the config to JSON:**
 
@@ -96,6 +96,9 @@ conveyor make debian-package
 
 The `--parallelism` flag allows you to control how many tasks run simultaneously. It defaults to four, which works well enough for us. Be aware that setting this too high may not yield performance improvements, or may use too much memory. Experiment a bit and see what works best for you. 
 
+!!! note "Memory usage"
+    If using a VM or container you should allocate at least 4GB of RAM. With less Conveyor may stall or trigger the kernel out-of-memory killer.
+
 ## Viewing task dependencies
 
 The `task-dependencies` command takes a task command-line name and prints all the dependencies. Try running `conveyor task-dependencies site` to see how the site is made up. Dimmed out tasks are being hidden either because they appeared elsewhere in the tree already (it's really a graph), or because the task is disabled for some reason, which will be explained next to the task's entry.
@@ -121,3 +124,4 @@ conveyor --rerun make linux-app
 If anything goes wrong or you are just curious to see what was done, use the `--show-log` flag. On Windows, you get Notepad. On UNIX it will display the last execution's log file in a pager, highlighted and colored. By default lines aren't wrapped, so you can scroll left and right with the arrows. If you'd like to enable wrapping, perhaps to copy some long path or URL, type `-S` (that is, `-` followed by Shift-S). As always, you can press `q` to quit.
 
 Logs are kept for more than just the last execution. At the top of each log file is the path where logs are kept. You can view log files by process ID in that directory.
+
