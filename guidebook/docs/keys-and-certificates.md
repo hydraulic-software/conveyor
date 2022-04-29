@@ -2,25 +2,22 @@
 
 Here's what you need to know:
 
-* **Signing capabilities.** Conveyor can fully sign and (for macOS) notarize your software without requiring macOS or Windows. It can also generate keys and certificate signing request files. Those files can be traded for certificates for both platforms using only a browser and credit card.
-* **Signing requirements.** Conveyor can make unsigned packages. Be aware that:
-    * **Windows:** Microsoft requires MSIX packages to be signed. Conveyor can generate ZIPs with unsigned software but you won't get software updates, start menu integration or containerization. Antivirus products may interfere with your program if it isn't signed, because they will see each version as an independent program and won't learn that it's not malware.
-    * **macOS:** Apple Silicon Macs can only run signed code, so unsigned code will be Intel only and run in emulation. Unsigned packages will require intervention from the [Security settings panel](https://support.apple.com/en-us/HT202491) or command line before they can execute.
-    * **Linux:** apt repositories are always self-signed (no certificate is necessary). The generated DEBs install the GPG public key and apt sources file for the repository, thus, the user gets your app by just downloading the DEB and installing it with `apt install ./yourapp*.deb`. The generated download page gives the command to use.
-* **Key derivation.** Conveyor can create a single private key and derive all the different platform keys from it, so there's only one thing to back up.
+* **Signing capabilities.** Conveyor can fully sign your software without requiring macOS or Windows, and optionally with self-signed certificates. It can also generate all the needed key and certificate files for you from a single root key, which can be written down on paper in the form of words.
+* **Self-signed packages.** Conveyor can make self-signed packages if you don't have Mac/Windows signing certificates. The generated download site will ask users to do run a command from their terminal to download and install the app instead of going via the GUI (e.g. `curl | bash`). On Windows this operation uses PowerShell and requires local admin capability to install the self-signed certificate, so to allow non-admin users to install you'll still need to sign your code.
+* **Signed packages.** When you use valid code signing certificates users can easily download and install your app entirely via their GUI, without using the terminal. Additionally the code will be notarized by Apple.
 * **Using existing keys.** Conveyor can use your existing Windows and Apple code signing keys if you have them. You'll still need to back up your Conveyor root key because it's also used to generate Linux and Mac repository signing keys.
-* **Passphrase protection.** Conveyor can encrypt your private keys. [See below](#passphrases).
-* **Hardware tokens / HSMs.** Conveyor can use private keys protected by HSMs. [See below](#hardware-security-modules).
+* **Passphrase protection.** You can encrypt your private keys. [See below](#passphrases).
+* **Hardware tokens / HSMs.** You can use private keys protected by HSMs. [See below](#hardware-security-modules).
 
 ??? question "Is signing worth it?"
-    On macOS and Windows your signing key must be linked with an identity. Apple uses the name on your credit card and you can obtain personal certificates within a few minutes. For Windows you can use any certificate authority, but they may request to see government issued ID. The effort involved in ID verification depends on whether you are signing as a person or as a company.
+    On macOS and Windows your signing key can be linked with an identity. Apple uses the name on your credit card and you can obtain personal certificates within a few minutes. For Windows you can use any certificate authority, but they may request to see government issued ID. The effort involved in ID verification depends on whether you are signing as a person or as a company.
 
-    In our view it's worth signing your code if you need full performance, are targeting non-developers, or are writing developer tools that might be blocked by Windows AV engines. For example, Conveyor is fully signed because we want it to be as easy to use as possible, and because otherwise Windows Defender can block filesystem operations (writing lots of JARs to disk triggers malware heuristics). Finally, it's not security theater: signing actually does make malware harder to produce and distribute, which is why modern virus writers put effort into stealing signing keys.
+    In our view it's worth signing your code if you are targeting non-developers, or are writing developer tools that might be blocked by Windows AV engines. For example Conveyor is fully signed because we want it to be as easy to use as possible, and because otherwise Windows Defender can block filesystem operations (writing lots of JARs to disk triggers malware heuristics). Finally, signing isn't security theater: signing actually does make malware harder to produce and distribute, which is why modern virus writers put effort into stealing signing keys.
     
-    For open source apps all these arguments still apply, but if you don't want to get a certificate you can just distribute unsigned files. Alternatively, ask for volunteers from your user community who will sign them for you. Getting a signing certificate is simple way to contribute back that doesn't require any technical skills. 
+    For open source apps either use self-signing, or ask for volunteers from your user community to sign your downloads for you. Getting a signing certificate is simple way to contribute back to the community that doesn't require any technical skills.
 
-??? info "Making unsigned apps easier to use"
-    Although Conveyor removes a lot of the technical effort involved in signing, the need for certificates remains. Over time we plan to make software distribution easier through a combination of sandboxing, developer/open source-focused CLI tooling, and better instructions to end users.
+??? info "Making self-signed apps easier to use"
+    Although Conveyor removes a lot of the technical effort involved in signing, the best/standard user experiences still require certificates to be purchased. Over time we plan to make software distribution easier using sandboxing.
 
 ## Start here: Create a root key
 
@@ -63,7 +60,7 @@ To learn more about configuring keys and certificates see [signing configuration
 
 **Step 4.** Enter your login password to unlock the keychain. The export should now complete.
 
-## If you need certificates
+## If you want certificates
 
 When you ran `conveyor keys generate` it also produced two certificate signing request files. These can be uploaded to certificate authorities to get signing certificates.
 
@@ -75,9 +72,17 @@ When you ran `conveyor keys generate` it also produced two certificate signing r
 
 The private keys backing the certificate requests aren't written to disk separately. They're all derived on demand from the contents of the `app.signing-key` config value. To export them, see below.
 
+## If you don't want certificates
+
+Then do nothing! Conveyor will still sign your packages using your root keys, but it'll generate and use a self-signed certificate. That certificate will be put in the download site along with a couple of scripts: a shell script for macOS and a PowerShell script for Windows. The download HTML will then instruct the user to run a command from their terminal that downloads and runs the scripts, which in turn then download and install the application, taking the necessary steps to ensure it can run. 
+
+On Windows this requires installing a certificate to the local certificate store, which requires local administrator access. Non-admins can still use your app by downloading the .zip file (which is always created), but they won't get automatic updates. If you're distributing to managed Windows networks then the IT department can deploy the certificate and MSIX files directly using Microsoft Active Directory.
+
+On macOS the package is signed but only Apple certificates are accepted by Gatekeeper, so the shell script will download the app, extract it to either `/Applications` or `~/Applications`, remove the quarantine flag and then invoke it. Avoiding the GUI and downloading the package using `curl` bypasses Gatekeeper and allows the code to run. This is also true for M1 Macs, which require code to be signed but not necessarily signed by Apple.
+
 ## Configure Apple notarization
 
-Apple requires all apps for macOS to be both signed and uploaded to them for a form of ahead-of-time virus scanning, called notarization. This is different to the app store: approval is automatic with no humans in the loop and takes only a minute or two. 
+Apple requires all Developer ID signed apps to be uploaded to them for a form of ahead-of-time virus scanning, called notarization. This is different to the app store: approval is automatic with no humans in the loop and takes only a minute or two. 
 
 Conveyor needs to be provided with an Apple ID and credentials for the notarization service. Any Apple ID registered with the developer programme can get these. 
 
@@ -100,12 +105,6 @@ app {
 
 !!! tip
     You can use move your app specific password outside of a per-project config by using an `include` statement.
-
-## Making unsigned packages
-
-Set `app.sign = false`, or separately, `app.mac.sign = false` and `app.windows.sign = false`. 
-
-You will get warnings during the build and some formats like MSIX or ARM Mac won't be available. You'll still need to generate a root key for Linux, but no effort is required beyond backing it up. Use `conveyor task-dependencies site` to see what will be included and what won't.
 
 ## Sample defaults.config
 
@@ -132,7 +131,7 @@ For your convenience Conveyor by default derives all needed keys and certificate
 
 To get the platform-specific private keys in formats understood by other programs, use `conveyor keys export`. Use the `--passphrase` flag if necessary (see below). It will create:
 
-* `apple.p12` A DER encoded PKCS#12 key store, encrypted under the password "conveyor" (note: *not* your regular passphrase - to change it you can use `keytool` or `openssl`, or just import it using Keychain Access and then delete it).
+* `apple.p12` A DER encoded PKCS#12 key store, encrypted under the password "conveyor" (note: *not* your regular passphrase - to change it you can use `keytool` or `openssl`, or just import it using Keychain Access and then delete it).
 * `windows.key` PEM encoded private key, RSA 4096 bits.
 * `sparkle.key` Ed25519 private key + public key point, base64 encoded. This format is the one used by the Sparkle `generate_keys` command.
 * `gpg.key` A GPG/PGP secret keyring that you can use with `gpg --import`.

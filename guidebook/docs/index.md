@@ -5,7 +5,7 @@ hide:
 
 # Welcome
 
-Conveyor makes distributing desktop and command line apps as easy as shipping a web app. It's a tool not a service, it generates [self-upgrading packages for Windows, macOS and Linux using each platform's native package formats](outputs.md) without requiring you to have those operating systems, and it looks like this:
+Conveyor makes distributing desktop and command line apps as easy as shipping a web app. It's a tool not a service, it generates fully signed [self-upgrading packages for Windows, macOS and Linux using each platform's native package formats](outputs.md) without requiring you to have those operating systems, and it looks like this:
 
 <video width="100%" poster="https://conveyor.hydraulic.dev/assets/promo.jpg" controls><source src="https://conveyor.hydraulic.dev/assets/promo.mp4" type="video/mp4"></video>
 
@@ -13,7 +13,7 @@ Conveyor makes distributing desktop and command line apps as easy as shipping a 
 
 ![Screenshot of the Music Sample](https://media.giphy.com/media/NMLgK1lJ8UGtNxx3ja/giphy.gif)
 
-[Try an app that uses it](https://downloads.hydraulic.dev/compose-sample/download.html){ .md-button .md-button--primary }
+[Try an app that uses it](https://downloads.hydraulic.dev/compose-sample/download.html){ .md-button .md-button--primary }   [Try the self-signed version](https://downloads.hydraulic.dev/compose-sample/self-signed/download.html){ .md-button .md-button--primary }
 
 This app uses the new JetPack Compose Desktop UI toolkit to mock up a slick, Material Design based music app. [Try installing it](https://public.hq.hydraulic.software/~mike/compose-music-sample/download.html) and then [get the source and packaging config](https://github.com/hydraulic-software/compose-music-app). Or use the `conveyor generate` command to create an out-of-the-box template app.
 
@@ -29,14 +29,19 @@ This app uses the new JetPack Compose Desktop UI toolkit to mock up a slick, Mat
         * Updates use delta downloads and data is shared between apps, even from different vendors.
         * Has everything IT departments need to easily deploy to managed networks.
     * Build Mac applications that use the popular [Sparkle 2 update framework](https://sparkle-project.org/).
-        * Sign and notarize them without needing macOS.
-    * Build apt repositories for Debian/Ubuntu.
-        * Integrates with systemd for servers and cron jobs.
-        * Servers automatically (re)started on upgrade/reboot.
+    * Build apt repositories for Debian/Ubuntu, tarballs for other distros. Integrates with systemd for servers and cron jobs.
 * Generate a static download site with convenient HTML.
     * Detects the user's operating system and CPU architecture.
     * [Release via GitHub releases](configs/download-pages#publishing-through-github).
+* Full support for code signing:
+    * All signing is implemented in cross-platform code, so you can sign for every OS on any OS.
+    * The Apple notarization protocol is also fully implemented and runs on every OS.
+    * Make self-signed packages with `curl|bash` style installation for both macOS and Windows.
+    * All signing keys derived from one small piece of root entropy encoded as words. Write them down on paper for backup.
 * [Deep support for JVM applications](configs/jvm.md).
+    * Pre-canned template apps. Publish your first app in five minutes.
+    * Integration with Maven and Gradle.
+    * Uses JLink and jdeps to minimize the JDK size.
 * Pierce the abstraction! Cross platform tooling doesn't mean giving up platform-specific features. Over 120 different settings let you precisely configure your packages, including your:
     * Mac `Info.plist` files.
     * Windows XML app manifests.

@@ -112,7 +112,7 @@ The `site` section controls the generation of the download site. Currently you m
 
 Additional supported targets may be added in future, in particular ARM Linux distributions and muslc based Linux distributions.
 
-You can also write just `mac`, which expands to both Intel and Apple Silicon Macs. However if you request a short form like `windows` or `linux` then you'll get an error, because that expands to also request `windows.aarch64`, which isn't currently supported. To avoid being surprised by Conveyor updates that add such support, which could create packages targeting a CPU architecture you didn't want, you're required to be explicit about what you wish for here.
+You can also write just `mac`, which expands to both Intel and Apple Silicon Macs. However if you request a short form like `windows` or `linux` then you'll get an error, because that expands to also request `windows.aarch64`, which isn't currently supported. To avoid being surprised by Conveyor updates that add such support, which could create packages targeting a CPU architecture you didn't want, you're required to be explicit about what you wish for here.
 
 Normally you don't need to fill this key out. Reasonable defaults will be calculated for you based on whether your config lists inputs for those machine types and whether the relevant config section for that OS is nulled out. As a consequence, you can select what machines you want either additively:
 
@@ -153,7 +153,7 @@ A line of config like this can be generated with the `conveyor keys generate` co
 
 **`app.mac.signing-key`**,**`app.windows.signing-key`** The private key to use for each platform. If they're set to `derived` (the default) then derivation from the root private key is used and these specific keys aren't stored on disk, otherwise the value should contain the path to a standard PEM or PKCS#12 key store file relative to the app config file.
 
-**`app.mac.certificate`**, **`app.windows.certificate`** Should point to files containing the certificates file in PEM (ASCII) or PKCS#12 format. Other raw binary formats are also supported but JKS format isn't. The paths are relative to the app config file and they default to `{windows,apple}.cer` respectively.
+**`app.mac.certificate`**, **`app.windows.certificate`** Should point to files containing the certificates file in PEM (ASCII) or PKCS#12 format. Other raw binary formats are also supported but JKS format isn't. The paths are relative to the app config file and they default to `{windows,apple}.cer` respectively. Alternatively, these can be set like this: `app.mac.certificate = "self signed by CN=Nobody in particular"` (the default value is this but using your display name). In that case a self-signed certificate is deterministically derived from the root key.
 
 ## Character encodings
 

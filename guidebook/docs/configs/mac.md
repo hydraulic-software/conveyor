@@ -61,7 +61,7 @@ application metadata on macOS. You normally don't need to alter this, but if you
 
 **`app.mac.sparkle-options`** An object whose values are put in the `Info.plist` that controls Sparkle's behavior. [See here for a reference guide](https://sparkle-project.org/documentation/customization/). You should normally leave this alone unless you want precise behavioral control.
 
-**`app.mac.sign`** Controls whether signing is done after bundling. Defaults to true. If you don't have signing keys and this is true, you'll get a warning but it'll work if you're targeting Intel machines. If you're targeting Apple Silicon it won't build because all code on Apple Silicon must be signed.
+**`app.mac.sign`** Controls whether signing is done after bundling. Defaults to the value of `app.sign`. You should normally leave this set to true unless you want to speed up the build temporarily. It can be true even if you don't have a Developer ID certificate because the app will be self-signed.
 
 **`app.mac.signing-key`**, **`app.mac.certificate`** See [signing keys](index.md#signing).
 

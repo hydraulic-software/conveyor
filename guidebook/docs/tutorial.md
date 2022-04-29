@@ -4,16 +4,19 @@ In this tutorial we'll generate a fresh application using the templates built in
 
 This tutorial doesn't try to cover all the features Conveyor has, it's only here to get you started. Read through the rest of this guidebook to learn about the full range of possibilities.
 
+!!! tip
+    You can tick the checkmarks on this page to mark your progress. Their state is stored in a cookie.
+
 ## Step 1. Setting up
 
-* [x] Follow the instructions in [Setting up](setting-up.md) to install Conveyor and (optionally) create or supply signing keys.
+* [x] Follow the instructions in [Setting up](setting-up.md) to install Conveyor and (optionally) supply certificates.
 * [x] Pick a URL for hosting your packages. All you need is a directory on a web server. You can use [GitHub Releases](configs/download-pages.md#publishing-through-github) to host your repository. Upgrading your users then just involves making a new release. For testing you can also use `localhost`.
 
 ## Step 2. Create a sample project
 
 Conveyor has two pre-canned "Hello World" project templates. One is for a GUI app using JavaFX, and the other uses JetPack Compose for Desktop. This is the quickest way to try things out.
 
-* [x] Make sure you have a Java 17 or higher JDK installed so you can compile the samples.
+* [x] Make sure you have a Java 17 or higher JDK installed so you can compile the samples. Conveyor requires apps to use Java 11 or higher.
 * [x] Run the following command with flags customized as you see fit:
 
 ```
@@ -40,7 +43,7 @@ conveyor make linux-app
 
 # If on macOS, one of the following for Intel/M1 Macs respectively:
 conveyor -Kapp.machines=mac.amd64 make mac-app
-conveyor -Kapp.machines=mac.aarch make mac-app
+conveyor -Kapp.machines=mac.aarch64 make mac-app
 ```
 
 This will compile the project and then create an unzipped, unpackaged app in the `output` directory. Now run the generated program directly in the usual manner for your operating system to check it works.
@@ -65,11 +68,17 @@ The previous contents of the output directory will be replaced. You'll now find 
     * `apt` control files like `InRelease` and `Packages`. The generated site is also an apt repository, and the `.deb` will install sources files that use it.
 * For macOS:
     * Zips containing separate Intel and ARM .app folders. If you provided Apple signing certificates and a notarization service password in Step 1 then these will be signed and notarized.
-    * Two `appcast.rss` files, one for each CPU architecture. This controls updates.
+    * Two `appcast.rss` files, one for each CPU architecture. These control updates.
 * For Windows:
     * A plain zip file (which doesn't auto update).
-    * If you supplied an Authenticode signing certificate, an MSIX package and `.appinstaller` XML file. The latter can be opened on any Windows 10/11 install and will trigger the built-in "App Installer" app. That in turn will download the parts of the MSIX file that the user's system needs, and then install the package. The `.appinstaller` file is what's checked to find updates.
+    * An MSIX package and `.appinstaller` XML file. The latter can be opened on any Windows 10/11 install and will trigger the built-in "App Installer" app. That in turn will download the parts of the MSIX file that the user's system needs, and then install the package. The `.appinstaller` file is what's checked to find updates.
 * A `download.html` file that auto detects the user's operating system and CPU when possible.
+* If you *didn't* supply code signing certificates in Step 1 you'll also have:
+    * A `.crt` file containing your Windows self-signed certificate.
+    * A `launch.mac` file containing a shell script that will download the Mac app with `curl`, unpack it to `/Applications` or `~/Applications` and then start it up.
+    * A `launch.win.txt` file containing a PowerShell script (the extension is to force the web server to serve it as text). The script will download the certificate file, elevate to local admin, install it as a new root certificate and then install the MSIX.
+    * The `download.html` file will contain commands to copy/paste to a terminal that will use those scripts.
+
 
 You can now copy the contents of the directory to the URL you specified when creating the project. Try downloading and installing the package for your developer machine to see it in action.
 
@@ -101,12 +110,14 @@ conveyor make site
 
 Each operating system has its own approach to how and when updates are applied:
 
-* When using the Debian package, run `apt-get update && apt-get upgrade` as per normal, or use the graphical software update tool.
-* When using macOS updates are checked in the background when the app starts if:
+* **Debian/Ubuntu derived distros:** `apt-get update && apt-get upgrade` as per normal. Updates will also be presented via the normal graphical software update tool, along side OS updates.
+* **macOS:** Updates are downloaded in the background when the app starts if:
     * It's not the first start and it's been more than one hour since the last update check.
     * *or* if the `FORCE_UPDATE_CHECK` environment variable is set. For example you can run `FORCE_UPDATE_CHECK=1 /Applications/YourApp.app/Contents/MacOS/YourApp` from a terminal to force an immediate update check.
-* When using Windows, updates are checked:
-    * If the user re-opens the `.appinstaller` XML file. This is the easiest way to test updates. You don't have to re-download it because the `.appinstaller` file contains its own URL and the "App Installer" app will re-download it from the download site when it's opened.
+    * Once the update is downloaded the user is prompted to install and restart.
+    * The update schedule and UI can be adjusted in the config file.
+* **Windows:** Updates are checked:
+    * If the user re-opens the `.appinstaller` XML file. This is the easiest way to test updates. You don't have to re-download it because the `.appinstaller` file contains its own URL and the "App Installer" app will re-download a fresh copy from the download site when it's opened.
     * Every 8 hours in the background by the OS, regardless of whether the app is being used or not.
     * Optionally, on every app launch with a frequency you can specify. These update checks can be configured to block startup, ensuring that the user is always up to date. [Learn more here](configs/windows.md).
 

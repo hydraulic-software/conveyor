@@ -37,7 +37,7 @@ It has advantages for us too:
 
 ## 4. Is Conveyor only for JVM apps?
 
-Nope. You can package any kind of app, Conveyor just happens to have great support for the JVM. It makes sense to integrate support for
+Currently yes, but that won't be true for long as there are no fundamental reasons for that limitation. In theory you can package any kind of app, Conveyor just happens to have great support for the JVM. It makes sense to integrate support for
 the JVM because a cross-platform runtime is when the ability to create packages for other operating systems really shines. You don't need to
 mess with cross-compilers or running virtualized operating systems - just develop your app on your preferred platform and then ship to
 everyone with a single command.
