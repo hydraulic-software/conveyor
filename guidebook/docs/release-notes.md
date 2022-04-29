@@ -17,7 +17,6 @@ These builds will expire from time to time. Updates will be provided before expi
     * Registration of URL handlers and file type associations isn't yet supported.
     * There's no way to customize the generated download HTML.
 * Bugs
-    * You need a JDK installed and in your path for package construction to succeed properly. If you don't you'll get an error message about jdeps failing. This is due to a bug and not a genuine requirement.
     * Changes in terminal size whilst a build is in progress won't be respected.
     * Maven integration doesn't work on Windows.
     * Debian packages will show in GNOME Software as proprietary even if they aren't.
