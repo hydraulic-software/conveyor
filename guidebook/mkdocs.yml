@@ -1,4 +1,6 @@
 site_name: Hydraulic Conveyor
+site_description: User guide for the Conveyor packaging tool.
+site_url: https://conveyor.hydraulic.dev
 
 extra:
   homepage: https://www.hydraulic.software
@@ -54,16 +56,19 @@ theme:
     - navigation.tracking
     - navigation.sections
     - content.code.annotate
+    - content.tabs.link
 
   palette:
-    - scheme: hydraulic
-      accent: blue
+    - media: "(prefers-color-scheme: light)"
+      scheme: hydraulic
       toggle:
-        icon: material/toggle-switch-off-outline
+        icon: octicons/moon-24
         name: Switch to dark mode
-    - scheme: slate
+
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
       toggle:
-        icon: material/toggle-switch
+        icon: octicons/sun-24
         name: Switch to light mode
 
   logo: 'images/logo-white.svg'
@@ -100,6 +105,7 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tabbed
+      alternate_style: true
   - pymdownx.tilde
 
 plugins:

@@ -36,3 +36,8 @@
     --md-primary-fg-color--light: #6c50f9;
     --md-primary-fg-color--dark: #254f84;
 }
+
+
+[data-md-color-scheme="slate"] {
+    --md-primary-fg-color:        #3777BA;
+}

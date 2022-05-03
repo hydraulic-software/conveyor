@@ -10,13 +10,13 @@ This tutorial doesn't try to cover all the features Conveyor has, it's only here
 ## Step 1. Setting up
 
 * [x] Follow the instructions in [Setting up](setting-up.md) to install Conveyor and (optionally) supply certificates.
-* [x] Pick a URL for hosting your packages. All you need is a directory on a web server. You can use [GitHub Releases](configs/download-pages.md#publishing-through-github) to host your repository. Upgrading your users then just involves making a new release. For testing you can also use `localhost`.
+* [x] Pick a URL for hosting your packages. This is where auto-updates will check for new versions. All you need is a directory on a web server. [You can use GitHub Releases](configs/download-pages.md#publishing-through-github) to host your repository files and GitHub Sites to host the generated `download.html` file. For testing you can also use `localhost`.
 
 ## Step 2. Create a sample project
 
-Conveyor has two pre-canned "Hello World" project templates. One is for a GUI app using JavaFX, and the other uses JetPack Compose for Desktop. This is the quickest way to try things out.
+Conveyor has two pre-canned "Hello World" project templates. One is for a GUI app using [JetPack Compose for Desktop](https://www.jetbrains.com/lp/compose-desktop/), and the other uses [JavaFX](https://www.openjfx.io). This is the quickest way to try things out.
 
-* [x] Make sure you have a Java 17 or higher JDK installed so you can compile the samples. Conveyor requires apps to use Java 11 or higher.
+* [x] Make sure you have a modern JDK installed so you can compile the samples. Conveyor requires apps to use Java 11 or higher.
 * [x] Run the following command with flags customized as you see fit:
 
 ```
@@ -28,6 +28,9 @@ conveyor generate {javafx,compose} \
 ```
 
 where you pick one of `javafx` or `compose`, `--rdns` should be set to a Java style package name, and `--site-url` can be `http://localhost` if you don't want to try uploading the results somewhere. The `--output-dir` will be created and populated with a buildable project.
+
+!!! tip "Cross platform UI"
+    JetPack Compose is the next-gen native UI toolkit on Android and it also runs on Windows/Mac/Linux, making it easy to share code between mobile and desktop. [JavaFX also runs on mobile](https://gluonhq.com/products/mobile/) and [the web](https://www.jpro.one).
 
 ## Step 3. Build unpackaged apps
 
@@ -77,7 +80,7 @@ The previous contents of the output directory will be replaced. You'll now find 
     * A `.crt` file containing your Windows self-signed certificate.
     * A `launch.mac` file containing a shell script that will download the Mac app with `curl`, unpack it to `/Applications` or `~/Applications` and then start it up.
     * A `launch.win.txt` file containing a PowerShell script (the extension is to force the web server to serve it as text). The script will download the certificate file, elevate to local admin, install it as a new root certificate and then install the MSIX.
-    * The `download.html` file will contain commands to copy/paste to a terminal that will use those scripts.
+    * The `download.html` file will contain commands to copy/paste to a terminal that will use those scripts.
 
 
 You can now copy the contents of the directory to the URL you specified when creating the project. Try downloading and installing the package for your developer machine to see it in action.
