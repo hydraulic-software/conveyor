@@ -24,6 +24,16 @@ These builds will expire from time to time. Updates will be provided before expi
 
 ## Version history
 
+### Private Beta 3
+
+*May 2022*
+
+* Support adding Conveyor to the bash shell PATH on macOS, not just zsh.
+* Visual tweaks to the generated download HTML.
+* Better usability around passphrase prompting.
+* Simplified the guidebook material on signing.
+* Small bug fixes.
+
 ### Private Beta 2
 
 *May 2022*
