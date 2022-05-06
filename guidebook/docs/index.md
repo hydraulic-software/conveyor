@@ -34,13 +34,13 @@ Conveyor doesn't care how you do your UI, but this example uses the [JetPack Com
     * Detects the user's operating system and CPU architecture.
     * [Release via GitHub releases](configs/download-pages#publishing-through-github).
 * **Brainless code signing.**
-    * Sign your apps with Apple/Windows certificates for a better download UX, or ignore it (you'll get self-signed packages and a `curl | bash` style install).    
+    * Sign your apps with Apple/Windows certificates for a better download UX, or ignore it and get self-signed packages with a `curl | bash` style install.    
     * You can sign/notarize apps on any OS. 
     * You can backup your single root key by writing it down as words on paper.
 * **[Deep support for JVM applications](configs/jvm.md).**
-    * Pre-canned template apps. Publish your first app in five minutes.
-    * Integration with Maven and Gradle.
     * Uses JLink and jdeps to minimize the JDK size.
+    * Optional config import from Maven and Gradle.
+    * Pre-canned template apps. Publish your first app in five minutes.
 * **Pierce the abstraction!** Cross platform tooling doesn't mean giving up platform-specific features. Over 120 different settings let you precisely configure your packages, including your:
     * Mac `Info.plist` files.
     * Windows XML app manifests.
