@@ -174,22 +174,40 @@ The plugin adds two tasks, `printConveyorConfig` and `writeConveyorConfig`. The 
 * [ ] Run `./gradlew -q printConveyorConfig` and examine the output. The plugin can read config from other plugins like the Java application plugin, the JetPack Compose plugin and the OpenJFX plugin.
 * [ ] Open `settings.gradle{.kts}` file. The following bit of code adds support for loading the Gradle plugin:
 
-```kotlin title="settings.gradle.kts"
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        maven("https://maven.hq.hydraulic.software")
+=== "Kotlin"
+    ```kotlin title="settings.gradle.kts"
+    pluginManagement {
+        repositories {
+            gradlePluginPortal()
+            maven("https://maven.hq.hydraulic.software")
+        }
     }
-}
-```
+    ```
+
+=== "Groovy"
+    ```groovy title="settings.gradle"
+    pluginManagement {
+        repositories {
+            gradlePluginPortal()
+            maven { uri = "https://maven.hq.hydraulic.software" }
+        }
+    }
+    ```
 
 * [ ] Open `build.gradle{.kts}` file. It should apply the Conveyor plugin at the top:
 
-```
-plugins {
-    id 'dev.hydraulic.conveyor' version '0.9.8'
-}
-```
+=== "Kotlin"
+    ```kotlin title="build.gradle.kts"
+    plugins {
+        id("dev.hydraulic.conveyor") version "0.9.8"
+    }
+    ```
+=== "Groovy"
+    ```groovy title="build.gradle"
+    plugins {
+        id 'dev.hydraulic.conveyor' version '0.9.8'
+    }
+    ```
 
 [Get the latest version number and plugins code snippet here](https://plugins.gradle.org/plugin/dev.hydraulic.conveyor).
 

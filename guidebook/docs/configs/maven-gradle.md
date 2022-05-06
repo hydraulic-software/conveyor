@@ -29,24 +29,41 @@ Conveyor provides an [open source Gradle plugin](https://github.com/hydraulic-so
 
 To use it, [look up the latest version](https://plugins.gradle.org/plugin/dev.hydraulic.conveyor) and then apply the plugin in your Gradle build:
 
-```
-plugins {
-	  id("dev.hydraulic.conveyor") version "0.9.8"
-}
-```
+=== "Kotlin"
+    ```kotlin title="build.gradle.kts"
+    plugins {
+        id("dev.hydraulic.conveyor") version "0.9.8"
+    }
+    ```
+=== "Groovy"
+    ```groovy title="build.gradle"
+    plugins {
+        id 'dev.hydraulic.conveyor' version '0.9.8'
+    }
+    ```
 
-For now, you will also need to add our repository to your `settings.gradle`:
+For now, you will also need to add our repository to your `settings.gradle{.kts}`:
 
-```
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        maven {
-            url = uri("https://maven.hq.hydraulic.software")
+=== "Kotlin"
+    ```kotlin title="settings.gradle.kts"
+    pluginManagement {
+        repositories {
+            gradlePluginPortal()
+            maven {
+                url = uri("https://maven.hq.hydraulic.software")
+            }
         }
     }
-}
-```
+    ```
+=== "Groovy"
+    ```groovy title="settings.gradle"
+    pluginManagement {
+        repositories {
+            gradlePluginPortal()
+            maven { url = "https://maven.hq.hydraulic.software" }
+        }
+    }
+    ```
 
 Now you will have two tasks, `printConveyorConfig` and `generateConveyorConfig`. The first prints the config to the screen so you can examine it. The latter writes the config to the project source directory under the name `generated.conveyor.conf` where it's easily included into your main config file. It also adds the following dependency configurations:
 
@@ -142,24 +159,44 @@ The first form will invoke Gradle each time to read the config. It means you wil
 
 You can easily extend this by just adding some code to the end of the relevant tasks that appends to the file, like this:
 
-```kotlin
-tasks.named<hydraulic.conveyor.gradle.WriteConveyorConfigTask>("writeConveyorConfig") {
-    doLast {
-        val extraConf = "// ..."
-        destination.get().asFile.appendText(extraConf)
+=== "Kotlin"
+    ```kotlin
+    tasks.named<hydraulic.conveyor.gradle.WriteConveyorConfigTask>("writeConveyorConfig") {
+        doLast {
+            val extraConf = "// ..."
+            destination.get().asFile.appendText(extraConf)
+        }
     }
-}
-```
+    ```
+=== "Groovy"
+    ```groovy
+    tasks.writeConveyorConfig {
+        doLast {
+            var extraConf = "// Hello World"
+            destination.get().asFile.append(extraConf)
+        }
+    }
+    ```
 
 You can change the `destination` property to control where the config file is written to.
 
 If you want Gradle to run Conveyor as well, just define a normal execution task using words to this effect:
 
-```kotlin
-tasks.register<Exec>("convey") {
-    val dir = layout.buildDirectory.dir("conveyor.out")
-    outputs.dir(dir)
-    commandLine("conveyor", "make", "--output-dir", dir.get(), "site")
-    dependsOn("jar", "writeConveyorConfig")
-}
-```
+=== "Kotlin"
+    ```kotlin
+    tasks.register<Exec>("convey") {
+        val dir = layout.buildDirectory.dir("packages")
+        outputs.dir(dir)
+        commandLine("conveyor", "make", "--output-dir", dir.get(), "site")
+        dependsOn("jar", "writeConveyorConfig")
+    }
+    ```
+=== "Groovy"
+    ```groovy
+    tasks.register("conveyor", Exec) {
+        var dir = layout.buildDirectory.dir("packages")
+        outputs.dir(dir)
+        commandLine = ["conveyor", "make", "--output-dir", dir.get(), "site"]
+        dependsOn("jar", "writeConveyorConfig")
+    }
+    ```
