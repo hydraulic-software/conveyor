@@ -3,7 +3,7 @@
 You will need:
 
 - [x] **An application to package.** Conveyor can generate a hello world app if you don't have one.
-- [x] **A static web server.** GitHub Releases works OK.
+- [x] **A static web server that supports Content-Range requests.** GitHub Releases works OK. [The Python 3 built-in web server doesn't](https://github.com/python/cpython/issues/86809). 
 - [x] **A fully energized terminal.** On Windows, please use [Windows Terminal](https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701) instead of the default console.
 
 !!! important

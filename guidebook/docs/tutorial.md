@@ -55,7 +55,7 @@ Because we generated a JVM app the above commands can be run on any OS in any co
 
 The command for macOS is different to those for Windows and Linux because Conveyor supports two CPU architectures for macOS, so you have to disambiguate which you want. The `-K` switch sets a key in the config file for the duration of that command only. Here we're setting the `app.machines` key which controls which targets to create packages for.
 
-## Step 4. Build and upload the download site
+## Step 4. Build and serve the download site
 
 * [ ] Request a full build of the download / repository site:
 
@@ -67,23 +67,24 @@ The previous contents of the output directory will be replaced. You'll now find 
 
 * For Linux:
     * A plain tarball (which doesn't auto update).
-    * A `.deb` package for Debian/Ubuntu derived distributions.
-    * `apt` control files like `InRelease` and `Packages`. The generated site is also an apt repository, and the `.deb` will install sources files that use it.
+    * A `.deb` package for Debian/Ubuntu derived distributions. The site directory is also an apt repository, and the `.deb` will install sources files that use it.
 * For macOS:
     * Zips containing separate Intel and ARM .app folders. If you provided Apple signing certificates and a notarization service password in Step 1 then these will be signed and notarized.
     * Two `appcast.rss` files, one for each CPU architecture. These control updates.
 * For Windows:
     * A plain zip file (which doesn't auto update).
     * An MSIX package and `.appinstaller` XML file. The latter can be opened on any Windows 10/11 install and will trigger the built-in "App Installer" app. That in turn will download the parts of the MSIX file that the user's system needs, and then install the package. The `.appinstaller` file is what's checked to find updates.
-* A `download.html` file that auto detects the user's operating system and CPU when possible.
+* A `download.html` file that auto-detects the user's operating system and CPU when possible.
 * If you *didn't* supply code signing certificates in Step 1 you'll also have:
     * A `.crt` file containing your Windows self-signed certificate.
     * A `launch.mac` file containing a shell script that will download the Mac app with `curl`, unpack it to `/Applications` or `~/Applications` and then start it up.
     * A `launch.win.txt` file containing a PowerShell script (the extension is to force the web server to serve it as text). The script will download the certificate file, elevate to local admin, install it as a new root certificate and then install the MSIX.
     * The `download.html` file will contain commands to copy/paste to a terminal that will use those scripts.
 
-
 You can now copy the contents of the directory to the URL you specified when creating the project. Try downloading and installing the package for your developer machine to see it in action.
+
+!!! note "Localhost web servers"
+    If you want to serve the repository from localhost, make sure you don't use the Python3 web server. It doesn't support Content-Range requests which are required by the Windows installation system.
 
 ## Step 5. Release an update
 
