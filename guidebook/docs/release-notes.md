@@ -24,6 +24,12 @@ These builds will expire from time to time. Updates will be provided before expi
 
 ## Version history
 
+### Private beta 4
+
+*May 2022*
+
+* More helpful error messages if a file isn't found, or if Windows isn't in developer mode.
+
 ### Private Beta 3
 
 *May 2022*
