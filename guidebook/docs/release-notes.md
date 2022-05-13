@@ -28,7 +28,11 @@ These builds will expire from time to time. Updates will be provided before expi
 
 *May 2022*
 
-* More helpful error messages if a file isn't found, or if Windows isn't in developer mode.
+* Self-signed download HTML now makes script links clickable so users can quickly view what they'd run. A tooltip is now displayed when
+  the user copies the command.
+* More helpful error messages if a file isn't found, if Windows isn't in developer mode or if you don't enter the right passphrase.
+* Introduced the JVM client enhancements config, so these tweaks are no longer on by default. 
+* Bugfixes.
 
 ### Private Beta 3
 
