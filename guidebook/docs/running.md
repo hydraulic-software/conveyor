@@ -116,8 +116,10 @@ You can change this location using the `--cache-dir` flag and the maximum number
 If you hit a caching bug you can forcibly re-run tasks. You shouldn't need this unless you encounter a caching bug, but here it is anyway:
 
 ```bash
-conveyor --rerun make linux-app
+conveyor make linux-app --rerun
 ```
+
+There's no way to clear the cache from the CLI. You can just delete the cache directory yourself if you want to free up the space it uses.
 
 ## Viewing logs
 
