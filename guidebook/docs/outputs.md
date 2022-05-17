@@ -2,6 +2,26 @@
 
 Conveyor generates packages for Windows, macOS and Debian/Ubuntu based Linux distributions, along with a download HTML page that detects the user's operating system and CPU architecture. More package formats may be added in future. 
 
+## Contents of the generated site
+
+When you generate a repository site you will get the following files:
+
+* For Linux:
+    * A `.deb` package for Debian/Ubuntu derived distributions. The site directory is also an apt repository, and the `.deb` will install sources files that use it.
+    * A plain tarball (which doesn't auto update).
+* For macOS:
+    * Zips containing separate Intel and ARM .app folders. They'll be signed and notarized if credentials were supplied.
+    * Two `appcast.rss` files, one for each CPU architecture. These control updates.
+* For Windows:
+    * An MSIX package and `.appinstaller` XML file. The latter can be opened on any Windows 10/11 install and will trigger the built-in "App Installer" app. That in turn will download the parts of the MSIX file that the user's system needs, and then install the package. The `.appinstaller` file is what's checked to find updates, and it contains its own URL so you can open it from any location (i.e. a download), and it will still work.
+    * A plain zip file (which doesn't auto update).
+* A `download.html` file that auto-detects the user's operating system and CPU when possible.
+* If you are self-signing, you'll also have:
+    * A `.crt` file containing your Windows self-signed certificate.
+    * A `launch.mac` file containing a shell script that will download the Mac app with `curl`, unpack it to `/Applications` or `~/Applications` and then start it up.
+    * A `launch.win.txt` file containing a PowerShell script (the extension is to force the web server to serve it as text). The script will download the certificate file, elevate to local admin, install it as a new root certificate and then install the MSIX.
+    * The `download.html` file will contain commands to copy/paste to a terminal that will use those scripts.
+
 ## Windows
 
 Conveyor doesn't create installer EXEs. Instead it uses Microsoft's newest packaging technology, [MSIX](https://docs.microsoft.com/en-us/windows/msix/). Like the older MSI format support is built in to Windows, but MSIX is a complete redesign with a different format, approach and capabilities. All Windows 10/11 systems support it and Microsoft have also backported it to Windows 7.[^1] MSIX files are enhanced ZIP files with several features that make it a good fit for modern desktop app distribution:

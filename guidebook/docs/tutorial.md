@@ -12,22 +12,21 @@ This tutorial doesn't try to cover all the features Conveyor has, it's only here
 * [x] Follow the instructions in [Setting up](setting-up.md) to install Conveyor and (optionally) supply certificates.
 * [x] Pick a URL for hosting your packages. This is where auto-updates will check for new versions. All you need is a directory on a web server. [You can use GitHub Releases](configs/download-pages.md#publishing-through-github) to host your repository files and GitHub Sites to host the generated `download.html` file. For testing you can also use `localhost`.
 
-## Step 2. Create a sample project
+## Step 2. Create a template project
 
 Conveyor has two pre-canned "Hello World" project templates. One is for a GUI app using [JetPack Compose for Desktop](https://www.jetbrains.com/lp/compose-desktop/), and the other uses [JavaFX](https://www.openjfx.io). This is the quickest way to try things out.
 
-* [x] Make sure you have a modern JDK installed so you can compile the samples. Conveyor requires apps to use Java 11 or higher.
-* [x] Run the following command with flags customized as you see fit:
+* [x] Make sure you have a modern JDK installed so you can compile the samples. Conveyor requires JVM apps to use Java 11 or higher.
+* [x] Run the following command, picking an app type and reverse DNS name as you see fit. There are also `--display-name`, `--output-url` and `--site-url` flags:
 
 ```
-conveyor generate {javafx,compose} \
-                          --output-dir=path/to/my-project \
-                          --site-url=https://mysite.com/downloads \
-                          --rdns=com.example.myproject \
-                          --display-name="My Amazing Project"
+conveyor generate {javafx,compose} --rdns=com.example.my-project
 ```
 
-where you pick one of `javafx` or `compose`, `--rdns` should be set to a Java style package name, and `--site-url` can be `http://localhost` if you don't want to try uploading the results somewhere. The `--output-dir` will be created and populated with a buildable project.
+Identifying an app with a reverse DNS name is required for some platforms like macOS, and other needed values can be derived from it. A directory named after the last component (in this case `my-project`) will be populated with a buildable project.
+
+!!! tip "Reverse DNS names"
+    RDNS names are just a naming convention meant to keep apps clearly separated. Actual domain name ownership isn't checked by anything. If you don't have a website consider creating a [GitHub](https://www.github.com) account and then using `io.github.youruser.yourproject`, which will ensure no naming conflicts with anyone else.
 
 !!! tip "Cross platform UI"
     JetPack Compose is the next-gen native UI toolkit on Android and it also runs on Windows/Mac/Linux, making it easy to share code between mobile and desktop. [JavaFX also runs on mobile](https://gluonhq.com/products/mobile/) and [the web](https://www.jpro.one).
@@ -51,7 +50,7 @@ conveyor -Kapp.machines=mac.aarch64 make mac-app
 
 This will compile the project and then create an unzipped, unpackaged app in the `output` directory. Now run the generated program directly in the usual manner for your operating system to check it works.
 
-Because we generated a JVM app the above commands can be run on any OS in any combination. You should pick the one that matches your machine only so you can run the resulting output.
+Because we generated a JVM app the above commands can be run on any OS in any combination. You should pick the one that matches your machine, but only so you can run the results.
 
 The command for macOS is different to those for Windows and Linux because Conveyor supports two CPU architectures for macOS, so you have to disambiguate which you want. The `-K` switch sets a key in the config file for the duration of that command only. Here we're setting the `app.machines` key which controls which targets to create packages for.
 
@@ -63,28 +62,12 @@ The command for macOS is different to those for Windows and Linux because Convey
 conveyor make site
 ```
 
-The previous contents of the output directory will be replaced. You'll now find there:
-
-* For Linux:
-    * A plain tarball (which doesn't auto update).
-    * A `.deb` package for Debian/Ubuntu derived distributions. The site directory is also an apt repository, and the `.deb` will install sources files that use it.
-* For macOS:
-    * Zips containing separate Intel and ARM .app folders. If you provided Apple signing certificates and a notarization service password in Step 1 then these will be signed and notarized.
-    * Two `appcast.rss` files, one for each CPU architecture. These control updates.
-* For Windows:
-    * A plain zip file (which doesn't auto update).
-    * An MSIX package and `.appinstaller` XML file. The latter can be opened on any Windows 10/11 install and will trigger the built-in "App Installer" app. That in turn will download the parts of the MSIX file that the user's system needs, and then install the package. The `.appinstaller` file is what's checked to find updates.
-* A `download.html` file that auto-detects the user's operating system and CPU when possible.
-* If you *didn't* supply code signing certificates in Step 1 you'll also have:
-    * A `.crt` file containing your Windows self-signed certificate.
-    * A `launch.mac` file containing a shell script that will download the Mac app with `curl`, unpack it to `/Applications` or `~/Applications` and then start it up.
-    * A `launch.win.txt` file containing a PowerShell script (the extension is to force the web server to serve it as text). The script will download the certificate file, elevate to local admin, install it as a new root certificate and then install the MSIX.
-    * The `download.html` file will contain commands to copy/paste to a terminal that will use those scripts.
+The previous contents of the output directory will be replaced. You'll now find there packages for each OS in multiple formats, some update metadata files and a download page. If you didn't supply signing credentials in Step 1, then you'll also find some launcher scripts and a `.crt` file holding your self-signed certificate. The download page will either ask the user to use terminal commands if you're self signing, or provide a download button if not. You don't have to use this download HTML. Feel free to copy/paste bits of it to your own page, or ignore it entirely.
 
 You can now copy the contents of the directory to the URL you specified when creating the project. Try downloading and installing the package for your developer machine to see it in action.
 
 !!! note "Localhost web servers"
-    If you want to serve the repository from localhost, make sure you don't use the Python3 web server. It doesn't support Content-Range requests which are required by the Windows installation system.
+    If you want to serve the repository from localhost, make sure you _don't_ use the Python3 web server. It doesn't support Content-Range requests which are required by the Windows installation system.
 
 ## Step 5. Release an update
 
