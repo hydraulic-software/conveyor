@@ -25,6 +25,8 @@ conveyor generate {javafx,compose} --rdns=com.example.my-project
 
 Identifying an app with a reverse DNS name is required for some platforms like macOS, and other needed values can be derived from it. A directory named after the last component (in this case `my-project`) will be populated with a buildable project.
 
+We'll explore what's inside the project directory in a bit. For now, note that there's a `conveyor.conf` file at the top level directory.
+
 !!! tip "Reverse DNS names"
     RDNS names are just a naming convention meant to keep apps clearly separated. Actual domain name ownership isn't checked by anything. If you don't have a website consider creating a [GitHub](https://www.github.com) account and then using `io.github.youruser.yourproject`, which will ensure no naming conflicts with anyone else.
 
@@ -34,7 +36,7 @@ Identifying an app with a reverse DNS name is required for some platforms like m
 ## Step 3. Build unpackaged apps
 
 * [ ] Change into the output directory you selected above and run `./gradlew jar` to compile the sample.
-* [ ] Now build a self-contained but unpackaged app for your current platform:
+* [ ] Build a self-contained but unpackaged app for your current platform:
 
 ```
 # If on Windows:
@@ -48,9 +50,11 @@ conveyor -Kapp.machines=mac.amd64 make mac-app
 conveyor -Kapp.machines=mac.aarch64 make mac-app
 ```
 
-This will compile the project and then create an unzipped, unpackaged app in the `output` directory. Now run the generated program directly in the usual manner for your operating system to check it works.
+This will compile the project and then create an unzipped, unpackaged app in the `output` directory. 
 
-Because we generated a JVM app the above commands can be run on any OS in any combination. You should pick the one that matches your machine, but only so you can run the results.
+* [ ] Now run the generated program directly in the usual manner for your operating system to check it works.
+
+Because we generated a JVM app, the above commands can be run on any OS in any combination. You should pick the one that matches your machine but only so you can run the results.
 
 The command for macOS is different to those for Windows and Linux because Conveyor supports two CPU architectures for macOS, so you have to disambiguate which you want. The `-K` switch sets a key in the config file for the duration of that command only. Here we're setting the `app.machines` key which controls which targets to create packages for.
 
@@ -62,12 +66,12 @@ The command for macOS is different to those for Windows and Linux because Convey
 conveyor make site
 ```
 
-The previous contents of the output directory will be replaced. You'll now find there packages for each OS in multiple formats, some update metadata files and a download page. If you didn't supply signing credentials in Step 1, then you'll also find some launcher scripts and a `.crt` file holding your self-signed certificate. The download page will either ask the user to use terminal commands if you're self signing, or provide a download button if not. You don't have to use this download HTML. Feel free to copy/paste bits of it to your own page, or ignore it entirely.
+The previous contents of the output directory will be replaced. You'll now find there packages for each OS in multiple formats, some update metadata files and a download page ([details](outputs.md)). 
 
-You can now copy the contents of the directory to the URL you specified when creating the project. Try downloading and installing the package for your developer machine to see it in action.
+The default generated `conveyor.conf` file tells each package to look for updates on `localhost:8899`. If you want to just quickly test updates this is good enough - grab your favourite web server and serve that directory. We recommend [Caddyserver](https://caddyserver.com/). If you want to serve your packages for real, change the `site.base-url` key to point to the URL where you'll upload your files and rerun `conveyor make site`. You can also use [GitHub Releases](configs/download-pages.md#publishing-through-github).
 
-!!! note "Localhost web servers"
-    If you want to serve the repository from localhost, make sure you _don't_ use the Python3 web server. It doesn't support Content-Range requests which are required by the Windows installation system.
+!!! warning 
+    The web server must support Content-Range requests. Unfortunately the Python 3 built in web server doesn't.
 
 ## Step 5. Release an update
 
