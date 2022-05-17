@@ -68,10 +68,12 @@ conveyor make site
 
 The previous contents of the output directory will be replaced. You'll now find there packages for each OS in multiple formats, some update metadata files and a download page ([details](outputs.md)). 
 
-The default generated `conveyor.conf` file tells each package to look for updates on `localhost:8899`. If you want to just quickly test updates this is good enough - grab your favourite web server and serve that directory. We recommend [Caddyserver](https://caddyserver.com/). If you want to serve your packages for real, change the `site.base-url` key to point to the URL where you'll upload your files and rerun `conveyor make site`. You can also use [GitHub Releases](configs/download-pages.md#publishing-through-github).
+The default generated `conveyor.conf` file tells each package to look for updates on `localhost:8899`. If you want to just quickly test updates this is good enough - grab your favourite web server and serve that directory. We recommend [Caddyserver](https://caddyserver.com/). 
 
 !!! warning 
     The web server must support Content-Range requests. Unfortunately the Python 3 built in web server doesn't.
+
+When you want to serve your packages for real, change the `site.base-url` key to point to the URL where you'll upload your files and rerun `conveyor make site`. You can also use [GitHub Releases](configs/download-pages.md#publishing-through-github). Note that there's no way to change the site URL after release because it's included in the packages themselves, so pick wisely.
 
 ## Step 5. Release an update
 
