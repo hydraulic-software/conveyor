@@ -24,6 +24,15 @@ These builds will expire from time to time. Updates will be provided before expi
 
 ## Version history
 
+### Private beta 5
+
+*May 2022*
+
+* Simplified new project generation.
+* Builds no longer expire.
+* Added a message of the day feature to announce new versions.
+* Bugfixes.
+
 ### Private beta 4
 
 *May 2022*
