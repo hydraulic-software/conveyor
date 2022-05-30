@@ -9,7 +9,7 @@ systemd as a service manager.
 
 ## 2. Is Conveyor free?
 
-It's free for open source projects, and during the early access period it's free for everyone else too. Once the early access period ends,
+It's free for open source projects, and during the introductory period it's free for everyone else too. Once the introductory period ends,
 it will become a commercial product when used on proprietary apps.
 
 ## 3. Why isn't Conveyor a service?
