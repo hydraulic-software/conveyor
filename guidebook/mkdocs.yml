@@ -11,8 +11,8 @@ extra:
 nav:
   - Welcome:
     - Getting started: index.md
-    - Tutorial: tutorial.md
     - Setting up: setting-up.md
+    - Tutorial: tutorial.md
     - keys-and-certificates.md
     - outputs.md
     - running.md

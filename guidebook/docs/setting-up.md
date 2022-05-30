@@ -11,12 +11,12 @@ You will need:
 
 ## Download Conveyor
 
-!!! warning
-    **Conveyor is currently in private beta**. This build will expire at the end of May.
-
 [ :material-download-circle: Download for your OS](https://downloads.hydraulic.dev/conveyor/download.html){ .md-button .md-button--primary }
 
-**Updates.** Conveyor is packaged using itself. To avoid surprises, automatic background updates are switched off for Windows and macOS. To update run it from the GUI instead of the command line and then click "Check for updates". On Linux you can control updates in the usual manner (the tarball never updates itself).
+!!! warning
+    **Conveyor is currently in private beta**. To go beyond the tutorial you need a license key (it looks like `abcd-efgh`). As long as your download site is set to localhost you don't need anything. To try it for a real app email [contact@hydraulic.software](mailto:contact@hydraulic.software) and request a key.
+
+**Updates.** Automatic background updates for Conveyor itself are switched off for Windows and macOS. To update, run from the GUI instead of the command line and then click "Check for updates". On Debian you can control updates in the usual manner and for other distros, the tarball never updates itself so you'll need to download it again for now. This will be fixed in future releases.
 
 ## Add it to your path
 

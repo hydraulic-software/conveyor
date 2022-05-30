@@ -13,6 +13,18 @@ To understand every setting that went into your app run the `conveyor json` comm
 
 The `conveyor.compatibility-level` key will be added automatically on first run if you don't specify it. If new versions of Conveyor change the config layout or make other changes that would be backwards incompatible, they will only take effect if you opt in by incrementing your compatibility level. Otherwise, the old behaviours will be preserved.
 
+## License keys
+
+To use Conveyor you must meet one of the following criteria:
+
+1. `app.site.base-url` is set to `http://localhost` (any port). This is the mode used in the tutorial and is for trying things out / playing around.
+2.  `app.vcs-url` is set to the URL of your source repository. The project found there must match the one you're packaging and must be open source. This can be a git URL, GitHub URL, Mercurial URL etc.
+3. `conveyor.license-key` contains an eight character license key (like `aaaa-bbbb`). This lets you package a proprietary application.
+
+To get a license key simply run Conveyor without setting anything in your config file except the site URL. A new key will be generated and put in the config file for you. It'll work for a single version.
+
+Because Conveyor is licensed per-project, keys are associated with site URLs. It's OK to change your site URL, so you can fix typos or switch from a private to public location. If you change to a new URL and then change back again, you'll get an error because this looks like using one key for multiple projects. If you're not trying to share keys but still need to change your site URL to an older one, just email [contact@hydraulic.software](mailto:contact@hydraulic.software) and we'll sort it out.
+
 ## Minimal app
 
 Apps are built from [inputs](inputs.md). A config must specify at least one input file and the address where the downloads will be served from (as the packages need to know this to configure online updates). If the file name follows a conventional form all other app metadata can be derived from it:
@@ -153,7 +165,7 @@ A line of config like this can be generated with the `conveyor keys generate` co
 
 **`app.mac.signing-key`**,**`app.windows.signing-key`** The private key to use for each platform. If they're set to `derived` (the default) then derivation from the root private key is used and these specific keys aren't stored on disk, otherwise the value should contain the path to a standard PEM or PKCS#12 key store file relative to the app config file.
 
-**`app.mac.certificate`**, **`app.windows.certificate`** Should point to files containing the certificates file in PEM (ASCII) or PKCS#12 format. Other raw binary formats are also supported but JKS format isn't. The paths are relative to the app config file and they default to `{windows,apple}.cer` respectively. Alternatively, these can be set like this: `app.mac.certificate = "self signed by CN=Nobody in particular"` (the default value is this but using your display name). In that case a self-signed certificate is deterministically derived from the root key.
+**`app.mac.certificate`**, **`app.windows.certificate`** Should point to files containing the certificates file in PEM (ASCII) or PKCS#12 format. Other raw binary formats are also supported but JKS format isn't. The paths are relative to the app config file and they default to `{windows,apple}.cer` respectively. Alternatively, these can be set like this: `app.mac.certificate = "self signed by CN=Nobody in particular"` (the default value is this but using your display name). In that case a self-signed certificate is deterministically derived from the root key.
 
 ## Character encodings
 
