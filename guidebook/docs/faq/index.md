@@ -23,10 +23,9 @@ Many programs are now offered exclusively as hosted services when it's not techn
 users. Being a local tool means you get:
 
 * Ultra-fast turnaround times on rebuilds, so you can quickly experiment and polish your package.
-* No outages - a tool is as available as your own hardware.
-* Freedom and privacy. We don't know what software you build with Conveyor, and that's as it should be! In an era of sudden and arbitrary 
-  cancellations, a tool is something you can rely on.
-* Absolute control. When you buy the Unlimited Edition you get the source code and can easily fork it. Good luck forking a service!
+* No outages. A tool is as available as your own hardware.
+* Privacy. We never see your code, so you can use Conveyor for internal or proprietary tools without worry.
+* Absolute control. When you buy the Source or Unlimited plans you get the source code and can fork it, or even resell it as a feature of your own product. Good luck forking a service!
 
 It has advantages for us too:
 
