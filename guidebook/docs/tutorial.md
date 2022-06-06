@@ -138,9 +138,8 @@ app {
   display-name = My Amazing Project   // (3)!
   site.base-url = downloads.myproject.org/some/path   // (4)!
   
-  inputs += "icons/*.png"  // (5)!
-  icons = "icon-square-*.png"
-  mac.icons = "icon-rounded-*.png"
+  icons = "icons/icon-square-*.png"   // (5)!
+  mac.icons = "icons/icon-rounded-*.png"
 }
 
 conveyor.compatibility-level = 1   // (6)!

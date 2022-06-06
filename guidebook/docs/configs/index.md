@@ -97,17 +97,13 @@ app.display-name = LittleCorp Example App
 ```
 # Import some PNG files of different sizes/resolutions for the icon
 # and alter the name pattern that it looks for.
-app.inputs = "images/myapp-icon-*.png"
 app.icons = "myapp-icon-*.png"
 ```
 
-**`app.icons`** A list of PNG images taken from the inputs. The default is `icons-*.png`, so just adding files with this kind of name to the `app.inputs` list is enough. The images must be square 
-and the dimensions must be a power of 2 between 16 and 1024 e.g. 256x256. It's a good idea to provide at least a few different resolutions so scaling of the icon between sizes is smoother. Windows also wants images sized 44x44 and 150x150.
+**`app.icons`, `app.{windows,mac,linux,site}.icons`** An [input definition](inputs.md) that should import square PNG images. The default is `icons-*.png` for all platforms, so just having files with this name pattern next to your `conveyor.conf` will work. The images must be sized as a power of 2 between 16 and 1024 e.g. 256x256. It's a good idea to provide at least a few different resolutions so scaling of the icon between sizes is smoother. Windows also wants images sized 44x44 and 150x150. It can be useful to have different icons for each OS to match the platform native styles.
 
-Icons can be machine specific. Import the right icons for each platform the machine-specific [inputs](inputs.md), and possibly set `app.{windows,mac,linux}.icons` keys if you want to change the name pattern searched for.
-
-!!! note
-    Consider using actually different images for small sizes that have less detail in them, rather than just scaling down a larger image. Scaling a large image to small sizes can yield blurry images.
+!!! warning
+    Conveyor currently won't rescale your images for you. Therefore you must supply at least one image <= 512x512 as larger images won't be reduced, and Windows requires smaller images in some circumstances. Also, consider using actually different images for small sizes that have less detail in them, rather than just scaling down a larger image. Scaling a large image to small sizes can yield blurry images.
 
 ## Download site settings
 

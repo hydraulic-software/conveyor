@@ -45,7 +45,7 @@ app.mac {
 
 **`app.mac.inputs`** An input hierarchy for Mac specific inputs. You can also add to `app.mac.amd64.inputs` and `app.mac.aarch64.inputs`.
 
-**`app.mac.icons`** A list of files or globs containing square icons of different sizes. Defaults to whatever `app.icons` is set to, which is `icons-*.png` by default.
+**`app.mac.icons`** An [input list](inputs.md) containing square icons of different sizes. Defaults to whatever `app.icons` is set to, which is `icons-*.png` by default.
 
 ??? warning "macOS bug with icons at small sizes"
     Some versions of macOS / the Finder have a bug which will display white noise for small app icons if you don't provide those sizes. To avoid this, make sure to render 16x16 and 32x32 icons and supply them in your inputs. Future versions of Conveyor may work around this bug automatically.

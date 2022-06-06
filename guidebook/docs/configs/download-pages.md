@@ -29,20 +29,15 @@ app.site {
 
 ## Icon
 
-The `app.site.icons` key works the same way as the other icon keys do (in the `windows`, `mac` and `linux` sections respectively). The default `app.site.inputs` list contains the value of `${app.site.icons}` so you can use alternative file names by just setting the image name here. The icons need to be found in the root of the resolved inputs. If you have a file named `icon.svg` as an input, it'll be used as the icon instead of the rendered files.
+The `app.site.icons` key works the same way as the other icon keys do (in the `windows`, `mac` and `linux` sections respectively). The default `app.site.inputs` list contains the value of `${app.site.icons}` so you can use alternative file names by just setting the image name here. However, if you have a file named `icon.svg` as an input, it'll be used as the icon instead of the rendered files.
 
 Here's an example of how to import icons from a different directory than the one containing the config and use it at the top of the generated HTML.
 
 ```
-icons-path = ../../packaging/images
-round-icons = "hydraulic-icon-rounded-*.png"
-
 app.site {
   base-url = downloads.hydraulic.dev/${channel}/compose-sample
-  inputs = [ ${icons-path}${round-icons} -> . ]
-  icons = ${round-icons}
+  icons = "../../packaging/images/icon-{32,64,128,256}.png"
 }
-
 ```
 
 ## Publishing through GitHub
