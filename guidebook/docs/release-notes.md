@@ -6,7 +6,6 @@ These builds will expire from time to time. Updates will be provided before expi
 
 ### Known issues
 
-* The config schema may change in minor but backwards incompatible ways during the private beta. No major changes are planned so keeping up should never take more than a minute or two.
 * Missing features:
     * Supported apps and packages:
         * Only JVM apps are supported in this release. It's a temporary limitation that's at the top of our list to fix.
@@ -23,6 +22,14 @@ These builds will expire from time to time. Updates will be provided before expi
     * Providing a directory as your primary input will cause an icons related crash. Make sure your first input points to a file.
 
 ## Version history
+
+### Private beta 6
+
+*June 2022*
+
+* The way icon files are specified has been simplified and made more consistent.
+* Support for automatic license key provisioning.
+* Miscellaneous bug fixes. 
 
 ### Private beta 5
 
