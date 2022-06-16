@@ -4,6 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+mkdocs-material = {git = "https://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@github.com/squidfunk/mkdocs-material-insiders.git"}
 
 [dev-packages]
 
