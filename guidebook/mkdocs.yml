@@ -32,6 +32,7 @@ nav:
     - Standard Library:
       - Index: stdlib/index.md
       - stdlib/jdks.md
+      - stdlib/jvm-clients.md
       - stdlib/systemd.md
       - stdlib/javafx.md
   - Samples:
