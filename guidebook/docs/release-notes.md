@@ -23,6 +23,12 @@ These builds will expire from time to time. Updates will be provided before expi
 
 ## Version history
 
+### Private beta 7
+
+*June 2022*
+
+* Minor improvements to the tutorial and samples.
+
 ### Private beta 6
 
 *June 2022*
