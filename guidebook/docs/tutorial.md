@@ -16,14 +16,14 @@ This tutorial doesn't try to cover all the features Conveyor has, it's only here
 
 Conveyor has two pre-canned "Hello World" project templates. One is for a GUI app using [JetPack Compose for Desktop](https://www.jetbrains.com/lp/compose-desktop/), and the other uses [JavaFX](https://www.openjfx.io). This is the quickest way to try things out.
 
-* [x] Make sure you have a modern JDK installed so you can compile the samples. Conveyor requires JVM apps to use Java 11 or higher.
-* [x] Run the following command, picking an app type and reverse DNS name as you see fit. There are also `--display-name`, `--output-url` and `--site-url` flags:
+* [x] Make sure you have a modern JDK installed, such that you can compile the samples. Conveyor requires JVM apps to use Java 11 or higher.
+* [x] Run the following command, picking an app type and reverse DNS name as you see fit - please make sure you double-check the program's output as  well for additional information. There are also `--display-name`, `--output-url` and `--site-url` flags:
 
 ```
 conveyor generate {javafx,compose} --rdns=com.example.my-project
 ```
 
-Identifying an app with a reverse DNS name is required for some platforms like macOS, and other needed values can be derived from it. A directory named after the last component (in this case `my-project`) will be populated with a buildable project.
+Identifying an app with a reverse DNS name is required for some platforms like macOS, and other needed values can be derived from it. A directory named after the last reverse dns element (in this case `my-project`) will be populated with a buildable project.
 
 We'll explore what's inside the project directory in a bit. For now, note that there's a `conveyor.conf` file at the top level directory.
 
@@ -33,10 +33,20 @@ We'll explore what's inside the project directory in a bit. For now, note that t
 !!! tip "Cross platform UI"
     JetPack Compose is the next-gen native UI toolkit on Android and it also runs on Windows/Mac/Linux, making it easy to share code between mobile and desktop. [JavaFX also runs on mobile](https://gluonhq.com/products/mobile/) and [the web](https://www.jpro.one).
 
-## Step 3. Build unpackaged apps
+## Step 3. Build un-packaged apps
 
-* [ ] Change into the output directory you selected above and run `./gradlew jar` to compile the sample.
-* [ ] Build a self-contained but unpackaged app for your current platform:
+* [ ] Change your current directory to the generated project directory (in this example `my-project`) and run the following command to compile the generated sample project: 
+````
+./gradlew jar
+````
+!!! tip "Watch-out the program output as well"
+As mentioned earlier, please correlate as well this content with the program's output - the `conveyor generate ...` command's output in Step 2 above, gives also the needed directions to complete this specific tutorial step.
+
+!!! tip "Local file-caching  system"
+The previous command, as well as the ones in the next section and, the Conveyor system itself are making a heavy use of a local file-caching system, downloading for your project the required libraries and dependencies only once, and re-using them in consequent project builds. Thus, a new download of the same file will be triggered only in case of events like: cache or cache content removal, cache file system location change, etc. 
+
+For more details about the local cache used by the system and advanced management options, please visit https://conveyor.hydraulic.dev/0.16/running/#the-cache   
+* [ ] Build a self-contained but un-packaged app for your current platform:
 
 ```
 # If on Windows:
@@ -50,7 +60,14 @@ conveyor -Kapp.machines=mac.amd64 make mac-app
 conveyor -Kapp.machines=mac.aarch64 make mac-app
 ```
 
-This will compile the project and then create an unzipped, unpackaged app in the `output` directory. 
+This will compile the project and then create an unzipped, un-packaged app in the `output` directory. 
+
+!!! tip "Error messages"
+Forgetting to run the `./gradlew jar` command in the previous step, will result in error messages being printed by the system like bellow and consequently, in an inconsistent project.
+````
+🔔 There are no JAR files in your inputs. Did you forget to add some?
+````
+
 
 * [ ] Now run the generated program directly in the usual manner for your operating system to check it works.
 
@@ -73,7 +90,10 @@ The default generated `conveyor.conf` file tells each package to look for update
 !!! warning 
     The web server must support Content-Range requests. Unfortunately the Python 3 built in web server doesn't.
 
-When you want to serve your packages for real, change the `site.base-url` key to point to the URL where you'll upload your files and rerun `conveyor make site`. You can also use [GitHub Releases](configs/download-pages.md#publishing-through-github). Note that there's no way to change the site URL after release because it's included in the packages themselves, so pick wisely.
+When you want to serve your packages for real, change the `site.base-url` key in the generated `conveyor.conf` configuration file in the root of your project's directory,  to point to the URL where you'll upload your files and rerun `conveyor make site`. You can also use [GitHub Releases](configs/download-pages.md#publishing-through-github). Note that there's no way to change the site URL after release because it's included in the packages themselves, so pick wisely.
+
+!!! tip "Advanced configuration options"
+    The generated project configuration file includes a subset only of the large number of options available  for your project configuration. For a detailed review of the configuration file structure and advanced configuration options please visit the [Writing config files](https://conveyor.hydraulic.dev/0.16/configs/) Conveyor documentation section.
 
 ## Step 5. Release an update
 
@@ -103,7 +123,7 @@ conveyor make site
 
 Each operating system has its own approach to how and when updates are applied:
 
-* **Debian/Ubuntu derived distros:** `apt-get update && apt-get upgrade` as per normal. Updates will also be presented via the normal graphical software update tool, along side OS updates.
+* **Debian/Ubuntu derived distros:** `apt-get update && apt-get upgrade` as per normal. Updates will also be presented via the normal graphical software update tool, alongside OS updates.
 * **macOS:** Updates are downloaded in the background when the app starts if:
     * It's not the first start and it's been more than one hour since the last update check.
     * *or* if the `FORCE_UPDATE_CHECK` environment variable is set. For example you can run `FORCE_UPDATE_CHECK=1 /Applications/YourApp.app/Contents/MacOS/YourApp` from a terminal to force an immediate update check.
