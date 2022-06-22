@@ -6,7 +6,8 @@ It's planned. [Vote for support here](https://github.com/hydraulic-software/conv
 
 ## 2. DMGs?
 
-No plans because [zips work better](../outputs.md#macos). The downside is you don't get to theme the 'install experience'.
+No plans because [zips work better](../outputs.md#macos). The downside is you don't get to theme the 'install experience'. If you need
+DMGs for some reason we've overlooked, please [email us to let us know](mailto:contact@hydraulic.software).
 
 ## 3. Mac PKGs?
 
@@ -36,17 +37,19 @@ The level of security is the same because the original DEB will have been downlo
 
 ## 8. Are Mac apps fat?
 
-No. Conveyor produces separate downloads for ARM and Intel Macs. This is to keep download times fast. Chrome users will have their CPU auto detected and will only be offered the right package for their CPU. Safari advertises itself as Intel even on ARM Macs (deliberately), so Safari users will be given a choice and are expected to know what kind of Mac they have.
+For native apps, it depends on what your build system produces. The CMake template app does create fat binaries.
 
-If you'd like your Mac apps to be fat please [vote for support here](https://github.com/hydraulic-software/conveyor/issues/11).
+For JVM apps, no. Conveyor produces separate downloads for ARM and Intel Macs. This is to keep download times fast. Chrome users will have their CPU auto detected and will only be offered the right package for their CPU. Safari advertises itself as Intel even on ARM Macs (deliberately), so Safari users will be given a choice and are expected to know what kind of Mac they have.
+
+If you'd like your JVM Mac apps to be fat please [vote for support here](https://github.com/hydraulic-software/conveyor/issues/11).
 
 ## 9. Ubuntu Snaps?
 
-Not at this time. Snaps are a format specific to the Ubuntu app store. If you want Snap support, please let us know so we can consider raising its priority. Without strong feedback on this we'll probably focus on FlatPak.
+Not at this time. Snaps are a format specific to the Ubuntu app store. If you want Snap support, please [let us know](mailto:contact@hydraulic.software) so we can consider raising its priority. Without strong feedback on this we'll probably focus on FlatPak.
 
 ## 10. Docker?
 
-Conveyor supports making Linux servers with full [systemd integration](../configs/linux.md#systemd-units). It doesn't produce Docker images at this time. Other tools exist that make Docker images and so Conveyor probably doesn't have much to add here, but if you'd like this feature please let us know so we can understand your needs. 
+Conveyor supports making Linux servers with full [systemd integration](../configs/linux.md#systemd-units). It doesn't produce Docker images at this time. Other tools exist that make Docker images and so Conveyor probably doesn't have much to add here, but if you'd like this feature please [let us know](mailto:contact@hydraulic.software) so we can understand your needs. 
 
 Incidentally, Conveyor supports systemd because we use Conveyor-generated packages for our own servers. We feel that:
 

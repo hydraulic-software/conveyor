@@ -23,6 +23,12 @@ These builds will expire from time to time. Updates will be provided before expi
 
 ## Version history
 
+### Private beta 8
+
+*June 2022*
+
+* Support for native apps. Sparkle is code injected on macOS.
+
 ### Private beta 7
 
 *June 2022*

@@ -134,7 +134,7 @@ An [application manifest](https://docs.microsoft.com/en-us/windows/win32/sbscs/a
 * HiDPI scaling options.
 * Scroll event resolution.
 
-And a variety of other operating system behaviours. The default manifest provided by Conveyor is used for JVM apps and should be sufficient. For non JVM apps your toolchain should embed a manifest itself, although future versions of Conveyor may support setting the manifest for any EXE file. 
+And a variety of other operating system behaviours. The default manifest provided by Conveyor should be sufficient for most apps, and will replace whatever is found in the binary. 
 
 You can adjust some of the values using config keys; if they don't meet your needs then just replace the entire content.
 
@@ -145,4 +145,3 @@ You can adjust some of the values using config keys; if they don't meet your nee
 * `asInvoker` - whatever privilege level the user has.
 * `highestAvailable` - whatever privilege level the user can potentially escalate to.
 * `asAdministrator` - requires administrator access and cannot run without it.
-

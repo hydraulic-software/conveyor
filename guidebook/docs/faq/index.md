@@ -36,22 +36,20 @@ It has advantages for us too:
 
 ## 4. Is Conveyor only for JVM apps?
 
-Currently yes, but that won't be true for long as there are no fundamental reasons for that limitation. In theory you can package any kind of app, Conveyor just happens to have great support for the JVM. It makes sense to integrate support for
-the JVM because a cross-platform runtime is when the ability to create packages for other operating systems really shines. You don't need to
-mess with cross-compilers or running virtualized operating systems - just develop your app on your preferred platform and then ship to
-everyone with a single command.
+Nope. It has great support for JVM apps, but can package any app. Take the [tutorial](../tutorial.md) to learn how to package a CMake based
+C++ app.
 
 ## 5. Is Conveyor only for desktop apps?
 
-It also has great support for:
+Not at all! It also has great support for:
 
-1. Deeply system integrated servers. See the [TeamCity sample](../samples/teamcity.md) for an example that demonstrates systemd integration,
-   Apache 2 integration and adding a dependency on Postgres.
+1. Servers that run outside of containers. See the [TeamCity sample](../samples/teamcity.md) for an example that demonstrates systemd 
+   integration, Apache 2/nginx reverse proxy integration and adding a dependency on Postgres.
 2. Command line apps. Conveyor is packaged with itself, in fact.
 
-## 6. Does it support Electron or native apps?
+## 6. Does it support Electron apps?
 
-It should do, but we don't have any samples or integrated support yet. Working on it!
+It should do, but we don't have any samples or additional features yet. Working on it!
 
 ## 7. Why should I make a desktop app?  
 
@@ -73,7 +71,3 @@ outside the browser:
 * Be always available even in the most challenging conditions. Users will learn to rely on your app everywhere, at any time, whether
   that's in the middle of a storm on an oil rig, on holiday in the middle of the savannah, during a business trip with spotty connectivity  
   or during a delicate hospital operation where a server outage could be a matter of life and death.
-
-If you're interested in these ideas, check out the essay ["Our Glorious Post Web Future"](https://www.hydraulic.software/blog/2-our-glorious-post-web-future.html)
-on the Hydraulic blog. We plan to write more about reinvigorating the desktop there, and hopefully organize a podcast with other people doing
-interesting work in the post-web space.

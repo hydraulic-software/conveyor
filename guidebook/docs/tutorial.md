@@ -14,51 +14,77 @@ This tutorial doesn't try to cover all the features Conveyor has, it's only here
 
 ## Step 2. Create a template project
 
-Conveyor has two pre-canned "Hello World" project templates. One is for a GUI app using [JetPack Compose for Desktop](https://www.jetbrains.com/lp/compose-desktop/), and the other uses [JavaFX](https://www.openjfx.io). This is the quickest way to try things out.
+Conveyor has three pre-canned "Hello World" project templates, all Apache 2 licensed so they can form the basis of your own apps. 
 
-* [x] Make sure you have a modern JDK installed so you can compile the samples. Conveyor requires JVM apps to use Java 11 or higher.
-* [x] Run the following command, picking an app type and reverse DNS name as you see fit. There are also `--display-name`, `--output-url` and `--site-url` flags:
+One is a native OpenGL app written in C++, the second is for a GUI JVM app using the reactive [JetPack Compose for Desktop](https://www.jetbrains.com/lp/compose-desktop/) toolkit, and the last is another JVM GUI app using [JavaFX](https://www.openjfx.io). Generating a project based on these templates is the quickest way to try things out. The JVM apps are easier to play with because you don't need cross-compilers. For the C++ project you'll need to compile it on each OS that you wish to target.
+
+* [x] For the native C++ app, install CMake and the compiler toolchain for each platform you will target.
+* [x] For a JVM app, install a JDK (any will work). Conveyor requires JVM apps to use JDK 11 or higher.
+* [x] Run the following command, picking an app type and reverse DNS name as you see fit. There are also `--display-name` and `--output-dir` flags but they are optional.
 
 ```
-conveyor generate {javafx,compose} --rdns=com.example.my-project
+conveyor generate {cmake,compose,javafx} --rdns=com.example.my-project
 ```
 
-Identifying an app with a reverse DNS name is required for some platforms like macOS, and other needed values can be derived from it. A directory named after the last component (in this case `my-project`) will be populated with a buildable project.
+* [x] Change into the output directory you just created.
 
-We'll explore what's inside the project directory in a bit. For now, note that there's a `conveyor.conf` file at the top level directory.
+Identifying an app with a reverse DNS name is required for some platforms like macOS, and other needed values can be derived from it. A directory named after the last component (in this case `my-project`) will be populated with a buildable project. Use `names-with-dashes` when separating words, not `camelCase`, as that way you'll get smarter defaults.
+
+We'll explore what's inside the project directory in a moment. For now, note that there's a `conveyor.conf` file at the top level directory. This is where your packages are configured.
 
 !!! tip "Reverse DNS names"
     RDNS names are just a naming convention meant to keep apps clearly separated. Actual domain name ownership isn't checked by anything. If you don't have a website consider creating a [GitHub](https://www.github.com) account and then using `io.github.youruser.yourproject`, which will ensure no naming conflicts with anyone else.
 
 !!! tip "Cross platform UI"
-    JetPack Compose is the next-gen native UI toolkit on Android and it also runs on Windows/Mac/Linux, making it easy to share code between mobile and desktop. [JavaFX also runs on mobile](https://gluonhq.com/products/mobile/) and [the web](https://www.jpro.one).
+    JetPack Compose is the next-gen native UI toolkit on Android and it also runs on Windows/Mac/Linux, making it easy to share code between mobile and desktop. [JavaFX also runs on mobile](https://gluonhq.com/products/mobile/) and [the web](https://www.jpro.one). The native C++ app uses OpenGL and the [GLFW library](https://glfw.org/), which abstracts the operating system's windowing APIs.
 
-## Step 3. Build unpackaged apps
+## Step 3. Compile the app
 
-* [ ] Change into the output directory you selected above and run `./gradlew jar` to compile the sample.
-* [ ] Build a self-contained but unpackaged app for your current platform:
+### JVM
+
+* [ ] Run `./gradlew jar` to download the Gradle build tool and compile the app to a portable JAR.
+
+**You'll need to re-run this command any time you change the app's code. At this time Conveyor won't run it for you.**  
+
+### C++
+
+Native apps must be compiled for each OS you wish to target. Getting access to different build machines is more work than necessary for this tutorial, so you should now edit `conveyor.conf` and edit the `machines = [ ... ]` line, changing the contents of the list to reflect which platform(s) you're using and will compile the app for.
+
+Instructions for how to build are in the `README.md` file. It's a conventional CMake build system of the kind widely used in the C++ ecosystem, so we won't go into details here.
+
+* [ ] Edit the machines key in the `conveyor.conf` file.
+* [ ] Follow the build instructions in `README.md` to create the binaries.
+
+**You'll need to re-run the build any time you change the app's code. At this time Conveyor won't run it for you.**
+
+??? note "Icons and manifests"
+    Windows programs contain embedded metadata like icon files, XML manifests and whether it's a console app. Conveyor will edit the EXE to reflect settings in your config, so you don't need to set these things up in your build system. Any icons or manifests already there will be replaced. [Learn how to control the binary manifest](configs/windows.md#manifest-keys).
+
+## Step 4. Build unpackaged apps
+
+Now create a self-contained but unpackaged app directory for your current platform:
 
 ```
-# If on Windows:
+# Windows:
 conveyor make windows-app
 
-# If on Linux:
+# Linux:
 conveyor make linux-app
 
-# If on macOS, one of the following for Intel/M1 Macs respectively:
+# One of the following for Intel/Apple Silicon Macs respectively:
 conveyor -Kapp.machines=mac.amd64 make mac-app
 conveyor -Kapp.machines=mac.aarch64 make mac-app
 ```
 
 This will compile the project and then create an unzipped, unpackaged app in the `output` directory. 
 
-* [ ] Now run the generated program directly in the usual manner for your operating system to check it works.
-
-Because we generated a JVM app, the above commands can be run on any OS in any combination. You should pick the one that matches your machine but only so you can run the results.
+* [ ] Run the generated program directly in the usual manner for your operating system to check it works.
 
 The command for macOS is different to those for Windows and Linux because Conveyor supports two CPU architectures for macOS, so you have to disambiguate which you want. The `-K` switch sets a key in the config file for the duration of that command only. Here we're setting the `app.machines` key which controls which targets to create packages for.
 
-## Step 4. Build and serve the download site
+Note that when using the C++ app template, both ARM and Intel Mac packages will actually contain fat binaries that work on either. For Java apps each package is specific to one CPU architecture as this reduces download sizes for your end users.
+
+## Step 5. Serve the download site
 
 * [ ] Request a full build of the download / repository site:
 
@@ -66,55 +92,81 @@ The command for macOS is different to those for Windows and Linux because Convey
 conveyor make site
 ```
 
-The previous contents of the output directory will be replaced. You'll now find there packages for each OS in multiple formats, some update metadata files and a download page ([details](outputs.md)). 
+The previous contents of the output directory will be replaced. You'll now find there packages for each OS in multiple formats, some update metadata files and a download page ([details](outputs.md)). You can use whatever files you wish: there is no requirement to use them all. 
 
-The default generated `conveyor.conf` file tells each package to look for updates on `localhost:8899`. If you want to just quickly test updates this is good enough - grab your favourite web server and serve that directory. We recommend [Caddyserver](https://caddyserver.com/). 
+The default generated `conveyor.conf` file tells each package to look for updates on `localhost:8899`. If you want to just quickly test updates this is good enough - grab your favourite web server and serve that directory. We recommend [Caddyserver](https://caddyserver.com/). You can just run `caddy file-server --browse --listen :8899` from inside the output directory.
 
-!!! warning 
-    The web server must support Content-Range requests. Unfortunately the Python 3 built in web server doesn't.
+When you want to serve your packages for real, change the `site.base-url` key to point to the URL where you'll upload your files and rerun `conveyor make site`. You can also use [GitHub Releases](configs/download-pages.md#publishing-through-github).
 
-When you want to serve your packages for real, change the `site.base-url` key to point to the URL where you'll upload your files and rerun `conveyor make site`. You can also use [GitHub Releases](configs/download-pages.md#publishing-through-github). Note that there's no way to change the site URL after release because it's included in the packages themselves, so pick wisely.
+!!! warning
+    * There's no way to change the site URL after release because it's included in the packages. Choose wisely!
+    * The Python 3 built in web server doesn't support `Content-Range` HTTP requests which is necessary for Windows `.appinstaller` installation to succeed.
+    * Don't edit the `.appinstaller` file yourself. It is constructed in a special way to work around bugs in older versions of Windows, and editing the file by hand can break those mitigations. You should never have a need to edit this file as everything in it can be controlled using config.
 
-## Step 5. Release an update
+## Step 6. Install the app
 
-The version of the packages is taken from the version defined in the build system. 
+* [ ] [Browse to your new download site](http://localhost:8899/download.html) and take a look at what's there.
 
-* [ ] Open the source code of the app and change the message that's displayed when you click the button. Now change the line in  `build.gradle[.kts]`  that reads `version = "1.0"` to `version = "1.1"`. 
-* [ ] Run the following commands:
+You don't have to use this HTML page. It's there purely as a convenience.
 
-```
-# Rebuild the app with the new version number.
-./gradlew jar   
+The generated download HTML detects the user's computer whilst allowing them to pick a different download
+if they want. For properly signed packages you get a standard green download button. For self-signed packages, installation is more complex
+and instructions are provided. They require using the terminal (on Windows) or using 
+[a hidden keyboard shortcut](https://support.apple.com/guide/mac-help/open-a-mac-app-from-an-unidentified-developer-mh40616/mac) on macOS.
 
-# Rebuild the site.
-conveyor make site
-```
+On Windows the link will go to the `.appinstaller` file and not the `.msix` package directly. When the user downloads and opens the
+AppInstaller file they will get software updates and faster downloads, because data from other programs they already might have will be
+re-used. If they download and install the MSIX file directly then those features are unavailable.
 
-* [ ] Now copy this directory to your web server using a tool like `scp`, `rsync` or however else you normally publish static web files. If using GitHub Releases, just make a new release with the contents of the site output (don't add  `download.html` to the release, instead add it to your GitHub Pages or equivalent).
+## Step 7. Release an update
+
+To release a new version you simply re-compile your app then re-generate the app site. It should be uploaded to the same `site.base-url` 
+location that you used before, overwriting any files that were present.
+
+### JVM
+
+The version of the packages is taken from the version defined in the build system.
+
+* [ ] Open the source code of the app and change the message that's displayed when you click the button.
+* [ ] Now change the line in  `build.gradle[.kts]`  that reads `version = "1.0"` to `version = "1.1"`.
+* [ ] Re-run `./gradlew jar`.
+* [ ] Re-run `conveyor make site`.
+
+### C++ 
+
+The version of the package is defined in the `conveyor.conf` file.
+
+* [ ] Open the source code of the app and change the message that's displayed in the title bar.
+* [ ] Re-compile the app binary/binaries.
+* [ ] Replace `version = 1` in `conveyor.conf` with `version = 2`.
+* [ ] Re-run `conveyor make site`
+
+### Testing the update 
+
+Each operating system has its own approach to how and when updates are applied:
+
+* **Windows:** Updates are checked:
+    * If the user re-opens the `.appinstaller` XML file. This is the easiest way to test updates. You don't have to re-download it because the `.appinstaller` file contains its own URL and the "App Installer" app will re-download a fresh copy from the download site when it's opened.
+    * Every 8 hours in the background by the OS, regardless of whether the app is being used or not.
+    * Optionally, on every app launch with a frequency you can specify. These update checks can be configured to block startup, ensuring that the user is always up to date. [Learn more here](configs/windows.md).
+* **macOS:** Updates are downloaded in the background when the app starts if:
+    * It's not the first start and it's been more than one hour since the last update check.
+    * *or* if the `FORCE_UPDATE_CHECK` environment variable is set. For example you can run `FORCE_UPDATE_CHECK=1 /Applications/YourApp.app/Contents/MacOS/YourApp` from a terminal to force an immediate update check.
+    * Once the update is downloaded the user is prompted to install and restart.
+    * The update schedule and UI can be adjusted in the config file.
+* **Debian/Ubuntu derived distros:** `apt-get update && apt-get upgrade` as per normal. Updates will also be presented via the normal graphical software update tool, along side OS updates.
+
+* [ ] You can now test the update procedure. 
+
 
 ??? tip "Faster builds"
     Conveyor builds are incremental and parallel, so you should find that rebuilding the site is much quicker the second time you try it. You can also instantly 'check out' the intermediate files, such as unpacked directories. Run `conveyor make` to see what's available. This lets you rapidly iterate on your packages, because once built it normally only takes a few seconds to create a new spin of your app.
-    
 
     Nonetheless there are ways to make builds faster:
     
     1. Set `app.sign = false` during development to disable code signing and notarization. Notarization takes about two minutes and is unnecessary whilst iterating.
     2. Set `app.linux.compression = low` or `none` to switch to gzip or no compression when building Linux packages. The resulting packages are bigger, but build much faster than when using the default LZMA codec.
 
-Each operating system has its own approach to how and when updates are applied:
-
-* **Debian/Ubuntu derived distros:** `apt-get update && apt-get upgrade` as per normal. Updates will also be presented via the normal graphical software update tool, along side OS updates.
-* **macOS:** Updates are downloaded in the background when the app starts if:
-    * It's not the first start and it's been more than one hour since the last update check.
-    * *or* if the `FORCE_UPDATE_CHECK` environment variable is set. For example you can run `FORCE_UPDATE_CHECK=1 /Applications/YourApp.app/Contents/MacOS/YourApp` from a terminal to force an immediate update check.
-    * Once the update is downloaded the user is prompted to install and restart.
-    * The update schedule and UI can be adjusted in the config file.
-* **Windows:** Updates are checked:
-    * If the user re-opens the `.appinstaller` XML file. This is the easiest way to test updates. You don't have to re-download it because the `.appinstaller` file contains its own URL and the "App Installer" app will re-download a fresh copy from the download site when it's opened.
-    * Every 8 hours in the background by the OS, regardless of whether the app is being used or not.
-    * Optionally, on every app launch with a frequency you can specify. These update checks can be configured to block startup, ensuring that the user is always up to date. [Learn more here](configs/windows.md).
-
-* [ ] You can now test the update procedure. 
 
 ??? tip "Windows package management"
     MSIX files are conceptually similar to Linux packages and they share many of the same features. An MSIX package is simply a signed zip with some additional metadata in XML files that define how the package should be integrated with the OS (e.g. start menu entries, adding programs to the %PATH% etc).
@@ -124,9 +176,59 @@ Each operating system has its own approach to how and when updates are applied:
     
     A useful tool is [MSIX Hero](https://msixhero.net/), which is a sophisticated GUI tool for the package manager. It allows you to explore the contents of packages, force update checks, run apps inside the MSIX container and more.
 
-## Step 6. Explore the integration
+## Step 8. Explore the integration
 
 In this section you'll learn how to add Conveyor packaging to an existing project by studying how the sample projects are configured.
+
+The template `conveyor.conf` files are small, which is normal. A combination of sensible defaults, automatically derived values and (optionally) config extracted from your build system keeps it easy. Still, there are around 150 different settings available to customize packages if you need them. Consult the configuration section of this guide to learn more about what you can control.
+
+### C++
+
+* [ ] Open `conveyor.conf` in the project root directory. It's defined using a superset of JSON called [HOCON](configs/hocon-spec.md) with a few [Conveyor-specific extensions](configs/hocon-extensions.md). It will look roughly like this:
+
+```javascript title="conveyor.conf"
+app {
+  display-name = Template App // (1)!
+  fsname = template-app // (2)!
+  version = 1
+  site.base-url = "localhost:8899" // (3)!
+
+  machines = [ 
+    windows.amd64, linux.amd64.glibc, mac.amd64, mac.aarch64 // (4)!
+  ]  
+  
+  icons = "icons/icon-rounded*" // (5)!
+  windows.icons = "icons/icon-square*"
+
+  mac.inputs = [ // (6)!
+    build/mac/installation/bin -> Contents/MacOS
+    build/mac/installation/lib -> Contents/Frameworks
+  ]
+
+  windows.amd64.inputs = build/win/installation/bin
+  linux.amd64.inputs = build/linux/installation
+}
+
+conveyor.compatibility-level = 1
+```
+
+1. The display name is the natural language name of the project as it appears to the user. It's initialized with a guess based on de-dashifying the `fsname` key.
+2. The `fsname` is the name of the project as it appears on disk, e.g. in file names.
+3. This is a directory on a web server where packages will look for update files.
+4. You can restrict which platforms you support. See ["Machines"](configs/index.md#machines) for details.
+5. The templates come with pre-made icons. You should replace these files with your own. Conveyor will take care of converting to native formats and embedding the icon into the Windows EXE file.
+6. The CMake build system produces an install directory that uses non-Mac UNIX conventions. Here, we adapt it to a Mac bundle layout. If your build system produces a `.app` bundle already you can just provide the path of the bundle directory. See Apple's document ["Placing content in a bundle"](https://developer.apple.com/documentation/bundleresources/placing_content_in_a_bundle).
+
+The only complicated thing here is the [inputs](configs/inputs.md). This config is using Conveyor's ability to change the layout of files in the package as they are copied in.
+
+Now open the `CMakeLists.txt` file. This defines the build system. It contains various commands, all with comments explaining what they do. The build system demonstrates importing a third party library from a source zip, compiling it, dynamically linking against it, and passing the right linker flags to produce binaries that will work with Conveyor. See the `README.md` file for further discussion.
+
+??? note "Code injection on macOS"
+    Windows and Linux have built-in package managers that can update software automatically, but macOS does not. The only Apple provided way to ship software updates to Mac users is via the App Store. Conveyor doesn't go this route. Instead, it uses the popular [Sparkle Framework](https://sparkle-project.org/) to give your app the ability to update itself. Sparkle is a de-facto standard used across the Mac software ecosystem. 
+
+    For Sparkle to work it must be initialized at app startup. To avoid you needing to write Mac specific code (e.g. in Objective-C or Swift), Conveyor will edit the Mach-O headers of your binary when it builds the bundle to inject a shared library that starts up Sparkle for you. This happens automatically for any app that links against Cocoa or AppKit and not Sparkle. This feature is particularly useful for apps that aren't written in C++.
+
+### JVM
 
 * [ ] Open `conveyor.conf` in the project root directory. It's defined using a superset of JSON called [HOCON](configs/hocon-spec.md) with a few [Conveyor-specific extensions](configs/hocon-extensions.md). It should look like this:
 
@@ -152,9 +254,8 @@ conveyor.compatibility-level = 1   // (6)!
 5. The templates come with pre-rendered icons in both square and rounded rectangle styles. This bit of config uses square by default and rounded rects on macOS only, but that's just a style choice to fit in with the native expectations. You can use whatever icons you like. They should be rendered as PNGs in a range of square sizes, ideally 32x32, 64x64, 128x128 etc up to 1024x1024.
 6. This line will be added to a freshly written config if it's missing. Recording the schema/semantics expected by the config allows the format to evolve in future versions without breaking backwards compatibility.
 
-This sample is small, as most Conveyor configs are. A combination of sensible defaults, automatically derived values and (optionally) config extracted from your build system keeps it easy. Still, there are around 150 different settings available to customize packages if you need them. Consult the configuration section of this guide to learn more about what you can control.
 
-### Gradle projects
+#### Gradle projects
 
 You don't have to use any particular build system with Conveyor, but if you use Gradle then config can be extracted from your existing build using a simple plugin. The Gradle plugin doesn't replace or drive the package build process itself: you still do that using the `conveyor` command line tool. The plugin is narrowly scoped to generating configuration and nothing more. If you want Gradle to run Conveyor you can add a normal exec task to do so.
 
@@ -210,13 +311,12 @@ You can also write `include required("generated.conveyor.conf")` and run `gradle
 ??? "Why does the plugin only generate config?"
     Conveyor isn't implemented itself as a Gradle plugin because:
     
-    * It will support non-JVM apps in the near future.
     * It must support projects that use any build system.
     * It needs a customized JVM that has various bug fixes backported to it, and which thus won't match the one being used to run Gradle.
     * The Gradle API frequently changes in backwards-incompatible ways.
 
 
-### Maven projects
+#### Maven projects
 
 For Maven there's no plugin. Instead Conveyor will read the project classpath by running the output of the `mvn` command and using it directly as configuration. Other aspects like project name must be specified explicitly. Better import from Maven is planned in a future release.
 
@@ -250,7 +350,7 @@ app {
 5. This is optional. It'll be prefixed to the display name and used as a directory name  in various places; skip it if you don't work for an organization.
 6. This is where the created packages will look for update metadata.
 
-### Other build systems
+#### Other build systems
 
 Create a `conveyor.conf` that looks like this:
 
@@ -272,15 +372,15 @@ app {
 2. This is optional. It'll be prefixed to the display name and used as a directory name  in various places; skip it if you don't work for an organization.
 3. This is where the created packages will look for update metadata.
 
-??? note "File paths"
-    Inputs are resolved relative to the location of the config file, not where Conveyor is run from.
-
-??? warning "Uber-jars"
-    Don't use an uber/fat-jar for your program. It'll reduce the efficiency of delta download schemes like the one used by Windows. It also means modular JARs won't be encoded using the optimized `jimage` scheme. Use separate JARs for the best user experience.
-
 This configuration adds your app's main JAR as the first input, allowing package metadata like version numbers and names to be derived from the file name. Then it adds the directory containing all the app  JARs (duplicates are ignored), and finally a set of icon files.
 
 That's all you need! The display name and version of your application will be taken from the file name by default ("My App" and "1.0" given the file name in the example above).  
+
+??? note "File paths"
+Inputs are resolved relative to the location of the config file, not where Conveyor is run from.
+
+??? warning "Uber-jars"
+Don't use an uber/fat-jar for your program. It'll reduce the efficiency of delta download schemes like the one used by Windows. It also means modular JARs won't be encoded using the optimized `jimage` scheme. Use separate JARs for the best user experience.
 
 ## Next steps
 
