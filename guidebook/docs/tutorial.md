@@ -60,7 +60,7 @@ Instructions for how to build are in the `README.md` file. It's a conventional C
 ??? note "Icons and manifests"
     Windows programs contain embedded metadata like icon files, XML manifests and whether it's a console app. Conveyor will edit the EXE to reflect settings in your config, so you don't need to set these things up in your build system. Any icons or manifests already there will be replaced. [Learn how to control the binary manifest](configs/windows.md#manifest-keys).
 
-## Step 4. Build unpackaged apps
+## Step 4. Build un-packaged apps
 
 Now create a self-contained but unpackaged app directory for your current platform:
 
@@ -76,13 +76,17 @@ conveyor -Kapp.machines=mac.amd64 make mac-app
 conveyor -Kapp.machines=mac.aarch64 make mac-app
 ```
 
-This will compile the project and then create an unzipped, unpackaged app in the `output` directory. 
+This will compile the project and then create an unzipped, un-packaged app in the `output` directory. 
 
 * [ ] Run the generated program directly in the usual manner for your operating system to check it works.
 
 The command for macOS is different to those for Windows and Linux because Conveyor supports two CPU architectures for macOS, so you have to disambiguate which you want. The `-K` switch sets a key in the config file for the duration of that command only. Here we're setting the `app.machines` key which controls which targets to create packages for.
 
 Note that when using the C++ app template, both ARM and Intel Mac packages will actually contain fat binaries that work on either. For Java apps each package is specific to one CPU architecture as this reduces download sizes for your end users.
+
+!!! tip
+    * The `make` command makes use of a local file cache, downloading for any external files only once, and re-using them in subsequent project builds. Thus, a new download of the same file will be triggered only in case of events like cache or cache content removal, cache file system location change, etc. [Learn more about the disk cache](running.md#the-cache).
+    * The generated project configuration file uses a small subset of the options available for your project configuration. For a detailed review of the configuration file structure and advanced configuration options please visit the [Writing config files](configs/index.md) section.
 
 ## Step 5. Serve the download site
 
@@ -96,7 +100,14 @@ The previous contents of the output directory will be replaced. You'll now find 
 
 The default generated `conveyor.conf` file tells each package to look for updates on `localhost:8899`. If you want to just quickly test updates this is good enough - grab your favourite web server and serve that directory. We recommend [Caddyserver](https://caddyserver.com/). You can just run `caddy file-server --browse --listen :8899` from inside the output directory.
 
-When you want to serve your packages for real, change the `site.base-url` key to point to the URL where you'll upload your files and rerun `conveyor make site`. You can also use [GitHub Releases](configs/download-pages.md#publishing-through-github).
+When you want to serve your packages for real, change the `site.base-url` key in the generated `conveyor.conf` configuration file in the root of your project's directory,  to point to the URL where you'll upload your files and rerun `conveyor make site`. You can also use [GitHub Releases](configs/download-pages.md#publishing-through-github).
+
+??? tip "Error messages"
+    Forgetting to run the `./gradlew jar` command in the previous step will result in the following warning, however the build will proceed and you may therefore get an inconsistent build.
+
+    ```
+    🔔 There are no JAR files in your inputs. Did you forget to add some?
+    ```
 
 !!! warning
     * There's no way to change the site URL after release because it's included in the packages. Choose wisely!
