@@ -11,7 +11,7 @@ extra:
 nav:
   - Welcome:
     - Getting started: index.md
-    - Setting up: setting-up.md
+    - download-conveyor.md
     - Tutorial: tutorial.md
     - keys-and-certificates.md
     - outputs.md

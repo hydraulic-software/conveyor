@@ -7,10 +7,15 @@ This tutorial doesn't try to cover all the features Conveyor has, it's only here
 !!! tip
     You can tick the checkmarks on this page to mark your progress. Their state is stored in a cookie.
 
-## Step 1. Setting up
+## Step 1. Get the app and create a root key
 
-* [x] Follow the instructions in [Setting up](setting-up.md) to install Conveyor and (optionally) supply certificates.
-* [x] Pick a URL for hosting your packages. This is where auto-updates will check for new versions. All you need is a directory on a web server. [You can use GitHub Releases](configs/download-pages.md#publishing-through-github) to host your repository files and GitHub Sites to host the generated `download.html` file. For testing you can also use `localhost`.
+* [x] [Download Conveyor](setting-up.md) to install Conveyor. On macOS sure it's added to your path by using the GUI. 
+
+You don't need to have any code signing certificates to use Conveyor or follow this tutorial. Nonetheless, Conveyor always needs cryptographic keys so it can at least self-sign your app.
+
+* [x] Run `conveyor keys generate` from a terminal.
+
+Later on you can provide other signing keys or connect Conveyor to a hardware security module, but for the tutorial we'll use self signing. 
 
 ## Step 2. Create a template project
 
@@ -40,15 +45,9 @@ We'll explore what's inside the project directory in a moment. For now, note tha
 
 ## Step 3. Compile the app
 
-### JVM
+### Native / C++
 
-* [ ] Run `./gradlew jar` to download the Gradle build tool and compile the app to a portable JAR.
-
-**You'll need to re-run this command any time you change the app's code. At this time Conveyor won't run it for you.**  
-
-### C++
-
-Native apps must be compiled for each OS you wish to target. Getting access to different build machines is more work than necessary for this tutorial, so you should now edit `conveyor.conf` and edit the `machines = [ ... ]` line, changing the contents of the list to reflect which platform(s) you're using and will compile the app for.
+Native apps can be written in any language that produces a binary (not only C++), but this tutorial will use C++. Native apps must be compiled for each OS you wish to target. Getting access to different build machines is more work than necessary for this tutorial, so you should now edit `conveyor.conf` and edit the `machines = [ ... ]` line, changing the contents of the list to reflect which platform(s) you're using and will compile the app for.
 
 Instructions for how to build are in the `README.md` file. It's a conventional CMake build system of the kind widely used in the C++ ecosystem, so we won't go into details here.
 
@@ -59,6 +58,13 @@ Instructions for how to build are in the `README.md` file. It's a conventional C
 
 ??? note "Icons and manifests"
     Windows programs contain embedded metadata like icon files, XML manifests and whether it's a console app. Conveyor will edit the EXE to reflect settings in your config, so you don't need to set these things up in your build system. Any icons or manifests already there will be replaced. [Learn how to control the binary manifest](configs/windows.md#manifest-keys).
+
+
+### JVM
+
+* [ ] Run `./gradlew jar` to download the Gradle build tool and compile the app to a portable JAR.
+
+**You'll need to re-run this command any time you change the app's code. At this time Conveyor won't run it for you.**
 
 ## Step 4. Build un-packaged apps
 
@@ -134,6 +140,16 @@ re-used. If they download and install the MSIX file directly then those features
 To release a new version you simply re-compile your app then re-generate the app site. It should be uploaded to the same `site.base-url` 
 location that you used before, overwriting any files that were present.
 
+### Native / C++ 
+
+The version of the package is defined in the `conveyor.conf` file.
+
+* [ ] Open the source code of the app and change the message that's displayed in the title bar.
+* [ ] Re-compile the app binary/binaries.
+* [ ] Replace `version = 1` in `conveyor.conf` with `version = 2`.
+* [ ] Re-run `conveyor make site`
+
+
 ### JVM
 
 The version of the packages is taken from the version defined in the build system.
@@ -142,15 +158,6 @@ The version of the packages is taken from the version defined in the build syste
 * [ ] Now change the line in  `build.gradle[.kts]`  that reads `version = "1.0"` to `version = "1.1"`.
 * [ ] Re-run `./gradlew jar`.
 * [ ] Re-run `conveyor make site`.
-
-### C++ 
-
-The version of the package is defined in the `conveyor.conf` file.
-
-* [ ] Open the source code of the app and change the message that's displayed in the title bar.
-* [ ] Re-compile the app binary/binaries.
-* [ ] Replace `version = 1` in `conveyor.conf` with `version = 2`.
-* [ ] Re-run `conveyor make site`
 
 ### Testing the update 
 
@@ -193,7 +200,7 @@ In this section you'll learn how to add Conveyor packaging to an existing projec
 
 The template `conveyor.conf` files are small, which is normal. A combination of sensible defaults, automatically derived values and (optionally) config extracted from your build system keeps it easy. Still, there are around 150 different settings available to customize packages if you need them. Consult the configuration section of this guide to learn more about what you can control.
 
-### C++
+### Native / C++
 
 * [ ] Open `conveyor.conf` in the project root directory. It's defined using a superset of JSON called [HOCON](configs/hocon-spec.md) with a few [Conveyor-specific extensions](configs/hocon-extensions.md). It will look roughly like this:
 
@@ -318,14 +325,6 @@ You can also write `include required("generated.conveyor.conf")` and run `gradle
 
 !!! tip
     When iterating on packages use the faster form, and then switch to the slower form when done.
-
-??? "Why does the plugin only generate config?"
-    Conveyor isn't implemented itself as a Gradle plugin because:
-    
-    * It must support projects that use any build system.
-    * It needs a customized JVM that has various bug fixes backported to it, and which thus won't match the one being used to run Gradle.
-    * The Gradle API frequently changes in backwards-incompatible ways.
-
 
 #### Maven projects
 

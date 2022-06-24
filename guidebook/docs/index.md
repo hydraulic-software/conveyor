@@ -29,6 +29,7 @@ Conveyor doesn't care how you do your UI, but this example uses the [JetPack Com
         * Updates use delta downloads and data is shared between apps, even from different vendors.
         * Has everything IT departments need to easily deploy to managed networks.
     * Build Mac applications that use the popular [Sparkle 2 update framework](https://sparkle-project.org/).
+        * Sparkle is automatically used, without needing any code changes in your apps.
     * Build apt repositories for Debian/Ubuntu, tarballs for other distros. Integrates with systemd for servers and cron jobs.
 * **Generate a static download site.**
     * Detects the user's operating system and CPU architecture.
@@ -37,9 +38,12 @@ Conveyor doesn't care how you do your UI, but this example uses the [JetPack Com
     * Sign your apps with Apple/Windows certificates for a better download UX, or ignore it and get self-signed packages with a `curl | bash` style install.    
     * You can sign/notarize apps on any OS. 
     * You can backup your single root key by writing it down as words on paper.
-* **[Deep support for JVM applications](configs/jvm.md).**
+* **Pre-made template projects.**
+    * CMake + OpenGL to demonstrate building and packaging C++ native apps that use third party dependencies.
+    * JetPack Compose Desktop and JavaFX for cross-platform GUI apps. 
+* **[Deep integration for JVM applications](configs/jvm.md).**
     * Uses JLink and jdeps to minimize the JDK size.
-    * Optional config import from Maven and Gradle.
+    * Import configuration from Maven and Gradle build systems.
     * Pre-canned template apps. Publish your first app in five minutes.
 * **Pierce the abstraction!** Cross platform tooling doesn't mean giving up platform-specific features. Over 120 different settings let you precisely configure your packages, including your:
     * Mac `Info.plist` files.
