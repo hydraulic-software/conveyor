@@ -17,7 +17,7 @@ The first time you use Conveyor you will need to run:
 conveyor keys generate
 ```
 
-optionally giving this command a `--passphrase`. See [Setting up](setting-up.md) for more information on this command and why it's necessary.
+optionally giving this command a `--passphrase`.
 
 ## Template projects
 
@@ -126,4 +126,3 @@ There's no way to clear the cache from the CLI. You can just delete the cache di
 If anything goes wrong or you are just curious to see what was done, use the `--show-log` flag. On Windows, you get Notepad. On UNIX it will display the last execution's log file in a pager, highlighted and colored. By default lines aren't wrapped, so you can scroll left and right with the arrows. If you'd like to enable wrapping, perhaps to copy some long path or URL, type `-S` (that is, `-` followed by Shift-S). As always, you can press `q` to quit.
 
 Logs are kept for more than just the last execution. At the top of each log file is the path where logs are kept. You can view log files by process ID in that directory.
-

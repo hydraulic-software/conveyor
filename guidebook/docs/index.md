@@ -19,7 +19,7 @@ Conveyor doesn't care how you do your UI, but this example uses the [JetPack Com
 
 ## Get started
 
-[ :material-arrow-up-box: Get set up!](setting-up.md){ .md-button .md-button--primary } [ :material-forum: Discussion forum](https://github.com/hydraulic-software/conveyor/discussions){ .md-button .md-button--primary } [ :material-chat: Chat room](https://gitter.im/hydraulic-software/community){ .md-button .md-button--primary }
+[ :material-arrow-up-box: Get set up!](download-conveyor.md){ .md-button .md-button--primary } [ :material-forum: Discussion forum](https://github.com/hydraulic-software/conveyor/discussions){ .md-button .md-button--primary } [ :material-chat: Chat room](https://gitter.im/hydraulic-software/community){ .md-button .md-button--primary }
 
 ## Features
 

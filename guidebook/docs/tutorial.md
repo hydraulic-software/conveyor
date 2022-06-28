@@ -9,7 +9,7 @@ This tutorial doesn't try to cover all the features Conveyor has, it's only here
 
 ## Step 1. Get the app and create a root key
 
-* [x] [Download Conveyor](setting-up.md) to install Conveyor. On macOS sure it's added to your path by using the GUI. 
+* [x] [Download Conveyor](download-conveyor.md) to install Conveyor. On macOS sure it's added to your path by using the GUI. 
 
 You don't need to have any code signing certificates to use Conveyor or follow this tutorial. Nonetheless, Conveyor always needs cryptographic keys so it can at least self-sign your app.
 
