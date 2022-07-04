@@ -1,8 +1,8 @@
 # Tutorial
 
-In this tutorial we'll generate a fresh application using the templates built in to Conveyor. Then we'll compile a download site for it containing packages for every supported platform. Finally we'll take a look at how things are wired up and thus learn how to package a pre-existing project.
+In this tutorial we'll generate a fresh application using the templates built in to Conveyor. Then we'll compile a download site for it containing packages for every supported platform. Finally we'll take a look at how things are wired up to learn how to package a pre-existing project.
 
-This tutorial doesn't try to cover all the features Conveyor has, it's only here to get you started. Read through the rest of this guidebook to learn about the full range of possibilities.
+This tutorial doesn't try to cover all the features Conveyor has. Read through the rest of this guidebook to learn about the full range of possibilities.
 
 !!! tip
     You can tick the checkmarks on this page to mark your progress. Their state is stored in a cookie.
@@ -11,11 +11,14 @@ This tutorial doesn't try to cover all the features Conveyor has, it's only here
 
 * [x] [Download Conveyor](download-conveyor.md) to install Conveyor. On macOS sure it's added to your path by using the GUI. 
 
-You don't need to have any code signing certificates to use Conveyor or follow this tutorial. Nonetheless, Conveyor always needs cryptographic keys so it can at least self-sign your app.
+You don't need to have any code signing certificates to use Conveyor or follow this tutorial. Nonetheless, Conveyor always needs cryptographic keys so it can at least self-sign your app. To get started we'll use self signing, which is good enough for testing, internal apps and distributing software to developers. The final steps of the tutorial show you how to use real code signing keys.
 
 * [x] Run `conveyor keys generate` from a terminal.
 
-Later on you can provide other signing keys or connect Conveyor to a hardware security module, but for the tutorial we'll use self signing. 
+This command will create a new root private key, convert it to a series of words and write it to a config file in your home directory. 
+
+!!! tip "Key derivation"
+    You can back this generated file up in any way you like, even by writing down the words with a pen (include the timestamp). Each type of key Conveyor needs will be derived from this one root, unless you supply a custom key for specific platforms.
 
 ## Step 2. Create a template project
 
@@ -390,7 +393,13 @@ That's all you need! The display name and version of your application will be ta
 Inputs are resolved relative to the location of the config file, not where Conveyor is run from.
 
 ??? warning "Uber-jars"
-Don't use an uber/fat-jar for your program. It'll reduce the efficiency of delta download schemes like the one used by Windows. It also means modular JARs won't be encoded using the optimized `jimage` scheme. Use separate JARs for the best user experience.
+Don't use an uber/fat-jar for your program unless you're obfuscating. It'll reduce the efficiency of delta download schemes like the one used by Windows. It also means modular JARs won't be encoded using the optimized `jimage` scheme. Use separate JARs for the best user experience.
+
+## Step 9. Sign with real keys
+
+To get rid of security warnings you can use a proper code signing certificate. This step is optional; if you're just experimenting or will be distributing to a network where the admins can install custom root certificates, you can skip this section.
+
+Conveyor can use existing keys, certificates and hardware security modules you may have, and it can also assist you in getting certificates if you don't already have them. To learn more, read about [keys and certificates](keys-and-certificates.md).
 
 ## Next steps
 
