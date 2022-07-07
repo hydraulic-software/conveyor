@@ -35,13 +35,13 @@ To use it, [look up the latest version](https://plugins.gradle.org/plugin/dev.hy
 === "Kotlin"
     ```kotlin title="build.gradle.kts"
     plugins {
-        id("dev.hydraulic.conveyor") version "1.0"
+        id("dev.hydraulic.conveyor") version "1.0.1"
     }
     ```
 === "Groovy"
     ```groovy title="build.gradle"
     plugins {
-        id 'dev.hydraulic.conveyor' version '1.0'
+        id 'dev.hydraulic.conveyor' version '1.0.1'
     }
     ```
 
@@ -100,7 +100,7 @@ plugins {
     kotlin("jvm") version "1.6.10"
     kotlin("kapt") version "1.6.10"
     id("org.jetbrains.compose") version "1.0.1"
-    id("dev.hydraulic.conveyor") version "1.0"
+    id("dev.hydraulic.conveyor") version "1.0.1"
 }
 
 version = "1.0"

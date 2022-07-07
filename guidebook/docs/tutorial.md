@@ -308,13 +308,13 @@ The plugin adds two tasks, `printConveyorConfig` and `writeConveyorConfig`. The 
 === "Kotlin"
     ```kotlin title="build.gradle.kts"
     plugins {
-        id("dev.hydraulic.conveyor") version "1.0"
+        id("dev.hydraulic.conveyor") version "1.0.1"
     }
     ```
 === "Groovy"
     ```groovy title="build.gradle"
     plugins {
-        id 'dev.hydraulic.conveyor' version '1.0'
+        id 'dev.hydraulic.conveyor' version '1.0.1'
     }
     ```
 

@@ -8,7 +8,7 @@ Here's a Gradle config (in Kotlin syntax) that uses the Conveyor plugin and sets
 plugins {
 	`java-library`
     application
-    id("dev.hydraulic.conveyor") version "1.0"
+    id("dev.hydraulic.conveyor") version "1.0.1"
 }
 
 repositories {
