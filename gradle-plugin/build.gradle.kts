@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "dev.hydraulic"
-version = "0.9.8"
+version = "1.0"
 
 repositories {
     mavenCentral()
@@ -17,7 +17,7 @@ repositories {
 }
 
 dependencies {
-    implementation("dev.hydraulic:hydraulic.types:0.9.2") {
+    implementation("dev.hydraulic:dev.hydraulic.types:1.0") {
         because("Machine, OperatingSystem, CPUArchitecture types.")
     }
     compileOnly("org.jetbrains.compose:compose-gradle-plugin:1.1.1") {
