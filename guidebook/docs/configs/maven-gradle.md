@@ -19,6 +19,9 @@ This will use the [`dependency:build-classpath`](https://maven.apache.org/plugin
 
 Conveyor provides an [open source Gradle plugin](https://github.com/hydraulic-software/conveyor/tree/master/gradle-plugin) which extracts configuration from your build and emits it as HOCON. It also lets you configure machine-specific dependencies that are automatically put into the right section of the input hierarchy.
 
+!!! info
+    You must use Gradle 7 or above for the plugin to work.
+
 ??? info "Which tool on top?"
     The Gradle plugin restricts itself to generating configuration for a few different reasons:
 
@@ -49,9 +52,7 @@ For now, you will also need to add our repository to your `settings.gradle{.kts}
     pluginManagement {
         repositories {
             gradlePluginPortal()
-            maven {
-                url = uri("https://maven.hq.hydraulic.software")
-            }
+            maven("https://maven.hq.hydraulic.software")
         }
     }
     ```
