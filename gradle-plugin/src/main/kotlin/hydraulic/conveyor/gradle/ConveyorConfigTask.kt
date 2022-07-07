@@ -40,7 +40,7 @@ abstract class ConveyorConfigTask : DefaultTask() {
         appendLine("app.jvm.gui.main-class = ${app.mainClass}")
         importJVMArgs(app.jvmArgs, project)
 
-        appendLine("app.fsname = " + quote(app.name))
+        app.nativeDistributions.packageName?.let { appendLine("app.fsname = " + quote(it)) }
         app.nativeDistributions.description?.let { appendLine("app.description = " + quote(it)) }
         app.nativeDistributions.vendor?.let { appendLine("app.vendor = " + quote(it)) }
 
