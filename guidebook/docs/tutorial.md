@@ -7,7 +7,7 @@ This tutorial doesn't try to cover all the features Conveyor has. Read through t
 !!! tip
     You can tick the checkmarks on this page to mark your progress. Their state is stored in a cookie.
 
-## Step 1. Get the app and create a root key
+## Step 1. Get Conveyor and create a root key
 
 * [x] [Download Conveyor](download-conveyor.md) to install Conveyor. On macOS sure it's added to your path by using the GUI. 
 
@@ -27,7 +27,7 @@ Conveyor has three pre-canned "Hello World" project templates, all Apache 2 lice
 One is a native OpenGL app written in C++, the second is for a GUI JVM app using the reactive [JetPack Compose for Desktop](https://www.jetbrains.com/lp/compose-desktop/) toolkit, and the last is another JVM GUI app using [JavaFX](https://www.openjfx.io). Generating a project based on these templates is the quickest way to try things out. The JVM apps are easier to play with because you don't need cross-compilers. For the C++ project you'll need to compile it on each OS that you wish to target.
 
 * [x] For the native C++ app, install CMake and the compiler toolchain for each platform you will target.
-* [x] For a JVM app, install a JDK (any will work). Conveyor requires JVM apps to use JDK 11 or higher.
+* [x] For a JVM app, install a JDK 11 or higher.
 * [x] Run the following command, picking an app type and reverse DNS name as you see fit. There are also `--display-name` and `--output-dir` flags but they are optional.
 
 ```
@@ -91,7 +91,7 @@ This will compile the project and then create an unzipped, un-packaged app in th
 
 The command for macOS is different to those for Windows and Linux because Conveyor supports two CPU architectures for macOS, so you have to disambiguate which you want. The `-K` switch sets a key in the config file for the duration of that command only. Here we're setting the `app.machines` key which controls which targets to create packages for.
 
-Note that when using the C++ app template, both ARM and Intel Mac packages will actually contain fat binaries that work on either. For Java apps each package is specific to one CPU architecture as this reduces download sizes for your end users.
+Note that when using the C++ app template, both ARM and Intel Mac packages will actually contain fat binaries that work on either. You can point users at a single download, or keep them separate so the download sizes can be reduced later. For Java apps each package is specific to one CPU architecture as this reduces download sizes for your end users.
 
 !!! tip
     * The `make` command makes use of a local file cache, downloading for any external files only once, and re-using them in subsequent project builds. Thus, a new download of the same file will be triggered only in case of events like cache or cache content removal, cache file system location change, etc. [Learn more about the disk cache](running.md#the-cache).
@@ -107,9 +107,7 @@ conveyor make site
 
 The previous contents of the output directory will be replaced. You'll now find there packages for each OS in multiple formats, some update metadata files and a download page ([details](outputs.md)). You can use whatever files you wish: there is no requirement to use them all. 
 
-The default generated `conveyor.conf` file tells each package to look for updates on `localhost:8899`. If you want to just quickly test updates this is good enough - grab your favourite web server and serve that directory. We recommend [Caddyserver](https://caddyserver.com/). You can just run `caddy file-server --browse --listen :8899` from inside the output directory.
-
-When you want to serve your packages for real, change the `site.base-url` key in the generated `conveyor.conf` configuration file in the root of your project's directory,  to point to the URL where you'll upload your files and rerun `conveyor make site`. You can also use [GitHub Releases](configs/download-pages.md#publishing-through-github).
+The default generated `conveyor.conf` file tells each package to look for updates on `localhost:8899`. This is good enough for testing and Conveyor doesn't require a license for localhost projects, so grab your favourite web server and serve that directory. We recommend [Caddyserver](https://caddyserver.com/). You can just run `caddy file-server --browse --listen :8899` from inside the output directory.
 
 ??? tip "Error messages"
     Forgetting to run the `./gradlew jar` command in the previous step will result in the following warning, however the build will proceed and you may therefore get an inconsistent build.
@@ -247,7 +245,7 @@ Now open the `CMakeLists.txt` file. This defines the build system. It contains v
 ??? note "Code injection on macOS"
     Windows and Linux have built-in package managers that can update software automatically, but macOS does not. The only Apple provided way to ship software updates to Mac users is via the App Store. Conveyor doesn't go this route. Instead, it uses the popular [Sparkle Framework](https://sparkle-project.org/) to give your app the ability to update itself. Sparkle is a de-facto standard used across the Mac software ecosystem. 
 
-    For Sparkle to work it must be initialized at app startup. To avoid you needing to write Mac specific code (e.g. in Objective-C or Swift), Conveyor will edit the Mach-O headers of your binary when it builds the bundle to inject a shared library that starts up Sparkle for you. This happens automatically for any app that links against Cocoa or AppKit and not Sparkle. This feature is particularly useful for apps that aren't written in C++.
+    For Sparkle to work it must be initialized at app startup. To avoid you needing to write Mac specific code in Objective-C or Swift, Conveyor will edit the Mach-O headers of your binary when it builds the bundle to inject a shared library that starts up Sparkle for you. This happens automatically for any app that links against Cocoa or AppKit and not Sparkle. This feature is particularly useful for apps that aren't written in C++, as long as they provide sufficient header padding space. The amount of space left for adding headers can be controlled using Apple's `ld` linker with the `-headerpad` flag. If your language toolchain doesn't support header padding, this technique won't work and you'll have to link against `Sparkle.framework` yourself.
 
 ### JVM
 
@@ -395,7 +393,21 @@ Inputs are resolved relative to the location of the config file, not where Conve
 ??? warning "Uber-jars"
 Don't use an uber/fat-jar for your program unless you're obfuscating. It'll reduce the efficiency of delta download schemes like the one used by Windows. It also means modular JARs won't be encoded using the optimized `jimage` scheme. Use separate JARs for the best user experience.
 
-## Step 9. Sign with real keys
+## Step 9. Set a real site URL
+
+So far we've been using `localhost` as the download site URL. This is convenient for testing because Conveyor treats this as a sort of trial mode. Once you change the `app.site.base-url` config key to something else, there are two scenarios.
+
+### Open source projects
+
+Set the `app.vcs-url` key to the URL of your version control repository (e.g. `github.com/user/project`). You will be able to use Conveyor for free. Any version control system can be used, it doesn't have to be git. The download site URL you use must be publicly accessible, or become so soon after using Conveyor. If it never becomes accessible, or the downloads don't seem to match the source code, Conveyor will stop working until the issue is rectified.
+
+### Proprietary projects
+
+If you don't specify a public source repository then the config will be edited to include a freshly issued license key.
+
+License keys are associated with projects, and projects are defined by the download site URL. Anyone can build a project - Conveyor isn't licensed on a per user basis. During the introductory period Conveyor is free to use even for apps that aren't open source. Once the introductory period ends, you will need to link each license key you're using with a subscription. You'll be notified via the app when the introductory period is coming to an end. 
+
+## Step 10. Sign with real keys
 
 To get rid of security warnings you can use a proper code signing certificate. This step is optional; if you're just experimenting or will be distributing to a network where the admins can install custom root certificates, you can skip this section.
 

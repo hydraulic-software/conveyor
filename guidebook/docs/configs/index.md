@@ -19,9 +19,7 @@ To use Conveyor you must meet one of the following criteria:
 
 1. `app.site.base-url` is set to `http://localhost` (any port). This is the mode used in the tutorial and is for trying things out / playing around.
 2.  `app.vcs-url` is set to the URL of your source repository. The project found there must match the one you're packaging and must be open source. This can be a git URL, GitHub URL, Mercurial URL etc.
-3. `conveyor.license-key` contains an eight character license key (like `aaaa-bbbb`). This lets you package a proprietary application.
-
-To get a license key simply run Conveyor without setting anything in your config file except the site URL. A new key will be generated and put in the config file for you. It'll work for a single version.
+3. `conveyor.license-key` contains an eight character license key (like `aaaa-bbbb`). This lets you package a proprietary application. To get a license key simply run Conveyor without setting anything in your config file except the site URL. A new key will be generated and put in the config file for you. During the introductory period Conveyor is free to use for everyone. Once the introductory period ends, you will be asked to associate your license key with a paid account.
 
 Because Conveyor is licensed per-project, keys are associated with site URLs. It's OK to change your site URL, so you can fix typos or switch from a private to public location. If you change to a new URL and then change back again, you'll get an error because this looks like using one key for multiple projects. If you're not trying to share keys but still need to change your site URL to an older one, just email [contact@hydraulic.software](mailto:contact@hydraulic.software) and we'll sort it out.
 
