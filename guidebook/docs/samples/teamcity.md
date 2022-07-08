@@ -20,61 +20,10 @@ app {
   display-name = JetBrains TeamCity
   vendor = JetBrains
 
-  # Download the latest version from the JetBrains site.
-  inputs += download.jetbrains.com/teamcity/TeamCity-2021.2.tar.gz
+  // Download from the JetBrains website.
+  inputs += download.jetbrains.com/teamcity/TeamCity-2022.04.1.tar.gz
 
-  # Disable the nginx default sample reverse proxy config and leave the default Apache 2 reverse proxy config, pointing a localhost 1051.
-  server.http {
-    port = 1051
-    nginx = null
-  }
-
-  # Not a desktop app.
-  icons = []
-  
-  linux {
-    # TeamCity expects some directories in its working directory to point to where you want logs and cache. Direct it to the standard place.
-    # These directories are created and managed by systemd.
-    symlinks = [
-      temp -> /tmp
-      logs -> /var/log/private/${app.long-fsname-dir}
-      cache -> /var/cache/private/${app.long-fsname-dir}
-    ]
-
-    # Define a systemd service so the OS will start and supervise the server.
-    services {
-      server {
-        Service {
-          ExecStart = ${app.linux.install-path}/bin/teamcity-server.sh run
-          ExecStop = ${app.linux.install-path}/bin/teamcity-server.sh stop
-
-          # This will meet TeamCity's need for its whole directory tree to be writable even though that's not conventional for Linux.
-          # The ! mark here makes the script run as root but after uid/gid allocation is done.
-          ExecStartPre = "!/bin/sh -c \"chown -R --preserve-root -h" ${app.long-fsname}":"${app.long-fsname} ${app.linux.install-path}"\""
-          # Punch a hole in the sandbox so the server can write to its own directory.
-          ReadWritePaths = "+"${app.linux.install-path}
-
-          # https://www.jetbrains.com/help/teamcity/installing-and-configuring-the-teamcity-server.html#Setting+Up+Memory+settings+for+TeamCity+Server
-          Environment += "TEAMCITY_SERVER_MEM_OPTS=-Xmx2048m"
-        }
-      }
-    }
-    
-    # Bandwidth is plentiful, my patience is not.
-    compression-level = low
-
-    debian {
-      control {
-      	# TeamCity really wants to use a proper RDBMS.
-        Depends: "postgresql (>= 12)"
-      }
-    }
-  }
-
-  # This is where the apt repository will be hosted.
-  site.base-url = downloads.hydraulic.dev/jb-packages/${part.fsname}
-
-  # Override the default server config to configure the port automatically.
+  // Overwrite the default config file, so we can control the default port.
   inputs += {
     to = conf/server.xml
     content = """
@@ -118,5 +67,65 @@ app {
 </Server>
     """
   }
+
+  // Turn off the nginx reverse proxy sample config, but keep the Apache2 equivalent. 
+  server.http {
+    port = 1051
+    nginx = null
+  }
+  
+  linux {
+    // TeamCity wants some directories in its install directory, use symlinks to redirect them to standard Linux paths here. 
+    symlinks = [
+      temp -> /tmp
+      logs -> /var/log/private/${app.long-fsname-dir}
+      cache -> /var/cache/private/${app.long-fsname-dir}
+    ]
+
+    // Set up a systemd service so the server will start on install, stop on uninstall and restart on upgrade.
+    services {
+      // The name "server" here is arbitrary.
+      server {
+        // Import a default systemd service file from the Conveyor standard library.
+        include "/stdlib/linux/service.conf"
+        
+        // Enable the DynamicUser feature, to ensure the server doesn't run as root and is lightly sandboxed.
+        include "/stdlib/linux/lightweight-service-sandbox.conf"
+        
+        // TeamCity unfortunately wants to write to its own install directory and this cannot be changed. Let it do so here.
+        include "/stdlib/linux/writable-service-install.conf"
+
+        // It depends on Postgresql being started, so add a service dependency. This ensures the DB is started first.
+        Unit {
+          Requires = postgresql.service
+          After = postgresql.service
+        }
+
+        // Finally, inform systemd how to start and stop the service. 
+        Service {
+          ExecStart = ${app.linux.install-path}/bin/teamcity-server.sh run
+          ExecStop = ${app.linux.install-path}/bin/teamcity-server.sh stop
+
+          // https://www.jetbrains.com/help/teamcity/installing-and-configuring-the-teamcity-server.html#Setting+Up+Memory+settings+for+TeamCity+Server
+          Environment += "TEAMCITY_SERVER_MEM_OPTS=-Xmx2048m"
+        }
+      }
+    }
+
+    // Speed up building the package.
+    compression-level = low
+
+    // Add package dependencies for the database and a JDK.
+    debian {
+      control {
+        Depends: "postgresql (>= 12), java-11-amazon-corretto-jdk"
+      }
+    }
+  }
+  
+  // You will need to point this to somewhere, as all Conveyor packages expect an update site at the moment.
+  site.base-url = "localhost:1234"
 }
+
+conveyor.compatibility-level = 1
 ```

@@ -1,6 +1,6 @@
 # SWT
 
-SWT is a UI toolkit that maps directly to underlying native widgets. 
+SWT is a small JVM UI toolkit that maps directly to the operating system's native widgets. 
 
 Here's a Gradle config (in Kotlin syntax) that uses the Conveyor plugin and sets up dependencies as appropriate. This sample also demonstrates how to write a bit of custom Gradle code to minimize repetition when specifying platform specific dependencies:
 
