@@ -9,11 +9,8 @@ After downloading:
 
 Now run `conveyor --help` to check it's ready to go and move on to the next section.
 
-!!! warning
-    **Conveyor is currently in private beta**. To go beyond the tutorial you need a license key (it looks like `abcd-efgh`). As long as your download site is set to localhost you don't need anything. To try it for a real app email [contact@hydraulic.software](mailto:contact@hydraulic.software) and request a key.
-
 !!! note "Automatic updates"
-    Conveyor is packaged with itself, but automatic updates are switched off for Windows and macOS to give you full control. To update Conveyor, run it from the GUI and then click "Check for updates". On Debian you can control updates in the usual manner and for other distros, the tarball never updates itself.
+    Conveyor is packaged with itself, but automatic updates are switched off for Windows and macOS to give you full control. To update Conveyor, run it from the GUI and then click "Check for updates". On Debian you can control updates in the usual manner and for other distros, the tarball never updates itself so you'll need to re-download it.
 
 ## Create a root key
 
@@ -26,6 +23,14 @@ app.signing-key = "vicious noble apart total march unit veteran kangaroo recipe 
 You don't need any certificates to make apps with Conveyor. By default, your apps will be self-signed using the root key and users will be asked to use a special procedure to install. 
 
 If you'd like to code sign your apps, read about [keys and certificates](keys-and-certificates.md).
+
+## Downloading in build scripts
+
+You can download specific versions of Conveyor by simply putting the URLs you find on the download page into your build scripts. Please observe the following:
+
+1. Ensure your CI system is caching the download. If we observe IP addresses redownloading over and over they'll be throttled or blocked. Consider mirroring the download on your own servers if you aren't sure how to set up caching.
+2. If you want to use the Windows version you can just grab the MSIX file and unzip it.
+3. You can use command line flags or environment variables to agree to the license. You'll be given instructions on what to do the first time you manually agree.
 
 ## Next steps
 
