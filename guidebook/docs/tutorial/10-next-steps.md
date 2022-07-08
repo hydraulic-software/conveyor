@@ -8,6 +8,6 @@ Not happy with the defaults? There are [lots of settings](../configs/index.md) a
 
 Conveyor also supports servers with full Linux `systemd` integration. Take a look at the [Linux config sections](../configs/linux.md) to learn more.
 
-Stuck? Try asking in our [GitHub Discussions forum](https://github.com/hydraulic-software/conveyor/discussions).
+Stuck? Try asking in our [Zulip chatroom](https://hydraulic.zulipchat.com/#narrow/stream/329916-general) or our [GitHub Discussions forum](https://github.com/hydraulic-software/conveyor/discussions).
 
 <script>var tutorialSection = 10;</script>

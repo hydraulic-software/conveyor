@@ -13,9 +13,9 @@ DMGs for some reason we've overlooked, please [email us to let us know](mailto:c
 
 We'd like to add PKG support in the future. These are needed for uploading to the app store, and for installing files to unconventional places.
 
-## 4. Installer EXEs?
+## 4. Installer EXEs? MSIs?
 
-At the moment we have no plans to do this. MSIX is Microsoft's current recommended install technology, but we're interested in learning about use cases that require alternatives. We may in future support creating a small stub EXE that installs a custom self-signed certificate and then triggers App Installer. This would let you benefit from the MSIX feature set without needing code signing, albeit the initial EXE may be more prone to antivirus false positives.
+At the moment we have no plans to do this. MSI is deprecated. MSIX is Microsoft's current recommended install technology, but we're interested in learning about use cases that require alternatives. We may in future support creating a small stub EXE that installs a custom self-signed certificate and then triggers App Installer. This would let you benefit from the MSIX feature set without needing code signing, albeit the initial EXE may be more prone to antivirus false positives.
 
 ## 5. FlatPak? Other distros? Non-Intel Linux?
 
@@ -51,7 +51,7 @@ Not at this time. Snaps are a format specific to the Ubuntu app store. If you wa
 
 Conveyor supports making Linux servers with full [systemd integration](../configs/linux.md#systemd-units). It doesn't produce Docker images at this time. Other tools exist that make Docker images and so Conveyor probably doesn't have much to add here, but if you'd like this feature please [let us know](mailto:contact@hydraulic.software) so we can understand your needs. 
 
-Incidentally, Conveyor supports systemd because we use Conveyor-generated packages for our own servers. We feel that:
+Incidentally, although Docker is a great tool Conveyor supports systemd because we use Conveyor-generated packages for our own servers. We feel that:
 
 1. SystemD has better service management features like task dependencies, activation, logging etc.
 2. SystemD has better command line tools, including neat third party tools like [sysz](https://github.com/joehillen/sysz).

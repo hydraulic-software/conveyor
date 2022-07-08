@@ -6,7 +6,14 @@ The template `conveyor.conf` files are small, which is normal. A combination of 
 
 ## Native / C++
 
-* [ ] Open `conveyor.conf` in the project root directory. It's defined using a superset of JSON called [HOCON](../configs/hocon-spec.md) with a few [Conveyor-specific extensions](../configs/hocon-extensions.md). It will look roughly like this:
+### conveyor.conf
+
+* [ ] Open `conveyor.conf` in the project root directory. 
+
+The config is defined using a superset of JSON called [HOCON](../configs/hocon-spec.md) with a few [Conveyor-specific extensions](../configs/hocon-extensions.md). It will look roughly like this:
+
+!!! tip
+    Click the + icons to learn more about each part.
 
 ```javascript title="conveyor.conf"
 app {
@@ -43,7 +50,52 @@ conveyor.compatibility-level = 1
 
 The only complicated thing here is the [inputs](../configs/inputs.md). This config is using Conveyor's ability to change the layout of files in the package as they are copied in.
 
-Now open the `CMakeLists.txt` file. This defines the build system. It contains various commands, all with comments explaining what they do. The build system demonstrates importing a third party library from a source zip, compiling it, dynamically linking against it, and passing the right linker flags to produce binaries that will work with Conveyor. See the `README.md` file for further discussion.
+### CMakeLists
+
+* [ ] Now open the `CMakeLists.txt` file.  
+
+This file defines the build system. It contains various commands, all with comments explaining what they do. The build system demonstrates importing a third party library from a source zip, compiling it, dynamically linking against it, and passing the right linker flags to produce binaries that will work with Conveyor. It looks roughly like this:
+
+```javascript
+cmake_minimum_required(VERSION 3.16.3)
+project(gl_cmake)
+
+set(CMAKE_CXX_STANDARD 17) // (1)!
+set(CMAKE_OSX_ARCHITECTURES arm64;x86_64) // (2)!
+set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/installation) // (3)!
+
+if (APPLE) // (4)!
+    set(CMAKE_INSTALL_RPATH "@executable_path/../Frameworks")
+    set(CMAKE_EXE_LINKER_FLAGS 
+        ${CMAKE_EXE_LINKER_FLAGS} "-Wl,-headerpad,0xFF")  // (5)!
+elseif (UNIX)
+    set(CMAKE_INSTALL_RPATH "\$ORIGIN/../lib")
+endif()
+
+include_directories("include")
+add_executable(gl_cmake
+        src/main.cpp
+        src/gl.c
+)
+
+if (APPLE)
+    target_link_libraries(gl_cmake PRIVATE "-framework Cocoa") // (6)!
+endif()
+
+include(ImportGLFW.txt) // (7)!
+target_link_libraries(gl_cmake PRIVATE glfw)
+
+install(TARGETS gl_cmake)
+```
+
+1. Use the C++17 standard.
+2. When compiling on macOS, cross-compile for Intel and Apple Silicon. The result is a universal fat binary.
+3. "Install" to a directory tucked neatly into the build directory. Conveyor will pick up the binaries from this directory later.
+4. Ensure libraries can be found. On UNIX systems libraries are stored in a different directory to the executable, and a header in the binary file tells the linker where to look. Unfortunately they are not set by default, so we must instruct the linker to add these headers here. The syntax varies between macOS and Linux. It isn't necessary for Windows where the convention is to put DLLs and EXEs in the same directory.
+5. On macOS Conveyor will inject its own library into the binary to initialize the update system. Ensure there is sufficient empty space in the headers to make this possible.
+6. On macOS we should also depend on Apple's Cocoa GUI framework, because otherwise Conveyor will think we're not a GUI app and not initialize Sparkle. In this case all the GUI work is being done by GLFW but that's rare, and only because this is such a simple example. Normally you'd need this regardless.
+7. Import and compile an open source library. Delete these lines if you don't want to use OpenGL.
+
 
 ??? note "Code injection on macOS"
     Windows and Linux have built-in package managers that can update software automatically, but macOS does not. The only Apple provided way to ship software updates to Mac users is via the App Store. Conveyor doesn't go this route. Instead, it uses the popular [Sparkle Framework](https://sparkle-project.org/) to give your app the ability to update itself. Sparkle is a de-facto standard used across the Mac software ecosystem.
@@ -89,20 +141,20 @@ The plugin adds two tasks, `printConveyorConfig` and `writeConveyorConfig`. The 
 === "Kotlin"
     ```kotlin title="settings.gradle.kts"
     pluginManagement {
-      repositories {
-        gradlePluginPortal()
-        maven("https://maven.hq.hydraulic.software")
-      }
+        repositories {
+            gradlePluginPortal()
+            maven("https://maven.hq.hydraulic.software")
+        }
     }
     ```
 
 === "Groovy"
     ```groovy title="settings.gradle"
       pluginManagement {
-        repositories {
-        gradlePluginPortal()
-        maven { uri = "https://maven.hq.hydraulic.software" }
-      }
+          repositories {
+              gradlePluginPortal()
+              maven { uri = "https://maven.hq.hydraulic.software" }
+          }
     }
     ```
 
@@ -111,14 +163,14 @@ The plugin adds two tasks, `printConveyorConfig` and `writeConveyorConfig`. The 
 === "Kotlin"
     ```kotlin title="build.gradle.kts"
     plugins {
-      id("dev.hydraulic.conveyor") version "1.0.1"
+        id("dev.hydraulic.conveyor") version "1.0.1"
     }
     ```
 
 === "Groovy"
     ```groovy title="build.gradle"
     plugins {
-      id 'dev.hydraulic.conveyor' version '1.0.1'
+        id 'dev.hydraulic.conveyor' version '1.0.1'
     }
     ```
 

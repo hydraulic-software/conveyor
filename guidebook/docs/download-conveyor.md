@@ -36,6 +36,6 @@ You can download specific versions of Conveyor by simply putting the URLs you fi
 
 1. Please read the [release notes](release-notes.md)!
 1. Learn [what Conveyor produces](outputs.md).
-1. Take [the tutorial](tutorial/tutorial.md).
+1. Take [the tutorial](tutorial/1-get-started.md).
 1. Learn more about how to [run the tool](running.md).
 1. Learn [how to customize the results](configs/index.md).

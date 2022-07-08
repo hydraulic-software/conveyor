@@ -5,7 +5,7 @@ In this section we take a task-oriented approach to using Conveyor.
 ## Learn and experiment  
 
 * Use the `conveyor generate` command to create a self-contained, ready to package app in C++, Java or Kotlin.
-* [Follow the tutorial](../tutorial/tutorial.md) which takes you through creating and packaging an app.
+* [Follow the tutorial](../tutorial/1-get-started.md) which takes you through creating and packaging an app.
 
 ## Package JVM GUI apps
 

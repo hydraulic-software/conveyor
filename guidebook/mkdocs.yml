@@ -48,8 +48,8 @@ nav:
   - Tasks:
       - tasks/index.md
       - tasks/jetpack-compose-desktop.md
-      - tasks/server.md
       - tasks/swt.md
+      - tasks/server.md
   - FAQ:
     - faq/index.md
     - faq/output-formats.md

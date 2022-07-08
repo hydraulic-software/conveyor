@@ -2,11 +2,14 @@
 
 ## 1. Do I have to buy certificates?
 
-No, but it'll be harder for your users to install your app if you don't. They'll be instructed to copy/paste a command into their terminal, so in practice this is only feasible if you're distributing code to developers who are comfortable with the command line.  Additionally Windows anti-virus engines may interfere with your execution, especially if you use the file system or network a lot.
+No, but it'll be harder for your users to install your app if you don't. They'll be instructed either to copy/paste a command into their terminal or to use Apple's "magic right click menu" trick, so in practice this is only feasible if you're distributing code to people who are comfortable with that (i.e. developers).  Additionally Windows anti-virus engines may interfere with your execution, especially if you use the file system or network a lot.
 
 *Don't* use the self-signing feature for regular consumer apps. Code signing does actually raise the bar for malware developers; they often put a lot of risky effort into stealing code signing keys rather than revealing their identities: [example](https://threatpost.com/nvidias-stolen-code-signing-certs-sign-malware/178784/), [another example](https://www.computerworld.com/article/3048346/malware-authors-quickly-adopt-sha-2-through-stolen-code-signing-certificates.html).
 
-If you're asking this because you're an open source developer and working on a GUI app for regular users, consider asking your user community to donate the funds for the keys. When people know what their money will be used for they're much more likely to donate, especially if it will help grow the user community.
+If you're asking this because you're an open source developer and working on a GUI app for regular users, consider the following options:
+
+1. Asking your user community to donate the funds for the keys. When people know what their money will be used for they're much more likely to donate, especially if it will help grow the user community.
+2. Contacting the [SignPath Foundation](https://about.signpath.io/product/open-source), who sign open source Windows apps for free.
 
 ## 2. I don't have a Mac/Windows machine.
 

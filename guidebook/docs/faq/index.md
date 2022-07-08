@@ -9,7 +9,7 @@ systemd as a service manager.
 
 ## 2. Is Conveyor free?
 
-During the introductory period it's free for everyone else. Once the introductory period ends, it will be free for open source apps and
+During the introductory period it's free for everyone. Once the introductory period ends, it will be free for open source apps and
 require a subscription when used with proprietary apps. You can learn what it'll cost on the [pricing page](https://www.hydraulic.software/pricing.html).
 
 ## 3. Why isn't Conveyor a service?
@@ -34,7 +34,7 @@ It has advantages for us too:
 
 ## 4. Is Conveyor only for JVM apps?
 
-It can package any app, it just has some built in features to make packaging JVM apps easy. Take the [tutorial](../tutorial/tutorial.md) to learn 
+No. It can package any kind of app, it just has some built in features to make packaging JVM apps easy. Take the [tutorial](../tutorial/1-get-started.md) to learn 
 how to package a CMake based C++ OpenGL app.
 
 ## 5. Is Conveyor only for desktop apps?
