@@ -32,7 +32,7 @@ conveyor generate {compose,javafx} \
                           --display-name="My Amazing Project"
 ````
 
-To learn more see the [tutorial](tutorial.md).
+To learn more see the [tutorial](tutorial/tutorial.md).
 
 ## Common tasks
 

@@ -41,3 +41,7 @@
 [data-md-color-scheme="slate"] {
     --md-primary-fg-color:        #3777BA;
 }
+
+.task-list-control {
+    cursor: pointer;
+}

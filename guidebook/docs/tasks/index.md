@@ -5,7 +5,7 @@ In this section we take a task-oriented approach to using Conveyor.
 ## Learn and experiment  
 
 * Use the `conveyor generate` command to create a self-contained, ready to package app in C++, Java or Kotlin.
-* [Follow the tutorial](../tutorial.md) which takes you through creating and packaging an app.
+* [Follow the tutorial](../tutorial/tutorial.md) which takes you through creating and packaging an app.
 
 ## Package JVM GUI apps
 
@@ -14,4 +14,4 @@ In this section we take a task-oriented approach to using Conveyor.
 
 ## Package server apps
 
-* [Package a third party server for Linux](teamcity.md) that depends on Postgresql, is supervised with systemd and provides reverse proxy configs.
+* [Package a third party server for Linux](server.md) that depends on Postgresql, is supervised with systemd and provides reverse proxy configs.

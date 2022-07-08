@@ -1,4 +1,4 @@
-# JetBrains TeamCity
+# Packaging a server
 
 This sample shows you how to re-package a server app that's already packaged by someone else. In this case we'll use TeamCity by JetBrains,
 a CI server. 

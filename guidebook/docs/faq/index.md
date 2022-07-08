@@ -34,14 +34,14 @@ It has advantages for us too:
 
 ## 4. Is Conveyor only for JVM apps?
 
-It can package any app, it just has some built in features to make packaging JVM apps easy. Take the [tutorial](../tutorial.md) to learn 
+It can package any app, it just has some built in features to make packaging JVM apps easy. Take the [tutorial](../tutorial/tutorial.md) to learn 
 how to package a CMake based C++ OpenGL app.
 
 ## 5. Is Conveyor only for desktop apps?
 
 Not at all! It also has great support for:
 
-1. Servers that run outside of containers. See the [package a server](../tasks/teamcity.md) task page for an example that demonstrates systemd 
+1. Servers that run outside of containers. See the [package a server](../tasks/server.md) task page for an example that demonstrates systemd 
    integration, Apache 2/nginx reverse proxy integration and adding a dependency on Postgres.
 2. Command line apps. Conveyor is packaged with itself, in fact.
 

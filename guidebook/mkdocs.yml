@@ -12,11 +12,21 @@ nav:
   - Welcome:
     - Getting started: index.md
     - download-conveyor.md
-    - Tutorial: tutorial.md
     - keys-and-certificates.md
     - outputs.md
     - running.md
     - release-notes.md
+  - Tutorial:
+    - tutorial/1-get-started.md
+    - tutorial/2-create-a-template-project.md
+    - tutorial/3-compile.md
+    - tutorial/4-build-unpackaged.md
+    - tutorial/5-serve-the-site.md
+    - tutorial/6-install-the-app.md
+    - tutorial/7-release-an-update.md
+    - tutorial/8-explore-the-integration.md
+    - tutorial/9-site.md
+    - tutorial/10-next-steps.md
   - Configuration:
     - configs/index.md
     - configs/inputs.md
@@ -38,7 +48,7 @@ nav:
   - Tasks:
       - tasks/index.md
       - tasks/jetpack-compose-desktop.md
-      - tasks/teamcity.md
+      - tasks/server.md
       - tasks/swt.md
   - FAQ:
     - faq/index.md
@@ -49,7 +59,6 @@ nav:
 
 theme:
   name: 'material'
-  custom_dir: overrides
 
   features:
     - navigation.instant
@@ -114,3 +123,6 @@ plugins:
 
 extra_css:
   - stylesheets/guidebook.css
+
+extra_javascript:
+  - javascripts/tasklist.js
