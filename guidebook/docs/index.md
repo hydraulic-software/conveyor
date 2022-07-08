@@ -15,7 +15,7 @@ Conveyor makes distributing desktop and command line apps as easy as shipping a 
 
 <video width="100%" playsinline autoplay muted loop><source src="https://downloads.hydraulic.dev/eton-sample/eton.mp4" type="video/mp4"></video>
 
-[Eton Notes](https://github.com/hydraulic-software/eton-desktop) is a simple open source mockup of a note-taking app that uses Material Design and the [JetPack Compose Desktop](https://www.jetbrains.com/lp/compose-desktop/) toolkit, which is a desktop port of the new Android GUI framework.
+[Eton Notes](https://github.com/hydraulic-software/eton-desktop) is a simple open source mockup of a note-taking app that uses Material Design and the [Jetpack Compose Desktop](https://www.jetbrains.com/lp/compose-desktop/) toolkit, which is a desktop port of the new Android GUI framework.
 
 ## Get started
 
@@ -40,7 +40,7 @@ Conveyor makes distributing desktop and command line apps as easy as shipping a 
     * You can backup your single root key by writing it down as words on paper.
 * **Pre-made template projects.**
     * CMake + OpenGL to demonstrate building and packaging C++ native apps that use third party dependencies.
-    * JetPack Compose Desktop and JavaFX for cross-platform GUI apps. 
+    * Jetpack Compose Desktop and JavaFX for cross-platform GUI apps. 
 * **[Deep integration for JVM applications](configs/jvm.md).**
     * Uses JLink and jdeps to minimize the JDK size.
     * Import configuration from Maven and Gradle build systems.

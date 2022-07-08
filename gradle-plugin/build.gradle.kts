@@ -21,7 +21,7 @@ dependencies {
         because("Machine, OperatingSystem, CPUArchitecture types.")
     }
     compileOnly("org.jetbrains.compose:compose-gradle-plugin:1.1.1") {
-        because("Supporting JetPack Compose Desktop apps.")
+        because("Supporting Jetpack Compose Desktop apps.")
     }
     compileOnly("org.openjfx:javafx-plugin:0.0.11") {
         because("Supporting projects that use the OpenJFX Gradle plugin.")

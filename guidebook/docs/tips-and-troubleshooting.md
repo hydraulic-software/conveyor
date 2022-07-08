@@ -64,4 +64,4 @@ You should always try to load native libraries using `System.loadLibrary` becaus
 
 The default configuration assigns the `app.dir` system property to wherever your input files can be found on disk. Thus if you want files to be loose (not bundled into a JAR) and loaded directly from files, you should look them up relative to this directory. 
 
-This is useful for icons. On Windows your UI toolkit may need to be given the window icon explicitly, for example, [this is true for JetPack Compose apps](https://github.com/JetBrains/compose-jb/tree/master/tutorials/Image_And_Icons_Manipulations).
+This is useful for icons. On Windows your UI toolkit may need to be given the window icon explicitly, for example, [this is true for Jetpack Compose apps](https://github.com/JetBrains/compose-jb/tree/master/tutorials/Image_And_Icons_Manipulations).

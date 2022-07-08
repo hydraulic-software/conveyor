@@ -36,7 +36,7 @@ abstract class ConveyorConfigTask : DefaultTask() {
         val desktopExt: DesktopExtension = composeExt.extensions.findByName("desktop") as? DesktopExtension ?: return
         val app = desktopExt.application
         appendLine()
-        appendLine("// Config from the JetPack Compose Desktop plugin.")
+        appendLine("// Config from the Jetpack Compose Desktop plugin.")
         appendLine("app.jvm.gui.main-class = ${app.mainClass}")
         importJVMArgs(app.jvmArgs, project)
 

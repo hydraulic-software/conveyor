@@ -39,7 +39,7 @@ The plugin extracts the following:
 * `project.name`, assigned to `gradle.project-name`
 * `buildDir`, assigned to `gradle.build-dir`
 * From the `application` plugin: the main class and JVM arguments are extracted.
-* From the JetPack Compose Desktop plugin: main class, JVM arguments, description, vendor.
+* From the Jetpack Compose Desktop plugin: main class, JVM arguments, description, vendor.
 * From the JavaFX plugin: the version you're using and which modules.
 
 It defines machine specific dependency configurations that can be used to add dependencies which should only take effect on particular

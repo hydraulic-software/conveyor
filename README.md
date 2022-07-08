@@ -40,7 +40,7 @@ and you can find the code + package config for the Eton Notes sample app in [a s
     * You can backup your single root key by writing it down as words on paper.
 * **Pre-made template projects.**
     * CMake + OpenGL to demonstrate building and packaging C++ native apps that use third party dependencies.
-    * JetPack Compose Desktop and JavaFX for cross-platform GUI apps.
+    * Jetpack Compose Desktop and JavaFX for cross-platform GUI apps.
 * **[Deep integration for JVM applications](https://conveyor.hydraulic.dev/latest/configs/jvm/).**
     * Uses JLink and jdeps to minimize the JDK size.
     * Import configuration from Maven and Gradle build systems.

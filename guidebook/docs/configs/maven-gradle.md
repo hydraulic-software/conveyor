@@ -86,7 +86,7 @@ The plugin extracts information from other plugins:
 * `buildDir` becomes `gradle.build-dir`
 * `project.name` becomes `gradle.project-name`
 * From the `application` plugin: main class,  JVM arguments.
-* From the JetPack Compose Desktop plugin: main class, JVM arguments, description, vendor.
+* From the Jetpack Compose Desktop plugin: main class, JVM arguments, description, vendor.
 * From the JavaFX plugin: the modules you're using.
 
 Here's a worked example for a Compose Desktop app:

@@ -3,7 +3,7 @@
 Windows apps are laid out as follows:
 
 * `app`: Where non-binary input files are placed.
-    * `app\app.ico`: The icon of the program in standalone form. It's also embedded into your EXE but some app frameworks like JetPack Compose for Desktop prefer to have it be outside the EXE ([see how to use it](../tasks/jetpack-compose-desktop.md)).
+    * `app\app.ico`: The icon of the program in standalone form. It's also embedded into your EXE but some app frameworks like Jetpack Compose for Desktop prefer to have it be outside the EXE ([see how to use it](../tasks/jetpack-compose-desktop.md)).
 * `bin`: Where EXE and DLL files are placed, along with any data files they expect to find in the same location as themselves.
 
 For JVM apps there are additionally:
@@ -63,7 +63,7 @@ Or it can be an object containing the keys below:
 
 **`app.windows.console`** Windows requires a program to declare up front if it's a command line or GUI app using a flag in the EXE file headers. If an app is declared GUI then anything it prints to stdout/stderr won't appear anywhere, not even when run from the command line. If it's declared to be a command line app and run from outside a terminal, then a console window will appear alongside the app's main window. 
 
-Normally this header is set by the compiler. Conveyor can set it for you to the value of the `app.windows.console` key. If you don't specify this setting then Conveyor will attempt to guess, based on the presence of DLLs that are known to be used by JVM GUI toolkits. If DLLs for AWT/Swing, JavaFX, SWT, Skiko/JetPack Compose or LWJGL are present then it's believed to be a GUI app. Otherwise it's a console app. If this heuristic isn't good enough then please let us know so we can update it, and then set the key explicitly.
+Normally this header is set by the compiler. Conveyor can set it for you to the value of the `app.windows.console` key. If you don't specify this setting then Conveyor will attempt to guess, based on the presence of DLLs that are known to be used by JVM GUI toolkits. If DLLs for AWT/Swing, JavaFX, SWT, Skiko/Jetpack Compose or LWJGL are present then it's believed to be a GUI app. Otherwise it's a console app. If this heuristic isn't good enough then please let us know so we can update it, and then set the key explicitly.
 
 When a package contains console mode EXEs your MSIX package will register itself as a command line app. The moment installation completes it becomes accessible in all running terminal sessions.
 

@@ -24,7 +24,7 @@ optionally giving this command a `--passphrase`.
 Conveyor has a simple project generation command that creates self-contained GUI projects complete with source code, build system and Conveyor configuration:
 
 ````sh
-# Generate a JetPack Compose for Desktop app, or a JavaFX app.
+# Generate a Jetpack Compose for Desktop app, or a JavaFX app.
 conveyor generate {compose,javafx} \
                           --output-dir=path/to/my-project \
                           --site-url=https://mysite.com/downloads \

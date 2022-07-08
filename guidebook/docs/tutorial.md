@@ -24,7 +24,7 @@ This command will create a new root private key, convert it to a series of words
 
 Conveyor has three pre-canned "Hello World" project templates, all Apache 2 licensed so they can form the basis of your own apps. 
 
-One is a native OpenGL app written in C++, the second is for a GUI JVM app using the reactive [JetPack Compose for Desktop](https://www.jetbrains.com/lp/compose-desktop/) toolkit, and the last is another JVM GUI app using [JavaFX](https://www.openjfx.io). Generating a project based on these templates is the quickest way to try things out. The JVM apps are easier to play with because you don't need cross-compilers. For the C++ project you'll need to compile it on each OS that you wish to target. It's your choice, this tutorial will guide you through all of them.
+One is a native OpenGL app written in C++, the second is for a GUI JVM app using the reactive [Jetpack Compose for Desktop](https://www.jetbrains.com/lp/compose-desktop/) toolkit, and the last is another JVM GUI app using [JavaFX](https://www.openjfx.io). Generating a project based on these templates is the quickest way to try things out. The JVM apps are easier to play with because you don't need cross-compilers. For the C++ project you'll need to compile it on each OS that you wish to target. It's your choice, this tutorial will guide you through all of them.
 
 * [x] For the native C++ app, install CMake and the compiler toolchain for each platform you will target.
 * [x] For a JVM app, install a JDK 11 or higher.
@@ -44,7 +44,7 @@ We'll explore what's inside the project directory in a moment. For now, note tha
     RDNS names are just a naming convention meant to keep apps clearly separated. Actual domain name ownership isn't checked by anything. If you don't have a website consider creating a [GitHub](https://www.github.com) account and then using `io.github.youruser.yourproject`, which will ensure no naming conflicts with anyone else.
 
 !!! tip "Cross platform UI"
-    JetPack Compose is the next-gen native UI toolkit on Android and it also runs on Windows/Mac/Linux, making it easy to share code between mobile and desktop. [JavaFX also runs on mobile](https://gluonhq.com/products/mobile/) and [the web](https://www.jpro.one). The native C++ app uses OpenGL and the [GLFW library](https://glfw.org/), which abstracts the operating system's windowing APIs.
+    Jetpack Compose is the next-gen native UI toolkit on Android and it also runs on Windows/Mac/Linux, making it easy to share code between mobile and desktop. [JavaFX also runs on mobile](https://gluonhq.com/products/mobile/) and [the web](https://www.jpro.one). The native C++ app uses OpenGL and the [GLFW library](https://glfw.org/), which abstracts the operating system's windowing APIs.
 
 ## Step 3. Compile the app
 
@@ -280,7 +280,7 @@ You don't have to use any particular build system with Conveyor, but if you use 
 
 The plugin adds two tasks, `printConveyorConfig` and `writeConveyorConfig`. The first prints the generated config to stdout, and the second writes it to an output file. By default this is called `generated.conveyor.conf` but can be changed.
 
-* [ ] Run `./gradlew -q printConveyorConfig` and examine the output. The plugin can read config from other plugins like the Java application plugin, the JetPack Compose plugin and the OpenJFX plugin.
+* [ ] Run `./gradlew -q printConveyorConfig` and examine the output. The plugin can read config from other plugins like the Java application plugin, the Jetpack Compose plugin and the OpenJFX plugin.
 * [ ] Open `settings.gradle{.kts}` file. The following bit of code adds support for loading the Gradle plugin:
 
 === "Kotlin"
