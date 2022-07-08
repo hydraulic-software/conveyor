@@ -3,7 +3,7 @@
 Windows apps are laid out as follows:
 
 * `app`: Where non-binary input files are placed.
-    * `app\app.ico`: The icon of the program in standalone form. It's also embedded into your EXE but some app frameworks like JetPack Compose for Desktop prefer to have it be outside the EXE ([see how to use it](../samples/jetpack-compose-desktop.md)).
+    * `app\app.ico`: The icon of the program in standalone form. It's also embedded into your EXE but some app frameworks like JetPack Compose for Desktop prefer to have it be outside the EXE ([see how to use it](../tasks/jetpack-compose-desktop.md)).
 * `bin`: Where EXE and DLL files are placed, along with any data files they expect to find in the same location as themselves.
 
 For JVM apps there are additionally:

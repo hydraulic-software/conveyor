@@ -43,7 +43,7 @@ C++ app.
 
 Not at all! It also has great support for:
 
-1. Servers that run outside of containers. See the [TeamCity sample](../samples/teamcity.md) for an example that demonstrates systemd 
+1. Servers that run outside of containers. See the [package a server](../tasks/teamcity.md) task page for an example that demonstrates systemd 
    integration, Apache 2/nginx reverse proxy integration and adding a dependency on Postgres.
 2. Command line apps. Conveyor is packaged with itself, in fact.
 

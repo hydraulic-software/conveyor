@@ -35,11 +35,11 @@ nav:
       - stdlib/jvm-clients.md
       - stdlib/systemd.md
       - stdlib/javafx.md
-  - Samples:
-      - samples/index.md
-      - samples/jetpack-compose-desktop.md
-      - samples/teamcity.md
-      - samples/swt.md
+  - Tasks:
+      - tasks/index.md
+      - tasks/jetpack-compose-desktop.md
+      - tasks/teamcity.md
+      - tasks/swt.md
   - FAQ:
     - faq/index.md
     - faq/output-formats.md

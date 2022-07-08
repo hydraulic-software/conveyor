@@ -346,7 +346,7 @@ For Maven there's no plugin. Instead Conveyor will read the project classpath by
     Currently, automatic import from Maven only works on UNIX. On Windows you'll need to follow the instructions below for "other build systems". 
 
 ??? note "JavaFX apps"
-    This framework has special support in the [standard library](stdlib/javafx.md). Check there to learn what else you'll want to add, or look at the [samples](samples/index.md).
+    This framework has special support in the [standard library](stdlib/javafx.md). Check there to learn what else you'll want to add, or look at the [tasks section](tasks/index.md).
 
 Here's an example of how to package a Maven project:
 
