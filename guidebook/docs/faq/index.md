@@ -9,8 +9,8 @@ systemd as a service manager.
 
 ## 2. Is Conveyor free?
 
-It's free for open source projects, and during the introductory period it's free for everyone else too. Once the introductory period ends,
-it will become a commercial product when used on proprietary apps.
+During the introductory period it's free for everyone else. Once the introductory period ends, it will be free for open source apps and
+require a subscription when used with proprietary apps. You can learn what it'll cost on the [pricing page](https://www.hydraulic.software/pricing.html).
 
 ## 3. Why isn't Conveyor a service?
 
@@ -18,13 +18,11 @@ Services can sometimes be convenient and if you'd like to have Conveyor-as-a-ser
 Also, if you work on a code hosting service/forge of some kind and you'd like to incorporate Conveyor's features into your site,
 then get in touch and ask for a reseller license.
 
-Conveyor isn't designed as a service because, like many, we feel that the service-ification of the software industry has swung a bit too far. 
-Many programs are now offered exclusively as hosted services when it's not technically justifiable, and even when it makes things worse for
-users. Being a local tool means you get:
+Being a local tool means you get:
 
 * Ultra-fast turnaround times on rebuilds, so you can quickly experiment and polish your package.
 * No outages. A tool is as available as your own hardware.
-* Privacy. We never see your code, so you can use Conveyor for internal or proprietary tools without worry.
+* Privacy. We never see your code, so you can use Conveyor for internal or sensitive apps without worry.
 * Absolute control. When you buy the Source or Unlimited plans you get the source code and can fork it, or even resell it as a feature of your own product. Good luck forking a service!
 
 It has advantages for us too:
@@ -36,8 +34,8 @@ It has advantages for us too:
 
 ## 4. Is Conveyor only for JVM apps?
 
-Nope. It has great support for JVM apps, but can package any app. Take the [tutorial](../tutorial.md) to learn how to package a CMake based
-C++ app.
+It can package any app, it just has some built in features to make packaging JVM apps easy. Take the [tutorial](../tutorial.md) to learn 
+how to package a CMake based C++ OpenGL app.
 
 ## 5. Is Conveyor only for desktop apps?
 
@@ -53,21 +51,39 @@ It should do, but we don't have any samples or additional features yet. Working 
 
 ## 7. Why should I make a desktop app?  
 
-Desktops are a fantastically important and critical part of our infrastructure - they're the beating heart of our economy where work gets
-done and things get made. Flexible, comfy, ergonomic and incredibly powerful, the machines sitting in front of us are truly magnificent
-marvels of engineering. Yet the web platform barely exploits them, and its roots in hypertext often shine through: HTML5 can struggle to
-serve the needs of productivity users. As developers we like it partly because it makes deployment and updates easy, but now with Conveyor
-we can push updates to desktop and CLI apps just as easily as we push changes to a web site. It's time to revisit the advantages of being
-outside the browser:
+The web was designed for documents and when we use it for applications, the gap causes problems. As developers we like to (ab)use web browsers
+to deliver software for several reasons, but a big one is because web browsers make deployment and updates easy. Now with Conveyor we 
+can push updates to desktop and CLI apps just as easily as we push changes to a web site. This lets us revisit some of the foundational
+assumptions about how we write software, and achieve major simplifications across the stack. We plan to write about this more in future,
+but for now consider just a few of the advantages to leaving the browser:
 
 * Use the best language for the job, not just JavaScript and watered down language dialects that transpile to it.
-* Multi-threading! Saturate every core the user has and deliver them results with the lowest latency possible. The multi-core revolution  
+* Properly exploit every CPU core the user has and deliver them results with the lowest latency possible. The multi-core revolution  
   never made it to the web, but that hardware is waiting for you and your users.
-* Direct access to the newest, most powerful and most interesting hardware, without interference from the sandbox.
+* Direct access to the newest, most powerful and most interesting devices, without interference from the sandbox.
 * Empower your users with control over their own data by storing it in files. 
     * Let people organize, back up, share, store and work with their data in multiple apps at once.
-    * Eliminate a whole swathe of awkward privacy problems and regulations.
+    * Dodge a whole swathe of awkward privacy problems and regulations.
 * Give your users sophisticated features like re-arrangeable windows, complex keyboard shortcuts, hot screen edges and plugins.
 * Be always available even in the most challenging conditions. Users will learn to rely on your app everywhere, at any time, whether
   that's in the middle of a storm on an oil rig, on holiday in the middle of the savannah, during a business trip with spotty connectivity  
   or during a delicate hospital operation where a server outage could be a matter of life and death.
+
+What about regular database backed apps that don't need special hardware, multi-core or files? For these apps, leaving the browser can
+yield especially large simplifications, especially if your app doesn't need very large numbers of concurrent users (e.g. internal apps)
+and if your database supports writing custom SQL functions in your preferred languages, which most do. Instead of making a web app you can 
+write the GUI in a language of your choice and connect it directly to your relational database using your language's drivers. 
+Each gets an account on the RDBMS and logs in directly using the app, yielding the following benefits:
+
+* No need to provision and run custom web servers at all, you just need somewhere that does static file hosting for the downloads.
+* Eliminate the most common security bugs by design:
+  * No XSS and XSRF because you aren't using HTML.
+  * No SQL injection because the database knows who the user is and ACLs are implemented at the SQL level.
+* No need to design or debate how best to use REST (the driver/RDBMS have a protocol for invoking code on the server already)
+* No need to define custom JSON schemas to send data to the client (the database protocol can serialize SQL results automatically).
+* Transactions available everywhere. No need to painstakingly align REST endpoints with transactions.
+* RDBMS protocols often have other useful features, like pub/sub.
+* Use real GUI toolkits without the indirection of the HTML DOM. Your users can benefit from productivity enhancers like menu bars, 
+  sophisticated printing support, advanced table view controls that let them rearrange columns, sort them, edit in place and other 
+  basics that are taken for granted in normal desktop apps but which web apps can't do.
+* Use any third party library, not just those able to work in the browser.
