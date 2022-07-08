@@ -327,6 +327,17 @@ You can also write `include required("generated.conveyor.conf")` and run `gradle
 !!! tip
     When iterating on packages use the faster form, and then switch to the slower form when done.
 
+Sometimes you need different versions of a library depending on which OS you use. A good example is when packaging Jetpack Compose apps, which require you to specify which OS you want in the dependency list itself. The Conveyor plugin provides a simple solution for this in the form of per-machine configurations. The one that matches the host OS is always used, and the others are emitted as config for Conveyor so it can build packages for other operating systems. For Compose Desktop apps it looks like this:
+
+```groovy
+dependencies {
+    linuxAmd64(compose.desktop.linux_x64)
+    macAmd64(compose.desktop.macos_x64)
+    macAarch64(compose.desktop.macos_arm64)
+    windowsAmd64(compose.desktop.windows_x64)
+}
+```
+
 #### Maven projects
 
 For Maven there's no plugin. Instead Conveyor will read the project classpath by running the output of the `mvn` command and using it directly as configuration. Other aspects like project name must be specified explicitly. Better import from Maven is planned in a future release.
@@ -400,6 +411,10 @@ So far we've been using `localhost` as the download site URL. This is convenient
 ### Open source projects
 
 Set the `app.vcs-url` key to the URL of your version control repository (e.g. `github.com/user/project`). You will be able to use Conveyor for free. Any version control system can be used, it doesn't have to be git. The download site URL you use must be publicly accessible, or become so soon after using Conveyor. If it never becomes accessible, or the downloads don't seem to match the source code, Conveyor will stop working until the issue is rectified.
+
+It's also a good idea to set the `app.license` key to the name of your license, as Linux packages like to have this metadata.
+
+You will probably want to [use GitHub Releases to host your binaries](http://localhost:8000/configs/download-pages/#publishing-through-github). That works fine and your installs will update from the latest GitHub release.
 
 ### Proprietary projects
 

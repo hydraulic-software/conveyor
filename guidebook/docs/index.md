@@ -9,13 +9,13 @@ Conveyor makes distributing desktop and command line apps as easy as shipping a 
 
 <video width="100%" poster="https://conveyor.hydraulic.dev/assets/promo.jpg" controls><source src="https://conveyor.hydraulic.dev/assets/promo.mp4" type="video/mp4"></video>
 
-## Try it
+## Try an app that uses Conveyor
 
-![Screenshot of the Music Sample](https://media.giphy.com/media/NMLgK1lJ8UGtNxx3ja/giphy.gif)
+[Download Eton Notes](https://downloads.hydraulic.dev/eton-sample/download.html){ .md-button .md-button--primary }   [Download Eton Notes (self-signed version)](https://downloads.hydraulic.dev/eton-sample/selfsigned/download.html){ .md-button .md-button--primary }
 
-[Try an app that uses it](https://downloads.hydraulic.dev/compose-sample/download.html){ .md-button .md-button--primary }   [Try the self-signed version](https://downloads.hydraulic.dev/compose-sample/self-signed/download.html){ .md-button .md-button--primary }
+<video width="100%" playsinline autoplay muted loop><source src="https://downloads.hydraulic.dev/eton-sample/eton.mp4" type="video/mp4"></video>
 
-Conveyor doesn't care how you do your UI, but this example uses the [JetPack Compose Desktop](https://www.jetbrains.com/lp/compose-desktop/) toolkit to mock up a slick, Material Design based music app. [Try installing it](https://public.hq.hydraulic.software/~mike/compose-music-sample/download.html) and then [get the source and packaging config](https://github.com/hydraulic-software/compose-music-app). Or use the `conveyor generate` command to create an out-of-the-box template app.
+[Eton Notes](https://github.com/hydraulic-software/eton-desktop) is a simple open source mockup of a note-taking app that uses Material Design and the [JetPack Compose Desktop](https://www.jetbrains.com/lp/compose-desktop/) toolkit, which is a desktop port of the new Android GUI framework.
 
 ## Get started
 
