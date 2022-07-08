@@ -1,17 +1,17 @@
 # Tutorial
 
-In this tutorial we'll generate a fresh application using the templates built in to Conveyor. Then we'll compile a download site for it containing packages for every supported platform. Finally we'll take a look at how things are wired up to learn how to package a pre-existing project.
+In this tutorial we'll generate a fresh application using the templates built in to Conveyor. Then we'll generate a download site for it containing packages for every supported platform. Finally we'll take a look at how things are wired up to learn how to package a pre-existing project.
 
-This tutorial doesn't try to cover all the features Conveyor has. Read through the rest of this guidebook to learn about the full range of possibilities.
+This tutorial doesn't cover all the features Conveyor has. Read through the rest of this guidebook to learn about the full range of possibilities.
 
 !!! tip
     You can tick the checkmarks on this page to mark your progress. Their state is stored in a cookie.
 
 ## Step 1. Get Conveyor and create a root key
 
-* [x] [Download Conveyor](download-conveyor.md) to install Conveyor. On macOS sure it's added to your path by using the GUI. 
+* [x] [Download Conveyor](download-conveyor.md). On macOS, make sure it's added to your path by opening the app from the GUI and clicking the relevant button. 
 
-You don't need to have any code signing certificates to use Conveyor or follow this tutorial. Nonetheless, Conveyor always needs cryptographic keys so it can at least self-sign your app. To get started we'll use self signing, which is good enough for testing, internal apps and distributing software to developers. The final steps of the tutorial show you how to use real code signing keys.
+You don't need to have any code signing certificates to use Conveyor or follow this tutorial. Nonetheless, Conveyor always needs cryptographic keys so it can at least self-sign your app. To get started we'll use self-signing, which is good enough for testing, internal apps and distributing software to developers. The final steps of the tutorial show you how to use real code signing keys.
 
 * [x] Run `conveyor keys generate` from a terminal.
 
@@ -24,7 +24,7 @@ This command will create a new root private key, convert it to a series of words
 
 Conveyor has three pre-canned "Hello World" project templates, all Apache 2 licensed so they can form the basis of your own apps. 
 
-One is a native OpenGL app written in C++, the second is for a GUI JVM app using the reactive [JetPack Compose for Desktop](https://www.jetbrains.com/lp/compose-desktop/) toolkit, and the last is another JVM GUI app using [JavaFX](https://www.openjfx.io). Generating a project based on these templates is the quickest way to try things out. The JVM apps are easier to play with because you don't need cross-compilers. For the C++ project you'll need to compile it on each OS that you wish to target.
+One is a native OpenGL app written in C++, the second is for a GUI JVM app using the reactive [JetPack Compose for Desktop](https://www.jetbrains.com/lp/compose-desktop/) toolkit, and the last is another JVM GUI app using [JavaFX](https://www.openjfx.io). Generating a project based on these templates is the quickest way to try things out. The JVM apps are easier to play with because you don't need cross-compilers. For the C++ project you'll need to compile it on each OS that you wish to target. It's your choice, this tutorial will guide you through all of them.
 
 * [x] For the native C++ app, install CMake and the compiler toolchain for each platform you will target.
 * [x] For a JVM app, install a JDK 11 or higher.
