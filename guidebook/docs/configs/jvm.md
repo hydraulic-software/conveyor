@@ -121,6 +121,8 @@ Additional launchers are generated alongside the GUI launcher which have differe
 
 **`app.jvm.mac.plist`** HOCON structure converted to the `Info.plist` file used for the linked JVM on macOS. You can normally ignore this.
 
+**`app.jvm.strip-debug-info`** If true (the default) then JVM classfile debug attributes are stripped during repacking. 
+
 ## Importing a JVM/JDK
 
 These days there are many distributions of Java to choose from. You've probably already chosen your JVM/JDK for development purposes, but you'll need to specify which one you want so Conveyor can download the different versions for different platforms.
@@ -142,10 +144,11 @@ app {
 
 ## Native libraries
 
-The JAR files that get shipped are rewritten in two ways:
+The JAR files that get shipped are rewritten in three ways:
 
 1. Native shared/JNI libraries are moved out of the JAR.
 2. The metadata of the files is canonicalized to eliminate non-determinism that would otherwise reduce the efficiency of update mechanisms.
+3. Debug info is (optionally) stripped.
 
 Moving native libraries out of JARs has these benefits:
 
