@@ -12,6 +12,10 @@ systemd as a service manager.
 During the introductory period it's free for everyone. Once the introductory period ends, it will be free for open source apps and
 require a subscription when used with proprietary apps. You can learn what it'll cost on the [pricing page](https://www.hydraulic.software/pricing.html).
 
+Open source apps that use it should advertise the fact that they're packaged with Conveyor somewhere and link to the website. Using the generated download page 
+makes this easy, because it contains a "Packaged with Conveyor" badge. If you don't use that HTML then you'll need to provide your own link
+in e.g. your download page, website, README file etc.
+
 ## 3. Why isn't Conveyor a service?
 
 Services can sometimes be convenient and if you'd like to have Conveyor-as-a-service, please [let us know](mailto:contact@hydraulic.software). 
@@ -32,10 +36,12 @@ It has advantages for us too:
   pass on to you.
 * No need to hold people's private keys, which would create a tempting target for attackers.
 
-## 4. Is Conveyor only for JVM apps?
+## 4. What kinds of app can you package with it?
 
-No. It can package any kind of app, it just has some built in features to make packaging JVM apps easy. Take the [tutorial](../tutorial/1-get-started.md) to learn 
-how to package a CMake based C++ OpenGL app.
+It can package any kind of app, it just has some built-in features to make packaging JVM apps easy. The [tutorial](../tutorial/1-get-started.md) 
+shows how to package a CMake based C++ OpenGL app, for example.
+
+Although you can package any kind of app, over time Conveyor will gain features to apps using specific frameworks easier to package.
 
 ## 5. Is Conveyor only for desktop apps?
 
@@ -47,7 +53,7 @@ Not at all! It also has great support for:
 
 ## 6. Does it support Electron apps?
 
-It should do, but we don't have any samples or additional features yet. Working on it!
+Working on it! The Electron Mac launcher doesn't currently work with Conveyor's code injection. Support should arrive soon - [follow this issue on GitHub](https://github.com/hydraulic-software/conveyor/issues/6) to know when it launches.
 
 ## 7. Why should I make a desktop app?  
 
