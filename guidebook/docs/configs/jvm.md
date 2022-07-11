@@ -121,7 +121,7 @@ Additional launchers are generated alongside the GUI launcher which have differe
 
 **`app.jvm.mac.plist`** HOCON structure converted to the `Info.plist` file used for the linked JVM on macOS. You can normally ignore this.
 
-**`app.jvm.strip-debug-info`** If true (the default) then JVM classfile debug attributes are stripped during repacking. 
+**`app.jvm.strip-debug-info`** If true (defaults to false) then JVM classfile debug attributes are stripped during repacking. 
 
 ## Importing a JVM/JDK
 
