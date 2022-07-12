@@ -39,9 +39,9 @@ The level of security is the same because the original DEB will have been downlo
 
 For native apps, it depends on what your build system produces. The CMake template app does create fat binaries.
 
-For JVM apps, no. Conveyor produces separate downloads for ARM and Intel Macs. This is to keep download times fast. Chrome users will have their CPU auto detected and will only be offered the right package for their CPU. Safari advertises itself as Intel even on ARM Macs (deliberately), so Safari users will be given a choice and are expected to know what kind of Mac they have.
+For JVM and Electron apps, no. Conveyor produces separate downloads for ARM and Intel Macs. This is to keep download times fast. Chrome users will have their CPU auto detected and will only be offered the right package for their CPU. Safari advertises itself as Intel even on ARM Macs (deliberately), so Safari users will be given a choice and are expected to know what kind of Mac they have.
 
-If you'd like your JVM Mac apps to be fat please [vote for support here](https://github.com/hydraulic-software/conveyor/issues/11).
+If you'd like your Mac apps to be fat please [vote for support here](https://github.com/hydraulic-software/conveyor/issues/11).
 
 ## 9. Ubuntu Snaps?
 

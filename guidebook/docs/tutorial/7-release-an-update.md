@@ -12,14 +12,21 @@ The version of the package is defined in the `conveyor.conf` file.
 * [ ] Replace `version = 1` in `conveyor.conf` with `version = 2`.
 * [ ] Re-run `conveyor make site`
 
-
 ## JVM
 
-The version of the packages is taken from the version defined in the build system.
+The version of the package is taken from the version defined in the build system.
 
 * [ ] Open the source code of the app and change the message that's displayed when you click the button.
 * [ ] Now change the line in  `build.gradle[.kts]`  that reads `version = "1.0"` to `version = "1.1"`.
 * [ ] Re-run `./gradlew jar`.
+* [ ] Re-run `conveyor make site`.
+
+## Electron
+
+The version of the package is taken from the version defined in your `package-lock.json` file.
+
+* [ ] Edit your `package.json` file and alter the `"version": "1.0"` line to read `"version": "2.0"`. 
+* [ ] Re-run `npm i --package-lock-only` to regenerate your `package-lock.json` file.
 * [ ] Re-run `conveyor make site`.
 
 ## Testing the update

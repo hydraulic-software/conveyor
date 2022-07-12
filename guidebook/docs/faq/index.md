@@ -53,7 +53,7 @@ Not at all! It also has great support for:
 
 ## 6. Does it support Electron apps?
 
-Working on it! The Electron Mac launcher doesn't currently work with Conveyor's code injection. Support should arrive soon - [follow this issue on GitHub](https://github.com/hydraulic-software/conveyor/issues/6) to know when it launches.
+Yes it does! However, Electron support is relatively new and should be considered beta quality. Let us know how you get on with it.
 
 ## 7. Why should I make a desktop app?  
 

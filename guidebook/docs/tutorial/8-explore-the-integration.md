@@ -293,5 +293,63 @@ It's possible to package JVM apps with no code changes at all. However, you will
 2. The `app.dir` system property points at the directory in your package install where input files can be found. Some JARs may be found there, but note that explicitly modular JARs will disappear into the `modules` file in the JVM directory and so you won't find them here. Look up files from those JARs using the standard Java resources API instead.
 3. You can [set any other system properties you like in the config](../configs/jvm.md), allowing the app to know at runtime the value of any config values. By extension you can also set system properties to the value of arbitrary programs that were run at build time by using hashbang imports and build system integration.
    
+## Electron
+
+* [ ] Open the `conveyor.conf` file in your new project. If your editor supports HOCON, make sure you've got that set up.
+
+It should look like this:
+
+```hocon
+include required("/stdlib/electron/electron.conf") 
+
+package-lock {  
+  include "package-lock.json"
+}
+
+app {
+  display-name = "Electro Thing"
+  rdns-name = com.example.electro-thing
+  site.base-url = "localhost:8899"
+  icons = "icons/icon-*.png"
+}
+
+conveyor.compatibility-level = 1
+```
+
+The configuration is straightforward. The first line activates Electron support by importing configuration from the standard library.
+The next few lines take advantage of the fact that HOCON is a superset of JSON, and thus all valid JSON is also valid HOCON. It imports
+the `package-lock.json` file into your Conveyor config, so values in it are available for substitution. Inside the 
+`/stdlib/electron/electron.conf` file is code like this:
+
+```hocon
+app {
+  // Read core metadata from the package-lock.json file.
+  fsname = ${package-lock.name}
+  version = ${package-lock.version}
+  electron.version = ${package-lock.packages.node_modules/electron.version}
+
+  // Import common stuff.
+  inputs = ${app.inputs} [
+    "*.{json,js,css,html}"
+
+    {
+      from = node_modules
+      to = node_modules
+      remap = ["-electron/dist/**"]
+    }
+  ]
+}
+```
+
+As you can see, HOCON syntax lets us copy data out of the `package-lock.json` file and assign to the right place in the Conveyor config
+schema. The reason we have to read the `package-lock.json` file and not `package.json` is because the lockfile has the specific version
+of Electron that you've chosen to use, whereas `package.json` only has version ranges.
+
+The default inputs will copy JavaScript, JSON, CSS and HTML files from the project root into the app along with the `node_modules` directory,
+whilst excluding the `dist` sub-directory of the `electron` module (which contains a complete Mac app bundle that isn't needed). 
+
+**Although these defaults will work, they will create a bloated package.** A better approach would be to integrate a bundler like `webpack`
+or `vite` so the `node_modules` directory isn't shipped. Because the JavaScript ecosystem changes so quickly, and the way this is done
+varies between projects, setting this up is left as an exercise for the reader.
 
 <script>var tutorialSection = 8;</script>

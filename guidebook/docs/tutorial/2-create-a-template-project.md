@@ -1,18 +1,28 @@
 # 2. Create a template project
 
-Conveyor has three pre-canned "Hello World" project templates, all Apache 2 licensed so they can form the basis of your own apps.
+Conveyor has four pre-canned "Hello World" project templates. They can form the basis of your own apps:
 
-One is a native OpenGL app written in C++, the second is for a GUI JVM app using the reactive [Jetpack Compose for Desktop](https://www.jetbrains.com/lp/compose-desktop/) toolkit, and the last is another JVM GUI app using [JavaFX](https://www.openjfx.io). Generating a project based on these templates is the quickest way to try things out. The JVM apps are easier to play with because you don't need cross-compilers. For the C++ project you'll need to compile it on each OS that you wish to target. It's your choice, this tutorial will guide you through all of them.
+1. A native OpenGL app written in C++.
+2. An Electron app.
+3. A GUI JVM app using the reactive [Jetpack Compose for Desktop](https://www.jetbrains.com/lp/compose-desktop/) toolkit.
+4. Another JVM GUI app using [JavaFX](https://www.openjfx.io).
+
+!!! warning
+    * Electron support is in beta. It has received less testing than the other types of app.
+    * The pretty Van Gogh style demo shader in the OpenGL app is under a non-commercial Creative Commons license. If you do actually want to make an OpenGL app, make sure to delete the shader first.
+
+Generating a project based on these templates is the quickest way to try things out. The JVM and Electron apps are easy to play with because you don't need cross-compilers. For the C++ project you'll need to compile it on each OS that you wish to target. It's your choice, this tutorial will guide you through all of them.
 
 * [x] For the native C++ app, install CMake and the compiler toolchain for each platform you will target.
 * [x] For a JVM app, install a JDK 11 or higher.
+* [x] For the Electron app, you must have npm installed.
 * [x] Run the following command, picking an app type and reverse DNS name as you see fit. There are also `--display-name` and `--output-dir` flags but they are optional.
 
 ```
-conveyor generate {cmake,compose,javafx} --rdns=com.example.my-project
+conveyor generate {cmake,electron,compose,javafx} --rdns=com.example.my-project
 ```
 
-* [x] Change into the output directory you just created.
+* [x] Change into the output directory you just created and run any commands that were printed on the screen.
 
 Identifying an app with a reverse DNS name is required for some platforms like macOS, and other needed values can be derived from it. A directory named after the last component (in this case `my-project`) will be populated with a buildable project. Use `names-with-dashes` when separating words, not `camelCase`, as that way you'll get smarter defaults.
 

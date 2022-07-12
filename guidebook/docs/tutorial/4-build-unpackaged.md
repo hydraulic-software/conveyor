@@ -14,7 +14,7 @@ conveyor -Kapp.machines=mac.amd64 make mac-app
 conveyor -Kapp.machines=mac.aarch64 make mac-app
 ```
 
-This will compile the project and then create an unzipped, un-packaged app in the `output` directory.
+This will create an unzipped, un-packaged app in the `output` directory.
 
 * [ ] Run the generated program directly in the usual manner for your operating system to check it works.
 
@@ -25,5 +25,15 @@ Note that when using the C++ app template, both ARM and Intel Mac packages will 
 !!! tip
     * The `make` command makes use of a local file cache, downloading for any external files only once, and re-using them in subsequent project builds. Thus, a new download of the same file will be triggered only in case of events like cache or cache content removal, cache file system location change, etc. [Learn more about the disk cache](../running.md#the-cache).
     * The generated project configuration file uses a small subset of the options available for your project configuration. For a detailed review of the configuration file structure and advanced configuration options please visit the [Writing config files](../configs/index.md) section.
+
+
+??? tip "Error messages"
+    **Electron projects.** If you forget to run `npm install` you will get an error about an inability to fully resolve the config. Just run `npm install` in the same directory as the `package.json` file to fix this.
+
+    **JVM projects.** Forgetting to run the `./gradlew jar` command in the previous step will result in the following warning, however the build will proceed and you may therefore get an inconsistent build.
+
+    ```
+    🔔 There are no JAR files in your inputs. Did you forget to add some?
+    ```
 
 <script>var tutorialSection = 4;</script>
