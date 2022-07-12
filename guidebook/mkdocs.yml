@@ -31,6 +31,7 @@ nav:
     - configs/index.md
     - configs/inputs.md
     - configs/jvm.md
+    - configs/electron.md
     - configs/linux.md
     - configs/mac.md
     - configs/windows.md

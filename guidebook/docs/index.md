@@ -31,6 +31,8 @@ Conveyor makes distributing desktop and command line apps as easy as shipping a 
     * Build Mac applications that use the popular [Sparkle 2 update framework](https://sparkle-project.org/).
         * Sparkle is automatically used, without needing any code changes in your apps.
     * Build apt repositories for Debian/Ubuntu, tarballs for other distros. Integrates with systemd for servers and cron jobs.
+* **Automatic icon conversion.**
+    * Supply a set of PNGs and Conveyor turns them into the platform specific formats for you. 
 * **Generate a static download site.**
     * Detects the user's operating system and CPU architecture.
     * [Release via GitHub releases](configs/download-pages#publishing-through-github).
@@ -40,11 +42,17 @@ Conveyor makes distributing desktop and command line apps as easy as shipping a 
     * You can backup your single root key by writing it down as words on paper.
 * **Pre-made template projects.**
     * CMake + OpenGL to demonstrate building and packaging C++ native apps that use third party dependencies.
-    * Jetpack Compose Desktop and JavaFX for cross-platform GUI apps. 
+    * Jetpack Compose Desktop and JavaFX for cross-platform JVM GUI apps.
+    * Electron Quick Start for building Chromium based apps.
+* **Package apps using any runtime or framework.**
+    * No code changes are necessary to benefit from the integrated auto update.
+    * On Windows/Linux the OS takes care of updates, on macOS the Sparkle framework is injected into your binary and automatically initialized by Conveyor.
 * **[Deep integration for JVM applications](configs/jvm.md).**
     * Uses JLink and jdeps to minimize the JDK size.
     * Import configuration from Maven and Gradle build systems.
     * Pre-canned template apps. Publish your first app in five minutes.
+* **Support for Electron apps.** (*beta!*)
+    * Benefit from well maintained platform native software updates without relying on Squirrel or any centralized update servers.
 * **Pierce the abstraction!** Cross platform tooling doesn't mean giving up platform-specific features. Over 120 different settings let you precisely configure your packages, including your:
     * Mac `Info.plist` files.
     * Windows XML app manifests.

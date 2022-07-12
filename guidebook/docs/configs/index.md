@@ -55,7 +55,7 @@ All configuration Conveyor pays attention to goes under the `app` hierarchy, but
 * Directories where logs, caches and persistent data should be stored. 
 * Executable names usable from the command line.
 
-The fsname will be derived automatically from the file name of the first input, if that's in a conventional form (see above).
+The fsname will be derived automatically from the file name of the first input, if that's in a conventional form (see above). You shouldn't put any version numbers in your fsname: it should consist only of words.
 
 The *long fsname* is used where a file name might be in a shared namespace and needs to be globally unique as a consequence. If a **`app.vendor`** is specified then the default **`app.long-fsname`** will be the vendor name plus the application's fsname separated by a dash. The *long fsname* is used anywhere a file on disk might be in a namespace shared with other software, which is common on Linux systems but less relevant on macOS and Windows. There is also **`app.long-fsname-dir`**. This is the same concept but with a directory separator instead.
 
