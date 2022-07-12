@@ -196,7 +196,7 @@ dependencies {
 
 ### Maven projects
 
-For Maven there's no plugin. Instead Conveyor will read the project classpath by running the output of the `mvn` command and using it directly as configuration. Other aspects like project name must be specified explicitly. Better import from Maven is planned in a future release.
+For Maven there's no plugin. Instead Conveyor will discover the JARs in your project by running the output of the `mvn` command and using it directly as configuration. Other aspects like project name must be specified explicitly. Better import from Maven is planned in a future release.
 
 ??? warning "Maven on Windows"
     Currently, automatic import from Maven only works on UNIX. On Windows you'll need to follow the instructions below for "other build systems".
@@ -222,7 +222,7 @@ app {
 ```
 
 1. You can import JDKs by major version, major/minor version, and by naming a specific distribution.
-2. This included file contains a single line, which runs Maven, tells it to print out the classpath and assigns the result to the `app.inputs` key: `include "#!=app.inputs mvn -q dependency:build-classpath -Dmdep.outputFile=/dev/stdout -Dmdep.pathSeparator=${line.separator}"`.
+2. This included file contains a single line, which runs Maven, tells it to print out the classpath and assigns the result to the `app.inputs` key: `include "#!=app.inputs[] mvn -q dependency:build-classpath -Dmdep.outputFile=/dev/stdout -Dmdep.pathSeparator=${line.separator}"`. In future this file will be updated to trigger a higher quality Maven import.
 3. The `fsname` is what's used for names on Linux e.g. in the `bin` directory, for directories under `lib`. In fact when specified the vendor is also used, and the program will be called `global-megacorp-my-program` unless the `long-fsname` key is overridden.
 4. You may not need to set this if the display name of your project is trivially derivable from the fsname. The default here would be `My Program`.
 5. This is optional. It'll be prefixed to the display name and used as a directory name  in various places; skip it if you don't work for an organization.
@@ -238,7 +238,8 @@ include "/stdlib/jdk/17/openjdk.conf"  // (1)!
 app {
     inputs += build/jars/my-program-1.0.jar
     inputs += build/jars
-    inputs += "icon-*.png"
+    
+    icons = "icon-*.png"
 
     vendor = Global MegaCorp  // (2)!
     
@@ -250,14 +251,47 @@ app {
 2. This is optional. It'll be prefixed to the display name and used as a directory name  in various places; skip it if you don't work for an organization.
 3. This is where the created packages will look for update metadata.
 
-This configuration adds your app's main JAR as the first input, allowing package metadata like version numbers and names to be derived from the file name. Then it adds the directory containing all the app  JARs (duplicates are ignored), and finally a set of icon files.
+This configuration adds your app's main JAR as the first input, allowing package metadata like the main class name, the version number and name to be derived from the file name. Then it adds the directory containing all the app JARs (duplicates are ignored), and finally a set of icon files. That's all you need! The extra inferred configuration will look like this:
 
-That's all you need! The display name and version of your application will be taken from the file name by default ("My App" and "1.0" given the file name in the example above).
+```javascript
+// This will all be figured out by Conveyor automatically:
+app {
+    fsname = my-program  // (1)!
+    display-name = My Program  // (2)!
+    version = 1.0  // (3)!
+    
+    jvm {
+        main-class = com.example.MyProgram  // (4)!
+        
+        modules = [ ... ]  // (5)!
+    }
+}
+```
+
+1. The `fsname` is what's used for names on Linux e.g. in the `bin` directory, for directories under `lib`. In fact when specified the vendor is also used, and the program will be called `global-megacorp-my-program` unless the `long-fsname` key is overridden.
+2. The display name is the human readable brand name. It's generated from the `app.fsname` here by replacing dashes with spaces and re-capitalizing.
+3. The version number was taken from the file name of the first input.
+4. The main class was read from the MANIFEST.MF of the JAR file. If your JAR isn't actually executable by running `java -jar` or if you have more than one JAR with a main class, then this will fail and you'll need to specify it by hand.
+5. The JDK modules to include in the JVM will be inferred by scanning your JARs with the `jdeps` tool, so the JVM will be shrunk automatically.
+
+Sometimes you don't want the settings to be inferred from the first input like that. In this case you can specify the config directly. Look at these sections of the guidebook to learn more:
+
+* [Generic configuration for any kind of app](../configs/index.md)
+* [Configuration for JVM apps](../configs/jvm.md)
 
 ??? note "File paths"
     Inputs are resolved relative to the location of the config file, not where Conveyor is run from.
 
 ??? warning "Uber-jars"
     Don't use an uber/fat-jar for your program unless you're obfuscating. It'll reduce the efficiency of delta download schemes like the one used by Windows. It also means modular JARs won't be encoded using the optimized `jimage` scheme. Use separate JARs for the best user experience.
+
+### Code changes
+
+It's possible to package JVM apps with no code changes at all. However, you will probably want to benefit from a few minor tweaks:
+
+1. The `app.version` system property is set to the value of the `app.version` configuration key. You can use this to avoid duplicating your version number in different places.
+2. The `app.dir` system property points at the directory in your package install where input files can be found. Some JARs may be found there, but note that explicitly modular JARs will disappear into the `modules` file in the JVM directory and so you won't find them here. Look up files from those JARs using the standard Java resources API instead.
+3. You can [set any other system properties you like in the config](../configs/jvm.md), allowing the app to know at runtime the value of any config values. By extension you can also set system properties to the value of arbitrary programs that were run at build time by using hashbang imports and build system integration.
+   
 
 <script>var tutorialSection = 8;</script>
