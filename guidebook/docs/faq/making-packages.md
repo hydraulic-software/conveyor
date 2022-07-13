@@ -33,3 +33,7 @@ and then just trigger Conveyor from your CI system. This is an example of [a has
 
 !!! important "Revision numbers vs commit hashes"
     Note that revision must be a number. You can't set it to be a commit hash. This is because package managers don't generally allow non-integer versions, and for Windows and macOS this is a hard rule.
+
+## 5. How do I display a license agreement at install time?
+
+You can't. It's not idiomatic on macOS, impossible on Linux and not well supported by MSIX on Windows. Ask the user to agree in your app on first run instead.
