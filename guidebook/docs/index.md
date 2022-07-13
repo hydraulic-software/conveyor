@@ -9,6 +9,10 @@ Conveyor makes distributing desktop and command line apps as easy as shipping a 
 
 <video width="100%" poster="https://conveyor.hydraulic.dev/assets/promo.jpg" controls><source src="https://conveyor.hydraulic.dev/assets/promo.mp4" type="video/mp4"></video>
 
+## Get started
+
+[ :material-arrow-up-box: Get set up!](download-conveyor.md){ .md-button .md-button--primary } [ :material-forum: Discussion forum](https://github.com/hydraulic-software/conveyor/discussions){ .md-button .md-button--primary } [ :material-chat: Chat room](https://hydraulic.zulipchat.com/#narrow/stream/329916-general){ .md-button .md-button--primary }
+
 ## Try an app that uses Conveyor
 
 [Download Eton Notes](https://downloads.hydraulic.dev/eton-sample/download.html){ .md-button .md-button--primary }   [Download Eton Notes (self-signed version)](https://downloads.hydraulic.dev/eton-sample/selfsigned/download.html){ .md-button .md-button--primary }
@@ -16,10 +20,6 @@ Conveyor makes distributing desktop and command line apps as easy as shipping a 
 <video width="100%" playsinline autoplay muted loop><source src="https://downloads.hydraulic.dev/eton-sample/eton.mp4" type="video/mp4"></video>
 
 [Eton Notes](https://github.com/hydraulic-software/eton-desktop) is a simple open source mockup of a note-taking app that uses Material Design and the [Jetpack Compose Desktop](https://www.jetbrains.com/lp/compose-desktop/) toolkit, which is a desktop port of the new Android GUI framework.
-
-## Get started
-
-[ :material-arrow-up-box: Get set up!](download-conveyor.md){ .md-button .md-button--primary } [ :material-forum: Discussion forum](https://github.com/hydraulic-software/conveyor/discussions){ .md-button .md-button--primary } [ :material-chat: Chat room](https://hydraulic.zulipchat.com/#narrow/stream/329916-general){ .md-button .md-button--primary }
 
 ## Features
 
