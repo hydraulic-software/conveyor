@@ -10,7 +10,7 @@ and link the modules into the runtime JVM image. It's useful for:
 ## Gradle builds
 
 When using [the JavaFX Gradle plugin from openjfx.io](https://openjfx.io/openjfx-docs/#gradle), everything is done for you. Just follow
-the instructions for adding [the Conveyor Gradle plugin](../configs/maven-gradle#gradle).
+the instructions for adding [the Conveyor Gradle plugin](../configs/maven-gradle.md#gradle).
 
 ## Maven builds
 
