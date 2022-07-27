@@ -24,6 +24,9 @@ app.site {
   
   # Change the set of images used for the logo, as found in the resolved inputs.
   icons = "my-icons-*.png"
+  
+  # Which keys appear in the metadata.properties file in the generated site.
+  export-keys = [ app.version, app.revision ]
 }
 ```
 

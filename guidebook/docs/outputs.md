@@ -17,6 +17,7 @@ When you generate a repository site you will get the following files:
     * An EXE file. This is a small program that requests Windows to install the MSIX file using the built-in software update mechanism, and renders a progress bar whilst Windows does so. Although the `.appinstaller` file can be opened directly to get the same results, using a custom Win32 program is more reliable.
     * A plain zip file (which doesn't auto update).
 * A `download.html` file that auto-detects the user's operating system and CPU when possible.
+* A `metadata.properties` file that contains extracts from your config. This is here so your code can easily read the latest version by simply parsing key=value lines of text.
 * If you are self-signing, you'll also have:
     * A `.crt` file containing your Windows self-signed certificate.
     * A `launch.mac` file containing a shell script that will download the Mac app with `curl`, unpack it to `/Applications` or `~/Applications` and then start it up.
