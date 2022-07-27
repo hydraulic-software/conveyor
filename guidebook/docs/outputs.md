@@ -13,7 +13,8 @@ When you generate a repository site you will get the following files:
     * Zips containing separate Intel and ARM .app folders. They'll be signed and notarized if credentials were supplied.
     * Two `appcast.rss` files, one for each CPU architecture. These control updates.
 * For Windows:
-    * An MSIX package and `.appinstaller` XML file. The latter can be opened on any Windows 10/11 install and will trigger the built-in "App Installer" app. That in turn will download the parts of the MSIX file that the user's system needs, and then install the package. The `.appinstaller` file is what's checked to find updates, and it contains its own URL so you can open it from any location (i.e. a download), and it will still work.
+    * An MSIX package and `.appinstaller` XML file. The `.appinstaller` file is what's checked to find updates, and it contains its own URL so you can open it from any location (i.e. a download), and it will still work.
+    * An EXE file. This is a small program that requests Windows to install the MSIX file using the built-in software update mechanism, and renders a progress bar whilst Windows does so. Although the `.appinstaller` file can be opened directly to get the same results, using a custom Win32 program is more reliable.
     * A plain zip file (which doesn't auto update).
 * A `download.html` file that auto-detects the user's operating system and CPU when possible.
 * If you are self-signing, you'll also have:
@@ -24,9 +25,8 @@ When you generate a repository site you will get the following files:
 
 ## Windows
 
-Conveyor doesn't create installer EXEs. Instead it uses Microsoft's newest packaging technology, [MSIX](https://docs.microsoft.com/en-us/windows/msix/). Like the older MSI format support is built in to Windows, but MSIX is a complete redesign with a different format, approach and capabilities. All Windows 10/11 systems support it and Microsoft have also backported it to Windows 7.[^1] MSIX files are enhanced ZIP files with several features that make it a good fit for modern desktop app distribution:
+Conveyor uses Windows' built-in packaging technology, [MSIX](https://docs.microsoft.com/en-us/windows/msix/). Like the older MSI format, support for it is built in to Windows, but MSIX is a complete redesign with a different format, approach and capabilities. All Windows 10/11 systems support it and Microsoft have also backported it to Windows 7.[^1] MSIX files are enhanced ZIP files with several features that make it a good fit for modern desktop app distribution:
 
-* **Two-click start.** App installation or upgrade can be launched direct from the web. Users download an `.appinstaller` file  and open it, then click launch. It's actually the same number of clicks as getting an app on mobile platforms.
 * **Delta downloads.** MSIX breaks apps into 64kb chunks and Windows only downloads those it hasn't already got. This works for *new installs* and *across unrelated vendors and apps*, meaning if the user has already downloaded some app using a popular runtime, your app using the same runtime will install near-instantly as only the unique program data will need to be fetched. Files on disk are also de-duplicated when possible by using hard links. This works because the "installer" the user downloads is in reality a small XML file that points to the real underlying file, which is itself indexed by hash.
 * **Automatic upgrades**. Windows keeps MSIX apps up to date in the background, even if they aren't running. You can also force Windows to check for an update on every launch, if you need your app to stay tightly synchronized with a remote server.
 * **Containerization.** Apps packaged with MSIX are run inside a form of lightweight container that virtualizes storage and the registry. This ensures apps can't alter the OS and that uninstalls are always 100% clean. It's backwards compatible and apps don't notice it's happening. This form of virtualization isn't a sandbox and doesn't stop apps interacting with each other or integrating with the operating system, so no features are lost, but it does stop the app's files being tampered with.

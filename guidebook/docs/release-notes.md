@@ -20,6 +20,10 @@
 
 ## Version history
 
+### 1.1
+
+Conveyor now gives Windows users an EXE file that triggers download/installation of the MSIX/appinstaller package by using the Windows API. This avoids problems with the small minority of machines that have fallen behind on software updates due to admins disabling the Windows Store.
+
 ### 1.0
 
 First release.
