@@ -98,6 +98,7 @@ Additional launchers are generated alongside the GUI launcher which have differe
 * `app.dir` - points at the install directory where input files are placed.
 * `app.displayName` - equal to the `${app.display-name}` key.
 * `app.version` - equal to the `${app.version}` key.
+* `app.revision` - equal to the `${app.revision}` key.
 * `app.vendor` - equal to the `${app.vendor}` key.
 * `jna.nosys` - set to false, which makes JNA work in the packaged environment.
 * `picocli.ansi` - set to `tty`, to make sure PicoCLI always uses colors even on Windows.
