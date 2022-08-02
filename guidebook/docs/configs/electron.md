@@ -3,7 +3,7 @@
 ## Overview
 
 !!! warning
-    Electron support is in beta, so you may encounter problems and missing features. It has only been tested with Electron 19. Please let us know in [the forums](https://github.com/hydraulic-software/conveyor/discussions) or [chat rooms](https://hydraulic.zulipchat.com/#narrow/stream/329916-general) how you get along.
+    Electron support is in beta, so you may encounter problems and missing features. It has only been tested with Electron 19. Please let us know in the [chat rooms](https://hydraulic.zulipchat.com/#narrow/stream/329916-general) how you get along.
 
 When using Conveyor to package [Electron](https://www.electronjs.org) apps the results differ slightly from other tools. There are several update engines that can be used with Electron, however they have a variety of problems:
 

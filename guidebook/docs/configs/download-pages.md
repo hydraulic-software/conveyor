@@ -49,7 +49,7 @@ Conveyor's repository sites are designed to be compatible with GitHub releases. 
 
 1. Set your `app.site.base-url` config key to be `github.com/$user/$repo/releases/latest/download`
 2. Run `conveyor make site` as usual to get an output directory.
-3. Create a new release and upload the contents of the output directory, minus `download.html` and any extra files you used, like icon files. [Take a look at this example release to see what you should have.](https://github.com/hydraulic-software/compose-music-app/)
+3. Create a new release and upload the contents of the output directory, minus `download.html` and any extra files you used, like icon files. [Take a look at this example release to see what you should have.](https://github.com/hydraulic-software/eton-desktop/)
 4. Take the generated `download.html` file and stick it on your website somewhere.
 
 That's it! To upgrade your users just create a new GitHub release as normal. The auto-update engines will be checking the metadata files on whatever your latest release is to discover what to download.

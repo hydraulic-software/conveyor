@@ -2,20 +2,20 @@
 
 ## 1. RPMs?
 
-It's planned. [Vote for support here](https://github.com/hydraulic-software/conveyor/issues/3).
+It's in progress.
 
 ## 2. DMGs?
 
 No plans because [zips work better](../outputs.md#macos). The downside is you don't get to theme the 'install experience'. If you need
-DMGs for some reason we've overlooked, please [email us to let us know](mailto:contact@hydraulic.software).
+DMGs for some reason we've overlooked, please [let us know](mailto:contact@hydraulic.software).
 
 ## 3. Mac PKGs?
 
 We'd like to add PKG support in the future. These are needed for uploading to the app store, and for installing files to unconventional places.
 
-## 4. Installer EXEs? MSIs?
+## 4. MSIs?
 
-At the moment we have no plans to do this. MSI is deprecated. MSIX is Microsoft's current recommended install technology, but we're interested in learning about use cases that require alternatives. We may in future support creating a small stub EXE that installs a custom self-signed certificate and then triggers App Installer. This would let you benefit from the MSIX feature set without needing code signing, albeit the initial EXE may be more prone to antivirus false positives.
+At the moment we have no plans to do this. MSI is deprecated. MSIX is Microsoft's current recommended install technology, but we're interested in learning about use cases that require alternatives. 
 
 ## 5. FlatPak? Other distros? Non-Intel Linux?
 
@@ -27,7 +27,7 @@ Linux/Aarch64 may be added later. [Vote for support here](https://github.com/hyd
 
 ## 6. App stores?
 
-Not yet. [Vote for Mac App Store support here](https://github.com/hydraulic-software/conveyor/issues/9).
+Not yet. [Vote for Mac App Store support here](https://github.com/hydraulic-software/conveyor/issues/9), and vote for [support for the Microsoft app store here](https://github.com/hydraulic-software/conveyor/issues/10).
 
 ## 7. Why does the Debian install process differ to normal?
 
