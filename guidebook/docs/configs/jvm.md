@@ -18,7 +18,7 @@ To package an app that uses the JVM, you must choose a JDK and at least one JAR.
 
 ??? note "Java versions"
     Conveyor only supports apps that use Java 11 or later - Java 8 won't work. All classes must be inside a JAR. If you need Java 8 support
-    please [let us know](mailto:contact@hydraulic.software).
+    please [email contact@hydraulic.software](mailto:contact@hydraulic.software).
 
 ## Synopsis
 
@@ -45,8 +45,11 @@ app.jvm.modules += java.{desktop,logging,net.http}
 # Set the main GUI class.
 app.jvm.gui = com.foobar.Main
 
-# Add a JVM argument used for every launcher.
+# Add JVM arguments for every launcher, specific operating systems and a specific OS/CPU arch.
+# Same layout as used for inputs.
 app.jvm.options += -Xmx1024m
+app.jvm.windows.options += -Xss4M
+app.jvm.mac.aarch64.options += -Xss4M
 
 # Set system properties. Keys must be quoted to stop them being treated as paths.
 app.jvm.system-properties {
@@ -100,13 +103,22 @@ Additional launchers are generated alongside the GUI launcher which have differe
 * `app.version` - equal to the `${app.version}` key.
 * `app.revision` - equal to the `${app.revision}` key.
 * `app.vendor` - equal to the `${app.vendor}` key.
+
+If you include [the client enhancements config from the standard library](../stdlib/jvm-clients.md), you also get:
+
 * `jna.nosys` - set to false, which makes JNA work in the packaged environment.
 * `picocli.ansi` - set to `tty`, to make sure PicoCLI always uses colors even on Windows.
+* `java.net.useSystemProxies` - set to true, to make the JVM use the system HTTP proxy settings.
 
 **`app.jvm.options`** A list of arguments to pass to the JVM on startup. Useful for configuring max heap size and system properties, amongst other things. Within JVM options the `&&` token is special and will be replaced at startup with the path to the directory where the app's root input files are stored (there may be other files in there as well).
 
+**`app.jvm.$machine.options`** JVM options that apply only to the given machine. Just like in input specs, `$machine` can be replaced with the following machine IDs. The option keys are arranged in a hierarchy, so options can be added at whatever level of precision is required. Remember that these are lists and should be added to using `app.jvm.windows.options += "-XX:Whatever"` syntax, or you can append a list by writing `app.jvm.windows.options = ${app.jvm.windows.options} [ "-XX:One", "-XX:Two" ]`.
+
+* `app.jvm.{windows,mac,linux}.options` - OS specific JVM options for every CPU.
+* `app.jvm.{windows,mac,linux}.{amd64,aarch64}[.{glibc,muslc}]` - OS, CPU and C library specific options.  
+
 !!! warning
-    * Watch out for accidental mis-use of HOCON syntax when writing something like `jvm-arguments = [ --one --two ]`. This creates a _single_ argument containing "--one --two" which is unlikely to be what you want. Instead write `jvm-arguments = [ --one, --two ]` or put each argument on a separate line. Conveyor will warn you if you seem to be doing this.
+    * Watch out for accidental mis-use of HOCON syntax when writing something like `constant-app-arguments = [ --one --two ]`. This creates a _single_ argument containing "--one --two" which is unlikely to be what you want. Instead, write `constant-app-arguments = [ --one, --two ]` or put each argument on a separate line. Conveyor will warn you if you seem to be doing this.
 
 !!! important
     When a JVM app is signed on macOS or Windows the JVM attach mechanism is disabled using the `-XX:+DisableAttachMechanism` flag. That's because the attach mechanism allows any local user to overwrite the app's code in memory without needing to alter files on disk, thus defeating code signing.
@@ -114,7 +126,6 @@ Additional launchers are generated alongside the GUI launcher which have differe
     As a consequence debuggers and profilers won't be able to find a signed JVM app, by design.
     
     This rule doesn't apply on Linux because that platform doesn't use code signing in the same way. On macOS the OS forbids debugger attachment unless the app opts in to allowing this, thus apps cannot tamper with each other's memory even when running as the same user. On Windows anti-virus checks are done when code is loaded, and so programs that allow arbitrary code injection allow lateral movement by malware.
-
 
 **`app.jvm.modules`** List of modules to take from the underlying JDK for the usage of classpath JARs. The modules and their transitive dependencies will be included, all others will be dropped. Defaults to `[ detect ]`. The special entry `detect`  is replaced with modules detected using the `jdeps` tool (see below). Note that this is *not* the place to list modular JARs in your app - it's only for modules to take from the JDK itself. Modular JARs should be added to base inputs like any other JARs.
 
