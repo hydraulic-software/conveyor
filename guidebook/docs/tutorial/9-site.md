@@ -8,7 +8,7 @@ Set the `app.vcs-url` key to the URL of your version control repository (e.g. `g
 
 It's also a good idea to set the `app.license` key to the name of your license, as Linux packages like to have this metadata.
 
-You will probably want to [use GitHub Releases to host your binaries](http://localhost:8000/configs/download-pages/#publishing-through-github). That works fine and your installs will update from the latest GitHub release.
+You will probably want to [use GitHub Releases to host your binaries](../configs/download-pages.md#publishing-through-github). That works fine and your installs will update from the latest GitHub release.
 
 ## Proprietary projects
 
