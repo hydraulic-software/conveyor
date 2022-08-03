@@ -11,7 +11,7 @@ Conveyor makes distributing desktop and command line apps as easy as shipping a 
 
 ## Get started
 
-[ :material-arrow-up-box: Get set up!](download-conveyor.md){ .md-button .md-button--primary } [ :material-chat: Chat room](https://hydraulic.zulipchat.com/#narrow/stream/329916-general){ .md-button .md-button--primary }
+[ :material-arrow-up-box: Get set up!](download-conveyor.md){ .md-button .md-button--primary } [ :material-forum: Discussion forum](https://github.com/hydraulic-software/conveyor/discussions){ .md-button .md-button--primary } [ :material-chat: Chat room](https://hydraulic.zulipchat.com/#narrow/stream/329916-general){ .md-button .md-button--primary }
 
 ## Try an app that uses Conveyor
 
