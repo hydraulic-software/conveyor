@@ -21,7 +21,7 @@ When you generate a repository site you will get the following files:
 * If you are self-signing, you'll also have:
     * A `.crt` file containing your Windows self-signed certificate.
     * A `launch.mac` file containing a shell script that will download the Mac app with `curl`, unpack it to `/Applications` or `~/Applications` and then start it up.
-    * A `launch.win.txt` file containing a PowerShell script (the extension is to force the web server to serve it as text). The script will download the certificate file, elevate to local admin, install it as a new root certificate and then install the MSIX.
+    * A `install.ps1` file containing a PowerShell script. The script will download the certificate file, elevate to local admin, install it as a new root certificate and then install the MSIX.
     * The `download.html` file will contain commands to copy/paste to a terminal that will use those scripts.
 
 ## Windows
