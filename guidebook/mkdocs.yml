@@ -84,6 +84,7 @@ theme:
         name: Switch to light mode
 
   logo: 'images/logo-white.svg'
+  favicon: images/favicon.ico
 
   font:
     text: Titillium Web
