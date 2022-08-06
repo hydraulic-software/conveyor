@@ -4,7 +4,7 @@
 
 Conveyor has integrated support for apps that run on the JVM (for any supported language). You get the following:
 
-* A custom launcher that replaces the `java` command and adds [extra features](#launcher).
+* A custom launcher that replaces the `java` command and adds [extra features](#launcher-features).
 * Support for the module system:
     * Usage of `jlink` and `jdeps` to create minimal JVM distributions, containing only the modules that your app needs.
     * Fully modular JARs are detected and linked into the `modules` file, yielding faster startup and smaller downloads.
@@ -45,8 +45,7 @@ app.jvm.modules += java.{desktop,logging,net.http}
 # Set the main GUI class.
 app.jvm.gui = com.foobar.Main
 
-# Add JVM arguments for every launcher, specific operating systems and a specific OS/CPU arch.
-# Same layout as used for inputs.
+# Add JVM arguments for every launcher.
 app.jvm.options += -Xmx1024m
 app.jvm.windows.options += -Xss4M
 app.jvm.mac.aarch64.options += -Xss4M
@@ -88,11 +87,9 @@ app.jvm.cli.foo-cli {
 
 **`app.jvm`** An [input hierarchy](inputs.md) in the same manner as the top level `app` object. The inputs will be resolved (copied/downloaded/extracted) and any JMOD files anywhere in the result will be found and aggregated. Then a JVM will be created using those jmods and the jlink tool. As a consequence, if you have JMODs to add to the jlinked image (e.g. JavaFX), you should add them here alongside the JVM itself.
 
-**`app.jvm.gui`** The GUI launcher. If set to a string then it's the main class invoked when the app is started via the operating system GUI (e.g. start menu, Mission Control, etc). If left at the default, the JARs will be scanned to find a main class advertised in the manifest. If more than one JAR advertises a main class, an error is reported.
+**`app.jvm.gui`** The GUI launcher. See the [launchers section](#launchers).
 
-**`app.jvm.cli`** Either a list of command line main class names, or an object in which the keys are the names of the generated launchers and the values are either main class names or objects that define per-launcher options (see synopsis). 
-
-Additional launchers are generated alongside the GUI launcher which have different names and will run in console mode on Windows. By default they all use the same classpath and JVM options, but that can be controlled independently.
+**`app.jvm.cli`** CLI launchers. See the [launchers section](#launchers).
 
 **`app.jvm.constant-app-arguments`** A list of arguments that will always be passed to the app in addition to whatever the user specifies. Can be useful to plumb metadata from the app definition through to the app itself, like by telling it its own version number.
 
@@ -110,12 +107,7 @@ If you include [the client enhancements config from the standard library](../std
 * `picocli.ansi` - set to `tty`, to make sure PicoCLI always uses colors even on Windows.
 * `java.net.useSystemProxies` - set to true, to make the JVM use the system HTTP proxy settings.
 
-**`app.jvm.options`** A list of arguments to pass to the JVM on startup. Useful for configuring max heap size and system properties, amongst other things. Within JVM options the `&&` token is special and will be replaced at startup with the path to the directory where the app's root input files are stored (there may be other files in there as well).
-
-**`app.jvm.$machine.options`** JVM options that apply only to the given machine. Just like in input specs, `$machine` can be replaced with the following machine IDs. The option keys are arranged in a hierarchy, so options can be added at whatever level of precision is required. Remember that these are lists and should be added to using `app.jvm.windows.options += "-XX:Whatever"` syntax, or you can append a list by writing `app.jvm.windows.options = ${app.jvm.windows.options} [ "-XX:One", "-XX:Two" ]`.
-
-* `app.jvm.{windows,mac,linux}.options` - OS specific JVM options for every CPU.
-* `app.jvm.{windows,mac,linux}.{amd64,aarch64}[.{glibc,muslc}]` - OS, CPU and C library specific options.  
+**`app.jvm.options`** See [JVM options](#jvm-options) 
 
 !!! warning
     * Watch out for accidental mis-use of HOCON syntax when writing something like `constant-app-arguments = [ --one --two ]`. This creates a _single_ argument containing "--one --two" which is unlikely to be what you want. Instead, write `constant-app-arguments = [ --one, --two ]` or put each argument on a separate line. Conveyor will warn you if you seem to be doing this.
@@ -133,7 +125,7 @@ If you include [the client enhancements config from the standard library](../std
 
 **`app.jvm.mac.plist`** HOCON structure converted to the `Info.plist` file used for the linked JVM on macOS. You can normally ignore this.
 
-**`app.jvm.strip-debug-info`** If true (defaults to false) then JVM classfile debug attributes are stripped during repacking. 
+**`app.jvm.strip-debug-info`** If true (defaults to false) then JVM classfile debug attributes are stripped during repacking.
 
 ## Importing a JVM/JDK
 
@@ -169,13 +161,14 @@ Moving native libraries out of JARs has these benefits:
 * It improves the effectiveness of update delta compression.
 * It reduces download sizes by deleting libraries meant for other operating systems or CPU architectures.
 
-Therefore your software should always attempt to load shared libraries by using `System.loadLibrary` first, before trying to extract native libraries from a JAR. Alternatively you can use `System.load` in combination with the `java.home` system property but remember to add either `lib` on UNIX or `bin` on Windows.
+Therefore, your software should always attempt to load shared libraries by using `System.loadLibrary` first, before trying to extract native libraries from a JAR. Alternatively you can use `System.load` in combination with the `java.home` system property but remember to add either `lib` on UNIX or `bin` on Windows.
+
 
 ## Modules
 
-Conveyor can use the Java Platform Module System (JPMS a.k.a Jigsaw).
+Conveyor can use the Java Platform Module System (JPMS a.k.a. Jigsaw).
 
-**Linked JVMs.** Conveyor always bundles a specialized JVM created using `jlink`. That's why Java 8 isn't supported (if you need support for Java 8 please get in touch). Linking is primarily a size and startup time optimization: it gets rid of parts of the JDK you don't need, and linked modules get incorporated into the single `modules` file which uses an more optimized format called "jimage". Classes can be loaded more quickly and take up less space when processed this way. You can use the `jimage` command line tool in any JDK to view the contents of a `modules` file.
+**Linked JVMs.** Conveyor always bundles a specialized JVM created using `jlink`. That's why Java 8 isn't supported (if you need support for Java 8 please [let us know](mailto:contact@hydraulic.software)). Linking is primarily a size and startup time optimization: it gets rid of parts of the JDK you don't need, and linked modules get incorporated into the single `modules` file which uses an more optimized format called "jimage". Classes can be loaded more quickly and take up less space when processed this way. You can use the `jimage` command line tool in any JDK to view the contents of a `modules` file.
 
 **Modular JARs.** Conveyor will link a JAR that provides a `module-info.class` into the bundled JVM as long as it doesn't depend on any auto-modules. As a consequence those JARs won't be found in the app data directory - only JARs on the classpath will be placed there.  Conveyor always puts automatic modules (those that declare a module name in their manifest) as ordinary classpath JARs. At this time you cannot control whether modules are linked or placed on the classpath, except by pre-processing JARs to add or remove `module-info.class` files. So: Explicit modules are always put on the module path and linked, other JARs never are.
 
@@ -211,7 +204,97 @@ When adding module related flags to the `app.jvm.options` key, be aware that the
 
 **Diagnosing issues.** If you'd like to see what decisions Conveyor has made about your app, you can make the `repacked-jars` task for some machine and look at the files called `required-jdk-modules.txt` (this is the output of jdeps run over your jars) and `modular-jars.txt` which is a list of the JARs that will be linked in to the optimized JVM.
 
-## Launcher
+## Launchers
+
+JVM apps are started by a native executable that Conveyor supplies and customizes during the build (see below). You can have one GUI launcher and zero or more supplementary command line launchers. The GUI launcher is the one executed when the user starts the app via the start menu, by running the bundle on macOS (e.g. via Mission Control or the Finder) or using the desktop environment on Linux. CLI launchers can only be executed from the terminal, or by your own software. You're limited to a single GUI launcher because macOS doesn't normally have an installation concept, so the icon used to launch the software is the same as the directory that contains it. This makes it awkward to have more than one GUI entry point per app and it's not conventional to do so on that platform.
+
+Launchers are defined using keys. If no launchers are defined then the JARs will be scanned to find a main class advertised in the manifest  and that will become the GUI launcher. If more than one JAR advertises a main class, an error is reported. As such, for most apps you can simply ignore launchers and let Conveyor figure it out.
+
+The GUI launcher is defined by **`app.jvm.gui`** and CLI launchers are defined using the **`app.jvm.cli`** list/map key. A launcher is defined by a config object, but there are shorthand syntaxes in which the contents of the object are inferred.
+
+### Launcher objects
+
+A fully defined launcher uses the following object:
+
+```hocon
+{
+  main-class = com.foobar.FooTool
+  exe-name = foo-tool
+  class-path = "some-prefix-*.jar"
+  options = [ -Xmx500M ]   
+}
+```
+
+For each launcher you can specify these keys:
+
+**`main-class`** The fully qualified name of a class with a static main method, or for JavaFX apps, that inherits from `javafx.application.Application`.  
+
+**`exe-name`** The name of the binary executable on disk. You don't need a `.exe` suffix, one will be added for you on Windows. If not specified, will use either the display name or the fsname, depending on platform conventions. 
+
+**`class-path`** A list of file names or globs that select a set of JAR files from the inputs. Defaults to `*.jar` which is usually good enough. Note that explicit JPMS modules don't have to be specified here, as they will be jlinked into the distribution JVM and thus are always available.
+
+### JVM options
+
+JVM command line flags ("options") can be used to control heap size, the garbage collector and so on. Note that this mostly but not entirely the same as arguments to the `java` program. Keys for setting JVM options are arranged in a hierarchy with less specific keys being used as defaults for more specific keys. Each launcher can define:
+
+* **`options`**
+* **`windows.options`**
+* **`windows.amd64.options`**
+* **`mac.options`**
+* **`mac.amd64.options`**
+* **`mac.aarch64.options`**
+* **`linux.options`**
+* **`linux.amd64.options`**
+* **`linux.amd64.glibc.options`**
+
+Each launcher always includes JVM options defined by the `app.jvm` object, i.e. you can also set options by configuring:
+
+* **`app.jvm.options`**
+* **`app.jvm.windows.options`**
+* **`app.jvm.windows.amd64.options`**
+* ... etc ...
+
+In this way you can set JVM flags for every entry point in your app whilst also specifying options that apply only to specific platforms and launchers.
+
+### Defining launchers
+
+You can define them in several ways, depending on how many defaults you accept:
+
+```hocon
+# Main class for the GUI launcher. The executable name is either 
+# the ${app.fsname} or ${app.display-name} depending on OS.
+app.jvm.gui = com.example.FooBar
+
+# Define the full launcher object:
+app.jvm.gui {
+  # ...
+}
+
+# A single CLI launcher. The exe name is set to be the fsname.
+app.jvm.cli = com.example.FooBar
+
+# A list of main classes. The executable name is the main 
+# class name converted to kebab-case like this:
+#
+# - com.example.FooBar     = foo-bar[.exe]
+# - com.example.FooBarKt   = foo-bar[.exe]    (for kotlin users)
+# - com.example.Foo$BarApp = bar-app[.exe]
+app.jvm.cli = [ com.example.FooBar, com.example.AnotherApp ]
+
+# An object in which the keys are the executable names and the 
+# bodies are launchers:
+app.jvm.cli {
+  app1 {
+    main-class = com.example.FooBar
+    options = [ -Xmx500M ]
+  }
+  app2 {
+    main-class = com.example.AnotherApp
+  }
+}
+```
+
+### Launcher features
 
 JVM apps packaged with Conveyor use a custom native program to start the JVM. It adds the following features:
 
@@ -229,7 +312,7 @@ JVM apps packaged with Conveyor use a custom native program to start the JVM. It
 The launcher supports some of the same features as the java launcher, for example JavaFX apps don't need a main method, the Mac specific `-XstartOnFirstThread` flag is understood and the initial stack size can be set.
 
 !!! note "Future features"
-    The custom launcher enables many useful features to be added in the future. Ideas include startup time optimization via automatically 
+    The custom launcher enables many useful features to be added in the future. Ideas include startup time optimization via automatically
     configured [AppCDS](https://openjdk.java.net/jeps/310), exposing APIs to control and monitor the update process, integrating
     NodeJS and using JavaScript modules through it, automatically moving apps to `/Applications` on macOS and regularizing how file/URL
     open requests are exposed to the OS (which currently requires operating-system specific approaches and APIs).
