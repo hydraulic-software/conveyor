@@ -24,7 +24,8 @@
 
 * Conveyor now gives Windows users an EXE file that triggers download/installation of the MSIX using the Windows API. This simplifies the Windows UX, makes it more familiar for end users, avoids problems with a small minority of machines that have fallen behind on software updates for the App Installer app due to admins disabling the Windows Store, and enables the provisioning of other features in future.
 * Conveyor now generates a `metadata.properties` file in the site directory which contains information about the software in the form of `key=value` text. You can control what else gets written here by changing the `app.site.export-keys` list, which contains a list of config keys to write out. This file is useful for software that wants to know what the latest version is, without needing to deal with platform specific XML.
-* You can now specify machine-specific JVM options. 
+* You can now specify machine-specific JVM options, and also control the options for each launcher/machine combination independently.
+* You can now control the Windows console mode of each launcher independently.
 * Fixed: Usage with recent Azul JDKs, which contain symlinks in the macOS download that were confusing Conveyor's logic for finding the right files.
 * Fixed: The PowerShell one-liner used for self-signed Windows apps now works when the web server doesn't set MIME types correctly (e.g. for GitHub Releases), and when the system is configured to restrict PowerShell.
 * Fixed: Notarization failure when using Apple certificates linked to developer accounts that are authorized for iPhone development.

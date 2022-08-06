@@ -163,7 +163,6 @@ Moving native libraries out of JARs has these benefits:
 
 Therefore, your software should always attempt to load shared libraries by using `System.loadLibrary` first, before trying to extract native libraries from a JAR. Alternatively you can use `System.load` in combination with the `java.home` system property but remember to add either `lib` on UNIX or `bin` on Windows.
 
-
 ## Modules
 
 Conveyor can use the Java Platform Module System (JPMS a.k.a. Jigsaw).
@@ -222,6 +221,7 @@ A fully defined launcher uses the following object:
   exe-name = foo-tool
   class-path = "some-prefix-*.jar"
   options = [ -Xmx500M ]   
+  console = true
 }
 ```
 
@@ -232,6 +232,8 @@ For each launcher you can specify these keys:
 **`exe-name`** The name of the binary executable on disk. You don't need a `.exe` suffix, one will be added for you on Windows. If not specified, will use either the display name or the fsname, depending on platform conventions. 
 
 **`class-path`** A list of file names or globs that select a set of JAR files from the inputs. Defaults to `*.jar` which is usually good enough. Note that explicit JPMS modules don't have to be specified here, as they will be jlinked into the distribution JVM and thus are always available.
+
+**`console`** Controls whether the launcher is marked as a console app on Windows. See the [documentation for the console key](windows.md#console-key) for more details. If not specified, defaults to true for CLI launchers and false for the GUI launcher. You should normally never need to set this, but it may be helpful in some cases if you have CLI launchers that aren't meant to be invoked by the end user directly. 
 
 ### JVM options
 
