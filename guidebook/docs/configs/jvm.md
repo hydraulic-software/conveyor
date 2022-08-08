@@ -98,7 +98,7 @@ app.jvm.cli.foo-cli {
 * `app.dir` - points at the install directory where input files are placed.
 * `app.displayName` - equal to the `${app.display-name}` key.
 * `app.version` - equal to the `${app.version}` key.
-* `app.revision` - equal to the `${app.revision}` key.
+* `app.revision` - equal to the `${app.revision}` key.
 * `app.vendor` - equal to the `${app.vendor}` key.
 
 If you include [the client enhancements config from the standard library](../stdlib/jvm-clients.md), you also get:
@@ -126,6 +126,39 @@ If you include [the client enhancements config from the standard library](../std
 **`app.jvm.mac.plist`** HOCON structure converted to the `Info.plist` file used for the linked JVM on macOS. You can normally ignore this.
 
 **`app.jvm.strip-debug-info`** If true (defaults to false) then JVM classfile debug attributes are stripped during repacking.
+
+**`app.jvm.unwanted-jdk-files`** A list of file names that are erased from the application after jlinking and launcher creation is done. This is useful for cleaning up files that are usually only needed for development purposes. You can remove default items from the list by prefixing them with a `-` (minus). The list defaults to: 
+
+```
+unwanted-jdk-files = [
+    # This helps other tools figure out what the JVM version 
+    # is, but it isn't needed by apps.
+    release
+
+    # This contains JVM flags but we burn them into the launcher 
+    # to ensure they're covered by code signing, and for startup 
+    # time wins.
+    lib/jvm.cfg
+
+    # This is used for AppCDS but that isn't used by Conveyor yet.
+    lib/classlist
+
+    # This is used for third party apps that are reflecting/reading,
+    # the contents of the linked JDK. It isn't used in normal operations.
+    lib/jrt-fs.jar
+
+    # JLI is the Java Launcher Infrastructure or something like that. 
+    # It provides some code for the `java` command, but we use our own
+    # native launcher so don't need this file.
+    bin/jli.dll
+    lib/libjli.so
+    lib/libjli.dylib
+
+    # File used only when compiling against jvm.dll, not needed for 
+    # end users.
+    lib/jvm.lib
+]
+```
 
 ## Importing a JVM/JDK
 
