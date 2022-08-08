@@ -86,7 +86,7 @@ When you ran `conveyor keys generate` it also produced two certificate signing r
     * Upload the `apple.csr` file that was created next to your `defaults.conf` file when you created your root key above. 
     * You'll get a `.cer` file back immediately. There is no review or approval process because the verification is linked to your credit card details.
 * If distributing to Windows:
-    * Pick a certificate authority that sells Authenticode certificates. [DigiCert](https://www.digicert.com) is a good choice.
+    * Pick a certificate authority that sells Authenticode certificates. [DigiCert](https://www.digicert.com/dc/code-signing/microsoft-authenticode.htm) is a good choice. Please refer to [this FAQ section](faq/signing-and-certificates.md#5-whats-the-difference-between-a-normal-and-ev-certificate) for more information on the difference between normal and EV certificates. 
     * Upload the `windows.csr` file that was created next to your `defaults.conf` when you created a root key above. You will need to verify your identity with the CA. 
     * They will give you back a certificate in a format of your choice. Conveyor understands several but PEM works well.
 
@@ -120,7 +120,8 @@ app {
 }
 ```
 
-Generate an app specific password from the security section of your Apple ID account webpage. The team ID can be found in the [Apple developer console](https://developer.apple.com/account/) under "Membership".
+Generate an app specific password from the security section of your [Apple ID account webpage](https://appleid.apple.com/account/manage/section/security). 
+The team ID can be found in the [Apple developer console](https://developer.apple.com/account/) under "Membership".
 
 !!! tip
     You can use move your app specific password outside of a per-project config by using an `include` statement, or by writing `${env.SOME_ENV_VAR}` to use an environment variable.
@@ -142,7 +143,10 @@ app.mac.certificate = apple.cer
 app.windows.certificate = windows.cer
 ```
 
-The `apple.cer` and `windows.cer` files are then stored in the same location.
+The `apple.cer` and `windows.cer` files are then stored in the same location. Since the certificates are public, there's no need to hide them. 
+In such situation, the only thing that's sensitive is the keys. If you're letting Conveyor derive keys from the root entropy for you, 
+the plain-text value of the `app.signing-key` can be moved into either a secret file or a secret environment variable - please see the 
+[continuous integration](continuous-integration.md) page for an example of how it can be achieved.
 
 ## Exporting derived keys
 
