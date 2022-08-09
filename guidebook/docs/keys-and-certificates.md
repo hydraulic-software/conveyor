@@ -66,7 +66,7 @@ To learn more about configuring keys and certificates see [signing configuration
 
 #### Exporting keys from Mac Keychain Access
 
-**Step 1.** Open Keychain Access and locate your developer ID certificate and associated private key:
+**Step 1.** You need to have a "Developer ID Application" certificate. Other types won't work. Open Keychain Access and locate your Developer ID certificate and associated private key:
 
 ![Keychain Access](images/keychain-access-1.png)
 
@@ -82,7 +82,7 @@ When you ran `conveyor keys generate` it also produced two certificate signing r
 
 * If distributing to macOS: 
     * Log in using an Apple ID to the [Apple developer programme](https://developer.apple.com/programs/). Joining will require a credit card payment. 
-    * Request an "Apple Distribution" certificate using the [Apple Developer console](https://developer.apple.com/account/). You can do this with any web browser and operating system. 
+    * Request a "Developer ID Application" certificate using the [Apple Developer console](https://developer.apple.com/account/). You can do this with any web browser and operating system, but you must be the account holder.
     * Upload the `apple.csr` file that was created next to your `defaults.conf` file when you created your root key above. 
     * You'll get a `.cer` file back immediately. There is no review or approval process because the verification is linked to your credit card details.
 * If distributing to Windows:
