@@ -41,16 +41,30 @@ The words form is intended to be easy to write down with a pen and paper. Add li
 ??? info "Making self-signed apps easier to use"
     Although Conveyor removes a lot of the technical effort involved in signing, the best/standard user experiences still require certificates to be purchased. Over time we plan to make software distribution easier using sandboxing.
 
-## If you already have certificates
+## Certificates in Conveyor
 
-Export them to `.cer`, `.p12` or `.pfx` files:
+Certificates link your public key to a verified identity. Conveyor supports the following certificate formats:
+
+* `.cer/.pem` - ASCII encoded. This is sometimes called PEM format.
+* `.p12/.pfx` - Binary encoded.
+
+When using a `.p12` or `.pfx` file, you must supply [a passphrase](#passphrases). 
+
+Usually, certificate authorities give you several options for what format you download them in. When possible pick the option named something like "PEM with all certificates included". Your certificate file must include not only your own but also any intermediate certificates.
+
+!!! important
+    You may have certificates in a `.p7b` file. Currently this format is not supported. Request a different format from your CA.
+
+### If you already have certificates
+
+Export them to `.cer`, `.pem`, `.p12` or `.pfx` files:
 
 * **macOS:** Export the keys from Keychain Access to a .p12 file (see below). Set `app.mac.signing-key` to point to that file. If you have a separate key and certificate file, set `app.mac.certificate` to point to the `.cer` file.
 * **Windows:** Set `app.windows.signing-key` to the path of either a .p12/.pfx file containing your private key and certificate, or set `app.windows.signing-key` and `app.windows.certificate` separately.
 
-To learn more about configuring keys and certificates see [signing configuration](configs/index.md#signing). Conveyor can read most common ways to encode keys and certificates, including ASCII format (PEM, meaning `---BEGIN PRIVATE KEY---` style). When using a `.p12` or `.pfx` file, you must supply [a passphrase](#passphrases). 
+To learn more about configuring keys and certificates see [signing configuration](configs/index.md#signing).
 
-### Exporting keys from Mac Keychain Access
+#### Exporting keys from Mac Keychain Access
 
 **Step 1.** Open Keychain Access and locate your developer ID certificate and associated private key:
 
@@ -62,7 +76,7 @@ To learn more about configuring keys and certificates see [signing configuration
 
 **Step 4.** Enter your login password to unlock the keychain. The export should now complete.
 
-## If you want certificates
+### If you want certificates
 
 When you ran `conveyor keys generate` it also produced two certificate signing request files (`.csr`). These can be uploaded to certificate authorities to get signing certificates.
 
@@ -78,7 +92,7 @@ When you ran `conveyor keys generate` it also produced two certificate signing r
 
 The private keys backing the certificate requests aren't written to disk separately. They're all derived on demand from the contents of the `app.signing-key` config value. To export them, see below.
 
-## If you don't want certificates
+### If you don't want certificates
 
 Then do nothing! Conveyor will still sign your packages using your root key, but it'll generate and use a self-signed certificate. That certificate will be put in the download site along with a couple of scripts: a shell script for macOS and a PowerShell script for Windows. The download HTML will then instruct the user to run a command from their terminal that downloads and runs the scripts, which in turn then download and install the application, taking the necessary steps to ensure it can run. 
 
