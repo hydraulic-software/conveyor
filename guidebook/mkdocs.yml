@@ -15,6 +15,7 @@ nav:
     - keys-and-certificates.md
     - outputs.md
     - running.md
+    - continuous-integration.md
     - release-notes.md
   - Tutorial:
     - tutorial/1-get-started.md
