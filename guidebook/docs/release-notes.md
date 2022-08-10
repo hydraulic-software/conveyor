@@ -34,6 +34,8 @@
 * Fixed: Usage with recent Azul JDKs, which contain symlinks in the macOS download that were confusing Conveyor's logic for finding the right files.
 * Fixed: The PowerShell one-liner used for self-signed Windows apps now works when the web server doesn't set MIME types correctly (e.g. for GitHub Releases), and when the system is configured to restrict PowerShell.
 * Fixed: Notarization failure when using Apple certificates linked to developer accounts that are authorized for iPhone development.
+* The template apps no longer require the system properties set by packaging.
+* The default Windows timestamping authority has changed from DigiCert to Certum due to [this problem](https://knowledge.digicert.com/solution/authenticode-signature-verification-fails-with-new-timestamping-cross-root.html), which affects blank/new Windows 10 installs.
 
 ### 1.0
 
