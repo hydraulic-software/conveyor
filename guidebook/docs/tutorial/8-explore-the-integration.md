@@ -12,9 +12,6 @@ The template `conveyor.conf` files are small, which is normal. A combination of 
 
 The config is defined using a superset of JSON called [HOCON](../configs/hocon-spec.md) with a few [Conveyor-specific extensions](../configs/hocon-extensions.md). It will look roughly like this:
 
-!!! tip
-    Click the + icons to learn more about each part.
-
 ```javascript title="conveyor.conf"
 app {
   display-name = Template App // (1)!

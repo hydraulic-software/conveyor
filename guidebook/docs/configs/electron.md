@@ -3,9 +3,9 @@
 ## Overview
 
 !!! warning
-    Electron support is in beta, so you may encounter problems and missing features. It has only been tested with Electron 19. Please let us know in the [chat rooms](https://hydraulic.zulipchat.com/#narrow/stream/329916-general) how you get along.
+    Electron support is in beta, so you may encounter problems and missing features. It has only been tested with Electron 19. Please let us know in the [discussion forum](https://github.com/hydraulic-software/conveyor/discussions) or [chat rooms](https://hydraulic.zulipchat.com/#narrow/stream/329916-general) how you get along.
 
-When using Conveyor to package [Electron](https://www.electronjs.org) apps the results differ slightly from other tools. There are several update engines that can be used with Electron, however they have a variety of problems:
+When using Conveyor to package [Electron](https://www.electronjs.org) apps the results differ slightly from other tools. There are several update engines that can be used with Electron, however they all have a variety of problems:
 
 * [Squirrel.Windows is only intermittently maintained](https://github.com/Squirrel/Squirrel.Windows/issues/1470), has been abandoned several times in the past and has serious design issues like installing into the user's *roaming* home directory (meaning it can break Windows networks). 
 * [Squirrel.Mac didn't have a release since 2017 and was completely abandoned in 2021](https://github.com/Squirrel/Squirrel.Mac). Switching to Sparkle (which is what Conveyor uses) [was requested by users](https://github.com/electron/electron/issues/29057) but got no response. 
@@ -50,7 +50,7 @@ app.electron.download-base-url = github.com/electron/electron/releases/download/
 
 ```
 ${app.electron.download-base-url}/v${app.electron.version}/electron-v${app.electron.version}-$os-$cpu.zip
-``` 
+```
 
 so they must follow the same lahyout as that used on GitHub. You can specify a `file:` URL here if necessary.
 

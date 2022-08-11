@@ -31,11 +31,13 @@
 * You can now specify machine-specific JVM options, and also control the options for each launcher/machine combination independently.
 * You can now control the Windows console mode of each launcher independently.
 * You can now control the list of files that are cleaned up after JDK linking with the `app.jvm.unwanted-jdk-files` key. 
+* The default Windows timestamping authority has changed from DigiCert to Certum due to [this DigiCert issue](https://knowledge.digicert.com/solution/authenticode-signature-verification-fails-with-new-timestamping-cross-root.html), which affects blank/new Windows 10 installs.
 * Fixed: Usage with recent Azul JDKs, which contain symlinks in the macOS download that were confusing Conveyor's logic for finding the right files.
 * Fixed: The PowerShell one-liner used for self-signed Windows apps now works when the web server doesn't set MIME types correctly (e.g. for GitHub Releases), and when the system is configured to restrict PowerShell.
 * Fixed: Notarization failure when using Apple certificates linked to developer accounts that are authorized for iPhone development.
-* The template apps no longer require the system properties set by packaging.
-* The default Windows timestamping authority has changed from DigiCert to Certum due to [this problem](https://knowledge.digicert.com/solution/authenticode-signature-verification-fails-with-new-timestamping-cross-root.html), which affects blank/new Windows 10 installs.
+* Fixed: some bugs that could occur when a company name in certificates used characters requiring X.500 escape sequences.
+* Fixed: The template apps no longer require the system properties set by packaging.
+* Fixed: The CMake template app uses the win32 subsystem (no console) on Windows.
 
 ### 1.0
 

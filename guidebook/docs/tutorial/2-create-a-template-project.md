@@ -9,7 +9,6 @@ Conveyor has four pre-canned "Hello World" project templates. They can form the 
 
 !!! warning
     * Electron support is in beta. It has received less testing than the other types of app.
-    * The pretty Van Gogh style demo shader in the OpenGL app is under a non-commercial Creative Commons license. If you do actually want to make an OpenGL app, make sure to delete the shader first.
 
 Generating a project based on these templates is the quickest way to try things out. The JVM and Electron apps are easy to play with because you don't need cross-compilers. For the C++ project you'll need to compile it on each OS that you wish to target. It's your choice, this tutorial will guide you through all of them.
 
