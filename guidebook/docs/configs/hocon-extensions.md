@@ -3,18 +3,9 @@
 Conveyor adds the following features to base HOCON: 
     
 
-1. Per-user defaults loaded from the home directory.
 1. Smart string lists.
 2. Including output from external commands.
 3. Access to environment variables.
-
-## Per-user defaults
-
-Config placed in the following paths will be merged into every build file:
-
-* **Windows:** `%USERPROFILE%\Hydraulic\Conveyor\defaults.conf`
-* **Linux:** `~/.config/hydraulic/conveyor/defaults.conf`
-* **macOS:** `~/Library/Preferences/Hydraulic/Conveyor/defaults.conf`
 
 ## Smart string lists
 

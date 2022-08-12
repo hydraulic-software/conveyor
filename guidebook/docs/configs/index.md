@@ -6,8 +6,18 @@ An app is defined using the HOCON configuration language. HOCON is a superset of
 
 To understand every setting that went into your app run the `conveyor json` command and examine the output. Because HOCON is a superset of JSON you can use this result in place of the original config, but we don't recommend that because you'll lose the smartly calculated defaults. Using raw JSON as a config file is normally only useful if you're generating it from a tool.
 
-!!! important
-    When working with lists it's good style to always add to them rather than overriding them. If you assign directly importing other configs from (for example) the Conveyor standard library won't work as you'll overwrite the values they place in shared lists. In other words write `key += value` rather than `key = [ value ]`. The first form adds to whatever `key` currently holds, the second replaces it.
+
+## Extending the default settings
+
+When working with lists it's good style to always add to them rather than overriding them. If you assign directly importing other configs from (for example) the Conveyor standard library won't work as you'll overwrite the values they place in shared lists. In other words write `key += value` rather than `key = [ value ]`. The first form adds to whatever `key` currently holds, the second replaces it.
+
+## Per-user defaults
+
+Config placed in the following paths will be merged into every build file:
+
+* **Windows:** `%USERPROFILE%\Hydraulic\Conveyor\defaults.conf`
+* **Linux:** `~/.config/hydraulic/conveyor/defaults.conf`
+* **macOS:** `~/Library/Preferences/Hydraulic/Conveyor/defaults.conf`
 
 ## Compatibility levels
 
@@ -161,7 +171,7 @@ A piece of config like this can be generated with the `conveyor keys generate` c
 
 **`app.mac.signing-key`**,**`app.windows.signing-key`** The private key to use for each platform. If they're set to `derived` (the default) then derivation from the root private key is used and these specific keys aren't stored on disk, otherwise the value should contain the path to a standard PEM or PKCS#12 key store file relative to the app config file.
 
-**`app.mac.certificate`**, **`app.windows.certificate`** Should point to files containing the certificates. See [Keys and certificates](../keys-and-certificates.md) for information on supported formats. The paths are relative to the app config file and they default to `{windows,apple}.cer` respectively. Alternatively, these can be set like this: `app.mac.certificate = "self signed by CN=Nobody in particular"` (the default value is this but using your display name). In that case a self-signed certificate is deterministically derived from the root key. 
+**`app.mac.certificate`**, **`app.windows.certificate`** Should point to files containing the certificates. See [Keys and certificates](../keys-and-certificates.md) for information on supported formats. The paths are relative to the app config file and they default to `{windows,apple}.cer` respectively. Alternatively, these can be set like this: `app.mac.certificate = "self signed by CN=Nobody in particular"` (the default value is this but using your display name). In that case a self-signed certificate is deterministically derived from the root key. 
 
 !!! note
     The words used to encode the signing key come from a predefined dictionary, so you can't choose your own sentences here. This encoding makes the key easier to write down with a pen and paper, which can be a low tech but reliable way to back it up.

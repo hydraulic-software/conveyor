@@ -17,7 +17,13 @@ The first time you use Conveyor you will need to run:
 conveyor keys generate
 ```
 
-optionally giving this command a `--passphrase`.
+optionally giving this command a `--passphrase`. This will create a "root key" which is used to derive all the other keys you'll need. It's written to your per-user defaults file, which can be found here:
+
+* **Windows:** `%USERPROFILE%\Hydraulic\Conveyor\defaults.conf`
+* **Linux:** `~/.config/hydraulic/conveyor/defaults.conf`
+* **macOS:** `~/Library/Preferences/Hydraulic/Conveyor/defaults.conf`
+
+Config placed in those paths will be merged into every build file. There's nothing special about the signing related config options - anything can be put here.
 
 ## Template projects
 
