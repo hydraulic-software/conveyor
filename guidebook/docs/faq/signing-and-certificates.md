@@ -13,7 +13,7 @@ If you're asking this because you're an open source developer and working on a G
 
 ## 2. I don't have a Mac/Windows machine.
 
-You don't need one. Conveyor can sign and notarize apps for any OS on every OS. You also don't need one to acquire signing certificates from Apple or Microsoft, because that's done via a web browser using standard data formats. Conveyor makes the needed CSR files for you.
+You don't need one. Conveyor can sign and notarize apps for any OS on every OS. You also don't need one to acquire signing certificates from Apple or Microsoft, because that's done via a web browser using standard data formats. Conveyor makes the needed CSR files for you.
 
 ## 3. Which CA should I use for Windows?
 
@@ -21,7 +21,7 @@ Any CA that issues Authenticode certificates will work. We've had good experienc
 
 ## 4. What type of certificate do I need for macOS?
 
-An Apple Distribution certificate. That's the modern type that works on both macOS and iOS. You may have an Apple Developer ID certificate if you've distributed Mac software before - that also works fine. Only Apple sells these, other code signing certificates won't work.
+An Apple "Developer ID" certificate. Other types e.g. for iOS or "Apple Distribution" won't work. Only Apple sells these.
 
 ## 5. What's the difference between a normal and EV certificate?
 
@@ -35,7 +35,10 @@ In short: if you're new to distributing Windows software and want your users to 
 
 ## 6. Does my program still work after my certificate expires?
 
-Yes. Conveyor doesn't just sign your files, it timestamps them too. Timestamping servers sign the hash of your file along with a timestamp, and operating systems use that time when evaluating certificate expiry.
+Yes. Conveyor doesn't just sign your files, it timestamps them too. Timestamping servers sign the hash of your file along with a timestamp, and operating systems use that time when evaluating certificate expiry. Existing packages will continue to be installable after the signing certificates have expired, and existing apps will continue to run.
+
+!!! important "Changing your signing identity"
+    Despite that, it's a good idea to renew your certificates with plenty of time because you will need to ensure the new certs have exactly the same subject name (identity) as the old certificates. See question 12 for details.
 
 ## 7. What is notarization?
 
@@ -60,3 +63,7 @@ Signing (with anything) establishes a long term identity for a piece of code tha
 GPG signatures are provided for Debian packages and apt repositories. The package installs the certificate to the keychain as part of the regular package installation process, so apt doesn't need to be specifically configured.
 
 There is no signature or hash generated for the tarball because it's not necessary. The user will be downloading the tarball over HTTPS anyway, which already provides integrity protection.
+
+## 12. Can I change between certificate types/authorities?
+
+Yes, but only if the new CA issues an identical X.500 subject name to your previous CA. Windows incorporates the identity name into the package identity. One case where the identity can change is when switching from non-EV to EV certificates. Another is if your organization changes its name or the location where it's headquartered. There is an [MSIX persistent identity](https://docs.microsoft.com/en-us/windows/msix/package/persistent-identity) feature supported in up to date versions of Windows which lets you transition from one signing identity to another, but Conveyor doesn't currently support this feature.
