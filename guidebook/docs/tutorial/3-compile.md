@@ -14,7 +14,7 @@ In a real project you would probably use `webpack`, `vite` or some other packer 
 
 ## Native
 
-Native apps can be written in any language that produces a binary, but the template uses C++. Native apps must be compiled for each OS you wish to target. Getting access to different build machines is more work than necessary for this tutorial, so you should now edit `conveyor.conf` and edit the `machines = [ ... ]` line, changing the contents of the list to reflect which platform(s) you're using and will compile the app for.
+[Native apps](../configs/native-apps.md) can be written in any language that produces a binary, but the template uses C++. Native apps must be compiled for each OS you wish to target. Getting access to different build machines is more work than necessary for this tutorial, so you should now edit `conveyor.conf` and edit the `machines = [ ... ]` line, changing the contents of the list to reflect which platform(s) you're using and will compile the app for.
 
 Instructions for how to build are in the `README.md` file. It's a conventional CMake build system of the kind widely used in the C++ ecosystem, so we won't go into details here.
 
@@ -23,8 +23,8 @@ Instructions for how to build are in the `README.md` file. It's a conventional C
 
 **You'll need to re-compile the app any time you change the app's code. At this time Conveyor won't do it for you.**
 
-??? note "Linker flags for macOS"
-    On macOS Conveyor uses the Sparkle framework to implement online updates. You don't have to start up Sparkle yourself because Conveyor will inject code into the binary at build time. To do this there has to be some empty space for additional Mach-O headers to be written in. Apple's linker can be given a flag to add such space, and the CMake build system in the native app sample does so. If you're using other languages or toolchains you'll need to pass the `-headerpad 0xFF` flag to Apple's `ld` via whatever mechanism is normal for your compiler. 
+??? note "Linker flags"
+   On macOS and Linux extra linker flags are required for correct operation in the package environment. These flags don't affect operation when running from the development build tree, so can be always added. See the [native apps](../configs/native-apps.md) section to learn more.
 
 ??? note "Icons and manifests"
     Windows programs contain embedded metadata like icon files, XML manifests and whether it's a console app. Conveyor will edit the EXE to reflect settings in your config, so you don't need to set these things up in your build system. Any icons or manifests already there will be replaced. [Learn how to control the binary manifest](../configs/windows.md#manifest-keys).

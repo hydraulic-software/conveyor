@@ -36,6 +36,7 @@ nav:
     - configs/linux.md
     - configs/mac.md
     - configs/windows.md
+    - configs/native-apps.md
     - Download pages: configs/download-pages.md
     - HOCON:
         - Specification: configs/hocon-spec.md
