@@ -32,7 +32,7 @@ Just like in the previous release the installation process will download only th
 * Fixed bugs that could occur when a company name in certificates used characters requiring X.500 escape sequences.
 * The template apps no longer require the system properties set by packaging to start up.
 * The CMake template app uses the win32 subsystem (no console) on Windows.
-* Linux packages built on Windows uninstall cleanly now.
+* Fixed bugs that affected Linux packages built on Windows.
 
 ## Conveyor 1
 
