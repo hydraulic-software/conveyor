@@ -18,12 +18,14 @@ To see which versions of which JDK distros are known run `conveyor jdk-table`. T
 
 ## Distributions
 
+If you aren't sure which to pick, we recommend Amazon or Eclipse.
+
 * `amazon`: Amazon Corretto is a plain vanilla OpenJDK build with occasional bug fix backports. As used by AWS.
-* `azul`: Plain vanilla OpenJDK builds from Azul. Not to be confused with Azul's commercial Zulu Prime JVM which has a pauseless garbage collector, LLVM based JIT compiler and ReadyNow technology.
-* `eclipse`: Plain vanilla OpenJDK builds, previously provided under the name AdoptOpenJDK and now known as Adoptium or Temurin. 
+* `azul`: The Azul Zulu JDK. Plain vanilla builds from Azul. Not to be confused with Azul's commercial Zulu Prime JVM which has additional features not found in any other JVM.
+* `eclipse`: Plain vanilla OpenJDK builds, previously provided under the name AdoptOpenJDK and now also known as Adoptium or Temurin. 
 * `jetbrains`: The JetBrains Runtime is the spin of OpenJDK used by JetBrain's IDEs. Mostly the same as OpenJDK but with many bug fixes and enhancements useful for Swing GUI apps.
-* `microsoft`: A plain vanilla OpenJDK build, which unlike most others is also available for ARM Windows.
-* `openjdk`: The upstream builds supplied by OpenJDK. Note that there are no long term releases available for these.
+* `microsoft`: A plain vanilla OpenJDK build, which unlike most others is also available for ARM Windows. They only produce builds for LTS releases and point users to Eclipse for non-LTS releases.
+* `openjdk`: The upstream builds supplied by OpenJDK. Note that there are no long term support releases available for these, so major versions stop receiving updates after six months.
 
 !!! important
     Avoid using `adoptopenjdk`. It is in the stdlib for backwards compatibility only. Over time this project stopped providing builds for all platforms and the latest JDK11 release does not provide builds for macOS at all. For comprehensive and up to date builds of JDK11 and JDK17, please consider switching to another vendor (e.g. `eclipse` or `amazon`).
