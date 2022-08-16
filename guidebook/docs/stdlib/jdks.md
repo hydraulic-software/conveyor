@@ -18,15 +18,15 @@ To see which versions of which JDK distros are known run `conveyor jdk-table`. T
 
 ## Distributions
 
-* `adoptopenjdk`: This project offered plain vanilla OpenJDK builds until Java 17, at which point it was renamed to Eclipse Temurin.
 * `amazon`: Amazon Corretto is a plain vanilla OpenJDK build with occasional bug fix backports. As used by AWS.
 * `azul`: Plain vanilla OpenJDK builds from Azul. Not to be confused with Azul's commercial Zulu Prime JVM which has a pauseless garbage collector, LLVM based JIT compiler and ReadyNow technology.
-* `eclipse`: Plain vanilla OpenJDK builds, previously provided under the name AdoptOpenJDK.
-* `graalvm-community-11`: GraalVM is a HotSpot based JVM with a unique and advanced JIT compiler. It's especially good at running non-Java languages fast. These are the Java 11 based Community Edition (free/open source) builds. The version number for GraalVM deviates from the OpenJDK standard: use a version like `21.3` rather than `11`.
-* `graalvm-community-17`: Same but based on Java 17.
+* `eclipse`: Plain vanilla OpenJDK builds, previously provided under the name AdoptOpenJDK and now known as Adoptium or Temurin. 
 * `jetbrains`: The JetBrains Runtime is the spin of OpenJDK used by JetBrain's IDEs. Mostly the same as OpenJDK but with many bug fixes and enhancements useful for Swing GUI apps.
 * `microsoft`: A plain vanilla OpenJDK build, which unlike most others is also available for ARM Windows.
 * `openjdk`: The upstream builds supplied by OpenJDK. Note that there are no long term releases available for these.
+
+!!! important
+    Avoid using `adoptopenjdk`. It is in the stdlib for backwards compatibility only. Over time this project stopped providing builds for all platforms and the latest JDK11 release does not provide builds for macOS at all. For comprehensive and up to date builds of JDK11 and JDK17, please consider switching to another vendor (e.g. `eclipse` or `amazon`).
 
 ## Custom JDKs
 
@@ -48,3 +48,7 @@ app.jvm {
 ```
 
 You can easily point your config at any set of JDK distributions. The exact internal layout doesn't matter - JMODs will be located regardless of where they are in the directory or archive.
+
+## GraalVM
+
+You can write config to point at a GraalVM install, but please be aware that this won't let you select languages. GraalVM uses a different packaging system to other JDKs and thus the normal linking process isn't sufficient to create a minimal JDK with support for Truffle languages. Improved support for GraalVM is planned for a future release.
