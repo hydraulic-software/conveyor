@@ -17,6 +17,7 @@ nav:
     - running.md
     - continuous-integration.md
     - release-notes.md
+    - known-issues.md
   - Tutorial:
     - tutorial/1-get-started.md
     - tutorial/2-create-a-template-project.md

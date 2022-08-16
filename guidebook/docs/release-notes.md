@@ -1,49 +1,39 @@
 # Release notes
 
-## Known issues
+## Conveyor 2
 
-### Missing features
+### New features
 
-* Supported apps and packages:
-    * Only GUI apps are supported in this release. Support for CLI-only apps is implemented (Conveyor is packaged with itself), but the feature needs more polish before being ready to launch. Let us know if you'd like to try it out anyway.
-    * Only DEB based Linux distros get native packages. For other distros Conveyor creates a tarball which doesn't auto update. RPM / FlatPak support is on the roadmap.
-    * ARM Linux isn't yet supported.
-    * Packages for app stores aren't yet supported.
-* The Gradle plugin doesn't support Kotlin Multiplatform projects yet, due to KMM's alpha status.
-* Registration of URL handlers and file type associations isn't yet supported. It can be done by adding the right keys to each platform's metadata files in the configs.
-* There's no way to customize the generated download HTML. This feature is implemented but requires more polish before it's ready.
-* Debian packages don't have their license metadata set yet, so will show in GNOME Software as proprietary even if they aren't.
-* The P7B certificate format isn't supported.
+**Improved Windows end user UX.** Conveyor now gives Windows users a small EXE file that triggers download and installation of the MSIX package. This simplifies the Windows UX, makes it more familiar for end users, avoids problems with a small minority of machines that have fallen behind on software updates and enables other future features. The `.appinstaller` file is still there and used behind the scenes, so admins can easily bypass the EXE to use the packages directly.
 
-### Bugs
+Just like in the previous release the installation process will download only the parts of the MSIX file that the user doesn't already have on their system, will even hard link files between different apps and doesn't require admin privileges. The user will see your icon/logo whilst the download and installation proceeds, and at the end the app will launch automatically. This yields fast installs that require exactly one click. The installer EXE is a tightly written Win32 app that's just a few hundred kilobytes in size. Like any installer it can be deleted after usage, or re-run to trigger a forced upgrade check and relaunch.
 
-* On Windows 11 app icons will show in the taskbar as too small and surrounded by a white box. This is actually a regression in Windows due to the taskbar rewrite, and affects some other apps that don't use Conveyor too. A workaround is under development.
-* Changes in terminal size whilst a build is in progress won't be respected.
-* Maven integration doesn't work on Windows.
-* PowerShell 7 is not backwards compatible with "Windows PowerShell" (5.x and 6.x). The commands used for installing self-signed apps must be run in "Windows PowerShell", not PowerShell 7.
-* Providing a directory as your primary input will cause an icons related crash. Make sure your first input points to a file.
-* Specifying an input glob in combination with a target will cause the destination to be incorrectly treated as a file (e.g. `"foo.* -> bar"`).
-* When using JDK11, you must use patch level 16+ (i.e. JDK 11.0.16+). Earlier builds will fail with a jlink error talking about hash mismatches. This is due to a format change that got backported to JDK11.
-* `jdeps` is always executed even if the `app.jvm.modules` key doesn't include `detect`. The results however won't be used.
+**Site metadata.** Your download site now has a `metadata.properties` file in the site directory which contains information about the software in the form of `key=value` text. You can control what else gets written here by changing the `app.site.export-keys` list, which contains a list of config keys to write out. This file is useful for software that wants to know what the latest version is, without needing to deal with platform specific XML.
 
-## Version history
+**New features for JVM apps.** You can now:
 
-### 2.0
+* Specify machine-specific JVM options
+* Control the options for each launcher/machine combination independently.
+* Control the Windows console mode of each launcher independently.
+* Control the list of files that are cleaned up after JDK linking with the `app.jvm.unwanted-jdk-files` key. 
+* Write CLI launchers using shorthand config syntax of just the class name, without an object. The name of the executable is taken by transforming the class name to `kebab-case` and removing any `Kt` extension.
 
-* Conveyor now gives Windows users an EXE file that triggers download/installation of the MSIX using the Windows API. This simplifies the Windows UX, makes it more familiar for end users, avoids problems with a small minority of machines that have fallen behind on software updates for the App Installer app due to admins disabling the Windows Store, and enables the provisioning of other features in the future.
-* Conveyor now generates a `metadata.properties` file in the site directory which contains information about the software in the form of `key=value` text. You can control what else gets written here by changing the `app.site.export-keys` list, which contains a list of config keys to write out. This file is useful for software that wants to know what the latest version is, without needing to deal with platform specific XML.
-* You can now specify machine-specific JVM options, and also control the options for each launcher/machine combination independently.
-* You can now control the Windows console mode of each launcher independently.
-* You can now control the list of files that are cleaned up after JDK linking with the `app.jvm.unwanted-jdk-files` key. 
-* The default Windows timestamping authority has changed from DigiCert to Certum due to [this DigiCert issue](https://knowledge.digicert.com/solution/authenticode-signature-verification-fails-with-new-timestamping-cross-root.html), which affects blank/new Windows 10 installs.
-* Fixed: Usage with recent Azul JDKs, which contain symlinks in the macOS download that were confusing Conveyor's logic for finding the right files.
-* Fixed: The PowerShell one-liner used for self-signed Windows apps now works when the web server doesn't set MIME types correctly (e.g. for GitHub Releases), and when the system is configured to restrict PowerShell.
-* Fixed: Notarization failure when using Apple certificates linked to developer accounts that are authorized for iPhone development.
-* Fixed: Some bugs that could occur when a company name in certificates used characters requiring X.500 escape sequences.
-* Fixed: The template apps no longer require the system properties set by packaging.
-* Fixed: The CMake template app uses the win32 subsystem (no console) on Windows.
-* Fixed: The error message you get when using a JDK that doesn't supply Mac builds is now more helpful.
+### Fixes and smaller improvements
 
-### 1.0
+* The clipboard copy icon on the generated download page now works in Firefox.
+* The error message you get when using a JDK that doesn't supply Mac builds is now more helpful.
+* The new `app` task is similar to the `package` task - it builds an unpackaged app for the machine selected by the `app.machines` key.
+* The default Windows timestamping authority has changed from DigiCert to Certum due to [this DigiCert issue](https://knowledge.digicert.com/solution/authenticode-signature-verification-fails-with-new-timestamping-cross-root.html).
+* The JDKs available via the standard library have been refreshed. The GraalVM stdlib configs have been removed from the docs and JDK table due to the need for better GraalVM support for this feature to really shine (the stdlib configs remain so existing build configs should continue to work).
+* Documentation related to code signing has been improved.
+* Fixed usage with recent Azul JDKs, which contain non-standard symlinks in the macOS download.
+* The PowerShell one-liner used for self-signed Windows apps now works when the web server doesn't set MIME types correctly (e.g. for GitHub Releases), and when the system is configured to restrict PowerShell.
+* Fixed notarization failure when using Apple certificates linked to developer accounts that are authorized for iPhone development.
+* Fixed bugs that could occur when a company name in certificates used characters requiring X.500 escape sequences.
+* The template apps no longer require the system properties set by packaging to start up.
+* The CMake template app uses the win32 subsystem (no console) on Windows.
+* Linux packages built on Windows uninstall cleanly now.
 
-First release.
+## Conveyor 1
+
+First release with support for packaging JVM, Electron and native apps for any OS, from any OS, using a simple and intuitive config syntax and a straightforward command line tool.
