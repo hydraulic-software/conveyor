@@ -9,7 +9,8 @@ In this section we take a task-oriented approach to using Conveyor.
 
 ## Package JVM GUI apps
 
-* [Jetpack Compose Desktop apps](jetpack-compose-desktop.md). Make a slick GUI app using an adapted version of Android's modern UI toolkit.
+* [Jetpack Compose Desktop apps](jetpack-compose-desktop.md). Make GUIs using an adapted version of Android's modern UI toolkit.
+* [JavaFX](javafx.md): Package your existing JavaFX app, regardless of what build system it uses.
 * [SWT](swt.md): Demonstrates how to depend on a library with platform specific artifacts.
 
 ## Package server apps

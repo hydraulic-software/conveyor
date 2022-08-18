@@ -51,9 +51,10 @@ nav:
       - stdlib/javafx.md
   - Tasks:
       - tasks/index.md
+      - tasks/server.md
       - tasks/jetpack-compose-desktop.md
       - tasks/swt.md
-      - tasks/server.md
+      - tasks/javafx.md
   - FAQ:
     - faq/index.md
     - faq/output-formats.md
