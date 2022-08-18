@@ -1,5 +1,11 @@
 # Release notes
 
+## Conveyor 2.1
+
+### Fixes and smaller improvements
+
+* The minimum macOS version for generated apps was lowered to 10.14 (Mojave). 
+
 ## Conveyor 2
 
 ### New features

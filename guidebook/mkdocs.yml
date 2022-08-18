@@ -18,6 +18,7 @@ nav:
     - continuous-integration.md
     - release-notes.md
     - known-issues.md
+    - min-sys-requirements.md
   - Tutorial:
     - tutorial/1-get-started.md
     - tutorial/2-create-a-template-project.md
