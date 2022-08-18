@@ -23,7 +23,7 @@ function setCookie(cname, cvalue, exdays) {
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
-if (tutorialSection !== undefined) {
+if (typeof tutorialSection !== 'undefined') {
     let ticks = Array.from(document.querySelectorAll(".task-list-control > input[type=checkbox]"));
 
     var initialCheckedIndexes = getCookie("completed-tasks").split(",");
