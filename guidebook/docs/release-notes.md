@@ -4,7 +4,7 @@
 
 ### Fixes and smaller improvements
 
-* The minimum macOS version for generated apps was lowered to 10.14 (Mojave). 
+* The minimum macOS version for generated apps was lowered to 10.14 (Mojave). Minimum OS verson requirements are now documented. 
 
 ## Conveyor 2
 
