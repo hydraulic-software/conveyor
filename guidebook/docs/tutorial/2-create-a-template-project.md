@@ -5,7 +5,7 @@ Conveyor has four pre-canned "Hello World" project templates. They can form the 
 1. A native OpenGL app written in C++.
 2. An Electron app.
 3. A GUI JVM app using the reactive [Jetpack Compose for Desktop](https://www.jetbrains.com/lp/compose-desktop/) toolkit.
-4. Another JVM GUI app using [JavaFX](https://www.openjfx.io).
+4. Another JVM GUI app using [JavaFX](https://openjfx.io).
 
 !!! warning
     * Electron support is in beta. It has received less testing than the other types of app.
