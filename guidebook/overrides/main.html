@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 
+{% block outdated %}
+You're not viewing the latest version.
+<a href="{{ '../' ~ base_url }}">
+    <strong>Click here to go to latest.</strong>
+</a>
+{% endblock %}
+
 {% block extrahead %}
 <script defer data-domain="conveyor.hydraulic.dev" src="https://plausible.io/js/plausible.js"></script>
 {% endblock %}

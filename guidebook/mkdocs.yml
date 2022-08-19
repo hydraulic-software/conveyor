@@ -1,5 +1,6 @@
 site_name: Hydraulic Conveyor
 site_description: User guide for the Conveyor packaging tool.
+site_url: !ENV CANONICAL_URL
 
 extra:
   homepage: https://www.hydraulic.software
