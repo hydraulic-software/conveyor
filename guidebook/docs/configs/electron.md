@@ -20,7 +20,7 @@ The other standard features of Conveyor can also save a lot of time and hassle:
 * Handles all the details of code signing without native tools, which are often awkward to use.
 * Can self-sign if you don't want to use signing keys. Other tools make unsigned apps if you don't have keys, but these don't integrate with the host operating system as well.
 * You get a self-contained download site with HTML that detects your users operating system and CPU.
-* It's fully documented. Other Electron packaging tools sometimes point you to [doc pages that are empty](https://js.electronforge.io/maker/appx/interfaces/makerappxconfig).
+* It's fully documented. Other Electron packaging tools sometimes point you to [doc pages that are 404s](https://www.electronforge.io/config/makers/appx).
 
 Conveyor treats Electron apps mostly the same as native apps, meaning that no code changes are necessary to get working software updates.
 
