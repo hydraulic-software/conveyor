@@ -62,6 +62,7 @@ nav:
     - faq/making-packages.md
     - faq/signing-and-certificates.md
     - Tips and troubleshooting: tips-and-troubleshooting.md
+    - faq/comparisons.md
 
 theme:
   name: 'material'
