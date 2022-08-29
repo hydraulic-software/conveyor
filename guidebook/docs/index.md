@@ -1,25 +1,35 @@
----
-hide:
-- toc
----
+# Getting started
 
-# Welcome
+[ :material-arrow-up-box: Get set up!](download-conveyor.md){ .md-button .md-button--primary } [ :material-forum: Discussion forum](https://github.com/hydraulic-software/conveyor/discussions){ .md-button .md-button--primary } [ :material-chat: Chat room](https://hydraulic.zulipchat.com/#narrow/stream/329916-general){ .md-button .md-button--primary }
 
 Conveyor makes distributing desktop and command line apps as easy as shipping a web app. It's a tool not a service, it generates and signs [self-upgrading packages for Windows, macOS and Linux using each platform's native package formats](outputs.md) without requiring you to have those operating systems, and it looks like this:
 
 <video width="100%" poster="https://conveyor.hydraulic.dev/assets/promo.jpg" controls><source src="https://conveyor.hydraulic.dev/assets/promo.mp4" type="video/mp4"></video>
 
-## Get started
+## Try sample apps that use Conveyor
 
-[ :material-arrow-up-box: Get set up!](download-conveyor.md){ .md-button .md-button--primary } [ :material-forum: Discussion forum](https://github.com/hydraulic-software/conveyor/discussions){ .md-button .md-button--primary } [ :material-chat: Chat room](https://hydraulic.zulipchat.com/#narrow/stream/329916-general){ .md-button .md-button--primary }
-
-## Try an app that uses Conveyor
-
-[Download Eton Notes](https://downloads.hydraulic.dev/eton-sample/download.html){ .md-button .md-button--primary }   [Download Eton Notes (self-signed version)](https://downloads.hydraulic.dev/eton-sample/selfsigned/download.html){ .md-button .md-button--primary }
+### Compose Multiplatform
 
 <video width="100%" playsinline autoplay muted loop><source src="https://downloads.hydraulic.dev/eton-sample/eton.mp4" type="video/mp4"></video>
 
-[Eton Notes](https://github.com/hydraulic-software/eton-desktop) is a simple open source mockup of a note-taking app that uses Material Design and the [Jetpack Compose Desktop](https://www.jetbrains.com/lp/compose-desktop/) toolkit, which is a desktop port of the new Android GUI framework.
+<img src="images/compose-multiplatform.svg" style="float: left; padding-right: 1em"></img>
+
+[Download Eton Notes (fully signed)](https://downloads.hydraulic.dev/eton-sample/download.html){ .md-button .md-button--primary }
+
+[Download Eton Notes (self signed)](https://downloads.hydraulic.dev/eton-sample/selfsigned/download.html){ .md-button .md-button--primary }
+
+<br style="clear: right" />
+
+[Eton Notes](https://github.com/hydraulic-software/eton-desktop) is an open source example app written in Kotlin. It uses Material Design and the [Jetpack Compose](https://www.jetbrains.com/lp/compose-desktop/) reactive UI toolkit, which is the new standard Android GUI toolkit and also has a desktop port supported by JetBrains.
+
+
+### AtlantaFX Sampler
+
+<video width="100%" playsinline autoplay muted loop style="margin-left: -5.5em"><source type="video/mp4" src="https://www.hydraulic.software/assets/images/video/AtlantaFX.mp4"/></video>
+
+[Download AtlantaFX sampler](https://downloads.hydraulic.dev/atlantafx/sampler/download.html){ .md-button .md-button--primary }
+
+[AtlantaFX](https://github.com/mkpaz/atlantafx) is an open source theme for JavaFX that implements a modern design language using the GitHub Primer color system. The sampler app provides a gallery of the available controls and stylings. It's written in Java with Maven. Read [the blog post](https://hydraulic.software/blog/3-atlantafx-sampler.html) to learn how this app was packaged.
 
 ## Features
 
