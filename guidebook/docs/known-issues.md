@@ -7,13 +7,14 @@
   * Only DEB based Linux distros get native packages. For other distros Conveyor creates a tarball which doesn't auto update. RPM / FlatPak support is on the roadmap.
   * ARM Linux isn't yet supported.
   * Packages for app stores aren't yet supported.
-* For JVM apps:
-  * The Gradle plugin doesn't support Kotlin Multiplatform projects yet, due to KMM's alpha status.
-  * There's no direct support for importing Maven projects, and the supplied command to read classpaths doesn't work on Windows.  
 * There's no way to customize the generated download HTML. This feature is implemented but requires more polish before it's ready.
 * Registration of URL handlers and file type associations isn't yet supported.
 * Debian packages don't have their license metadata set yet, so will show in GNOME Software as proprietary even if they aren't.
 * The P7B certificate format isn't supported.
+* For JVM apps:
+    * The Gradle plugin doesn't support Kotlin Multiplatform projects yet, due to KMM's alpha status.
+    * There's no direct support for importing Maven projects, and the supplied command to read classpaths doesn't work on Windows.
+    * The JavaCV library is incompatible with JNI library extraction. If JavaCV is detected you will be told how to disable this feature.
 
 ## Issues with planned fixes
 
