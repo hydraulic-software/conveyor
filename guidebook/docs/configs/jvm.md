@@ -119,7 +119,7 @@ If you include [the client enhancements config from the standard library](../std
     
     This rule doesn't apply on Linux because that platform doesn't use code signing in the same way. On macOS the OS forbids debugger attachment unless the app opts in to allowing this, thus apps cannot tamper with each other's memory even when running as the same user. On Windows anti-virus checks are done when code is loaded, and so programs that allow arbitrary code injection allow lateral movement by malware.
 
-**`app.jvm.modules`** List of modules to take from the underlying JDK for the usage of classpath JARs. The modules and their transitive dependencies will be included, all others will be dropped. Defaults to `[ detect ]`. The special entry `detect`  is replaced with modules detected using the `jdeps` tool (see below). Note that this is *not* the place to list modular JARs in your app - it's only for modules to take from the JDK itself. Modular JARs should be added to base inputs like any other JARs.
+**`app.jvm.modules`** List of modules to take from the underlying JDK for the usage of classpath JARs. The modules and their transitive dependencies will be included, all others will be dropped. Defaults to `[ detect ]`. The special entry `detect`  is replaced with modules detected using the `jdeps` tool (see below). Note that this is *not* the place to list modular JARs in your app - it's only for modules to take from the JDK or any other supplied JMODs. Modular JARs should be added to base inputs like any other JARs.
 
 **`app.jvm.jlink-flags`** Extra flags passed to the `jlink` command. Can be used to invoke plugins and so on. See the output of `jlink --help` and `jlink --list-plugins` to see what's available. By default this adds `--ignore-signing-information` and specifies a jimage file ordering, which helps with startup time.
 
@@ -160,6 +160,8 @@ unwanted-jdk-files = [
 ]
 ```
 
+**`app.jvm.extract-native-libraries`** If true (the default) then native libraries will be deleted from JARs and placed in the lib directory of the bundled JVM. If false, they are left alone. [See below](#jar-stripping) for more information.
+
 ## Importing a JVM/JDK
 
 These days there are many distributions of Java to choose from. You've probably already chosen your JVM/JDK for development purposes, but you'll need to specify which one you want so Conveyor can download the different versions for different platforms.
@@ -179,7 +181,7 @@ app {
 }
 ```
 
-## Native libraries
+## JAR stripping
 
 The JAR files that get shipped are rewritten in three ways:
 

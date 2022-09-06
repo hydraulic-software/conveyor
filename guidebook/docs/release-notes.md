@@ -5,6 +5,16 @@
 ### Fixes and smaller improvements
 
 * The minimum macOS version for generated apps was lowered to 10.14 (Mojave). Minimum OS verson requirements are now documented. 
+* A guidebook section with [comparisons to alternative tools](faq/comparisons.md) was added.
+* Fixed: packaged apps were incompatible with macOS Catalina. Thanks to Apple for assisting with debugging this.
+* Fixed: the generated certificate signing requests can now be re-exported if you deleted them whilst also having a passphrase on your key.
+
+### For JVM apps
+
+* The `app.jvm.extract-native-libraries` key was added to control JAR stripping.
+* The JDK definitions were refreshed.
+* Fixed: jdeps is no longer run if it's not actually being requested via the `detect` token.
+* Fixed: the `jdk.accessibility` module is now always included if AWT/Swing are. If this isn't done then apps might crash at startup if screen readers are installed.
 
 ## Conveyor 2
 
