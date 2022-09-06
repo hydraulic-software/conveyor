@@ -3,7 +3,7 @@
 ## Overview
 
 !!! warning
-    Electron support is in beta, so you may encounter problems and missing features. It has only been tested with Electron 19. Please let us know in the [discussion forum](https://github.com/hydraulic-software/conveyor/discussions) or [chat rooms](https://hydraulic.zulipchat.com/#narrow/stream/329916-general) how you get along.
+    Electron support is in beta, so you may encounter problems and missing features. It has only been tested with recent Electron versions. Please let us know in the [discussion forum](https://github.com/hydraulic-software/conveyor/discussions) or [chat rooms](https://hydraulic.zulipchat.com/#narrow/stream/329916-general) how you get along.
 
 When using Conveyor to package [Electron](https://www.electronjs.org) apps the results differ slightly from other tools. There are several update engines that can be used with Electron, however they all have a variety of problems:
 
@@ -35,7 +35,7 @@ package-lock {
     include required("package-lock.json") 
 }
 
-// Override the Electron version. 
+// Override the Electron version intead of using the version in your package.json file. 
 app.electron.version = 19.0.1
 
 // Change where it's downloaded from. The default is GitHub:
@@ -57,7 +57,7 @@ so they must follow the same lahyout as that used on GitHub. You can specify a `
 ## App resources
 
 The contents of your base inputs will be copied to the `resources/app` directory. Thus, you should import at least a `package.json`,
-an `index.html` and so on as inputs. You should also import your `node_modules` directory to the same location. In Conveyor, inputs are
+an `index.html` and so on as inputs. You should also import your `node_modules` directory to the same location. Inputs are
 by default always placed at the top level so you need to specify the destination explicitly. A simple example is like this:
 
 ```
@@ -82,8 +82,7 @@ interfere with notarization and isn't necessary. You can exclude other kinds of 
 
 Support for Electron is in beta. Be aware of the following caveats:
 
-* There's no API to control or monitor updates. Note that such an API doesn't necessarily make sense on some platforms e.g. Linux where the user's package manager will apply updates, or on Windows where the app can be updated silently in the background.
-* It has only been tested with Electron 19.
+* There's no API to control or monitor updates. Note that such an API doesn't necessarily make sense on some platforms e.g. Linux where the user's package manager will apply updates, or on Windows where the app can be updated silently in the background when it's not running.
+* It has only been tested with Electron 19 and 20.
 * Conveyor doesn't yet make ASAR files, so all files will be shipped unpacked. If your app consists of very large numbers of small files this may reduce performance. You can [make an asar file yourself](https://github.com/electron/asar) and supply it as an input to work around this limitation.
 * You can't run any code during installation/uninstallation on Windows or macOS (only on Linux and only when using native packages).
-* Conveyor supports fewer package formats.
