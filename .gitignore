@@ -6,3 +6,5 @@ build
 
 # Ignore IntelliJ files.
 .idea
+
+guidebook/.cache
