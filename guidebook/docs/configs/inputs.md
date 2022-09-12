@@ -1,6 +1,12 @@
 # Inputs
 
-Inputs define a set of files that will be used to assemble the final package. 
+Inputs define a set of files that will be used to assemble the final package. Inputs can be:
+
+* Files, including [globs](https://en.wikipedia.org/wiki/Glob_(programming)).
+* Directories.
+* HTTP(S) URLs.
+
+When a zip or tarball is an input it will be extracted automatically.
 
 ## Synopsis
 
@@ -65,7 +71,7 @@ app.linux.aarch64.glibc.inputs += linux-arm-natives.tar.gz -> lib
 app.jdk.linux.amd64.inputs += example.com/jdk-linux-17.tar.gz
 ```
 
-**`app.inputs`** An array of input definitions (see below). Each input is extracted into the working directory one after the other, with later inputs overwriting files from previous inputs. You can add a new input to the end of the array by using the `+=` HOCON operator. You can append an object, but when you append a string specification it is parsed and treated as shorthand for an object with `from` and `to` fields, in which the `from` field is the URL/path of the input. Brace expansion is applied to the string form to create multiple inputs.
+**`app.inputs`** An array of input definitions (see below). Each input is copied or extracted into the working directory one after the other, with later inputs overwriting files from previous inputs. You can add a new input to the end of the array by using the `+=` HOCON operator. You can append an object, but when you append a string specification it is parsed and treated as shorthand for an object with `from` and `to` fields, in which the `from` field is the URL/path of the input. Brace expansion is applied to the string form to create multiple inputs.
 
 Certain keys are derived from the name of the first input if not specified, which works well if you use the convention that the first input contains the core software of the app (i.e. not a dependency).
 
@@ -85,15 +91,33 @@ The string syntax is shorthand for the object syntax, they can always be treated
 
 ## Remap rules
 
-When an input has a list of remap rules every file being copied or extracted is tested against each item in the list. A rule defines a set of files that match and optionally, a location in the destination to place them. At least one rule must match for the file to be included, which means if you specify your own remap list then it will by default match nothing. Each rule is written as:
+Remap rules allow you to selectively drop, rename or move files as they are being copied. They can be used both when using a directory as an input, and also when extracting a zip or tarball.
+
+When an input has a list of remap rules every file being copied or extracted is tested against each item in the list in order. A rule defines a set of files that match and optionally, a location in the destination to place them. At least one rule must match for the file to be included, which means if you specify your own remap list then it will by default match nothing. Each rule is written as:
 
 `[-]path/to/files/** [-> some/location]`
 
 If no location is given, it's the same as the location of the matched file. Files can be excluded by prefixing a more specific rule with `-`. 
 
-**Precedence.** The ordering of rules doesn't matter. The winning rule is the most specific, defined as the rule for which the pattern part matches the least. Therefore `**` is the least specific rule (because it matches everything) and can be overridden by any other.
+**Precedence.** The rule that applies is the most specific, defined as the rule for which the pattern part matches the least. Therefore `**` is the least specific rule (because it matches everything) and can be overridden by any other. In case of ties, the last rule in the list is used.
 
 To match a file must match a glob (the standard `*`, `?` characters) or the `**` glob, which matches any sequence of characters across directory boundaries. 
+
+A tricky case is when you have a rule which starts with a glob. The pattern matched part is defined as the part of the string following the first pattern. By implication, the rules:
+
+```
+-*/foo/*.bar
+**
+```
+
+will simply include everything i.e. the first rule will be ignored, because they are considered to both pattern match the whole path of every file. Because in a tie the last rule wins you can invert the ordering to fix it:
+
+```
+**
+-*/foo/*.bar
+```
+
+The files ending in `.bar` in the `foo` directory will now be correctly excluded.
 
 !!! important
     Remap rules are tested against _files_ not directories. Therefore, specifying a directory as a source won't work, you _must_ use globs to do that, i.e. `lib` won't copy anything out of the lib directory, but `lib/**` will.
