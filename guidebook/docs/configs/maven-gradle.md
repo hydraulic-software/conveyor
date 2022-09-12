@@ -7,7 +7,7 @@ Conveyor can run external commands whilst evaluating config files, see the [modi
 Instead of "installing" your app somewhere locally to get a directory of JARs, you can make Conveyor  get the classpath of your project directly from Maven. Add this to the top of your config file:
 
 ```
-include "#!=app.inputs mvn -q dependency:build-classpath -Dmdep.outputFile=/dev/stdout -Dmdep.pathSeparator=${line.separator}"
+include "#!=app.inputs[] mvn -q dependency:build-classpath -Dmdep.outputFile=/dev/stdout -Dmdep.pathSeparator=${line.separator}"
 ```
 
 This will use the [`dependency:build-classpath`](https://maven.apache.org/plugins/maven-dependency-plugin/build-classpath-mojo.html) goal to emit a list of paths to JARs on your file system, which will then be treated as an array and written to the key `app.inputs`. Maven's output will replace whatever was in the `app.inputs` key already, so make sure this include statement comes first before anything else that might need to add inputs.
