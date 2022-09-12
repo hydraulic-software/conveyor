@@ -85,7 +85,7 @@ app.jvm.cli.foo-cli {
 
 ## Keys
 
-**`app.jvm`** An [input hierarchy](inputs.md) in the same manner as the top level `app` object. The inputs will be resolved (copied/downloaded/extracted) and any JMOD files anywhere in the result will be found and aggregated. Then a JVM will be created using those jmods and the jlink tool. As a consequence, if you have JMODs to add to the jlinked image (e.g. JavaFX), you should add them here alongside the JVM itself.
+**`app.jvm`** An [input hierarchy](inputs.md) in the same manner as the top level `app` object. The inputs will be resolved (copied/downloaded/extracted) and examined for a `jmods` directory. If a `jmods` directory is found then the contents will be used to create a JVM that contains only the code your application needs, using the `jlink` tool. If you have jmods to add to the jlinked image (e.g. JavaFX), you should add them here alongside the JVM itself. If there is no `jmods` directory then the JDK is used as-is and jlinking isn't done. 
 
 **`app.jvm.gui`** The GUI launcher. See the [launchers section](#launchers).
 
@@ -160,7 +160,7 @@ unwanted-jdk-files = [
 ]
 ```
 
-**`app.jvm.extract-native-libraries`** If true (the default) then native libraries will be deleted from JARs and placed in the lib directory of the bundled JVM. If false, they are left alone. [See below](#jar-stripping) for more information.
+**`app.jvm.extract-native-libraries`** If true (the default) then native libraries will be deleted from JARs and placed in the lib directory of the bundled JVM. If false, they are left alone. [See below](#jar-stripping) for more information.
 
 ## Importing a JVM/JDK
 
