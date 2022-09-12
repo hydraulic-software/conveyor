@@ -6,6 +6,7 @@ Conveyor adds the following features to base HOCON:
 1. Smart string lists.
 2. Including output from external commands.
 3. Access to environment variables.
+4. A temporary scratch object.
 
 ## Smart string lists
 
@@ -43,10 +44,14 @@ The command line will be evaluated in the same way on all operating systems incl
 
 ## Environment variables
 
-Environment variables can be accessed by writing `${env.FOO}`. The $HOME environment variable is available also on Windows even though it's not normally set, which can be convenient for pointing to files you don't want to store with your project.
+Environment variables can be accessed by writing `${env.FOO}`. 
 
 ```
 app.mac.signing-key = ${env.HOME}/keys/apple.p12
 ```
 
-This happens because Conveyor is packaged with itself and therefore benefits from the custom launcher.
+The $HOME environment variable is available also on Windows even though it's not normally set, which can be convenient for pointing to files you don't want to store with your project. This happens because Conveyor is packaged with itself and therefore benefits from [the custom launcher](jvm.md#launcher-features).
+
+## Temporary object
+
+The top level `temp` object is deleted before config is printed out by the `json` command. It's useful to put keys here that have no real meaning and are only intended for concatenation with other keys.
