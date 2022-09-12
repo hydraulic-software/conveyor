@@ -1,5 +1,14 @@
 # Release notes
 
+## Conveyor 3
+
+* Input objects now have an `extract` property that allows you to control the default behavior of extracting zips and tarballs as they're copied into the package.
+* Config under the top level `temp` key is dropped before `conveyor json` renders, allowing you to keep config clean by placing keys there that are only meant to be concatenated into other keys.
+
+### For JVM apps
+
+* If JDK inputs don't have a `jmods` directory, the JDK is bundled into the app as-is without using `jlink`.
+
 ## Conveyor 2.1
 
 ### Fixes and smaller improvements
@@ -12,7 +21,7 @@
 ### For JVM apps
 
 * The `app.jvm.extract-native-libraries` key was added to control JAR stripping.
-* The JDK definitions were refreshed.
+* The JDK definitions were refreshed.
 * Fixed: jdeps is no longer run if it's not actually being requested via the `detect` token.
 * Fixed: the `jdk.accessibility` module is now always included if AWT/Swing are. If this isn't done then apps might crash at startup if screen readers are installed.
 

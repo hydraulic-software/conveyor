@@ -89,6 +89,8 @@ The string syntax is shorthand for the object syntax, they can always be treated
 
 **`remap`** A list or multi-line string of remap rules. See below for details. If not specified the default is `[ ** ]` which means "copy everything to the same location" in the staging area.
 
+**`extract`** If true, the input is assumed to be an archive and extraction of the contents will occur to whatever the `to` destination path is. If false, the input won't be extracted. If not set then a heuristic is used: it will be extracted if the input is a zip or tarball, otherwise it won't be (i.e. file formats based on zip like JARs won't be extracted).
+
 ## Remap rules
 
 Remap rules allow you to selectively drop, rename or move files as they are being copied. They can be used both when using a directory as an input, and also when extracting a zip or tarball.
