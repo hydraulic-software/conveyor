@@ -33,9 +33,8 @@ Conveyor has a simple project generation command that creates self-contained GUI
 # Generate a Jetpack Compose for Desktop app, or a JavaFX app.
 conveyor generate {compose,javafx} \
                           --output-dir=path/to/my-project \
-                          --site-url=https://mysite.com/downloads \
-                          --rdns=com.example.myproject \
-                          --display-name="My Amazing Project"
+                          --display-name="My Amazing Project" \
+                          com.example.my-project
 ````
 
 To learn more see the [tutorial](tutorial/1-get-started.md).
