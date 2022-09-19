@@ -72,7 +72,7 @@ abstract class ConveyorConfigTask : DefaultTask() {
             if (jfxExtension != null) {
                 crossPlatformRuntimeClasspath.dependencies.removeAll { it.group == "org.openjfx" }
                 appendLine()
-                appendLine("// Config imported from the OpenJFX plugin.")
+                appendLine("// Config from the OpenJFX plugin.")
                 appendLine("include required(\"/stdlib/jvm/javafx/from-jmods.conf\")")
                 appendLine("javafx.version = ${jfxExtension.version}")
                 appendLine(
@@ -91,6 +91,7 @@ abstract class ConveyorConfigTask : DefaultTask() {
     private fun StringBuilder.importFromDependencyConfigurations(project: Project) {
         appendLine()
         appendLine("// Inputs from dependency configurations and the JAR task.")
+
         // Emit app JAR input. jvmJar task is used by Compose Multiplatform projects.
         val jarTask = project.tasks.findByName("jvmJar") ?: project.tasks.getByName("jar")
         appendLine("app.inputs += " + quote(jarTask.outputs.files.singleFile.toString()))
@@ -142,6 +143,7 @@ abstract class ConveyorConfigTask : DefaultTask() {
                     else -> null
                 }
                 if (conveyorVendor != null) {
+                    appendLine("// Config from the Java plugin.")
                     appendLine("include required(\"/stdlib/jdk/$jvmVersion/${conveyorVendor}.conf\")")
                 } else {
                     appendLine("// Gradle build requests a JVM from $vendor but this vendor isn't known to Conveyor at this time.")
@@ -174,10 +176,6 @@ abstract class ConveyorConfigTask : DefaultTask() {
             appendLine("gradle.project-name = ${quote(project.name)}")
             appendLine("app.fsname = ${quote(project.name.lowercase())}")
 
-            // This strips deps so must run before we calculate dep configurations. Also, we run it early so the import
-            // statement is at the top.
-            importFromJavaFXPlugin(project)
-
             val version = project.version.toString()
             if (version.isBlank() || version == "unspecified")
                 throw Exception("You must set the 'version' property of the project, because all package formats require one.")
@@ -188,6 +186,8 @@ abstract class ConveyorConfigTask : DefaultTask() {
                 throw Exception("You must set the 'group' property of the project, because some package formats require a reverse DNS name.")
             appendLine("app.rdns-name = ${project.group}.${'$'}{app.fsname}")
 
+            // This strips deps so must run before we calculate dep configurations.
+            importFromJavaFXPlugin(project)
             importFromJavaPlugin(project)
             importFromComposePlugin(project)
             importFromDependencyConfigurations(project)
