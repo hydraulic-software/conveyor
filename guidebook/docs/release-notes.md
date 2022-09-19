@@ -7,6 +7,7 @@
 
 ### For JVM apps
 
+* The Gradle plugin now supports importing the JDK from the selected Java toolchain.
 * If JDK inputs don't have a `jmods` directory, the JDK is bundled into the app as-is without using `jlink`.
 
 ## Conveyor 2.1

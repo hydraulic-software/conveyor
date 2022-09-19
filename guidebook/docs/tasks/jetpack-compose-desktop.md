@@ -63,8 +63,8 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 
 plugins {
     kotlin("jvm") version "1.6.20"
-    id("org.jetbrains.compose") version "1.1.1"
-    id("dev.hydraulic.conveyor") version "1.0.1"
+    id("org.jetbrains.compose") version "1.2.0-beta01"
+    id("dev.hydraulic.conveyor") version "1.1"
 }
 
 version = "1.0"

@@ -34,14 +34,14 @@ To add the Gradle plugin add these snippets to your `settings.gradle[.kts]` and 
 === "Kotlin"
     ```kotlin title="build.gradle.kts"
     plugins {
-        id("dev.hydraulic.conveyor") version "1.0.1"
+        id("dev.hydraulic.conveyor") version "1.1"
     }
     ```
 
 === "Groovy"
     ```groovy title="build.gradle"
     plugins {
-        id 'dev.hydraulic.conveyor' version '1.0.1'
+        id 'dev.hydraulic.conveyor' version '1.1'
     }
     ```
 
@@ -134,18 +134,20 @@ There are several tasks accomplished by this config:
 We can use the same icons as what the package is using with code like this:
 
 ```java
-private static void loadIconsForStage(Stage stage) throws IOException {
-  String appDir = System.getProperty("app.dir");
-  if (appDir == null)
-    return;
-  Path iconsDir = Paths.get(appDir);
-  try (var dirEntries = Files.newDirectoryStream(iconsDir, "icon-*.png")) {
-    for (Path iconFile : dirEntries) {
-      try (var icon = Files.newInputStream(iconFile)) {
-        stage.getIcons().add(new Image(icon));
-      }
+public class App {
+    private static void loadIconsForStage(Stage stage) {
+        String appDir = System.getProperty("app.dir");
+        if (appDir == null)
+            return;
+        Path iconsDir = Paths.get(appDir);
+        try (var dirEntries = Files.newDirectoryStream(iconsDir, "icon-*.png")) {
+            for (Path iconFile : dirEntries) {
+                try (var icon = Files.newInputStream(iconFile)) {
+                    stage.getIcons().add(new Image(icon));
+                }
+            }
+        }
     }
-  }
 }
 ```
 

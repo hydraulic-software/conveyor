@@ -53,7 +53,7 @@ The only complicated thing here is the [inputs](../configs/inputs.md). This conf
 
 This file defines the build system. It contains various commands, all with comments explaining what they do. The build system demonstrates importing a third party library from a source zip, compiling it, dynamically linking against it, and passing the right linker flags to produce binaries that will work with Conveyor. It looks roughly like this:
 
-```javascript
+```cmake
 cmake_minimum_required(VERSION 3.16.3)
 project(gl_cmake)
 
@@ -160,14 +160,14 @@ The plugin adds two tasks, `printConveyorConfig` and `writeConveyorConfig`. The 
 === "Kotlin"
     ```kotlin title="build.gradle.kts"
     plugins {
-        id("dev.hydraulic.conveyor") version "1.0.1"
+        id("dev.hydraulic.conveyor") version "1.1"
     }
     ```
 
 === "Groovy"
     ```groovy title="build.gradle"
     plugins {
-        id 'dev.hydraulic.conveyor' version '1.0.1'
+        id 'dev.hydraulic.conveyor' version '1.1'
     }
     ```
 
@@ -250,7 +250,7 @@ app {
 
 This configuration adds your app's main JAR as the first input, allowing package metadata like the main class name, the version number and name to be derived from the file name. Then it adds the directory containing all the app JARs (duplicates are ignored), and finally a set of icon files. That's all you need! The extra inferred configuration will look like this:
 
-```javascript
+```
 // This will all be figured out by Conveyor automatically:
 app {
     fsname = my-program  // (1)!

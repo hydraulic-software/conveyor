@@ -35,13 +35,13 @@ To use it, [look up the latest version](https://plugins.gradle.org/plugin/dev.hy
 === "Kotlin"
     ```kotlin title="build.gradle.kts"
     plugins {
-        id("dev.hydraulic.conveyor") version "1.0.1"
+        id("dev.hydraulic.conveyor") version "1.1"
     }
     ```
 === "Groovy"
     ```groovy title="build.gradle"
     plugins {
-        id 'dev.hydraulic.conveyor' version '1.0.1'
+        id 'dev.hydraulic.conveyor' version '1.1'
     }
     ```
 
@@ -99,8 +99,8 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 plugins {
     kotlin("jvm") version "1.6.10"
     kotlin("kapt") version "1.6.10"
-    id("org.jetbrains.compose") version "1.0.1"
-    id("dev.hydraulic.conveyor") version "1.0.1"
+    id("org.jetbrains.compose") version "1.2.0-beta01"
+    id("dev.hydraulic.conveyor") version "1.1"
 }
 
 version = "1.0"
@@ -109,10 +109,7 @@ group = "dev.hydraulic.samples"
 repositories {
     mavenCentral()
     google()
-    maven {
-        url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-        name = "Compose for Desktop DEV"
-    }
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
 }
 
 compose.desktop {
