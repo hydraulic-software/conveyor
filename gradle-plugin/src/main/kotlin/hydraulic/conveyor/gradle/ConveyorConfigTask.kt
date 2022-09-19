@@ -32,17 +32,26 @@ abstract class ConveyorConfigTask : DefaultTask() {
     }
 
     private fun StringBuilder.importFromComposePlugin(project: Project) {
-        val composeExt: ComposeExtension = project.extensions.findByName("compose") as? ComposeExtension ?: return
-        val desktopExt: DesktopExtension = composeExt.extensions.findByName("desktop") as? DesktopExtension ?: return
-        val app = desktopExt.application
-        appendLine()
-        appendLine("// Config from the Jetpack Compose Desktop plugin.")
-        appendLine("app.jvm.gui.main-class = ${app.mainClass}")
-        importJVMArgs(app.jvmArgs, project)
+        try {
+            val composeExt: ComposeExtension = project.extensions.findByName("compose") as? ComposeExtension ?: return
+            val desktopExt: DesktopExtension = composeExt.extensions.findByName("desktop") as? DesktopExtension ?: return
+            val app = desktopExt.application
+            appendLine()
+            appendLine("// Config from the Jetpack Compose Desktop plugin.")
+            appendLine("app.jvm.gui.main-class = ${app.mainClass}")
+            importJVMArgs(app.jvmArgs, project)
 
-        app.nativeDistributions.packageName?.let { appendLine("app.fsname = " + quote(it)) }
-        app.nativeDistributions.description?.let { appendLine("app.description = " + quote(it)) }
-        app.nativeDistributions.vendor?.let { appendLine("app.vendor = " + quote(it)) }
+            app.nativeDistributions.packageName?.let { appendLine("app.fsname = " + quote(it)) }
+            app.nativeDistributions.description?.let { appendLine("app.description = " + quote(it)) }
+            app.nativeDistributions.vendor?.let { appendLine("app.vendor = " + quote(it)) }
+        } catch (e: Throwable) {
+            val extra = if (e is NoSuchMethodError && "dsl.JvmApplication" in e.message!!) {
+                "If you're using Compose 1.1 or below, try upgrading to Compose 1.2 or higher, or using version 1.0.1 of the Conveyor Gradle plugin."
+            } else {
+                ""
+            }
+            throw Exception("Could not read Jetpack Compose configuration, likely plugin version incompatibility? $extra".trim(), e)
+        }
 
         // TODO(low): Import more stuff, including:
         //
@@ -50,17 +59,30 @@ abstract class ConveyorConfigTask : DefaultTask() {
         // - Icons?
     }
 
-    private val runtimeConfigCopy: Configuration by lazy { project.configurations.getByName("runtimeClasspath").copyRecursive() }
+    // This copy of the runtime dependency set ("configuration") will be modified to remove libraries that aren't cross-platform.
+    private val crossPlatformRuntimeClasspath: Configuration by lazy {
+        project.configurations.getByName("runtimeClasspath").copyRecursive()
+    }
 
     private fun StringBuilder.importFromJavaFXPlugin(project: Project) {
-        val jfxExtension: JavaFXOptions? = project.extensions.findByName("javafx") as? JavaFXOptions
-        if (jfxExtension != null) {
-            runtimeConfigCopy.dependencies.removeAll { it.group == "org.openjfx" }
-            appendLine()
-            appendLine("// Config imported from the OpenJFX plugin.")
-            appendLine("include required(\"/stdlib/jvm/javafx/from-jmods.conf\")")
-            appendLine("javafx.version = ${jfxExtension.version}")
-            appendLine("app.jvm.modules = ${'$'}{app.jvm.modules} " + jfxExtension.modules.joinToString(", ", prefix = "[ ", postfix = " ]"))
+        try {
+            val jfxExtension: JavaFXOptions? = project.extensions.findByName("javafx") as? JavaFXOptions
+            if (jfxExtension != null) {
+                crossPlatformRuntimeClasspath.dependencies.removeAll { it.group == "org.openjfx" }
+                appendLine()
+                appendLine("// Config imported from the OpenJFX plugin.")
+                appendLine("include required(\"/stdlib/jvm/javafx/from-jmods.conf\")")
+                appendLine("javafx.version = ${jfxExtension.version}")
+                appendLine(
+                    "app.jvm.modules = ${'$'}{app.jvm.modules} " + jfxExtension.modules.joinToString(
+                        ", ",
+                        prefix = "[ ",
+                        postfix = " ]"
+                    )
+                )
+            }
+        } catch (e: Throwable) {
+            throw Exception("Could not read JavaFX configuration, possible version incompatibility?", e)
         }
     }
 
@@ -72,7 +94,7 @@ abstract class ConveyorConfigTask : DefaultTask() {
         appendLine("app.inputs += " + quote(jarTask.outputs.files.singleFile.toString()))
 
         // Emit cross-platform artifacts.
-        val crossPlatformDeps: Set<File> = runtimeConfigCopy.files - machineConfigs[Machine.current()]!!.files
+        val crossPlatformDeps: Set<File> = crossPlatformRuntimeClasspath.files - machineConfigs[Machine.current()]!!.files
         if (crossPlatformDeps.isNotEmpty()) {
             appendLine("app.inputs = ${'$'}{app.inputs} [")
             for (entry in crossPlatformDeps.sorted())
@@ -92,7 +114,7 @@ abstract class ConveyorConfigTask : DefaultTask() {
     }
 
     private fun StringBuilder.importFromJavaPlugin(project: Project) {
-        // TODO: Import JVM version and vendor from the toolchain.
+        // TODO(low): Import JVM version and vendor from the toolchain.
 
         val appExtension = project.extensions.findByName("application") as? JavaApplication
         if (appExtension != null) {

@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "dev.hydraulic"
-version = "1.0.1"
+version = "1.1"
 
 repositories {
     mavenCentral()
@@ -20,7 +20,8 @@ dependencies {
     implementation("dev.hydraulic:dev.hydraulic.types:1.0") {
         because("Machine, OperatingSystem, CPUArchitecture types.")
     }
-    compileOnly("org.jetbrains.compose:compose-gradle-plugin:1.1.1") {
+    // TODO(high): Upgrade to Compose 1.2 final when released.
+    compileOnly("org.jetbrains.compose:compose-gradle-plugin:1.2.0-beta01") {
         because("Supporting Jetpack Compose Desktop apps.")
     }
     compileOnly("org.openjfx:javafx-plugin:0.0.11") {
