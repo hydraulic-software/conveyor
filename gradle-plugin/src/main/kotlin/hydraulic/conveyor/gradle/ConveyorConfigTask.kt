@@ -5,7 +5,9 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.plugins.JavaApplication
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.Internal
+import org.gradle.jvm.toolchain.JvmVendorSpec
 import org.jetbrains.compose.ComposeExtension
 import org.jetbrains.compose.desktop.DesktopExtension
 import org.openjfx.gradle.JavaFXOptions
@@ -114,8 +116,6 @@ abstract class ConveyorConfigTask : DefaultTask() {
     }
 
     private fun StringBuilder.importFromJavaPlugin(project: Project) {
-        // TODO(low): Import JVM version and vendor from the toolchain.
-
         val appExtension = project.extensions.findByName("application") as? JavaApplication
         if (appExtension != null) {
             appendLine()
@@ -123,6 +123,34 @@ abstract class ConveyorConfigTask : DefaultTask() {
             appendLine("app.jvm.gui.main-class = ${appExtension.mainClass.get()}")
             val jvmArgs = appExtension.applicationDefaultJvmArgs
             importJVMArgs(jvmArgs, project)
+        }
+
+        val javaExtension = project.extensions.findByName("java") as? JavaPluginExtension
+        if (javaExtension != null) {
+            val jvmVersion = javaExtension.toolchain.languageVersion.orNull
+            val vendor: JvmVendorSpec = javaExtension.toolchain.vendor.orNull ?: JvmVendorSpec.ADOPTIUM
+            if (jvmVersion == null) {
+                appendLine()
+                appendLine("// Java toolchain doesn't specify a version. Not importing a JDK.")
+            } else {
+                val conveyorVendor = if (vendor.toString() == "any") "openjdk" else when (vendor) {
+                    JvmVendorSpec.ADOPTIUM -> "eclipse"
+                    JvmVendorSpec.AMAZON -> "amazon"
+                    JvmVendorSpec.AZUL -> "azul"
+                    JvmVendorSpec.MICROSOFT -> "microsoft"
+                    JvmVendorSpec.ORACLE -> "openjdk"
+                    else -> null
+                }
+                if (conveyorVendor != null) {
+                    appendLine("include required(\"/stdlib/jdk/$jvmVersion/${conveyorVendor}.conf\")")
+                } else {
+                    appendLine("// Gradle build requests a JVM from $vendor but this vendor isn't known to Conveyor at this time.")
+                    appendLine("// You can still use it, you'll just have to add JDK inputs that define where to download or find it.")
+                    appendLine("//")
+                    appendLine("// Please see https://conveyor.hydraulic.dev/latest/configs/jvm/#importing-a-jvmjdk for assistance.")
+                    appendLine("internal.conveyor.warnings += \"unknown-jdk-vendor:$vendor\"")
+                }
+            }
         }
     }
 
