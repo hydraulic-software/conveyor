@@ -2,13 +2,18 @@
 
 ## Conveyor 3
 
-* Input objects now have an `extract` property that allows you to control the default behavior of extracting zips and tarballs as they're copied into the package.
+### New features for JVM apps
+
+* The Conveyor Gradle plugin (version 1.1+) now imports the JDK from [the selected Java toolchain](https://docs.gradle.org/current/userguide/toolchains.html) when possible. This simplifies configuration further and eliminates duplicate configuration.
+* If JDK inputs don't have a `jmods` directory, the JDK is bundled into the app as-is without using `jlink`.
+
+### Fixes and smaller improvements
+
+* Input objects now have an `extract` property which controls the default behavior of extracting zips and tarballs as they're copied into the package.
+* The template apps have been simplified.
 * Config under the top level `temp` key is dropped before `conveyor json` renders, allowing you to keep config clean by placing keys there that are only meant to be concatenated into other keys.
 
-### For JVM apps
-
-* The Gradle plugin now supports importing the JDK from the selected Java toolchain.
-* If JDK inputs don't have a `jmods` directory, the JDK is bundled into the app as-is without using `jlink`.
+----
 
 ## Conveyor 2.1
 
@@ -25,6 +30,8 @@
 * The JDK definitions were refreshed.
 * Fixed: jdeps is no longer run if it's not actually being requested via the `detect` token.
 * Fixed: the `jdk.accessibility` module is now always included if AWT/Swing are. If this isn't done then apps might crash at startup if screen readers are installed.
+
+----
 
 ## Conveyor 2
 
@@ -59,6 +66,8 @@ Just like in the previous release the installation process will download only th
 * The template apps no longer require the system properties set by packaging to start up.
 * The CMake template app uses the win32 subsystem (no console) on Windows.
 * Fixed bugs that affected Linux packages built on Windows.
+
+----
 
 ## Conveyor 1
 

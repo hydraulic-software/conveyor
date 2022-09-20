@@ -4,25 +4,31 @@ At this point you could run `conveyor  make site` to immediately generate the fu
 
 Create a self-contained but unpackaged app directory for your current platform:
 
-```
-# Windows:
-conveyor make windows-app
+=== "Windows"
+    ```
+    conveyor make windows-app
+    ```
 
-# Linux:
-conveyor make linux-app
-
-# One of the following for Intel/Apple Silicon Macs respectively:
-conveyor -Kapp.machines=mac.amd64 make mac-app
-conveyor -Kapp.machines=mac.aarch64 make mac-app
-```
+=== "Linux"
+    ```
+    conveyor make linux-app
+    ```
+    
+=== "macOS"
+    ```
+    # One of the following for Intel/Apple Silicon Macs respectively:
+    conveyor -Kapp.machines=mac.amd64 make mac-app
+    conveyor -Kapp.machines=mac.aarch64 make mac-app
+    ```
+    
+    The command for macOS is different to those for Windows and Linux because Conveyor supports two CPU architectures for macOS, so you have to disambiguate which you want. The `-K` switch sets a key in the config file for the duration of that command only. Here we're setting the `app.machines` key which controls which targets to create packages for.
 
 These commands will create an unzipped, un-packaged app in the `output` directory.
 
 * [ ] Run the generated program directly in the usual manner for your operating system to check it works.
 
-The command for macOS is different to those for Windows and Linux because Conveyor supports two CPU architectures for macOS, so you have to disambiguate which you want. The `-K` switch sets a key in the config file for the duration of that command only. Here we're setting the `app.machines` key which controls which targets to create packages for.
-
-Note that when using the C++ app template, both ARM and Intel Mac packages will actually contain fat binaries that work on either. You can point users at a single download, or keep them separate so the download sizes can be reduced later. For Java apps each package is specific to one CPU architecture as this reduces download sizes for your end users.
+!!! note "Fat Mac binaries"
+    When using the C++ app template, both ARM and Intel Mac packages will actually contain fat binaries that work on either. You can point users at a single download, or keep them separate so the download sizes can be reduced later. For Java apps each package is specific to one CPU architecture as this reduces download sizes for your end users.
 
 !!! tip
     * You don't have to run these commands normally. Conveyor understands task dependencies so running `make site` will automatically build everything. The commands above let you inspect the results of some of the intermediate tasks.

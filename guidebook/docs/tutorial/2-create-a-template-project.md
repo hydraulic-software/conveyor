@@ -1,20 +1,29 @@
 # 2. Create a template project
 
-Conveyor has four pre-canned "Hello World" project templates. They can form the basis of your own apps:
+Generating a project is the quickest way to try Conveyor. There are four pre-canned "Hello World" projects:
 
 1. A native OpenGL app written in C++.
 2. An Electron app.
-3. A GUI JVM app using the reactive [Jetpack Compose for Desktop](https://www.jetbrains.com/lp/compose-desktop/) toolkit.
-4. Another JVM GUI app using [JavaFX](https://openjfx.io).
+3. A GUI JVM app using either:
+    1. The reactive, Kotlin based [Jetpack Compose for Desktop](https://www.jetbrains.com/lp/compose-desktop/) framework.
+    2. The multi-language [JavaFX](https://openjfx.io) framework.
 
-!!! warning
-    * Electron support is in beta. It has received less testing than the other types of app.
+The JVM and Electron apps are easy to play with because you don't need cross-compilers. For the C++ project you'll need to compile it on each OS that you wish to target. It's your choice: this tutorial will guide you through all of them.
 
-Generating a project based on these templates is the quickest way to try things out. The JVM and Electron apps are easy to play with because you don't need cross-compilers. For the C++ project you'll need to compile it on each OS that you wish to target. It's your choice, this tutorial will guide you through all of them.
+Now choose your path:
 
-* [x] For the native C++ app, install CMake and the compiler toolchain for each platform you will target.
-* [x] For a JVM app, install a JDK 11 or higher.
-* [x] For the Electron app, you must have npm installed.
+=== "Native"
+
+    * [x] Install [CMake](https://cmake.org/) and the compiler toolchain for each platform you will target.
+
+=== "JVM"
+	 
+    * [x] Install a JDK 11 or higher from any vendor e.g. [Amazon Corretto](https://aws.amazon.com/corretto) is a good choice.
+
+=== "Electron"
+
+    * [x] Ensure you have npm installed.
+
 * [x] Run the following command, picking an app type and reverse DNS name as you see fit. There are also `--display-name` and `--output-dir` flags but they are optional.
 
 ```

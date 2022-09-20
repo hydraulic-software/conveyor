@@ -3,49 +3,58 @@
 To release a new version you simply re-compile your app then re-generate the app site. It should be uploaded to the same `site.base-url`
 location that you used before, overwriting any files that were present.
 
-## Native / C++
+=== "Native"
 
-The version of the package is defined in the `conveyor.conf` file.
+    The version of the package is defined in the `conveyor.conf` file.
+    
+    * [ ] Open the source code of the app and change the message that's displayed in the title bar.
+    * [ ] Re-compile the app binary/binaries.
+    * [ ] Replace `version = 1` in `conveyor.conf` with `version = 2`.
+    * [ ] Re-run `conveyor make site`
 
-* [ ] Open the source code of the app and change the message that's displayed in the title bar.
-* [ ] Re-compile the app binary/binaries.
-* [ ] Replace `version = 1` in `conveyor.conf` with `version = 2`.
-* [ ] Re-run `conveyor make site`
+=== "JVM"
 
-## JVM
+    The version of the package is taken from the version defined in the build system.
+    
+    * [ ] Open the source code of the app and change the message that's displayed when you click the button.
+    * [ ] Now change the line in  `build.gradle[.kts]`  that reads `version = "1.0"` to `version = "1.1"`.
+    * [ ] Re-run `./gradlew jar`.
+    * [ ] Re-run `conveyor make site`.
 
-The version of the package is taken from the version defined in the build system.
+=== "Electron"
 
-* [ ] Open the source code of the app and change the message that's displayed when you click the button.
-* [ ] Now change the line in  `build.gradle[.kts]`  that reads `version = "1.0"` to `version = "1.1"`.
-* [ ] Re-run `./gradlew jar`.
-* [ ] Re-run `conveyor make site`.
-
-## Electron
-
-The version of the package is taken from the version defined in your `package-lock.json` file.
-
-* [ ] Edit your `package.json` file and alter the `"version": "1.0"` line to read `"version": "2.0"`. 
-* [ ] Re-run `npm i --package-lock-only` to regenerate your `package-lock.json` file.
-* [ ] Re-run `conveyor make site`.
+    The version of the package is taken from the version defined in your `package-lock.json` file.
+    
+    * [ ] Edit your `package.json` file and alter the `"version": "1.0"` line to read `"version": "2.0"`. 
+    * [ ] Re-run `npm i --package-lock-only` to regenerate your `package-lock.json` file.
+    * [ ] Re-run `conveyor make site`.
 
 ## Testing the update
 
-Each operating system has its own approach to how and when updates are applied:
+Each operating system has its own approach to how and when updates are applied.
 
-* **Windows:** Updates are checked:
+=== "Windows"
+
+    Updates are checked:
+
     * If the user re-opens the `.appinstaller` XML file. This is the easiest way to test updates. You don't have to re-download it because the `.appinstaller` file contains its own URL and the "App Installer" app will re-download a fresh copy from the download site when it's opened.
     * Every 8 hours in the background by the OS, regardless of whether the app is being used or not.
     * Optionally, on every app launch with a frequency you can specify. These update checks can be configured to block startup, ensuring that the user is always up to date. [Learn more here](../configs/windows.md).
-* **macOS:** Updates are downloaded in the background when the app starts if:
+
+=== "macOS" 
+    
+    Updates are downloaded in the background when the app starts if:
+
     * It's not the first start and it's been more than one hour since the last update check.
     * *or* if the `FORCE_UPDATE_CHECK` environment variable is set. For example you can run `FORCE_UPDATE_CHECK=1 /Applications/YourApp.app/Contents/MacOS/YourApp` from a terminal to force an immediate update check.
     * Once the update is downloaded the user is prompted to install and restart.
     * The update schedule and UI can be adjusted in the config file.
-* **Debian/Ubuntu derived distros:** `apt-get update && apt-get upgrade` as per normal. Updates will also be presented via the normal graphical software update tool, along side OS updates.
+
+=== "Linux"
+
+    For Debian/Ubuntu derived distros use `apt-get update && apt-get upgrade` as per normal. Updates will also be presented via the normal graphical software update tool, along side OS updates. The tarball version doesn't self update.
 
 * [ ] You can now test the update procedure.
-
 
 ??? tip "Faster builds"
     Conveyor builds are incremental and parallel, so you should find that rebuilding the site is much quicker the second time you try it. You can also instantly 'check out' the intermediate files, such as unpacked directories. Run `conveyor make` to see what's available. This lets you rapidly iterate on your packages, because once built it normally only takes a few seconds to create a new spin of your app.

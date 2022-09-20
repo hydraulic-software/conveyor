@@ -2,7 +2,7 @@
 
 * [ ] [Browse to your new download site](http://localhost:8899/download.html) and take a look at what's there.
 
-You don't have to use this HTML page. It's there purely as a convenience.
+You don't have to use this generated HTML page. Feel free to take it as an inspiration for your own custom page. 
 
 The generated download HTML detects the user's computer whilst allowing them to pick a different download
 if they want. For properly signed packages you get a standard green download button. For self-signed packages, installation is more complex
