@@ -45,15 +45,18 @@ Although you can package any kind of app, over time Conveyor will gain features 
 
 ## 5. Is Conveyor only for desktop apps?
 
-Not at all! It also has great support for:
+Not at all! It also has some support for:
 
-1. Servers that run outside of containers. See the [package a server](../tasks/server.md) task page for an example that demonstrates systemd 
+1. Servers that run outside of containers. See the [package a server](../tutorial/2-adapt-a-server.md) task page for an example that demonstrates systemd 
    integration, Apache 2/nginx reverse proxy integration and adding a dependency on Postgres.
-2. Command line apps. Conveyor is packaged with itself, in fact.
+2. Command line (CLI) apps. Conveyor is packaged with itself, in fact.
+
+Support for CLI apps will be improved in future releases.
 
 ## 6. Does it support Electron apps?
 
-Yes it does! However, Electron support is relatively new and should be considered beta quality. Let us know how you get on with it.
+Yes, you can create packages straight from your Javascript/HTML/CSS files and your `node_modules` directory. Unlike with other Electron
+packaging solutions, you don't need special or custom servers and the results don't create problems for network administrators.
 
 ## 7. Why should I make a desktop app?  
 

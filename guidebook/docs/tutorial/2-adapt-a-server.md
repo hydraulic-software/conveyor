@@ -1,7 +1,7 @@
-# Packaging a server
+# Adapt a server
 
 This sample shows you how to re-package a server app that's already packaged by someone else. In this case we'll use TeamCity by JetBrains,
-a CI server. 
+a CI server.
 
 It demonstrates the following features:
 
@@ -12,8 +12,8 @@ It demonstrates the following features:
 * TeamCity will be configured to use whatever port is specified in the Conveyor config, by pre-generated one of its config files (the big
   pile of XML).
 
-Unlike in most of the other samples, here we don't need to include a JDK file from the standard library, because TeamCity already bundles its
-own JVM.
+Note that although TeamCity is a JVM app we'll be packaging it as if it's a native app, because it already bundles its own JVM and we don't
+have the original build system. To us it'll just be a directory of files.
 
 ```hocon
 app {
@@ -126,6 +126,4 @@ app {
   // You will need to point this to somewhere, as all Conveyor packages expect an update site at the moment.
   site.base-url = "localhost:1234"
 }
-
-conveyor.compatibility-level = 1
 ```

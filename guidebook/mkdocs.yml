@@ -21,15 +21,14 @@ nav:
     - min-sys-requirements.md
   - Tutorial:
     - tutorial/1-get-started.md
-    - tutorial/2-create-a-template-project.md
+    - tutorial/2-create-or-adapt-a-project.md
     - tutorial/3-compile.md
     - tutorial/4-build-unpackaged.md
     - tutorial/5-serve-the-site.md
     - tutorial/6-install-the-app.md
     - tutorial/7-release-an-update.md
-    - tutorial/8-explore-the-integration.md
-    - tutorial/9-site.md
-    - tutorial/10-next-steps.md
+    - tutorial/8-site.md
+    - tutorial/9-next-steps.md
   - Configuration:
     - configs/index.md
     - configs/inputs.md
@@ -50,12 +49,6 @@ nav:
       - stdlib/jvm-clients.md
       - stdlib/systemd.md
       - stdlib/javafx.md
-  - Tasks:
-      - tasks/index.md
-      - tasks/server.md
-      - tasks/jetpack-compose-desktop.md
-      - tasks/swt.md
-      - tasks/javafx.md
   - FAQ:
     - faq/index.md
     - faq/output-formats.md

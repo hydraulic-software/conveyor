@@ -4,7 +4,7 @@
     You'll need to reinvoke your build system any time you change the app's code. At this time Conveyor won't do it for you.
 
 === "JVM"
-    * [ ] Run `./gradlew jar` to download the Gradle build tool and compile the app to a portable JAR.
+    * [ ] If packaging a template project, run `./gradlew jar` to download the Gradle build tool and compile the app to a portable JAR. Otherwise, invoke your build system of choice.
 
 === "Electron"
 
@@ -20,11 +20,5 @@
     
     * [ ] Edit the machines key in the `conveyor.conf` file.
     * [ ] Follow the build instructions in `README.md` to create the binaries.
-    
-    ??? note "Linker flags"
-        On macOS and Linux extra linker flags are required for correct operation in the package environment. These flags don't affect operation when running from the development build tree, so can be always added. See the [native apps](../configs/native-apps.md) section to learn more.
-
-    ??? note "Icons and manifests"
-        Windows programs contain embedded metadata like icon files, XML manifests and whether it's a console app. Conveyor will edit the EXE to reflect settings in your config, so you don't need to set these things up in your build system. Any icons or manifests already there will be replaced. [Learn how to control the binary manifest](../configs/windows.md#manifest-keys).
 
 <script>var tutorialSection = 3;</script>

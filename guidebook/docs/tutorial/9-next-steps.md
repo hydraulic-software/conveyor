@@ -4,7 +4,9 @@
 
 To get rid of security warnings you can use a proper code signing certificate. This step is optional; if you're just experimenting or will be distributing to a network where the admins can install custom root certificates, you can skip this section.
 
-Conveyor can use existing keys, certificates and hardware security modules you may have, and it can also assist you in getting certificates if you don't already have them. To learn more, read about [keys and certificates](../keys-and-certificates.md).
+Conveyor can use existing keys, certificates and hardware security modules you may have, and it can also assist you in getting certificates if you don't already have them. 
+
+**[Read about keys and certificates](../keys-and-certificates.md)**
 
 ## Check for updates in your app
 
@@ -16,7 +18,7 @@ Not happy with the defaults? There are [lots of settings](../configs/index.md) a
 
 ## Explore other types of app
 
-Conveyor also supports servers with full Linux `systemd` integration. Take a look at the [Linux config sections](../configs/linux.md) to learn more.
+Conveyor also supports servers with full Linux `systemd` integration. Take a look at the [Linux config sections](../configs/linux.md) to learn more, or see an example of [packaging a server](2-adapt-a-server.md). 
 
 ## Get help
 

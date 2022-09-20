@@ -2,16 +2,25 @@
 
 ## Conveyor 3
 
+### New features
+
+* A significantly re-organized tutorial which shows how to adapt existing apps earlier and more explicitly.
+
 ### New features for JVM apps
 
-* The Conveyor Gradle plugin (version 1.1+) now imports the JDK from [the selected Java toolchain](https://docs.gradle.org/current/userguide/toolchains.html) when possible. This simplifies configuration further and eliminates duplicate configuration.
-* If JDK inputs don't have a `jmods` directory, the JDK is bundled into the app as-is without using `jlink`.
+* A new Conveyor Gradle plugin is released (version 1.1) which:
+  * Supports Jetpack Compose 1.2 
+  * Automatically imports the JDK from [the selected Java toolchain](https://docs.gradle.org/current/userguide/toolchains.html) when possible. This simplifies configuration further and eliminates duplicate configuration.
+* The template apps were cleaned up. The Compose Desktop template app now uses Compose 1.2 (beta).
+* If JDK inputs don't have a `jmods` directory, the JDK is bundled into the app as-is without using `jlink`. This helps with packaging apps using GraalVM.
+* JDK standard library was refreshed.
 
-### Fixes and smaller improvements
+### Smaller improvements
 
 * Input objects now have an `extract` property which controls the default behavior of extracting zips and tarballs as they're copied into the package.
-* The template apps have been simplified.
 * Config under the top level `temp` key is dropped before `conveyor json` renders, allowing you to keep config clean by placing keys there that are only meant to be concatenated into other keys.
+* Fixed: tarballs/zips that contain a Mac bundle no longer trigger the single-root-directory detection.
+* Fixed: errors during EXE enhancement are no longer fatal.
 
 ----
 
