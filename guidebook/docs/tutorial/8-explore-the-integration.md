@@ -1,8 +1,11 @@
 # 8. Explore the integration
 
-In this section you'll learn how to add Conveyor packaging to an existing project by studying how the sample projects are configured.
+In this section you'll learn how to add Conveyor packaging to an existing project by studying how the sample projects are configured. 
 
 The template `conveyor.conf` files are small, which is normal. A combination of sensible defaults, automatically derived values and (optionally) config extracted from your build system keeps it easy. Still, there are around 150 different settings available to customize packages if you need them. Consult the configuration section of this guide to learn more about what you can control.
+
+!!! tip
+    Click the + icons next to code lines to see further explanations.
 
 ## Native / C++
 
@@ -53,7 +56,7 @@ The only complicated thing here is the [inputs](../configs/inputs.md). This conf
 
 This file defines the build system. It contains various commands, all with comments explaining what they do. The build system demonstrates importing a third party library from a source zip, compiling it, dynamically linking against it, and passing the right linker flags to produce binaries that will work with Conveyor. It looks roughly like this:
 
-```cmake
+```javascript
 cmake_minimum_required(VERSION 3.16.3)
 project(gl_cmake)
 
@@ -101,29 +104,27 @@ install(TARGETS gl_cmake)
 
 ## JVM
 
-* [ ] Open `conveyor.conf` in the project root directory. It's defined using a superset of JSON called [HOCON](../configs/hocon-spec.md) with a few [Conveyor-specific extensions](../configs/hocon-extensions.md). It should look like this:
+* [ ] Open `conveyor.conf` in the project root directory. It's defined using a superset of JSON called [HOCON](../configs/hocon-spec.md) with a few [Conveyor-specific extensions](../configs/hocon-extensions.md). It should look a bit like this:
 
 ```javascript title="conveyor.conf"
-include "/stdlib/jdk/17/openjdk.conf"   // (1)!
-include "#!./gradlew -q printConveyorConfig"  // (2)!
+include "#!./gradlew -q printConveyorConfig"  // (1)!
 
 app {
-  display-name = My Amazing Project   // (3)!
-  site.base-url = downloads.myproject.org/some/path   // (4)!
+  display-name = My Amazing Project   // (2)!
+  site.base-url = downloads.myproject.org/some/path   // (3)!
   
-  icons = "icons/icon-square-*.png"   // (5)!
-  mac.icons = "icons/icon-rounded-*.png"
+  icons = "icons/icon-rounded-*.png"   // (4)!
+  windows.icons = "icons/icon-square-*.png"
 }
 
-conveyor.compatibility-level = 1   // (6)!
+conveyor.compatibility-level = 1   // (5)!
 ```
 
-1. You can import JDKs by major version (optionally also the minor version) and by naming a specific distribution. [Learn more](../stdlib/jdks.md).
-2. This is a [hashbang include](../configs/hocon-extensions.md#including-the-output-of-external-commands). The given program will be run and the output included as if it were a static HOCON file.
-3. You may not need to set this if the display name of your project is trivially derivable from the name of the Gradle project. Use `printConveyorConfig` to see what the plugin guessed.
-4. This is where the created packages will look for update metadata.
-5. The templates come with pre-rendered icons in both square and rounded rectangle styles. This bit of config uses square by default and rounded rects on macOS only, but that's just a style choice to fit in with the native expectations. You can use whatever icons you like. They should be rendered as PNGs in a range of square sizes, ideally 32x32, 64x64, 128x128 etc up to 1024x1024.
-6. This line will be added to a freshly written config if it's missing. Recording the schema/semantics expected by the config allows the format to evolve in future versions without breaking backwards compatibility.
+1. This is a [hashbang include](../configs/hocon-extensions.md#including-the-output-of-external-commands). The given program will be run and the output included as if it were a static HOCON file.
+2. You may not need to set this if the display name of your project is trivially derivable from the name of the Gradle project. Use `printConveyorConfig` to see what the plugin guessed.
+3. This is where the created packages will look for update metadata.
+4. The templates come with pre-rendered icons in both square and rounded rectangle styles. This bit of config uses square by default and rounded rects on macOS only, but that's just a style choice to fit in with the native expectations. You can use whatever icons you like. They should be rendered as PNGs in a range of square sizes, ideally 32x32, 64x64, 128x128 etc up to 1024x1024.
+5. This line will be added to a freshly written config if it's missing. Recording the schema/semantics expected by the config allows the format to evolve in future versions without breaking backwards compatibility.
 
 
 ### Gradle projects

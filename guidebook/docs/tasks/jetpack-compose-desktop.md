@@ -41,7 +41,6 @@ private val appIcon: Painter? by lazy {
 ## conveyor.conf
 
 ```hocon
-include required("/stdlib/jdk/17/openjdk.conf")
 include required("/stdlib/jvm/enhancements/client/v1.conf")
 include "#!./gradlew -q printConveyorConfig"
 
