@@ -1,3 +1,8 @@
+---
+hide:
+- navigation
+---
+
 # Maven projects
 
 For Maven there's no plugin. Instead, Conveyor will discover the JARs in your project by running the output of the `mvn` command and using it directly as configuration. Other aspects like project name must be specified explicitly. Better import from Maven is planned in a future release.
@@ -29,8 +34,6 @@ app {
 4. You may not need to set this if the display name of your project is trivially derivable from the fsname. The default here would be `My Program`.
 5. This is optional. It'll be prefixed to the display name and used as a directory name  in various places; skip it if you don't work for an organization.
 6. This is where the created packages will look for update metadata.
-
-## Adapting a JavaFX app
 
 ## Adapting a JavaFX app
 

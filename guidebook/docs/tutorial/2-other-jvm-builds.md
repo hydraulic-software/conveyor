@@ -1,3 +1,8 @@
+---
+hide:
+  - navigation
+---
+
 # Other JVM build systems
 
 Create a `conveyor.conf` that looks like this:

@@ -1,3 +1,8 @@
+---
+hide:
+  - navigation
+---
+
 # Integrating Conveyor with Gradle projects
 
 ## conveyor.conf
