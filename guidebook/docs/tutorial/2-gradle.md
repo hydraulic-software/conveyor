@@ -84,13 +84,11 @@ For [Jetpack Compose Desktop](https://www.jetbrains.com/lp/compose-desktop/) app
 * For Compose 1.2, use Conveyor plugin `1.1` or higher.
 * For Compose 1.0/1.1, use Conveyor plugin `1.0.1`. You'll need to [import a JDK](../configs/jvm.md#importing-a-jvmjdk) yourself.
 
-If you use the wrong one you'll get a `NoSuchMethodError` exception. Both JVM and Multiplatform Kotlin plugins are supported. 
+If you use the wrong one you'll get a `NoSuchMethodError` exception. Both JVM and Multiplatform Kotlin plugins are supported.
 
-Now add the following code to your `build.gradle[.kts]` file in whatever module contains your primary desktop app entry point.
+* [ ] Add machine-specific dependencies to the top level of your build file.
 
-* [ ] Machine-specific dependencies to the top level of your build file.
-
-```groovy
+```kotlin
 dependencies {
     linuxAmd64(compose.desktop.linux_x64)
     macAmd64(compose.desktop.macos_x64)
@@ -99,7 +97,7 @@ dependencies {
 }
 ```
 
-* [ ] Workarounds for Compose bugs.
+* [ ] Add workarounds for Compose issues.
 
 You'll need to add the following snippet to your build file (translate to Groovy if not using Kotlin Gradle syntax).
 
@@ -123,6 +121,33 @@ dependencies {
 }
 // endregion
 ```
+#### Kotlin Multiplatform
+
+If using Kotlin Multiplatform:
+
+* [ ] Add `withJava()` and also ensure you're using the right version of the Kotlin standard library in your project dependencies.
+
+```kotlin
+kotlin {
+    jvm {
+        compilations.all {
+            kotlinOptions.jvmTarget = "11"
+        }
+        withJava()
+    }
+
+    sourceSets {
+        val jvmMain: KotlinSourceSet by getting {
+            dependencies {
+                implementation(kotlin("stdlib-jdk8"))
+                implementation(compose.desktop.currentOs)
+            }
+        }
+    }
+}
+```
+
+* [ ] Add `kotlin.mpp.stability.nowarn=true` to your `gradle.properties` file, to silence a warning printed during build configuration time that would interfere with config import otherwise.
 
 ### Setting icons
 
