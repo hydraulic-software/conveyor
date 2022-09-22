@@ -8,6 +8,7 @@ import org.gradle.api.plugins.JavaApplication
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.Internal
 import org.gradle.jvm.toolchain.JvmVendorSpec
+import org.gradle.jvm.toolchain.JvmVendorSpec.*
 import org.jetbrains.compose.ComposeExtension
 import org.jetbrains.compose.desktop.DesktopExtension
 import org.openjfx.gradle.JavaFXOptions
@@ -129,18 +130,25 @@ abstract class ConveyorConfigTask : DefaultTask() {
         val javaExtension = project.extensions.findByName("java") as? JavaPluginExtension
         if (javaExtension != null) {
             val jvmVersion = javaExtension.toolchain.languageVersion.orNull
-            val vendor: JvmVendorSpec = javaExtension.toolchain.vendor.orNull ?: JvmVendorSpec.ADOPTIUM
+            val vendor: JvmVendorSpec = javaExtension.toolchain.vendor.orNull ?: kotlin.runCatching { ADOPTIUM }.getOrNull() ?: ADOPTOPENJDK
             if (jvmVersion == null) {
                 appendLine()
                 appendLine("// Java toolchain doesn't specify a version. Not importing a JDK.")
             } else {
-                val conveyorVendor = if (vendor.toString() == "any") "openjdk" else when (vendor) {
-                    JvmVendorSpec.ADOPTIUM -> "eclipse"
-                    JvmVendorSpec.AMAZON -> "amazon"
-                    JvmVendorSpec.AZUL -> "azul"
-                    JvmVendorSpec.MICROSOFT -> "microsoft"
-                    JvmVendorSpec.ORACLE -> "openjdk"
+                var conveyorVendor = if (vendor.toString() == "any") "openjdk" else when (vendor) {
+                    AMAZON -> "amazon"
+                    AZUL -> "azul"
+                    ORACLE -> "openjdk"
                     else -> null
+                }
+                try {
+                    conveyorVendor = when (vendor) {
+                        MICROSOFT -> "microsoft"
+                        ADOPTIUM -> "eclipse"
+                        else -> conveyorVendor
+                    }
+                } catch (e: NoSuchFieldError) {
+                    // Ignore - added in Gradle 7.4
                 }
                 if (conveyorVendor != null) {
                     appendLine("// Config from the Java plugin.")

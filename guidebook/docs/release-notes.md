@@ -8,7 +8,7 @@
 
 ### New features for JVM apps
 
-* A new Conveyor Gradle plugin is released (version 1.1) which:
+* A better Gradle plugin which:
   * Supports Jetpack Compose 1.2 
   * Automatically imports the JDK from [the selected Java toolchain](https://docs.gradle.org/current/userguide/toolchains.html) when possible. This simplifies configuration further and eliminates duplicate configuration.
 * The template apps were cleaned up. The Compose Desktop template app now uses Compose 1.2 (beta).

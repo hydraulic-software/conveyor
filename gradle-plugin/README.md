@@ -3,13 +3,13 @@
 This module contains a simple Gradle plugin that extracts settings from a build and emits a Conveyor config snippet. This makes it easy
 to keep metadata and dependencies from your source build and packaging build in sync.
 
-**If you want to learn how to package your app then [start with the main documentation](https://conveyor.hydraulic.dev/docs/packaging).**  
+**If you want to learn how to package your app then [start with the main documentation](https://conveyor.hydraulic.dev/).**  
 
 To apply this plugin [look up the latest version](https://plugins.gradle.org/plugin/dev.hydraulic.conveyor) and then use code like this:
 
 ```
 plugins {
-    id("dev.hydraulic.conveyor") version "1.0.1"
+    id("dev.hydraulic.conveyor") version "1.2"
 }
 ```
 
@@ -39,6 +39,7 @@ The plugin extracts the following:
 * `project.name`, assigned to `gradle.project-name`
 * `buildDir`, assigned to `gradle.build-dir`
 * From the `application` plugin: the main class and JVM arguments are extracted.
+* From the `java` plugin: the JDK version and vendor used (if recognized), resulting in a JDK import.
 * From the Jetpack Compose Desktop plugin: main class, JVM arguments, description, vendor.
 * From the JavaFX plugin: the version you're using and which modules.
 
@@ -65,7 +66,7 @@ A simple app that depends on [Conscrypt](https://github.com/google/conscrypt), a
 plugins {
     `java-library`
     application
-    id("dev.hydraulic.conveyor") version "1.0.1"
+    id("dev.hydraulic.conveyor") version "1.2"
 }
 
 dependencies {
@@ -89,7 +90,7 @@ specific dependencies using a bit of refactored generic code. It's for an app th
 plugins {
     `java-library`
     application
-    id("dev.hydraulic.conveyor") version "1.0.1"
+    id("dev.hydraulic.conveyor") version "1.2"
 }
 
 repositories {
