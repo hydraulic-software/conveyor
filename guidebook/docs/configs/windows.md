@@ -96,6 +96,14 @@ An XML file in the final generated MSIX package. It controls many different inte
 
 By default the app requests `rescap:runFullTrust` which is intended for normal Win32 apps, and means the app is hardly sandboxed at all. A small amount of filesystem virtualization is applied to ensure the app can be uninstalled cleanly and apps aren't allowed to write to their own install folder, but that's about it. You shouldn't list any other capabilities unless you are explicitly using modern UWP Windows APIs that support sandboxing.
 
+**`app.windows.manifests.msix.identity-name`** An ASCII name for the program used for internal identification, that doesn't have to be globally unique. Should be written in lower case `kebab-case` and defaults to `${app.fsname}`. It will be converted to `PascalCase` to match the normal Windows style.
+
+**`app.windows.manifests.msix.{display-name,description,vendor}`** Package metadata that will appear in the Windows user interface. Taken from the top level app metadata by default but can be overridden.
+
+**`app.windows.manifests.msix.extensions-xml`** Raw XML that will be added into the `<Extensions></Extensions>` tag in the manifest. Useful for adding operating system integrations that Conveyor doesn't yet support out of the box. 
+
+**`app.windows.manifests.msix.content`** If set, supplies a string containing a complete manifest that replaces the standard one. The other keys will be ignored in this case, as they are only used to customize the built-in template.
+
 The list of available XML namespaces is:
 
 * `com:` http://schemas.microsoft.com/appx/manifest/com/windows10
@@ -118,12 +126,6 @@ The list of available XML namespaces is:
 * `uap5:` http://schemas.microsoft.com/appx/manifest/uap/windows10/5
 * `uap6:` http://schemas.microsoft.com/appx/manifest/uap/windows10/6
 * `uap7:` http://schemas.microsoft.com/appx/manifest/uap/windows10/7
-
-**`app.windows.manifests.msix.identity-name`** An ASCII name for the program used for internal identification, that doesn't have to be globally unique. Should be written in lower case `kebab-case` and defaults to `${app.fsname}`. It will be converted to `PascalCase` to match the normal Windows style.
-
-**`app.windows.manifests.msix.{display-name,description,vendor}`** Package metadata that will appear in the Windows user interface. Taken from the top level app metadata by default but can be overridden.
-
-**`app.windows.manifests.msix.content`** If set, supplies a string containing a complete manifest that replaces the standard one. The other keys will be ignored in this case, as they are only used to customize the built-in template.
 
 ### The EXE manifest
 
