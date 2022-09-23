@@ -10,8 +10,8 @@
 ### New features for JVM apps
 
 * A better Gradle plugin which:
-  * Supports Jetpack Compose 1.2 
-  * Automatically imports the JDK from [the selected Java toolchain](https://docs.gradle.org/current/userguide/toolchains.html) when possible. This simplifies configuration further and eliminates duplicate configuration.
+    * Supports Jetpack Compose 1.2 
+    * Automatically imports the JDK from [the selected Java toolchain](https://docs.gradle.org/current/userguide/toolchains.html) when possible. This simplifies configuration further and eliminates duplicate configuration.
 * The template apps were cleaned up. The Compose Desktop template app now uses Compose 1.2 (beta).
 * If JDK inputs don't have a `jmods` directory, the JDK is bundled into the app as-is without using `jlink`. This helps with packaging apps using GraalVM.
 * JDK standard library was refreshed.

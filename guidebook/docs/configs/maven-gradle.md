@@ -19,8 +19,10 @@ This will use the [`dependency:build-classpath`](https://maven.apache.org/plugin
 
 Conveyor provides an [open source Gradle plugin](https://github.com/hydraulic-software/conveyor/tree/master/gradle-plugin) which extracts configuration from your build and emits it as HOCON. It also lets you configure machine-specific dependencies that are automatically put into the right section of the input hierarchy.
 
-!!! info
-    You must use Gradle 7 or above for the plugin to work.
+!!! warning
+    * You must use Gradle 7 or above.
+    * When combined with the Compose Desktop Gradle plugin it's important to use version 1.2+ for Compose 1.2, and version 1.0.1 for older Compose releases. There was a binary compatibility break between these two Compose Desktop releases which necessitates matching plugin versions.
+
 
 ??? info "Which tool on top?"
     The Gradle plugin restricts itself to generating configuration for a few different reasons:
@@ -86,6 +88,7 @@ The plugin extracts information from other plugins:
 * `buildDir` becomes `gradle.build-dir`
 * `project.name` becomes `gradle.project-name`
 * From the `application` plugin: main class,  JVM arguments.
+* From the Java plugin: if the JVM toolchain is configured and the vendor/version is recognized, this JDK will be imported.
 * From the Jetpack Compose Desktop plugin: main class, JVM arguments, description, vendor.
 * From the JavaFX plugin: the modules you're using.
 
@@ -110,6 +113,12 @@ repositories {
     mavenCentral()
     google()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
 }
 
 compose.desktop {
