@@ -59,6 +59,14 @@ Or it can be an object containing the keys below:
 
 **`app.windows.signing-key`**, **`app.windows.certificate`** See [signing keys](index.md#signing).
 
+## Start on login
+
+**`app.windows.start-on-login`** If `true` then your app will be started automatically when users log in to Windows. 
+
+No user interaction or confirmation is required so be careful not to abuse this. The user can disable/enable startup via the Task Manager, and there's no programmatic way to override the user if they disable your startup item there. 
+
+You can programmatically enable/disable these items using [the WinRT StartTask API](https://learn.microsoft.com/en-us/uwp/api/windows.applicationmodel.startuptask?view=winrt-22621) (these APIs are available by default and can be accessed from ordinary C++). The startup task ID is the identity name of your app concatenated with `.StartupTask`, where the identity name can be explicitly controlled but defaults to the `app.fsname` key converted from `kebab-case` to `PascalCase`.
+
 ## Console key
 
 **`app.windows.console`** Windows requires a program to declare up front if it's a command line or GUI app using a flag in the EXE file headers. If an app is declared GUI then anything it prints to stdout/stderr won't appear anywhere, not even when run from the command line. If it's declared to be a command line app and run from outside a terminal, then a console window will appear alongside the app's main window. 

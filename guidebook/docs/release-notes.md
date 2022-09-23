@@ -5,6 +5,7 @@
 ### New features
 
 * A significantly re-organized tutorial which shows how to adapt existing apps earlier and more explicitly.
+* The [`app.windows.start-on-login` key](configs/windows.md#start-on-login), which ensures your application will be started automatically when the user logs in without any need for user interaction. 
 
 ### New features for JVM apps
 
