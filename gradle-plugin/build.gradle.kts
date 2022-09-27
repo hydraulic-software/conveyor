@@ -2,7 +2,7 @@ plugins {
     `java-gradle-plugin`
     `maven-publish`
     id("com.gradle.plugin-publish") version "0.20.0"
-    kotlin("jvm") version "1.5.30"
+    kotlin("jvm") version "1.6.10"
 }
 
 group = "dev.hydraulic"
