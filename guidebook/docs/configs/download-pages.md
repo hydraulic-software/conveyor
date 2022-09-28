@@ -27,6 +27,13 @@ app.site {
   
   # Which keys appear in the metadata.properties file in the generated site.
   export-keys = [ app.version, app.revision ]
+  
+  # HTML to add into the <head> area.
+  extra-header-html = """
+  	<script>
+  		// etc
+  	</script>
+  """
 }
 ```
 

@@ -1,5 +1,11 @@
 # Release notes
 
+## Conveyor 4
+
+### New features
+
+* The `app.site.extra-header-html` key lets you inject arbitrary HTML into the `<head>` area of the generated download page.
+
 ## Conveyor 3
 
 ### New features
