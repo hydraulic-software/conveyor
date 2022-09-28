@@ -10,7 +10,7 @@ Zips or tarball inputs will be extracted by default.
 
 ## Where inputs are placed
 
-Inputs can be specified at several different places in the config, but the most important is the top level `app` input hierarchy. The final location of files here depends on the type of app:
+Inputs can be specified at several different places in the config, but the most important is the top level `app` input hierarchy. The final location of files here depends on the type of app:
 
 * For native apps, inputs make up the raw package contents:
     * The contents of the program installation directory on Windows.
@@ -26,7 +26,7 @@ Inputs can be specified at several different places in the config, but the most 
     * The `/usr/lib/$vendor/$fsname` directory on Linux.
 
 
-For JVM apps any native libraries added in the app inputs (or found in the JARs) will be moved next to the other shared libraries of the JVM.
+For JVM apps any native libraries added in the app inputs (or found in the JARs) will be moved next to the other shared libraries of the JVM (requires compatibility level >= 4).
 
 ## Synopsis
 
