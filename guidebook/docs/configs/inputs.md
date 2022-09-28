@@ -6,7 +6,27 @@ Inputs define a set of files that will be used to assemble the final package. In
 * Directories.
 * HTTP(S) URLs.
 
-When a zip or tarball is an input it will be extracted automatically.
+Zips or tarball inputs will be extracted by default.
+
+## Where inputs are placed
+
+Inputs can be specified at several different places in the config, but the most important is the top level `app` input hierarchy. The final location of files here depends on the type of app:
+
+* For native apps, inputs make up the raw package contents:
+    * The contents of the program installation directory on Windows.
+    * The contents of the `Contents` directory inside the bundle on macOS.
+    * The contents of the `/usr/lib/$vendor/$fsname` directory on Linux.
+* For JVM apps inputs should contain your app JARs, any other data files. They will be placed in:
+    * The `app` sub-directory of your install directory on Windows.
+    * The `Resources` directory of your app bundle on macOS.
+    * The `/usr/lib/$vendor/$fsname/lib/app` directory on Linux.
+* For Electron apps, inputs should contain your app JS/HTML/CSS/package.json files. They will be placed in the standard locations:
+    * The `resources\app` directory inside your install directory on Windows.
+    * The `Contents/Resources/app` directory inside the bundle on macOS.
+    * The `/usr/lib/$vendor/$fsname` directory on Linux.
+
+
+For JVM apps any native libraries added in the app inputs (or found in the JARs) will be moved next to the other shared libraries of the JVM.
 
 ## Synopsis
 
@@ -16,8 +36,6 @@ When a zip or tarball is an input it will be extracted automatically.
 app.inputs += path/to/a/file
 app.inputs += path/to/a/directory
 app.inputs += /opt/foo/bar/*.sh
-
-# GRADLE USERS: See the Getting Started doc for what to do!
 
 # You can change where the file is placed.
 app.inputs += a/file -> other-dir/file
