@@ -93,3 +93,5 @@ There are several tasks accomplished by this config:
 6. Import icons for macOS and Windows. Icons must be PNG files. You don't have to supply all the sizes.
 7. Define the main class and the JDK modules (including the javafx modules) that you want to use.
 8. Define the URL where the packages will look for online updates.
+
+Please see the [Gradle page](2-gradle.md#adapting-a-javafx-app) to see how to set your stage icons.

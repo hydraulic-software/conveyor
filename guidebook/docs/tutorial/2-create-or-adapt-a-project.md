@@ -159,11 +159,10 @@ Don't worry about the details of `conveyor.conf` too much right now. Most projec
 
 === "JVM"
 
-    It's possible to package JVM apps with no code changes. You can nonetheless benefit from some extra features:
+    It's possible to package JVM apps with no code changes. Nonetheless:
     
-    1. The `app.version` system property is set to the value of the `app.version` configuration key. You can use this to avoid duplicating your version number in different places.
-    1. The `app.dir` system property points at the directory in your package install where input files can be found. Some JARs may be found there, but note that explicitly modular JARs will be shipped in the `modules` file in the JVM directory.
-    1. You can [set any other system properties you like in the config](../configs/jvm.md). By implication, you can also set system properties to values calculated at package build time by using [hashbang imports](../configs/hocon-extensions.md#including-the-output-of-external-commands) and build system integration.
+    1. The `app.version` and `app.dir` system properties may prove useful. You can [set any other system properties you like in the config](../configs/jvm.md).
+    1. Compose and JavaFX apps can load their window icons from the packaged files. See the Gradle page or the code of the template apps to get this snippet.
 
     How to integrate a JVM project depends on your build system. Please select:
 
