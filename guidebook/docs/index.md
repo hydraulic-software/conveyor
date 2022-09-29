@@ -15,7 +15,7 @@ Conveyor makes distributing desktop and command line apps as easy as shipping a 
         * Has everything IT departments need to easily deploy to managed networks.
     * Build Mac applications that automatically use the popular [Sparkle 2 update framework](https://sparkle-project.org/), without code changes.
     * Build apt repositories for Debian/Ubuntu, tarballs for other distros. Integrates with systemd for servers and cron jobs.
-* **Support for Electron apps.** (*beta!*)
+* **Support for Electron apps.**
     * Benefit from well maintained platform native software updates without relying on Squirrel or any centralized update servers.
 * **[Deep JVM support](configs/jvm.md).**
     * Bundles a JVM from a vendor of your choice, and then uses jlink/jdeps to minimize the size.
