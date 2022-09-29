@@ -1,4 +1,4 @@
-# 10. Next steps
+# 9. Next steps
 
 ## Signing
 

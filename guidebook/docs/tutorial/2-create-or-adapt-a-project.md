@@ -10,6 +10,8 @@ If you don't have a website consider creating a [GitHub](https://www.github.com)
 
 * [ ] Pick a reverse DNS name that will identify your project. If you can't think of one, use `com.example.my-project`.
 
+Now skip to either [generating a starter project](#generating-a-starter-project) or [adapting an existing project](#adapting-a-project-for-conveyor).
+
 ## Generating a starter project
 
 This is the quickest way to learn Conveyor without getting distracted by details of your actual app. There are four pre-canned "Hello World" project templates:
@@ -34,7 +36,7 @@ Now choose an app type:
 
 === "JVM"
 	 
-    * [ ] Install a JDK 11 or higher from any vendor e.g. [Amazon Corretto](https://aws.amazon.com/corretto) is a good choice.
+    * [ ] Install a JDK 17 or higher from any vendor e.g. [Amazon Corretto](https://aws.amazon.com/corretto) is a good choice.
     * [ ] Run `conveyor generate compose` or `conveyor generate javafx` and append your chosen RDNS name as the last parameter.
 
 === "Electron"
@@ -54,7 +56,7 @@ Packaging a project consists of two steps:
 1. Writing a `conveyor.conf` file.
 2. Preparing the build system.
 
-The `conveyor.conf` file defines your packages and is defined using a superset of JSON called [HOCON](../configs/hocon-spec.md) with a few [Conveyor-specific extensions](../configs/hocon-extensions.md). This makes it much more pleasant to express configuration whilst preserving the simple JSON data model. It also means you can import JSON into your config directly, including config generated dynamically by other programs.
+`conveyor.conf` defines your packages and is defined using a superset of JSON called [HOCON](../configs/hocon-spec.md) with a few [Conveyor-specific extensions](../configs/hocon-extensions.md). This makes it much more pleasant to express configuration whilst preserving the simple JSON data model. It also means you can import JSON into your config directly, including config generated dynamically by other programs.
 
 Don't worry about the details of `conveyor.conf` too much right now. Most projects don't need many settings.
 
@@ -157,18 +159,18 @@ Don't worry about the details of `conveyor.conf` too much right now. Most projec
 
 === "JVM"
 
-    How to integrate a JVM project depends on your build system:
+    It's possible to package JVM apps with no code changes. You can nonetheless benefit from some extra features:
+    
+    1. The `app.version` system property is set to the value of the `app.version` configuration key. You can use this to avoid duplicating your version number in different places.
+    1. The `app.dir` system property points at the directory in your package install where input files can be found. Some JARs may be found there, but note that explicitly modular JARs will be shipped in the `modules` file in the JVM directory.
+    1. You can [set any other system properties you like in the config](../configs/jvm.md). By implication, you can also set system properties to values calculated at package build time by using [hashbang imports](../configs/hocon-extensions.md#including-the-output-of-external-commands) and build system integration.
+
+    How to integrate a JVM project depends on your build system. Please select:
 
     * [Gradle](2-gradle.md)
     * [Maven](2-maven.md)
     * [Other](2-other-jvm-builds.md)
-    
-    It's possible to package JVM apps with no code changes. You can nonetheless benefit from some extra features:
-    
-    1. The `app.version` system property is set to the value of the `app.version` configuration key. You can use this to avoid duplicating your version number in different places.
-    1. The `app.dir` system property points at the directory in your package install where input files can be found. Some JARs may be found there, but note that explicitly modular JARs will disappear into the `modules` file in the JVM directory and so you won't find them here. Look up files from those JARs using the standard Java resources API instead.
-    1. You can [set any other system properties you like in the config](../configs/jvm.md), allowing the app to know at runtime the value of any config values. By extension you can also set system properties to the value of arbitrary programs that were run at build time by using hashbang imports and build system integration.
- 
+
     ??? warning "Uber-jars"
         Don't use an uber/fat-jar for your program unless you're obfuscating. It'll reduce the efficiency of delta download schemes like the one used by Windows. It also means modular JARs won't be encoded using the optimized `jimage` scheme. Use separate JARs for the best user experience.
 

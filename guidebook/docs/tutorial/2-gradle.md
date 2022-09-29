@@ -60,7 +60,7 @@ To add the plugin:
     ```
     ```groovy title="build.gradle"
     plugins {
-        id 'dev.hydraulic.conveyor' version '1.1'
+        id 'dev.hydraulic.conveyor' version '1.2'
     }
     ```
 
@@ -86,7 +86,7 @@ Sometimes you need different versions of a library depending on which OS you use
 
 For [Jetpack Compose Desktop](https://www.jetbrains.com/lp/compose-desktop/) apps a bit more work is required. Different Conveyor plugin versions support different Compose Desktop versions:
 
-* For Compose 1.2, use Conveyor plugin `1.1` or higher.
+* For Compose 1.2, use Conveyor plugin `1.2` or higher.
 * For Compose 1.0/1.1, use Conveyor plugin `1.0.1`. You'll need to [import a JDK](../configs/jvm.md#importing-a-jvmjdk) yourself.
 
 If you use the wrong one you'll get a `NoSuchMethodError` exception. Both JVM and Multiplatform Kotlin plugins are supported.

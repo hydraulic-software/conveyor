@@ -1,4 +1,4 @@
-# 9. Set a real site URL
+# 8. Set a real site URL
 
 So far we've been using `localhost` as the download site URL. This is convenient for testing because Conveyor treats this as a sort of trial mode. Once you change the `app.site.base-url` config key to something else, there are two scenarios.
 
