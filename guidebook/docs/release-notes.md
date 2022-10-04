@@ -9,6 +9,7 @@
 ### New features for JVM apps
 
 * When `conveyor.compatibility-level` >= 4 any native libraries placed in the app inputs will be moved to the right locations in the generated package to be loaded. Native libraries found in JARs were already being extracted and placed there - this just lets you do the same thing for libraries outside of JARs.
+* Fixed: the Azul JDK for Mac didn't work when combined with JMODs.
 
 ## Conveyor 3
 
