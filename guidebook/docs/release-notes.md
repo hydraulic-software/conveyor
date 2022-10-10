@@ -5,6 +5,7 @@
 ### New features
 
 * The `app.site.extra-header-html` key lets you inject arbitrary HTML into the `<head>` area of the generated download page.
+* P7B format certificates are now supported. 
 
 ### New features for JVM apps
 

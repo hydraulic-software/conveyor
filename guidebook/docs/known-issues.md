@@ -8,7 +8,6 @@
     * ARM Linux isn't yet supported.
     * Packages for app stores aren't yet supported.
 * Registration of URL handlers and file type associations isn't yet supported.
-* The P7B certificate format isn't supported.
 * For JVM apps, there's no direct support for importing Maven projects and the supplied command to read classpaths only works on UNIX.
 
 ## Issues with planned fixes

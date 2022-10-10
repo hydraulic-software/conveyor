@@ -47,13 +47,11 @@ Certificates link your public key to a verified identity. Conveyor supports the 
 
 * `.cer/.pem` - ASCII encoded. This is sometimes called PEM format.
 * `.p12/.pfx` - Binary encoded.
+* `.p7b` - ASCII encoded.
 
 When using a `.p12` or `.pfx` file, you must supply [a passphrase](#passphrases). 
 
 Usually, certificate authorities give you several options for what format you download them in. When possible pick the option named something like "PEM with all certificates included". Your certificate file must include not only your own but also any intermediate certificates.
-
-!!! important
-    You may have certificates in a `.p7b` file. Currently this format is not supported. Request a different format from your CA.
 
 ### If you already have certificates
 
