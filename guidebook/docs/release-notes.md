@@ -5,6 +5,7 @@
 ### New features
 
 * The `app.site.extra-header-html` key lets you inject arbitrary HTML into the `<head>` area of the generated download page.
+* Windows icons are now "unplated" (without a border) by default. This overrides the default Windows taskbar icon styling, but brings packaged apps into visual alignment with Microsoft's first party apps.
 * P7B format certificates are now supported. 
 
 ### New features for JVM apps
