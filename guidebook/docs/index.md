@@ -41,7 +41,7 @@ Conveyor makes distributing desktop and command line apps as easy as shipping a 
 
 ### Compose Multiplatform
 
-<video width="100%" playsinline autoplay muted loop><source src="https://www.hydraulic.software/assets/images/video/Eton.mp4" type="video/mp4"></video>
+<video width="100%" playsinline autoplay muted loop style="margin-left: -50px"><source src="https://www.hydraulic.software/assets/images/video/Eton.mp4" type="video/mp4"></video>
 
 <img src="images/compose-multiplatform.svg" style="float: left; padding-right: 1em"></img>
 
