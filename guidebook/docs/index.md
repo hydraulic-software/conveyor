@@ -41,7 +41,7 @@ Conveyor makes distributing desktop and command line apps as easy as shipping a 
 
 ### Compose Multiplatform
 
-<video width="100%" playsinline autoplay muted loop><source src="https://downloads.hydraulic.dev/eton-sample/eton.mp4" type="video/mp4"></video>
+<video width="100%" playsinline autoplay muted loop><source src="https://www.hydraulic.software/assets/images/video/Eton.mp4" type="video/mp4"></video>
 
 <img src="images/compose-multiplatform.svg" style="float: left; padding-right: 1em"></img>
 
@@ -55,7 +55,7 @@ Conveyor makes distributing desktop and command line apps as easy as shipping a 
 
 ### AtlantaFX Sampler
 
-<video width="100%" playsinline autoplay muted loop style="margin-left: -5.5em"><source type="video/mp4" src="https://www.hydraulic.software/assets/images/video/AtlantaFX.mp4"/></video>
+<video width="100%" playsinline autoplay muted loop style="margin-left: -70px"><source type="video/mp4" src="https://www.hydraulic.software/assets/images/video/AtlantaFX-1.1.mp4"/></video>
 
 [Download AtlantaFX sampler](https://downloads.hydraulic.dev/atlantafx/sampler/download.html){ .md-button .md-button--primary }
 
