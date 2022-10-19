@@ -12,7 +12,8 @@ Conveyor will run `jsonnet conveyor.jsonnet` and treat the output as if it was a
 
 ## 2. Can I define URL handlers or file associations?
 
-Not yet, but these are both high priority features. For now, try modifying the configuration of the operating-system specific metadata via your config. For example, the generated `Info.plist` file on macOS is fully definable in configuration, same for the `.desktop` file on Linux and so on.
+You can register a URL handler using some custom config, see the [operating system integration section](../configs/os-integration.md). File
+type associations are a high priority feature that's already in development.
 
 ## 3. Why aren't I seeing icons show up?
 
@@ -36,4 +37,4 @@ and then just trigger Conveyor from your CI system. This is an example of [a has
 
 ## 5. How do I display a license agreement at install time?
 
-You can't. It's not idiomatic on macOS, impossible on Linux and not well supported by MSIX on Windows. Ask the user to agree in your app on first run instead.
+You can't. User interactivity during installation is idiomatic on macOS, extremely discouraged on Linux and causes problems for network admins on Windows. Ask the user to agree in your app on first run instead.

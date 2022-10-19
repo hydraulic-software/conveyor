@@ -7,7 +7,7 @@
     * Only DEB based Linux distros get native packages. For other distros Conveyor creates a tarball which doesn't auto update. RPM / FlatPak support is on the roadmap.
     * ARM Linux isn't yet supported.
     * Packages for app stores aren't yet supported.
-* Registration of URL handlers and file type associations isn't yet supported.
+* Registration of file type associations isn't yet supported.
 * For JVM apps, there's no direct support for importing Maven projects and the supplied command to read classpaths only works on UNIX.
 
 ## Issues with planned fixes

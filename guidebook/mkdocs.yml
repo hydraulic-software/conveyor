@@ -33,6 +33,7 @@ nav:
     - configs/index.md
     - configs/inputs.md
     - configs/download-pages.md
+    - configs/os-integration.md
     - Syntax: configs/hocon-spec.md
     - Standard Library: stdlib/index.md
     - Runtimes:
