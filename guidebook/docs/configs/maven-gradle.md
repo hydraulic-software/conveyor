@@ -1,4 +1,4 @@
-# Maven and Gradle integration
+# Maven and Gradle
 
 Conveyor can run external commands whilst evaluating config files, see the [modified HOCON spec](hocon-spec.md) for details. This makes it easy to dynamically calculate config from any script or program, including external build systems.
 
@@ -22,7 +22,6 @@ Conveyor provides an [open source Gradle plugin](https://github.com/hydraulic-so
 !!! warning
     * You must use Gradle 7 or above.
     * When combined with the Compose Desktop Gradle plugin it's important to use version 1.2+ for Compose 1.2, and version 1.0.1 for older Compose releases. There was a binary compatibility break between these two Compose Desktop releases which necessitates matching plugin versions.
-
 
 ??? info "Which tool on top?"
     The Gradle plugin restricts itself to generating configuration for a few different reasons:
