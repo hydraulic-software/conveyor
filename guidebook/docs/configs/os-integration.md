@@ -7,37 +7,13 @@ extend the generated metadata files from your config, meaning you don't need dir
 
 This section discusses how to achieve common integrations and how to develop your own.
 
-## URL handlers
+## URL handlers / deep linking
 
-Although Conveyor doesn't have direct support for URL handlers in the current release, you can use the following config snippet to do it
-using the [custom integrations](#custom-integrations) feature:
+Having your app launch when the user clicks a URL is easy. If you want to handle `my-app:foo` or `my-app://foo` links then just add it to
+the `app.url-schemes` key, like this:
 
 ```hocon
-// Will register my-app:// as the URL scheme.
-url-protocol = my-app
-
-app {
-  windows.manifests.msix.extensions-xml = """
-  <uap:Extension Category="windows.protocol">
-      <uap:Protocol Name=""""${url-protocol}"""">
-        <uap:DisplayName>URL Test</uap:DisplayName>
-      </uap:Protocol>
-  </uap:Extension>
-  """
-
-  mac.info-plist.CFBundleURLTypes = [
-    {
-      CFBundleTypeRole = Viewer
-      CFBundleURLName = ${app.rdns-name}
-      CFBundleURLSchemes = [ ${url-protocol} ]
-    }
-  ]
-
-  linux.desktop-file."Desktop Entry" {
-    Exec = ${app.linux.install-path}/bin/${app.fsname} %u
-    MimeType = x-scheme-handler/${url-protocol}
-  }
-}
+app.url-schemes = [ my-app ]
 ```
 
 If users won't directly see your links then a reasonable choice for the URL scheme is your app's `rdns-name`, because that's meant to be globally unique, and only contains characters valid for URL schemes.

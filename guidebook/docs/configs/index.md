@@ -191,3 +191,7 @@ This behaviour can be controlled using several keys:
 
 !!! warning Windows apps that have already been deployed
     This default is designed to simplify the lives of people distributing new apps. If you're switching a pre-existing Windows app that has been deployed to user machines before using Conveyor, and you did not already force your app to use UTF-8, then your users may have files or file names encoded in non UTF-8 encodings. This may especially cause compatibility issues for Asian Windows users. If this is the case, then you should set the `app.character-encoding` key to `host`, which means the app will use whatever the user's operating system is set to. Be aware though that this will cause (or continue) other kinds of bugs if users exchange files or data that aren't encoded the same way.
+
+## Additional settings
+
+There are many other settings available. Check out the sections on the left to learn more about what you can configure.
