@@ -1,5 +1,12 @@
 # Release notes
 
+## Conveyor 5
+
+### New features
+
+* The `app.site.copy-to` key lets you define a location to upload the resulting site via SFTP.
+* The `app.url-schemes` key lets you [associate your app with protocol schemes](configs/os-integration.md) (`my-app://deep/link`).
+
 ## Conveyor 4
 
 ### New features
