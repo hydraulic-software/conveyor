@@ -1,6 +1,9 @@
 # Download pages
 
-The `site` task will generate the online update repository along with a simple static download page for your software. The download page is entirely optional and can just be ignored if you don't want it. It has these features:
+The `site` task will generate the online update repository along with a static download page. The `copied-site` task will additionally
+copy the results to another directory, which can be on a remote system accessible via SFTP. 
+
+The download page is optional and can just be ignored if you don't want it. It has these features:
 
 * Detects the user's operating system. Allows the user to switch between operating systems.
 * On Chrome, detects the CPU architecture.
@@ -34,6 +37,9 @@ app.site {
   		// etc
   	</script>
   """
+  
+  # Directory to upload/copy the site to over SFTP.
+  copy-to = "//user@myserver.com/var/www/downloads"
 }
 ```
 
@@ -67,3 +73,11 @@ Be aware of these caveats:
 * The `download.html` file contains links to the "latest" files but their file names will contain the version number. Therefore you should copy the HTML to your website each time you do a release, otherwise users will get 404 errors.
 
 Future versions of Conveyor might automate the process of doing the uploads to GitHub.
+
+## Publishing via SFTP
+
+If you set `app.site.copy-to` to a string like `//hostname/directory` then you can use the `copied-site` task to both build the downloads
+and upload the resulting download site to a remote server. The directory should be absolute, and you can specify both username and password
+in the machine part (it's basically an `ssh://` url but minus the scheme). Public/private keys and the `known_hosts` file will be read from
+the usual locations as used by OpenSSH, but Conveyor won't log in to a server it doesn't recognize, so if you would get a new key warning
+from regular `ssh` you will need to log in first, to ensure the key goes into the `known_hosts` file.
