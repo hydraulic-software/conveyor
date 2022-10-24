@@ -1,5 +1,25 @@
 # 1. Get started
 
+## tl;dr
+
+[ :material-download-circle: Download Conveyor](https://downloads.hydraulic.dev/conveyor/download.html){ .md-button .md-button--primary }
+
+```shell
+$ conveyor keys generate
+$ conveyor generate {electron,compose,javafx,cmake} org.your-site.your-app-name
+$ cd your-app-name
+$ conveyor make site
+# Your download site is here, ready for serving on localhost.
+$ ls output
+# Set the final download URL and rebuild.
+$ echo 'app.site.base-url = downloads.your-site.org'
+$ conveyor make site
+# Copy up to the server.
+$ cd output; scp * www@your-site.org:/var/www/downloads/  
+```
+
+## Welcome!
+
 !!! tip
     You can tick the checkmarks on these pages to mark your progress. Their state is stored in a cookie.
 
