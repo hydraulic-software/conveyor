@@ -5,17 +5,24 @@
 [ :material-download-circle: Download Conveyor](https://downloads.hydraulic.dev/conveyor/download.html){ .md-button .md-button--primary }
 
 ```shell
-$ conveyor keys generate
-$ conveyor generate {electron,compose,javafx,cmake} org.your-site.your-app-name
-$ cd your-app-name
-$ conveyor make site
-# Your download site is here, ready for serving on localhost.
-$ ls output
-# Set the final download URL and rebuild.
-$ echo 'app.site.base-url = downloads.your-site.org'
-$ conveyor make site
-# Copy up to the server.
-$ cd output; scp * www@your-site.org:/var/www/downloads/  
+# Generate a template app.
+conveyor generate {electron,compose,javafx,cmake} org.your-site.some-app-name
+cd your-app-name
+conveyor make site
+
+# Your download site is here, ready for serving on `localhost:8000`.
+ls output
+
+# Set the update repository URL and optionally an SFTP file upload URL.
+cat <<EOF >>conveyor.conf
+app.site { 
+    base-url = downloads.your-site.org
+    copy-to = "sftp://user@your-site/var/www/downloads"
+}
+EOF
+
+# Rebuild and upload.
+conveyor make copied-site   # or use `make site` again.
 ```
 
 ## Welcome!
@@ -40,20 +47,5 @@ You will end up with a directory that contains:
 At the end you'll learn how to do code signing, and how Conveyor helps you obtain certificates if needed. 
 
 This tutorial doesn't cover all the features Conveyor has. Read through the rest of this guidebook to learn about the full range of possibilities.
-
-----
-
-Let's go!
-
-* [x] [Download Conveyor](../download-conveyor.md). On macOS, make sure it's added to your path by opening the app from the GUI and clicking the "Add to path" button.
-
-You don't need code signing certificates to use Conveyor. Nonetheless, you always need cryptographic keys so it can at least self-sign your app. Self-signing is good enough for learning, testing, internal apps and distributing software to developers. The final steps of the tutorial show you how to use real code signing keys to get a smoother download user experience.
-
-* [x] Run `conveyor keys generate` from a terminal.
-
-This command will create a new root private key, convert it to a series of words and write it to a config file in your home directory.
-
-!!! tip "Key derivation"
-    You can back this generated file up in any way you like, even by writing down the words with a pen (include the timestamp). Each type of key Conveyor needs will be derived from this one root, unless you supply a custom key for specific platforms.
 
 <script>var tutorialSection = 1;</script>
