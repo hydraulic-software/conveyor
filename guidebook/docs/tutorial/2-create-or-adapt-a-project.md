@@ -8,10 +8,6 @@ Every project needs a reverse DNS (RDNS) name. RDNS names are used by some opera
 
 If you don't have a website consider creating a [GitHub](https://www.github.com) account and then using `io.github.youruser.yourproject`, which will ensure no naming conflicts with anyone else.  Use `names-with-dashes` when separating words, not `camelCase`, as that way you'll get smarter defaults.
 
-When creating a starter project the RDNS name initializes some defaults. When adapting an existing project specifying an RDNS name is optional, because one will be generated automatically from your download/update site URL. Nonetheless it's still a good idea to pick one explicitly.
-
-Now skip to either [generating a starter project](#generating-a-starter-project) or [adapting an existing project](#adapting-a-project-for-conveyor).
-
 ## Generating a starter project
 
 This is the quickest way to try Conveyor without getting distracted by details of your actual app.
@@ -39,7 +35,7 @@ This is the quickest way to try Conveyor without getting distracted by details o
     * [ ] `./gradlew jar`  - this step will download Gradle if you don't already have it.
     * [ ] `conveyor make site`
 
-Now read the rest of the tutorial to understand what just happened. 
+You now have a demo project with a `conveyor.conf` file in it, and possibly some build system integration.
 
 ## Packaging a project with Conveyor
 
