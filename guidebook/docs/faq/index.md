@@ -1,13 +1,13 @@
 # General FAQ
 
-## 1. What does Conveyor do?
+## What does Conveyor do?
 
 It builds packages for desktop/CLI apps targeting Windows, macOS and Linux. These packages self update using the native package management
 or Sparkle on macOS, and are fully signed/notarized. You can build these packages from any OS, meaning you can sign and notarize Mac
 apps from Linux or Windows, and Windows apps from macOS or Linux. It can also create simple server packages for Debian/Ubuntu that use
 systemd as a service manager.
 
-## 2. Is Conveyor free?
+## Is Conveyor free?
 
 During the introductory period it's free for everyone. Once the introductory period ends, it will be free for open source apps and
 require a subscription when used with proprietary apps. You can learn what it'll cost on the [pricing page](https://www.hydraulic.software/pricing.html).
@@ -16,7 +16,14 @@ Open source apps that use it should advertise the fact that they're packaged wit
 makes this easy, because it contains a "Packaged with Conveyor" badge. If you don't use that HTML then you'll need to provide your own link
 in e.g. your download page, website, README file etc.
 
-## 3. Why isn't Conveyor a service?
+## Am I locked in?
+
+No. Conveyor generates [standard package formats](../outputs.md) and on macOS it uses an open source update framework called
+[Sparkle](https://www.sparkle-framework.org/). All these can be produced with native toolchains. If you want to stop using Conveyor, you
+will just have to set up your own packaging scripts and do the integration work yourself. In other words, you'll have spend the time you
+saved by using Conveyor, but nothing will break.
+
+## Why isn't Conveyor a service?
 
 Services can sometimes be convenient and if you'd like to have Conveyor-as-a-service, please [let us know](mailto:contact@hydraulic.software). 
 Also, if you work on a code hosting service/forge of some kind and you'd like to incorporate Conveyor's features into your site,
@@ -36,14 +43,14 @@ It has advantages for us too:
   pass on to you.
 * No need to hold people's private keys, which would create a tempting target for attackers.
 
-## 4. What kinds of app can you package with it?
+## What kinds of app can you package with it?
 
 It can package any kind of app, it just has some built-in features to make packaging JVM apps easy. The [tutorial](../tutorial/1-get-started.md) 
 shows how to package a CMake based C++ OpenGL app, for example.
 
 Although you can package any kind of app, over time Conveyor will gain features to apps using specific frameworks easier to package.
 
-## 5. Is Conveyor only for desktop apps?
+## Is Conveyor only for desktop apps?
 
 Not at all! It also has some support for:
 
@@ -53,12 +60,12 @@ Not at all! It also has some support for:
 
 Support for CLI apps will be improved in future releases.
 
-## 6. Does it support Electron apps?
+## Does it support Electron apps?
 
 Yes, you can create packages straight from your Javascript/HTML/CSS files and your `node_modules` directory. Unlike with other Electron
 packaging solutions, you don't need special or custom servers and the results don't create problems for network administrators.
 
-## 7. Why should I make a desktop app?  
+## Why should I make a desktop app?  
 
 The web was designed for documents and when we use it for applications, the gap causes problems. As developers we like to (ab)use web browsers
 to deliver software for several reasons, but a big one is because web browsers make deployment and updates easy. Now with Conveyor we 

@@ -8,7 +8,7 @@ Conveyor makes distributing desktop and command line apps as easy as shipping a 
 
 ## Features
 
-* **Create packages for every OS on any OS.** Conveyor implements everything itself so doesn't rely on platform native tooling.
+* **Self-updating packages for every OS, built on any OS.** Conveyor implements everything itself so doesn't rely on platform native tooling.
     * Build applications that use the built-in [Windows MSIX package manager](outputs.md).
         * Windows keeps them up to date in the background.
         * Installs and updates reuse data blocks and hard link files, even between apps from different vendors.
@@ -36,6 +36,9 @@ Conveyor makes distributing desktop and command line apps as easy as shipping a 
     * Mac `Info.plist` files.
     * Windows manifests.
     * Linux `.desktop` files and package install/uninstall scripts.
+* **No lockin**. You can stop using Conveyor at any time.
+    * It makes standard formats and uses standard or open source update frameworks. 
+    * To stop using it you can just write the scripts and integrations you'd have written anyway. 
 
 ## Try sample apps that use Conveyor
 
