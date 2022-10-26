@@ -2,59 +2,52 @@
 
 ## Pick a reverse DNS name
 
-Every project needs a reverse DNS (RDNS) name, e.g. `com.somecompany.some-product`. RDNS names are used by some operating systems to keep apps separate even if they share a brand name. Domain name ownership isn't checked by anything. 
+* [ ] A reverse DNS name identifies your app. If you can't think of one, use `com.example.my-project`.
 
-When creating a starter project the RDNS name initializes some defaults. When adapting an existing project specifying an RDNS name is optional, because one will be generated automatically from your download/update site URL. Nonetheless it's still a good idea to pick one explicitly.
+Every project needs a reverse DNS (RDNS) name. RDNS names are used by some operating systems to keep apps separate even if they share a brand name. Domain name ownership isn't checked by anything. 
 
 If you don't have a website consider creating a [GitHub](https://www.github.com) account and then using `io.github.youruser.yourproject`, which will ensure no naming conflicts with anyone else.  Use `names-with-dashes` when separating words, not `camelCase`, as that way you'll get smarter defaults.
 
-* [ ] Pick a reverse DNS name that will identify your project. If you can't think of one, use `com.example.my-project`.
+When creating a starter project the RDNS name initializes some defaults. When adapting an existing project specifying an RDNS name is optional, because one will be generated automatically from your download/update site URL. Nonetheless it's still a good idea to pick one explicitly.
 
 Now skip to either [generating a starter project](#generating-a-starter-project) or [adapting an existing project](#adapting-a-project-for-conveyor).
 
 ## Generating a starter project
 
-This is the quickest way to learn Conveyor without getting distracted by details of your actual app. There are four pre-canned "Hello World" project templates:
+This is the quickest way to try Conveyor without getting distracted by details of your actual app.
 
-1. A native OpenGL app written in C++.
-2. An Electron app.
-3. A GUI JVM app using either:
-    1. The reactive, Kotlin based [Jetpack Compose for Desktop](https://www.jetbrains.com/lp/compose-desktop/) framework.
-    2. The multi-language [JavaFX](https://openjfx.io) framework.
+=== "Electron"
 
-The JVM and Electron apps are easy to play with because you don't need cross-compilers. For the C++ project you'll need to compile it for each OS that you wish to target. It's your choice: this tutorial will guide you through all of them.
-
-!!! tip "Cross platform UI"
-    [Jetpack Compose](https://developer.android.com/jetpack/compose) is the next-gen native UI toolkit on Android and it also runs on Windows/Mac/Linux, making it easy to share code between mobile and desktop. [JavaFX also runs on mobile](https://gluonhq.com/products/mobile/) and [the web](https://www.jpro.one). The native C++ app uses OpenGL and the [GLFW library](https://glfw.org/), which abstracts the operating system's windowing APIs.
-
-Now choose an app type:
+    * [ ] `conveyor generate electron com.example.my-project`
+    * [ ] `cd my-project`
+    * [ ] `npm install`
+    * [ ] `conveyor make site`
 
 === "Native"
 
     * [ ] Install [CMake](https://cmake.org/) and the compiler toolchain for each platform you will target.
-    * [ ] Run `conveyor generate cmake com.example.my-project` with your chosen RDNS name.
+    * [ ] `conveyor generate cmake com.example.my-project`
+    * [ ] `cd my-project`
+    * [ ] Read the README to learn how to compile the project.
+    * [ ] `conveyor make site`.
 
 === "JVM"
-	 
+
     * [ ] Install a JDK 17 or higher from any vendor e.g. [Amazon Corretto](https://aws.amazon.com/corretto) is a good choice.
-    * [ ] Run `conveyor generate compose` or `conveyor generate javafx` and append your chosen RDNS name as the last parameter.
+    * [ ] `conveyor generate compose com.example.my-project` <br>or<br> `conveyor generate javafx com.example.my-project`
+    * [ ] `cd my-project`
+    * [ ] `./gradlew jar`  - this step will download Gradle if you don't already have it.
+    * [ ] `conveyor make site`
 
-=== "Electron"
+Now read the rest of the tutorial to understand what just happened. 
 
-    * [ ] Ensure you have npm installed.
-    * [ ] Run `conveyor generate cmake com.example.my-project` with your chosen RDNS name.
+## Packaging a project with Conveyor
 
-* [ ] Change into the output directory you just created.
-* [ ] Run any commands that were printed on the screen.
-
-Now read the next section to understand what was just created. 
-
-## Adapting a project for Conveyor
-
-Packaging a project consists of two steps:
+There are three steps:
 
 1. Writing a `conveyor.conf` file.
-2. Preparing the build system.
+1. Preparing the build system.
+1. Running Conveyor to generate packages or update sites.
 
 `conveyor.conf` defines your packages and is defined using a superset of JSON called [HOCON](../configs/hocon-spec.md) with a few [Conveyor-specific extensions](../configs/hocon-extensions.md). This makes it much more pleasant to express configuration whilst preserving the simple JSON data model. It also means you can import JSON into your config directly, including config generated dynamically by other programs.
 
