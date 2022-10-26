@@ -2,7 +2,7 @@
 
 ## tl;dr
 
-[ :material-download-circle: Download Conveyor](https://downloads.hydraulic.dev/conveyor/download.html){ .md-button .md-button--primary }
+[ :material-download-circle: Download Conveyor](https://downloads.hydraulic.dev/conveyor/download.html){ .md-button .md-button--primary target='_blank' }
 
 === "Electron"
 
