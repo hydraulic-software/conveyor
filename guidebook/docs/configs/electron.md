@@ -33,16 +33,15 @@ A basic `conveyor.conf` looks like this:
 // You must import the electron stdlib config.
 include required("/stdlib/electron/electron.conf")
 
-// You must also import your package-lock.json file.
-// Defaults will be set from it.
-package-lock {
-    include required("package-lock.json") 
+// You may also import your package.json file. Defaults will be set from it when possible.
+package-json {
+    include required("package.json") 
 }
 
-// Override the Electron version. By default this comes from package-lock.json 
+// Override the Electron version. This is otherwise taken from your package.json file. 
 app.electron.version = 19.0.1
 
-// If necessary change where it's downloaded from. The default is GitHub:
+// Change where it's fetched from. The default is GitHub.
 app.electron.download-base-url = github.com/electron/electron/releases/download/
 ```
 
@@ -89,5 +88,57 @@ app {
 Be aware of the following caveats:
 
 * There's no API to control or monitor updates yet. Note that such an API doesn't necessarily make sense on some platforms e.g. Linux where the user's package manager will apply updates, or on Windows where the app can be updated silently in the background when it's not running.
-* It has only been tested with Electron 19 and 20. Conveyor replaces the entry point binary and thus must be synchronized with Electron releases.
 * Conveyor doesn't make ASAR files at the moment, so all files will be shipped unpacked. If your app consists of very large numbers of small files this may reduce performance. You could use a bundler, or [make an asar file yourself](https://github.com/electron/asar) and supply it as an input to work around this limitation.
+* You should remove any code that invokes Squirrel.
+
+## stdlib config
+
+The standard Electron config you're asked to import looks like this:
+
+```hocon
+app {
+  fsname = ${?package-json.name}
+  display-name = ${?package-json.productName}
+  version = ${?package-json.version}
+  electron.version = ${?package-json.packages.node_modules/electron.version}
+  contact-email = ${?package-json.author.email}
+
+  // Electron doesn't place the binary in a bin directory, so we have to fix that up here.
+  linux {
+    desktop-file."Desktop Entry".Exec = ${app.linux.install-path}/${app.fsname}
+    symlinks += ${app.linux.prefix}/bin/${app.fsname} -> ${app.linux.install-path}/${app.fsname}
+  }
+
+  mac {
+    info-plist {
+      NSSupportsAutomaticGraphicsSwitching = true
+      NSRequiresAquaSystemAppearance = false
+      NSHighResolutionCapable = true
+      NSQuitAlwaysKeepsWindows = false
+
+      LSEnvironment {
+        MallocNanoZone = "0"
+      }
+      NSAppTransportSecurity {
+        NSAllowsArbitraryLoads = true
+      }
+      NSBluetoothAlwaysUsageDescription = This app needs access to Bluetooth
+      NSBluetoothPeripheralUsageDescription = This app needs access to Bluetooth
+      NSCameraUsageDescription = This app needs access to the camera
+      NSMainNibFile = MainMenu
+      NSPrincipalClass = AtomApplication
+    }
+  }
+
+  // A simple default input.
+  inputs = ${app.inputs} [
+    "*.{json,js,ts,css,html}"
+
+    {
+      from = node_modules
+      to = node_modules
+      remap = [ "-electron/dist/**" ]
+    }
+  ]
+}
+```

@@ -23,10 +23,9 @@ location that you used before, overwriting any files that were present.
 
 === "Electron"
 
-    The version of the package is taken from the version defined in your `package-lock.json` file.
+    The version of the package is taken from the version defined in your `package.json` file.
     
     * [ ] Edit your `package.json` file and alter the `"version": "1.0"` line to read `"version": "2.0"`. 
-    * [ ] Re-run `npm i --package-lock-only` to regenerate your `package-lock.json` file.
     * [ ] Re-run `conveyor make site`.
 
 ## Testing the update

@@ -4,8 +4,17 @@
 
 ### New features
 
-* The `app.site.copy-to` key lets you define a location to upload the resulting site via SFTP.
-* The `app.url-schemes` key lets you [associate your app with protocol schemes](configs/os-integration.md) (`my-app://deep/link`).
+* The new `app.site.copy-to` key lets you define a location to upload the resulting site via SFTP using the `make copied-site` task.
+* The new `app.url-schemes` key lets you [associate your app with protocol schemes](configs/os-integration.md) (`my-app://deep/link`).
+
+### Electron
+
+* The stdlib Electron default configuration has been improved with more macOS specific customizations.
+* The top level `package-lock {}` object has been renamed to `package-json {}`, with the old name remaining recognized for backwards compatibility purposes.
+
+### Fixes
+
+* The self-signed launch PowerShell script has been fixed to work with recent changes in Windows 10. Windows 11 is unaffected.  
 
 ## Conveyor 4
 

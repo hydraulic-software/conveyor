@@ -17,7 +17,7 @@ Conveyor makes distributing desktop and command line apps as easy as shipping a 
     * Build apt repositories for Debian/Ubuntu, tarballs for other distros. Integrates with systemd for servers and cron jobs.
 * **[Support for Electron apps](configs/electron.md).**
     * Benefit from well maintained platform native software updates without relying on Squirrel or any centralized update servers.
-    * Import config directly from your `package-lock.json` file.
+    * Import config directly from your `package.json` file.
 * **[Support for JVM apps](configs/jvm.md).**
     * Bundles a JVM from a vendor of your choice, and then uses jlink/jdeps to minimize the size.
     * Uses a native launcher that [adds useful features](configs/jvm.md#launcher-features).
