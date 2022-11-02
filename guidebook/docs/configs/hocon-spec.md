@@ -2,6 +2,10 @@
 
 HOCON (`application/hocon`) is the Human Optimized Config Object Notation. It's a superset of JSON that's used to configure Conveyor. This document is a simplified and cleaned up version of the spec. [The canonical version of the spec can be found here](https://raw.githubusercontent.com/lightbend/config/master/HOCON.md).
 
+## Conveyor extensions
+
+On top of the base HOCON spec Conveyor adds [additional features](hocon-extensions.md) like brace expansion in string lists, per-user default files, access to environment variables and the ability to [include the results of external programs](maven-gradle.md). This lets you make dynamic configs that are partly or completely computed on the fly.
+
 ## Goals / Background
 
 The primary goal is: keep the semantics (tree structure; set of

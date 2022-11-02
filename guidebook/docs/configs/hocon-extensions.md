@@ -1,12 +1,11 @@
 # Conveyor Extensions
 
 Conveyor adds the following features to base HOCON: 
-    
 
 1. Smart string lists.
 2. Including output from external commands.
 3. Access to environment variables.
-4. A temporary scratch object.
+4. A temporary scratch object.
 
 ## Smart string lists
 
