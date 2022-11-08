@@ -1,4 +1,4 @@
-# Download pages
+# Download/update site
 
 The `site` task will generate the online update repository along with a static download page. The `copied-site` task will additionally
 copy the results to another directory, which can be on a remote system accessible via SFTP. 
