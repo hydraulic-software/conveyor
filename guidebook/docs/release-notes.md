@@ -6,10 +6,11 @@
 
 * The new `app.site.copy-to` key lets you define a location to upload the resulting site via SFTP using the `make copied-site` task.
 * The new `app.url-schemes` key lets you [associate your app with protocol schemes](configs/os-integration.md) (`my-app://deep/link`).
+* The `app.site.base-url` key is now set to GitHub Releases automatically when `app.vcs-url` points to an HTTPS GitHub repository URL. 
 
 ### Electron
 
-* The stdlib Electron default configuration has been improved with more macOS specific customizations.
+* The Electron default configuration has been improved with more macOS specific customizations.
 * The top level `package-lock {}` object has been renamed to `package-json {}`, with the old name remaining recognized for backwards compatibility purposes.
 
 ### Fixes

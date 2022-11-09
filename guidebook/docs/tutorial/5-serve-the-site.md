@@ -2,8 +2,6 @@
 
 * [ ] Request a full build of the download / repository site:
 
-
-
 ```
 conveyor make site
 ```

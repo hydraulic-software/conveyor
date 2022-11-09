@@ -26,33 +26,29 @@ The `conveyor.compatibility-level` key will be added automatically on first run 
 
 To use Conveyor you must meet one of the following criteria:
 
-1. `app.site.base-url` is set to `http://localhost` (any port). This is the mode used in the tutorial and is for trying things out / playing around.
-2.  `app.vcs-url` is set to the URL of your source repository. The project found there must match the one you're packaging and must be open source. This can be a git URL, GitHub URL, Mercurial URL etc.
-3. `conveyor.license-key` contains an eight character license key (like `aaaa-bbbb`). This lets you package a proprietary application. To get a license key simply run Conveyor without setting anything in your config file except the site URL. A new key will be generated and put in the config file for you. During the introductory period Conveyor is free to use for everyone. Once the introductory period ends, you will be asked to associate your license key with a paid account.
+1. **Testing:** `app.site.base-url` is set to `http://localhost` (any port). This is the mode used in the tutorial and is for trying things out / playing around.
+2. **Open source:** `app.vcs-url` is set to the URL of your source repository. The project found there must match the one you're packaging and must be open source. This can be a git URL, GitHub URL, Mercurial URL etc. If it's a GitHub URL then the download site URL will default to the latest GitHub release for that app.
+3. **Licensed:** `conveyor.license-key` contains an eight character license key (like `aaaa-bbbb`). This lets you package a proprietary application. To get a license key simply run Conveyor without setting anything in your config file except the site URL. A new key will be generated and put in the config file for you. During the introductory period Conveyor is free to use for everyone. Once the introductory period ends, you will be asked to associate your license key with a paid account.
 
 Because Conveyor is licensed per-project license keys are associated with site URLs. It's OK to change your site URL, so you can fix typos or switch from a private to public location. If you change to a new URL and then change back again, you'll get an error because this looks like using one key for multiple projects. If you're not trying to share keys but still need to change your site URL to an older one, please email [contact@hydraulic.software](mailto:contact@hydraulic.software) and we'll sort it out.
 
 ## Minimal app
 
-Apps are built from [inputs](inputs.md). A config must specify at least one input file and the address where the downloads will be served from (as the packages need to know this to configure online updates). If the file name follows a conventional form all other app metadata can be derived from it:
+Apps are built from [inputs](inputs.md). A config must specify at least one input file and the address where the downloads will be served from (as the packages need to know this to configure online updates). Archives will be extracted automatically. If the file name follows a conventional form all other app metadata can be derived from it:
 
 ```
 app { 
-  inputs = example-app-1.1.zip
-  site {
-    host = yourserver.net    # Where your downloads will be served from.
+  windows.amd64.inputs = win/example-app-1.1.zip
+  mac.amd64.inputs = mac/intel/example-app-1.1.zip
+  mac.aarch64.inputs = mac/arm/example-app-1.1.zip
+  
+  site { 
+    base-url = yourserver.net/downloads    # Where your downloads and update files will be served from.
   }
 }
 ```
 
-You can also write this minimal config in other ways:
-
-```
-app.inputs = example-app-1.1.zip
-app.site.base-url = yourserver.net/some/subpath
-```
-
-This will generate packages for all supported platforms from the contents of the zip file, using the name `example-app`, `Example App` and version `1.1` in the appropriate places.
+This will generate packages for Windows, Mac Intel and Mac ARM from the contents of the zip files, using the name `example-app`, `Example App` and version `1.1` in the appropriate places.
 
 All configuration Conveyor pays attention to goes under the `app` hierarchy, but you can place keys outside this area to hold your own variables.
 
@@ -177,7 +173,7 @@ A piece of config like this can be generated with the `conveyor keys generate` c
 
 ## Character encodings
 
-By default your application will be configured to use UTF-8 universally on all platforms, regardless of what character encoding the user's host system is set to. On Windows the custom JVM launcher Conveyor uses will configure the terminal appropriately so Unicode works (when the encoding is set to UTF-8).
+By default, your application will be configured to use UTF-8 universally on all platforms, regardless of what character encoding the user's host system is set to. On Windows the custom JVM launcher Conveyor uses will configure the terminal appropriately so Unicode works (when the encoding is set to UTF-8).
 
 This behaviour can be controlled using several keys:
 

@@ -11,6 +11,8 @@ The download page is optional and can just be ignored if you don't want it. It h
 * Provides copy/pasteable terminal commands to install the app on Linux.
 * Shows your app logo.
 
+[See an example](https://downloads.hydraulic.dev/eton-sample/download.html)
+
 ![Download page screenshot](download-page-screenshot.png)
 
 ## Synopsis
@@ -60,7 +62,7 @@ app.site {
 
 Conveyor's repository sites are designed to be compatible with GitHub releases. Using them is easy:
 
-1. Set your `app.site.base-url` config key to be `github.com/$user/$repo/releases/latest/download`
+1. Set your `app.vcs-url` to point to `https://github.com/user/repo`. This will automatically set `app.site.base-url` to be `github.com/$user/$repo/releases/latest/download`. If you aren't packaging an open source app then don't set `vcs-url` and set the `site.base-url` key to that location manually. 
 2. Run `conveyor make site` as usual to get an output directory.
 3. Create a new release and upload the contents of the output directory, minus `download.html` and any extra files you used, like icon files. [Take a look at this example release to see what you should have.](https://github.com/hydraulic-software/eton-desktop/)
 4. Take the generated `download.html` file and stick it on your website somewhere.
