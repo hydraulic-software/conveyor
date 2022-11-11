@@ -41,9 +41,9 @@ nav:
       - configs/jvm.md
       - configs/electron.md
     - Operating systems:
-      - configs/linux.md
-      - configs/mac.md
       - configs/windows.md
+      - configs/mac.md
+      - configs/linux.md
     - Build systems:
       - configs/maven-gradle.md
   - FAQ:
