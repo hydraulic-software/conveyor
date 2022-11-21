@@ -171,6 +171,24 @@ A piece of config like this can be generated with the `conveyor keys generate` c
 !!! note
     The words used to encode the signing key come from a predefined dictionary, so you can't choose your own sentences here. This encoding makes the key easier to write down with a pen and paper, which can be a low tech but reliable way to back it up.
 
+## Update modes
+
+Conveyor supports three different approaches to software updates:
+
+1. Background mode: the default.
+2. Aggressive mode. Set `app.updates = aggressive`.
+3. None. Set `app.updates = none`.
+
+In aggressive mode an update check will be performed synchronously on each app start. If a new version is available then the update process will start and the update downloaded and applied, without any user interaction being required. In background mode the behaviour differs by OS:
+
+* Windows: the OS itself will check for updates every 8 hours and upgrade the app in the background, even if it's not being used. Your users will never see an update prompt.
+* macOS: the app will check for updates on startup without blocking the user, and on a schedule whilst the app runs. Once the user agrees, updates will be downloaded and applied in the background ready for the next launch.
+
+Which mode to use depends heavily on how often your users will start the app and how important it is for updates to be applied quickly. If your app is a client for a server that speaks a complex protocol and you don't want to preserve protocol backwards compatibility, aggressive mode is appropriate. If your app is self-contained or the protocols it speaks evolve in a compatible way, background mode gives a better user experience as the user won't be interrupted by the update process.
+
+!!! warning
+    Aggressive mode updates have no effect on Linux.
+
 ## Character encodings
 
 By default, your application will be configured to use UTF-8 universally on all platforms, regardless of what character encoding the user's host system is set to. On Windows the custom JVM launcher Conveyor uses will configure the terminal appropriately so Unicode works (when the encoding is set to UTF-8).

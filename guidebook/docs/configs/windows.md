@@ -32,26 +32,9 @@ app.windows {
 }
 ```
 
-## Update keys
+## Keys
 
-**`app.windows.updates`** Controls the update user experience. One of the following:
-
-* `background`: The default. The user will not see update prompts and the app will stay up to date in the background. Windows will check every 8 hours for an update regardless of whether the app is being used or not. This is the closest you can get to how Chrome does updates.
-* `aggressive`: Windows will check for an update every time the user launches the app. If one is available, the user will be required to wait whilst it's applied, although it's possible to cancel in which case the update will be completed in the background.
-* `null`: No automatic updates. The user can still trigger an update by re-visiting the generated download page and clicking install/download again.
-
-Or it can be an object containing the keys below:
-
-**`app.windows.updates.launch-check-frequency`** In hours. How much time must elapse before Windows re-checks with the server to see if an update has been released. If set to null, Windows will never check on launch. If set to zero, Windows always checks.
-
-**`app.windows.updates.block-start`** True/false. If true then the user won't be allowed to start the app unless they accept the upgrade.
-
-**`app.windows.updates.prompt`** True/false. If true, the user will be prompted when an update is available. If false, they won't be. Note that on some versions of Windows this doesn't work and a prompt is always shown.
-
-??? warning
-    In aggressive mode Windows has a bug in which after an update is applied the app won't be immediately re-launched. The taskbar/start code seems to be in some sort of sleep state where it doesn't notice the update finished and that the launch should resume. The moment the user interacts with the start button or search bar in any way, the app launch proceeds, which could be confusing. For this reason we don't currently recommend aggressive mode updates unless strictly required.
-
-## Signing keys
+**`app.windows.updates`** See [update modes](index.md#update-modes).
 
 **`app.windows.timestamping-server`** URL of a cryptographic timestamping server (often called a timestamping authority or TSA). These are usually run by certificate authorities. Defaults to using Certum because their timestamping server is fast and well run, but you can use any TSA that is trusted by Windows. The URL must start with `http://` because the TSA protocol doesn't use SSL. 
 

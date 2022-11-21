@@ -4,6 +4,8 @@
 
 ### New features
 
+* Updates can now be set to [aggressive mode](configs/index.md#update-modes), meaning the packaged app will check for an update on every launch. You can use this to easily 
+  keep clients up to date with server protocol changes, without needing to think about backwards compatibility.
 * The new `app.site.copy-to` key lets you define a location to upload the resulting site via SFTP using the `make copied-site` task.
 * The new `app.url-schemes` key lets you [associate your app with protocol schemes](configs/os-integration.md) (`my-app://deep/link`).
 * The new `app.mac.bundle-extras{,.amd64,.aarch64}` keys allow you to add extra files anywhere in your Mac bundle even for non-native apps. 

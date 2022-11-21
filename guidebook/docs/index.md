@@ -8,13 +8,16 @@ Conveyor makes distributing desktop and command line apps as easy as shipping a 
 
 ## Features
 
-* **Self-updating packages for every OS, built on any OS.** Conveyor implements everything itself so doesn't rely on platform native tooling.
+* **Self-updating packages for every OS, built on any OS.**
     * Build applications that use the built-in [Windows MSIX package manager](outputs.md).
         * Windows keeps them up to date in the background.
         * Installs and updates reuse data blocks and hard link files, even between apps from different vendors.
         * Has everything IT departments need to easily deploy to managed networks.
     * Build Mac applications that automatically use the popular [Sparkle 2 update framework](https://sparkle-project.org/), without code changes.
     * Build apt repositories for Debian/Ubuntu, tarballs for other distros. Integrates with systemd for servers and cron jobs.
+* **[Background updates or check-on-launch.](configs/index.md#update-modes)**
+    * In aggressive mode your app will check for and apply updates on every launch, without user interaction being required.
+    * In background mode updates will be downloaded and applied in the background, without disturbing the user.
 * **[Support for Electron apps](configs/electron.md).**
     * Benefit from well maintained platform native software updates without relying on Squirrel or any centralized update servers.
     * Import config directly from your `package.json` file.

@@ -66,7 +66,7 @@ the `Contents` directory.
 
 **`app.mac.entitlements-plist`** A set of boolean key/value pairs that request privileges from the operating system. See below for more information. Defaults to requesting support for just-in-time compilation.
 
-**`app.mac.updates`** If "background" (the default), then the app will check for updates on a schedule. The first time an update is available the user will be asked to apply it, and given the option to apply updates silently in future. If "aggressive" then an update check is triggered on every app start, and the user will be notified that there's an update available within a few seconds of startup. They'll be given an option to skip it, be reminded later or apply it immediately. If "none" then update functionality isn't included. The exact UX implied by these names may change in future releases. 
+**`app.mac.updates`** See [update modes](index.md#update-modes).
 
 **`app.mac.sign`** Controls whether signing is done after bundling. Defaults to the value of `app.sign`. You should normally leave this set to true unless you want to speed up the build temporarily. It can be true even if you don't have a Developer ID certificate because the app will be self-signed.
 
