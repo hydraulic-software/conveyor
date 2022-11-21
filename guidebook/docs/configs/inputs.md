@@ -119,18 +119,16 @@ When an input has a list of remap rules every file being copied or extracted is 
 
 If no location is given, it's the same as the location of the matched file. Files can be excluded by prefixing a more specific rule with `-`. 
 
-**Precedence.** The rule that applies is the most specific, defined as the rule for which the pattern part matches the least. Therefore `**` is the least specific rule (because it matches everything) and can be overridden by any other. In case of ties, the last rule in the list is used.
+**Precedence.** The rule that applies is the most specific, defined as the rule for which the pattern part matches the least. The *pattern* is the file path part of the rule, and the match is the part from the first glob. For example given `foo/bar/**` tested against `foo/bar/baz.txt` the pattern matched part is `baz.txt`. As a consequence, `**` is the least specific rule (because it matches everything) and can be overridden by any other. In case of ties, the last rule in the list is used.
 
-To match a file must match a glob (the standard `*`, `?` characters) or the `**` glob, which matches any sequence of characters across directory boundaries. 
-
-A tricky case is when you have a rule which starts with a glob. The pattern matched part is defined as the part of the string following the first pattern. By implication, the rules:
+A tricky case is when you have a rule which starts with a glob. Because the pattern matched part is defined as the part of the string following the first pattern, the rules:
 
 ```
 -*/foo/*.bar
 **
 ```
 
-will simply include everything i.e. the first rule will be ignored, because they are considered to both pattern match the whole path of every file. Because in a tie the last rule wins you can invert the ordering to fix it:
+will simply include everything i.e. the first rule will be ignored, because both rules are considered to pattern match the whole path of every file giving them equal precedence. Because in a tie the last rule wins you can invert the ordering to fix it:
 
 ```
 **
