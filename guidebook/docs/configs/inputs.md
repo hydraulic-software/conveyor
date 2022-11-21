@@ -50,6 +50,15 @@ app.inputs += {
 app.inputs += foobar.com/some-file
 app.inputs += "data:IyEvYmluL2Jhc2gKZWNobyBTYW1wbGUgc2NyaXB0Lg== -> sample-script.sh"
 
+# You can specify http headers for URL inputs.
+app.inputs += {
+  from = foobar.com/path/to/file
+  http-headers {
+    # Environment variables get expanded automatically. 
+    Authentication: Basic ${env.AUTH_TOKEN}
+  }
+}
+
 # Raw content can be embedded in the config. It will be de-indented for you.
 app.inputs += {
   content = """
@@ -99,25 +108,39 @@ Paths should always use the UNIX path separator (`/`) and are interpreted relati
 
 The string syntax is shorthand for the object syntax, they can always be treated identically. Objects may consist of these keys:
 
-**`from`** A string interpreted as either a file/directory if it exists relative to the config file, or a URL if the file isn't found missing. An https prefix is optional. The string is brace expanded and may contain glob characters when it refers to a path on the file system, thus a single specified input may be expanded to multiple actual inputs that share the same `to` field.
+**`from`** A string interpreted as either a file/directory if it exists relative to the config file, or a URL if the file isn't found
+missing. An https prefix is optional. The string is brace expanded and may contain glob characters when it refers to a path on the file
+system, thus a single specified input may be expanded to multiple actual inputs that share the same `to` field.
 
-**`content`** A string that will be placed in the given destination file. It's de-indented for you, so you can place the content at the right offset to look good in the config. On UNIX if it starts with a shebang line it will be marked executable automatically. The HOCON `"""` multi-line string literal syntax is useful here but remember that if you want to include HOCON substitutions, you have to do that _outside_ the string, so you'll need to write something like `"""${my-var}"""`.
+**`content`** A string that will be placed in the given destination file. It's de-indented for you, so you can place the content at the
+right offset to look good in the config. On UNIX if it starts with a shebang line it will be marked executable automatically. The
+HOCON `"""` multi-line string literal syntax is useful here but remember that if you want to include HOCON substitutions, you have to do
+that _outside_ the string, so you'll need to write something like `"""${my-var}"""`.
 
 **`to`** The location in the staging area where the input should be placed or extracted to. By default this is the root.
 
-**`remap`** A list or multi-line string of remap rules. See below for details. If not specified the default is `[ ** ]` which means "copy everything to the same location" in the staging area.
+**`remap`** A list or multi-line string of remap rules. See below for details. If not specified the default is `[ ** ]` which means "copy
+everything to the same location" in the staging area.
 
-**`extract`** If true, the input is assumed to be an archive and extraction of the contents will occur to whatever the `to` destination path is. If false, the input won't be extracted. If not set then a heuristic is used: it will be extracted if the input is a zip or tarball, otherwise it won't be (i.e. file formats based on zip like JARs won't be extracted).
+**`extract`** If true, the input is assumed to be an archive and extraction of the contents will occur to whatever the `to` destination path
+is. If false, the input won't be extracted. If not set then a heuristic is used: it will be extracted if the input is a zip or tarball,
+otherwise it won't be (i.e. file formats based on zip like JARs won't be extracted).
+
+**`http-headers`** A map of key-value pairs that contains additional HTTP headers to be sent when downloading a URL.
 
 ## Remap rules
 
-Remap rules allow you to selectively drop, rename or move files as they are being copied. They can be used both when using a directory as an input, and also when extracting a zip or tarball.
+Remap rules allow you to selectively drop, rename or move files as they are being copied. They can be used both when using a directory as an
+input, and also when extracting a zip or tarball.
 
-When an input has a list of remap rules every file being copied or extracted is tested against each item in the list in order. A rule defines a set of files that match and optionally, a location in the destination to place them. At least one rule must match for the file to be included, which means if you specify your own remap list then it will by default match nothing. Each rule is written as:
+When an input has a list of remap rules every file being copied or extracted is tested against each item in the list in order. A rule
+defines a set of files that match and optionally, a location in the destination to place them. At least one rule must match for the file to
+be included, which means if you specify your own remap list then it will by default match nothing. Each rule is written as:
 
 `[-]path/to/files/** [-> some/location]`
 
-If no location is given, it's the same as the location of the matched file. Files can be excluded by prefixing a more specific rule with `-`. 
+If no location is given, it's the same as the location of the matched file. Files can be excluded by prefixing a more specific rule with `-`
+.
 
 **Precedence.** The rule that applies is the most specific, defined as the rule for which the pattern part matches the least. Therefore `**` is the least specific rule (because it matches everything) and can be overridden by any other. In case of ties, the last rule in the list is used.
 
