@@ -6,7 +6,8 @@
 
 * The new `app.site.copy-to` key lets you define a location to upload the resulting site via SFTP using the `make copied-site` task.
 * The new `app.url-schemes` key lets you [associate your app with protocol schemes](configs/os-integration.md) (`my-app://deep/link`).
-* The `app.site.base-url` key is now set to GitHub Releases automatically when `app.vcs-url` points to an HTTPS GitHub repository URL. 
+* The new `app.mac.bundle-extras{,.amd64,.aarch64}` keys allow you to add extra files anywhere in your Mac bundle even for non-native apps. 
+* The `app.site.base-url` key is now set to GitHub Releases automatically when `app.vcs-url` points to an HTTPS GitHub repository URL.
 
 ### Electron
 
@@ -15,7 +16,9 @@
 
 ### Fixes
 
-* The self-signed launch PowerShell script has been fixed to work with recent changes in Windows 10. Windows 11 is unaffected.  
+* The self-signed launch PowerShell script has been fixed to work with recent changes in Windows 10. Windows 11 is unaffected.
+* A UI scaling related bug has been fixed in the installer EXEs for Windows.
+* A workaround for a Windows bug that could stop Conveyor contacting the internet in some scenarios has been added.
 
 ## Conveyor 4
 

@@ -21,17 +21,22 @@ app.mac {
 
   # Disable signing even if keys are available.
   sign = false
-  
-  # A file only shipped in Mac packages.
-  inputs += mac-file
-  
+
   # Override the default set of icon images pulled from the inputs
   icons = "mac-icons-*.png"
   
-  # Add files specific to Intel Mac or Apple Silicon builds.
+  # Add files: for JVM or Electron apps these are app resources, for native 
+  # apps it's the same as bundle-extras.
+  inputs += fat-file
   amd64.inputs += intel-mac-file
   aarch64.inputs += apple-silicon-file
-  
+
+  # Input definitions merged into the Contents/ directory. Useful for adding
+  # Mac specific stuff into JVM/Electron apps.
+  bundle-extras += extra-stuff/embedded.provisionprofile
+  amd64.bundle-extras += extra-stuff/amd64/Foo.framework -> Frameworks/Foo.framework
+  aarch64.bundle-extras += extra-stuff/aarch64/Foo.framework -> Frameworks/Foo.framework
+
   # Credentials for the GateKeeper servers.
   notarization {
     team-id = 1234567890
@@ -44,26 +49,32 @@ app.mac {
 ## Keys
 
 **`app.mac.inputs`** An input hierarchy for Mac specific inputs. You can also add to `app.mac.amd64.inputs` and `app.mac.aarch64.inputs`.
+How these files are treated depends on the type of app. For JVM and Electron apps these files are added to the `Contents/Resources` 
+directory in the bundle, unless they are native files, in which case they're added to the Frameworks directory. Files may be processed to
+extract native code of the right architectures. For native apps these files are simply added to the bundle inside the `Contents`
+directory.
+
+**`app.mac.{amd64,aarch64,}bundle-extras`** Only relevant for JVM and Electron apps. A list of inputs that are added directly to 
+the `Contents` directory.
 
 **`app.mac.icons`** An [input list](inputs.md) containing square icons of different sizes. Defaults to whatever `app.icons` is set to, which is `icons-*.png` by default.
 
 ??? warning "macOS bug with icons at small sizes"
     Some versions of macOS / the Finder have a bug which will display white noise for small app icons if you don't provide those sizes. To avoid this, make sure to render 16x16 and 32x32 icons and supply them in your inputs. Future versions of Conveyor may work around this bug automatically.
 
-**`app.mac.info-plist`**  Keys are converted to Apple's PList XML format, which provides
-application metadata on macOS. You normally don't need to alter this, but if you want to add entries to the `Info.plist` file you can do so here. [Consult Apple's reference for more information on what keys are available](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Introduction/Introduction.html).
+**`app.mac.info-plist`**  Keys are converted to Apple's PList XML format, which provides application metadata on macOS. You normally don't need to alter this, but if you want to add entries to the `Info.plist` file you can do so here. [Consult Apple's reference for more information on what keys are available](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Introduction/Introduction.html).
 
 **`app.mac.entitlements-plist`** A set of boolean key/value pairs that request privileges from the operating system. See below for more information. Defaults to requesting support for just-in-time compilation.
 
-**`app.mac.sparkle-inputs`** An input definition that points to a release of the [Sparkle 2 update framework](https://sparkle-project.org/). You can normally leave this at the default unless you want to use a custom fork of Sparkle for some reason.
-
 **`app.mac.updates`** If "background" (the default), then the app will check for updates on a schedule. The first time an update is available the user will be asked to apply it, and given the option to apply updates silently in future. If "aggressive" then an update check is triggered on every app start, and the user will be notified that there's an update available within a few seconds of startup. They'll be given an option to skip it, be reminded later or apply it immediately. If "none" then update functionality isn't included. The exact UX implied by these names may change in future releases. 
-
-**`app.mac.sparkle-options`** An object whose values are put in the `Info.plist` that controls Sparkle's behavior. [See here for a reference guide](https://sparkle-project.org/documentation/customization/). You should normally leave this alone unless you want precise behavioral control.
 
 **`app.mac.sign`** Controls whether signing is done after bundling. Defaults to the value of `app.sign`. You should normally leave this set to true unless you want to speed up the build temporarily. It can be true even if you don't have a Developer ID certificate because the app will be self-signed.
 
 **`app.mac.signing-key`**, **`app.mac.certificate`** See [signing keys](index.md#signing).
+
+**`app.mac.sparkle-options`** An object whose values are put in the `Info.plist` that controls Sparkle's behavior. [See here for a reference guide](https://sparkle-project.org/documentation/customization/). You should normally leave this alone unless you want precise behavioral control.
+
+**`app.mac.sparkle-framework`** An input definition that points to a release of the [Sparkle 2 update framework](https://sparkle-project.org/). You can normally leave this at the default unless you want to use a custom fork of Sparkle for some reason.
 
 ## Entitlements
 
