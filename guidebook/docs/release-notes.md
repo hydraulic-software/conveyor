@@ -29,6 +29,7 @@
 * The self-signed launch PowerShell script has been fixed to work with recent changes in Windows 10. Windows 11 is unaffected.
 * A UI scaling related bug has been fixed in the installer EXEs for Windows.
 * A workaround for a Windows bug that could stop Conveyor contacting the internet in some scenarios has been added.
+* JAR library extraction now properly recognizes and discards shared libraries built for Android and GNU-toolchain built Solaris.
 
 ## Conveyor 4
 
