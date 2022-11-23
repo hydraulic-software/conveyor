@@ -50,10 +50,9 @@ app.jvm.options += -Xmx1024m
 app.jvm.windows.options += -Xss4M
 app.jvm.mac.aarch64.options += -Xss4M
 
-# Set system properties. Keys must be quoted to stop them being treated as paths.
+# Set system properties.
 app.jvm.system-properties {
-	"foo" = bar
-	"dots.in.quotes" = baz
+	mylib.nativeLibPath = <libpath>
 }
 
 # Plumb the app version through to the app using constant command line arguments.
@@ -100,6 +99,8 @@ app.jvm.cli.foo-cli {
 * `app.version` - equal to the `${app.version}` key.
 * `app.revision` - equal to the `${app.revision}` key.
 * `app.vendor` - equal to the `${app.vendor}` key.
+
+Some special tokens are supported. See [JVM options](#jvm-options) for details.
 
 If you include [the client enhancements config from the standard library](../stdlib/jvm-clients.md), you also get:
 
@@ -292,6 +293,13 @@ Each launcher always includes JVM options defined by the `app.jvm` object, i.e. 
 * ... etc ...
 
 In this way you can set JVM flags for every entry point in your app whilst also specifying options that apply only to specific platforms and launchers.
+
+The options to set `app.jvm.system-properties` are added automatically. Options support two special tokens:
+
+* `&&` - this is replaced by the path to the directory where the program executable is found.
+* `<libpath>` - this is replaced by the path to where JNI libraries are placed. This can be useful for dealing with libraries that don't
+  call `System.loadLibrary` before attempting to extract JNI libs to the user's home directory, but do support overriding the behavior
+  with a system property.
 
 ### Defining launchers
 
