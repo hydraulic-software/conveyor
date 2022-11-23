@@ -190,14 +190,19 @@ The JAR files that get shipped are rewritten in three ways:
 2. The metadata of the files is canonicalized to eliminate non-determinism that would otherwise reduce the efficiency of update mechanisms.
 3. Debug info is (optionally) stripped.
 
+Therefore, your software should always attempt to load shared libraries by using `System.loadLibrary` first, before trying to extract native libraries from a JAR. If you use a library that doesn't then try the following options:
+
+1. File a bug against the upstream library asking them to use `System.loadLibrary` only try to extract libs if they catch an exception. This is a pretty standard way to avoid problems when packaging. 
+2. If there's a system property you can set you can use the `<libpath>` token, e.g. `app.jvm.system-properties.fooLib.jniPath = <libpath>`. At runtime this will become the path to where the extracted native libraries can be found.
+3. You can set `app.jvm.extract-native-libraries = false` to disable this behaviour but then you're likely to hit the fact that the files
+   won't be signed, and Apple's notarization servers will detect them and reject the app. So you will have to pre-process the JAR to replace shared libraries with the signed versions.
+
 Moving native libraries out of JARs has these benefits:
 
 * On Windows and macOS the security systems want to see that all native code is signed. Libraries hidden inside JARs would not be signed by the regular processes and on macOS this can result in the OS refusing to load them.
 * Unpacking shared libraries improves startup time. 
 * It improves the effectiveness of update delta compression.
 * It reduces download sizes by deleting libraries meant for other operating systems or CPU architectures.
-
-Therefore, your software should always attempt to load shared libraries by using `System.loadLibrary` first, before trying to extract native libraries from a JAR. Alternatively you can use `System.load` in combination with the `java.home` system property but remember to add either `lib` on UNIX or `bin` on Windows.
 
 ## Modules
 
