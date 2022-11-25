@@ -10,6 +10,8 @@
 * The new `app.url-schemes` key lets you [associate your app with protocol schemes](configs/os-integration.md) (`my-app://deep/link`).
 * The new `app.mac.bundle-extras{,.amd64,.aarch64}` keys allow you to add extra files anywhere in your Mac bundle even for non-native apps. 
 * The `app.site.base-url` key is now set to GitHub Releases automatically when `app.vcs-url` points to an HTTPS GitHub repository URL.
+* The [new `http-headers` sub-key](configs/inputs.md#object-syntax) of input objects can be used to pass authentication tokens or other 
+  arbitrary secrets as part of the download. This is useful for fetching artifacts from CI systems. 
 
 ### Electron
 
