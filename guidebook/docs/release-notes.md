@@ -28,10 +28,18 @@
 
 ### Fixes
 
-* The self-signed launch PowerShell script has been fixed to work with recent changes in Windows 10. Windows 11 is unaffected.
-* A UI scaling related bug has been fixed in the installer EXEs for Windows.
-* A workaround for a Windows bug that could stop Conveyor contacting the internet in some scenarios has been added.
 * JAR library extraction now properly recognizes and discards shared libraries built for Android and GNU-toolchain built Solaris.
+
+## Conveyor 4.1
+
+This is a bugfix release:
+
+* Fix icon positioning in the Windows installer stub EXE to handle non-standard UI scaling factors.
+* Make the Compose template app use 1.2 final.
+* Resolve an exception that could occur when bundling statically linked Linux binaries.
+* Fix the self-signed launch script, which appears to have been affected by a recent behavior change in Windows 10.
+* Fix an issue with signing of fat binaries that affects macOS Ventura.
+* Work around an issue in Windows affecting some users in which the JVM was unable to establish outbound connections.
 
 ## Conveyor 4
 
