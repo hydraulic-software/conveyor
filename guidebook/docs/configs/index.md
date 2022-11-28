@@ -54,6 +54,10 @@ All configuration Conveyor pays attention to goes under the `app` hierarchy, but
 
 ## Names and metadata
 
+**`app.version`** A version string made up of numbers separated by dots. Words like `-beta`, `SNAPSHOT` etc are not allowed, because this version number is used by update systems to determine if a new version is available.
+
+**`app.revision`** The version of the config file itself. This can be incremented if you change the package definition but not the underlying software. It should be set to zero again when the underlying software version changes.
+
 **`app.rdns-name`** A reverse DNS (Java style) name for the app package. Some operating systems like to use such names for metadata. The exact value doesn't matter much and it doesn't have to correspond to a real website. By default, one is created for you based on the site download URL but this is unlikely to be ideal.
 
 **`app.fsname`** and **`app.long-fsname`**. An *fsname* is a name that appears on the file system. The fsname of an app is used for forming default values for:
@@ -90,8 +94,6 @@ app.display-name = LittleCorp Example App
 **`app.description`** A one line summary of what the software does.
 
 **`app.license`** The name of the copyright license the app is under, defaulting to `Proprietary`. Open source apps should use an [SPDX identifier](https://spdx.org/licenses/) here to qualify for a free license.
-
-**`app.revision`** The version of the config file itself. This can be incremented if you change the package definition but not the underlying software. It should be set to zero again when the underlying software version changes.
 
 **`app.contact-email`** An email address used when a package system requires one. Defaults to `nobody@${app.site.host}` (where the host may be taken from the `app.site.base-url` URL).
 

@@ -12,6 +12,7 @@
 
 ## Issues with planned fixes
 
+* Some older versions of Windows have caching bugs in which replacing an MSIX on a remote download site will cause re-downloads to fail until a reboot. In future versions Conveyor will warn you if you're re-building a site for the same version that currently exists remotely.  
 * Changes in terminal size whilst a build is in progress won't be respected.
 * Providing a directory as your primary input will cause an icons related crash. Make sure your first input points to a file.
 * Specifying an input glob in combination with a target will cause the destination to be incorrectly treated as a file (e.g. `"foo.* -> bar"`).
