@@ -25,10 +25,16 @@
   best practice of calling `System.loadLibrary` first before attempting to unpack a JNI library from their JAR.
 * The config syntax for system properties is now more do-what-i-mean: you don't have to quote property names anymore to stop them being 
   interpreted as JSON object keys.
+* The client enhancements config now has a FlatLAF system property to make it load the native libraries from the right location.
+* The JDK configs have been refreshed.
 
 ### Fixes
 
 * JAR library extraction now properly recognizes and discards shared libraries built for Android and GNU-toolchain built Solaris.
+
+### Documentation
+
+* A new troubleshooting section has been added.
 
 ## Conveyor 4.1
 
