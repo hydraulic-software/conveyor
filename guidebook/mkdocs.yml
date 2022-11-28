@@ -51,8 +51,11 @@ nav:
     - faq/output-formats.md
     - faq/making-packages.md
     - faq/signing-and-certificates.md
-    - Tips and troubleshooting: tips-and-troubleshooting.md
     - faq/comparisons.md
+  - Troubleshooting:
+    - Windows: troubleshooting/troubleshooting-windows.md
+    - JVM apps: troubleshooting/troubleshooting-jvm.md
+    - Building: troubleshooting/troubleshooting-builds.md
 
 theme:
   name: 'material'

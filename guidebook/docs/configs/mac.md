@@ -87,3 +87,9 @@ The default entitlements request the ability to do just in time compilation but 
 
 !!! tip
     To view the entitlements in a binary you can run (on a Mac) `codesign -d --entitlements :- AppName.app`
+
+## File paths
+
+- Store important files in `$HOME/Library/Application Support/$rdns-name`.
+- Store log files in `$HOME/Library/Logs/$rdns-name`.
+- Store cache files in `$HOME/Library/Caches/$rdns-name`.
