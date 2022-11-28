@@ -28,9 +28,12 @@
 * The client enhancements config now has a FlatLAF system property to make it load the native libraries from the right location.
 * The JDK configs have been refreshed.
 
-### Fixes
+### Other
 
 * JAR library extraction now properly recognizes and discards shared libraries built for Android and GNU-toolchain built Solaris.
+* The default for macOS has been changed to pop up an update dialog on the first update, rather than silently install in the background.
+  The dialog offers to apply updates silently from that point onwards.
+* Bugfix: bumping the revision will trigger updates on macOS.
 
 ### Documentation
 
