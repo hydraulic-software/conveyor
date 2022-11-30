@@ -2,9 +2,11 @@
 
 [ :material-arrow-up-box: Start tutorial](tutorial/1-get-started.md){ .md-button .md-button--primary } [ :material-forum: Discussion forum](https://github.com/hydraulic-software/conveyor/discussions){ .md-button .md-button--primary }
 
-Conveyor makes distributing desktop and command line apps as easy as shipping a web app. It's a tool not a service, it generates and signs [self-upgrading packages for Windows, macOS and Linux using each platform's native package formats](outputs.md) without requiring you to have those operating systems, and it looks like this:
+[Hydraulic Conveyor](https://www.hydraulic.software) makes distributing desktop and command line apps as easy as shipping a web app. It's a tool not a service, it generates and signs [self-upgrading packages for Windows, macOS and Linux using each platform's native package formats](outputs.md) without requiring you to have those operating systems, and it looks like this:
 
 <video width="100%" poster="https://conveyor.hydraulic.dev/assets/promo.jpg" controls><source src="https://conveyor.hydraulic.dev/assets/promo.mp4" type="video/mp4"></video>
+
+It's free for open source apps and has [simple per-project pricing](https://www.hydraulic.software/pricing.html) for commercial apps.
 
 ## Features
 
