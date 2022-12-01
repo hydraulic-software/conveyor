@@ -11,7 +11,10 @@
 * The new `app.mac.bundle-extras{,.amd64,.aarch64}` keys allow you to add extra files anywhere in your Mac bundle even for non-native apps. 
 * The `app.site.base-url` key is now set to GitHub Releases automatically when `app.vcs-url` points to an HTTPS GitHub repository URL.
 * The [new `http-headers` sub-key](configs/inputs.md#object-syntax) of input objects can be used to pass authentication tokens or other 
-  arbitrary secrets as part of the download. This is useful for fetching artifacts from CI systems. 
+  arbitrary secrets as part of the download. This is useful for fetching artifacts from CI systems.
+* The `extract` key of an input object can now be the number of wrapped archives to extract. This is useful when you need to use files
+  from the output of a GitHub Actions step whilst preserving UNIX permissions, as GitHub Actions always zips the results yet doesn't 
+  preserve UNIX metadata, requiring you to wrap the files in a tarball and that is then placed inside a zip.
 
 ### Electron
 

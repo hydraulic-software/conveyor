@@ -68,7 +68,7 @@ app.inputs += {
   to = bin/sample.sh
 }
 
-# Archives are extracted (but not JARs).
+# Archives are extracted by default (but not JARs).
 #
 # Any input spec may use brace expansion with nesting. {} are special in HOCON so you
 # must quote the string.
@@ -122,9 +122,12 @@ that _outside_ the string, so you'll need to write something like `"""${my-var}"
 **`remap`** A list or multi-line string of remap rules. See below for details. If not specified the default is `[ ** ]` which means "copy
 everything to the same location" in the staging area.
 
-**`extract`** If true, the input is assumed to be an archive and extraction of the contents will occur to whatever the `to` destination path
-is. If false, the input won't be extracted. If not set then a heuristic is used: it will be extracted if the input is a zip or tarball,
-otherwise it won't be (i.e. file formats based on zip like JARs won't be extracted).
+**`extract`** The number of archives (within archives) to extract. If this is set to 1 (or true), the input is assumed to be an archive 
+and extraction of the contents will occur to whatever the `to` destination path is. If zero or false, the input won't be extracted. If more
+than one then the archive is assumed to contain another archive and that will in turn be extracted - this can be useful when retrieving
+artifacts from GitHub Actions which insists on wrapping everything in a zip, but can't preserve UNIX permissions or symlinks properly. This
+can necessitate putting a tarball inside the zip. If not set then a heuristic is used: it will be extracted if the input is a zip or 
+tarball, otherwise it won't be (i.e. file formats based on zip like JARs won't be extracted).
 
 **`http-headers`** A map of key-value pairs that contains additional HTTP headers to be sent when downloading a URL.
 

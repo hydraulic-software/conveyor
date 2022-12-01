@@ -34,7 +34,7 @@ Because Conveyor is licensed per-project license keys are associated with site U
 
 ## Minimal app
 
-Apps are built from [inputs](inputs.md). A config must specify at least one input file and the address where the downloads will be served from (as the packages need to know this to configure online updates). Archives will be extracted automatically. If the file name follows a conventional form all other app metadata can be derived from it:
+Apps are built from [inputs](inputs.md). A config must specify at least one input file and the address where the downloads will be served from (as the packages need to know this to configure online updates). Archives can be extracted and will be by default. If the file name follows a conventional form all other app metadata can be derived from it:
 
 ```
 app { 
