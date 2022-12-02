@@ -188,8 +188,10 @@ In aggressive mode an update check will be performed synchronously on each app s
 
 Which mode to use depends heavily on how often your users will start the app and how important it is for updates to be applied quickly. If your app is a client for a server that speaks a complex protocol and you don't want to preserve protocol backwards compatibility, aggressive mode is appropriate. If your app is self-contained or the protocols it speaks evolve in a compatible way, background mode gives a better user experience as the user won't be interrupted by the update process.
 
-!!! warning
-    Aggressive mode updates have no effect on Linux.
+!!! info
+    - Aggressive updates aren't implemented on Linux. On this platform you should check the `metadata.properties` file yourself and ask the user to update via whatever means they've chosen if they've fallen behind.
+    - Updates are only checked on startup. Users can leave their app running for long periods, so the server might change whilst instances are running. Your protocol should ideally check on each request if the client is out of date and return an error if so that tells the user to restart the app (or does it for them). Note that this is actually no different to a web app because users can leave tabs open for long periods, so if you roll out a new web server version that renames an endpoint you might break users who are using the app at that time, necessitating either a way to detect that (hard) or simply telling users to reload tabs if they break.
+    - Because aggressive updates involve a blocking check for a new version your app will start a bit slower than when using background updates. This is of course also no different to a web app, which will also check with a web server on every startup. If the update check takes longer than two seconds then a progress UI will appear.
 
 ## Character encodings
 
