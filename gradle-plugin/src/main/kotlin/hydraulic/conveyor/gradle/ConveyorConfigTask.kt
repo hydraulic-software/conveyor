@@ -41,7 +41,11 @@ abstract class ConveyorConfigTask : DefaultTask() {
             val app = desktopExt.application
             appendLine()
             appendLine("// Config from the Jetpack Compose Desktop plugin.")
-            appendLine("app.jvm.gui.main-class = ${app.mainClass}")
+            app.mainClass?.let {
+                appendLine("app.jvm.gui.main-class = " + quote(it))
+                appendLine("app.linux.desktop-file.\"Desktop Entry\".StartupWMClass = " + quote(it.replace('.', '-')))
+            }
+
             importJVMArgs(app.jvmArgs, project)
 
             app.nativeDistributions.packageName?.let { appendLine("app.fsname = " + quote(it)) }
@@ -122,9 +126,12 @@ abstract class ConveyorConfigTask : DefaultTask() {
         if (appExtension != null) {
             appendLine()
             appendLine("// Config from the application plugin.")
-            appendLine("app.jvm.gui.main-class = ${appExtension.mainClass.get()}")
+            val mainClass = quote(appExtension.mainClass.get())
+            appendLine("app.jvm.gui.main-class = $mainClass")
+            appendLine("app.linux.desktop-file.\"Desktop Entry\".StartupWMClass = $mainClass")
             val jvmArgs = appExtension.applicationDefaultJvmArgs
             importJVMArgs(jvmArgs, project)
+            appendLine()
         }
 
         val javaExtension = project.extensions.findByName("java") as? JavaPluginExtension
@@ -132,7 +139,6 @@ abstract class ConveyorConfigTask : DefaultTask() {
             val jvmVersion = javaExtension.toolchain.languageVersion.orNull
             val vendor: JvmVendorSpec = javaExtension.toolchain.vendor.orNull ?: kotlin.runCatching { ADOPTIUM }.getOrNull() ?: ADOPTOPENJDK
             if (jvmVersion == null) {
-                appendLine()
                 appendLine("// Java toolchain doesn't specify a version. Not importing a JDK.")
             } else {
                 var conveyorVendor = if (vendor.toString() == "any") "openjdk" else when (vendor) {
