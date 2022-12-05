@@ -20,8 +20,7 @@ dependencies {
     implementation("dev.hydraulic:dev.hydraulic.types:1.0") {
         because("Machine, OperatingSystem, CPUArchitecture types.")
     }
-    // TODO(high): Upgrade to Compose 1.2 final when released.
-    compileOnly("org.jetbrains.compose:compose-gradle-plugin:1.2.0-beta01") {
+    compileOnly("org.jetbrains.compose:compose-gradle-plugin:1.2.0") {
         because("Supporting Jetpack Compose Desktop apps.")
     }
     compileOnly("org.openjfx:javafx-plugin:0.0.11") {
