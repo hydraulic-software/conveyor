@@ -189,9 +189,38 @@ In aggressive mode an update check will be performed synchronously on each app s
 Which mode to use depends heavily on how often your users will start the app and how important it is for updates to be applied quickly. If your app is a client for a server that speaks a complex protocol and you don't want to preserve protocol backwards compatibility, aggressive mode is appropriate. If your app is self-contained or the protocols it speaks evolve in a compatible way, background mode gives a better user experience as the user won't be interrupted by the update process.
 
 !!! info
-    - Aggressive updates aren't implemented on Linux. On this platform you should check the `metadata.properties` file yourself and ask the user to update via whatever means they've chosen if they've fallen behind.
-    - Updates are only checked on startup. Users can leave their app running for long periods, so the server might change whilst instances are running. Your protocol should ideally check on each request if the client is out of date and return an error if so that tells the user to restart the app (or does it for them). Note that this is actually no different to a web app because users can leave tabs open for long periods, so if you roll out a new web server version that renames an endpoint you might break users who are using the app at that time, necessitating either a way to detect that (hard) or simply telling users to reload tabs if they break.
-    - Because aggressive updates involve a blocking check for a new version your app will start a bit slower than when using background updates. This is of course also no different to a web app, which will also check with a web server on every startup. If the update check takes longer than two seconds then a progress UI will appear.
+    - **Updates are only checked on startup.** Users can leave their app running for long periods, so the server might change whilst instances are running. Your protocol should ideally check on each request if the client is out of date and return an error if so that tells the user to restart the app (or does it for them). Note that this is actually no different to a web app because users can leave tabs open for long periods, so if you roll out a new web server version that renames an endpoint you might break users who are using the app at that time, necessitating either a way to detect that (hard) or simply telling users to reload tabs if they break.
+    - **Your app will start a bit slower.** This is of course also no different to a web app, which will also check with a web server on every startup. If the update check takes longer than two seconds then a progress UI will appear.
+
+### Aggressive updates on Linux
+
+Aggressive updates aren't implemented on Linux because it's unconventional for apps to control their own update process on this platform.
+
+If distributing to Linux you should check [the `metadata.properties` file](download-pages.md#exporting-to-metadataproperties) that's
+generated as part of your download/update site (`conveyor make site`) by looking at the `app.version` key, and then ask the user to 
+update themselves if they've fallen behind in your UI.
+
+??? info "Checking for new versions in JVM apps"
+    When packaged the `app.repositoryUrl` system property will contain the site base URL, and `app.version` contains the content of the
+    `app.version` key. Note: this does not include the revision, as that's meant only for changes to the package itself not the contained
+    software, but `app.revision` is also set if you want to compare against that too. So to implement an update check on Linux add 
+    `/metadata.properties` to the value of that system property, download it over HTTPS, parse it with the `java.util.Properties` class,
+    extract the `app.version` key from the parsed file and then compare it with the `app.version` system property. The 
+    [`ComparableVersion`](https://github.com/apache/maven/blob/master/maven-artifact/src/main/java/org/apache/maven/artifact/versioning/ComparableVersion.java)
+    class from the Maven source code is an easy way to compare version numbers; it can be copy/pasted into your source tree. If the app
+    is behind then hide the main screen and show a message to the user asking them to upgrade their package by using apt-get. 
+
+??? info "Checking for new versions in Electron apps"
+    After fetching the `metadata.properties` file the [dot-properties](https://github.com/eemeli/dot-properties) package can be used to 
+    parse it, or you can just do some simple string manipulation: split to lines, drop any line starting with `#`, split each
+    line by `=`, convert to a map and (optionally, if you're adding custom keys) un-backslash-escape the values. Supporting the full
+    specification isn't necessary for parsing this file. To learn what the current version use your `package.json` file
+    include your site URL in that file and then in.
+
+??? info "Checking for new versions in other apps"
+    Although there is [a precise specification for the `.properties` format](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Properties.html#load(java.io.Reader)),
+    there's no need to fully implement it. The format can be treated as a simple set of `key=value` pairs in which lines starting with `#`
+    are to be ignored, and the values should be un-backslash-escaped before use.
 
 ## Character encodings
 

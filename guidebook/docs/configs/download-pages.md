@@ -58,6 +58,43 @@ app.site {
 }
 ```
 
+## Exporting to metadata.properties
+
+When you generate a download/update site with `conveyor make site` one of the generated files is called `metadata.properties`. It's a text file containing key=value pairs and by default will look like this:
+
+```properties
+#Sun Dec 04 18:41:57 CET 2022
+app.long-fsname=vendor-name-product-name
+app.revision=0
+app.windows.manifests.version-quad=2.1.0.0
+app.version=2.1
+```
+
+The keys to export are controlled by the `app.site.export-keys` key and the default value is:
+
+```
+export-keys = [app.long-fsname, app.version, app.revision, app.windows.manifests.version-quad]
+```
+
+You can export any key that maps to a string, number or boolean. Objects and lists can't be exported. Here's an example of exporting a multi-line string:
+
+```
+
+release-notes = """
+    New feature: We've integrated AI and blockchain to make your work really fizz!
+    Also - bug fixes.
+"""
+app.site.export-keys += release-notes
+```
+
+The resulting `metadata.properties` file will have a key that looks like this:
+
+```properties
+release-note=New feature: We've integrated AI and blockchain to make your work really fizz!\nAlso - bug fixes.\n
+```
+
+Notice that the newline characters are escaped and the indent/leading whitespace were stripped. 
+
 ## Publishing through GitHub
 
 Conveyor's repository sites are designed to be compatible with GitHub releases. Using them is easy:
