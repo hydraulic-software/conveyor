@@ -1,5 +1,13 @@
 # Release notes
 
+## Conveyor 6
+
+* To improve compatibility with Amazon S3/CloudFront, the way Debian packages are placed in the generated apt site has been changed.
+  The new default "non-flat" layout places the apt and .deb files into a `debian` subdirectory. The previous "flat" layout (where all 
+  the files are together in the same directory) continues to be used for projects that have already uploaded a flat site, or for projects 
+  targeting GitHub Releases, as GitHub doesn't allow uploads of files in directories. The type of site can be controlled with the new
+  `app.site.flat` key.
+
 ## Conveyor 5
 
 ### New features

@@ -21,7 +21,7 @@ The download page is optional and can just be ignored if you don't want it. It h
 app.site {
   display-name = Title of the web page.
 
-	# Where the installed packages can check for online updates.
+  # Where the installed packages can check for online updates.
   base-url = somesite.com/downloads
 
   # Import an HTML template or additional files to the generated site.
@@ -42,6 +42,11 @@ app.site {
   
   # Directory to upload/copy the site to over SFTP.
   copy-to = "//user@myserver.com/var/www/downloads"
+  
+  # If set, controls whether the Debian packages and apt files go into a 
+  # subdirectory or not. If not set this is inferred automatically.
+  # You should normally never need to set this. 
+  flat = true/false
 }
 ```
 
