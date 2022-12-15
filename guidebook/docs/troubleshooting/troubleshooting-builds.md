@@ -1,5 +1,7 @@
 # Troubleshooting
 
+Stuck? Can't find what you need here? If you're a commercial user then you can write to [contact@hydraulic.software](mailto:contact@hydraulic.software). Otherwise feel free to post in [the GitHub discussion forum](https://github.com/hydraulic-software/conveyor/discussions).
+
 ## Use good config style
 
 Conveyor has a large default configuration that is included before your own. Following two simple rules will help avoid problems:

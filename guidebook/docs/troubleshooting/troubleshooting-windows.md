@@ -1,5 +1,7 @@
 # Troubleshooting Windows
 
+Stuck? Can't find what you need here? If you're a commercial user then you can write to [contact@hydraulic.software](mailto:contact@hydraulic.software). Otherwise feel free to post in [the GitHub discussion forum](https://github.com/hydraulic-software/conveyor/discussions).
+
 ## Program files
 
 Windows apps installed with Conveyor (MSIX) run inside an app container that prevents modification of the program's installed files. It also prevents listing of the `c:\Program Files\WindowsApps` directory where apps are located. To view the installed program files in Explorer and get other useful packaging related features, grab [MSIX Hero](https://msixhero.net/). Then select your package and use the toolbar to open an Explorer inside the right directory.
@@ -26,4 +28,4 @@ The workaround is to always ensure you change your version number for any new up
 ## PowerShell errors about missing AppX modules
 
 PowerShell 7 isn't backwards compatible with PowerShell 6 (a.k.a. "Windows PowerShell"). When self-signing, the `install.ps1` scripts must
-be run from PowerShell 6. This issue is planned to be worked around in a future Conveyor release. 
+be run from the default PowerShell that comes with Windows. This issue is planned to be worked around in a future Conveyor release.

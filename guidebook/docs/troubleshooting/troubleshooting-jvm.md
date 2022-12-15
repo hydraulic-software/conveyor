@@ -1,10 +1,6 @@
 # Troubleshooting JVM apps
 
-## FlatLAF doesn't use correct window decorations
-
-Make sure you're using 2.6+ and that your config is including the JVM enhancements config (`include required("/stdlib/jvm/enhancements/client/v1.conf")`).
-
-For more details see [problems loading native libraries](#problems-loading-native-libraries).
+Stuck? Can't find what you need here? If you're a commercial user then you can write to [contact@hydraulic.software](mailto:contact@hydraulic.software). Otherwise feel free to post in [the GitHub discussion forum](https://github.com/hydraulic-software/conveyor/discussions).
 
 ## Problems loading native libraries
 
@@ -26,6 +22,12 @@ It's often worth reporting these bugs to the upstream projects, so they can use 
     JAR stripping can be disabled, but then you will face problems with Mac notarization detecting unsigned code inside your JARS. Future
     versions of Conveyor may add support for signing files inside JARs, but this wouldn't fix the user experience problems such as slower
     startup and littering home directories.
+
+## FlatLAF doesn't use correct window decorations
+
+Make sure you're using 2.6+ and that your config is including the JVM enhancements config (`include required("/stdlib/jvm/enhancements/client/v1.conf")`).
+
+For more details see [problems loading native libraries](#problems-loading-native-libraries).
 
 ## Big delta updates
 
