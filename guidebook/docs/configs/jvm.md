@@ -210,19 +210,19 @@ Conveyor can use the Java Platform Module System (JPMS a.k.a. Jigsaw).
 
 **Linked JVMs.** Conveyor always bundles a specialized JVM created using `jlink`. That's why Java 8 isn't supported (if you need support for Java 8 please [let us know](mailto:contact@hydraulic.software)). Linking is primarily a size and startup time optimization: it gets rid of parts of the JDK you don't need, and linked modules get incorporated into the single `modules` file which uses an more optimized format called "jimage". Classes can be loaded more quickly and take up less space when processed this way. You can use the `jimage` command line tool in any JDK to view the contents of a `modules` file.
 
-**Modular JARs.** Conveyor will link a JAR that provides a `module-info.class` into the bundled JVM as long as it doesn't depend on any auto-modules. As a consequence those JARs won't be found in the app data directory - only JARs on the classpath will be placed there.  Conveyor always puts automatic modules (those that declare a module name in their manifest) as ordinary classpath JARs. At this time you cannot control whether modules are linked or placed on the classpath, except by pre-processing JARs to add or remove `module-info.class` files. So: Explicit modules are always put on the module path and linked, other JARs never are.
+**Modular JARs.** Conveyor will link a JAR that provides a `module-info.class` into the bundled JVM as long as it doesn't depend on any auto-modules and isn't excluded (see below). As a consequence those JARs won't be found in the app data directory, only JARs on the classpath will be placed there.  Conveyor always puts automatic modules (those that declare a module name in their manifest) as ordinary classpath JARs.
 
-**Automatic dependency detection.** A modern JDK comes with many modules that your app probably doesn't use. The `jdeps` tool tries to figure out what JDK modules a non-modular JAR needs by doing static analysis of the bytecode. Conveyor uses `jdeps` automatically whenever it finds a pseudo-module called `detect` in the `app.jvm.modules` list, and the default list contains only `detect`.
+**Automatic dependency detection.** A modern JDK comes with many modules that your app probably doesn't use. The `jdeps` tool tries to figure out what JDK modules a non-modular JAR needs by doing static analysis of the bytecode. Conveyor uses `jdeps` automatically whenever it finds an entry of `detect` in the `app.jvm.modules` list, and the default list contains only `detect`.
 
-JDeps will look for both usage of JDK modules, and also internal packages. The output of `jdeps` _is a guess_. You may need to correct these types of mistake:
+You may need to correct the automatically inferred module path in some cases:
 
-1. It might miss the usage of modules if they're only accessed by reflection/ServiceLoader, or by languages that aren't bytecode languages.
-2. It might pull in modules that you don't actually need, because some obscure feature of a library you use happens to need it but you never actually use that library feature.
-2. It might not notice the usage of internal APIs, if done via reflection.
+1. If a JDK module is missed because it's only accessed by reflection/ServiceLoader, or by languages that aren't bytecode languages.
+2. If a JDK module is pulled in but isn't really required by your app, typically because some obscure feature of a library you use happens to need it but you never actually use that library feature.
+3. If your app contains code that violates module boundaries, and you don't want to fix it by adding `--add-opens` flags to the JVM options.
 
 As an example of point (2) the popular JNA library will pull in all of Swing, because it has a utility function to get the native window handle of an AWT window. If you don't use Swing then this is just pointless bloat.
 
-Both problems are easy to fix. If a module is missed, just add it to the `app.jvm.modules` list. If you know you won't hit the codepath that requires a module, get rid of it by adding the module name prefixed with `-`. Like this:
+Problems are easy to fix. If a module is missed, just add it to the `app.jvm.modules` list. If you want to get rid of a JDK module or move a module onto the classpath, add the module name prefixed with `-` like this:
 
 ```
 app {
@@ -232,17 +232,23 @@ app {
 		
 		# Delete the SQL module.
 		modules += -java.sql
+		
+		# Move GSON onto the classpath and off the module path.
+		modules += -com.google.gson
 	}
 }
 ```
 
 Note that you can't delete a module non-optionally required by an explicit module - this will just be ignored. The JVM wouldn't start up otherwise.
 
+!!! warning "Gradle modularity bugs"
+    Starting from version 7 Gradle will automatically run and compile your app with modules on the module path. As of December 2022 there is [a bug](https://github.com/gradle/gradle/issues/19587) such that sometimes Gradle won't notice a JAR is a JPMS module even when it is. In this case Conveyor may place more JARs onto the module path than occurs in your unit tests or Gradle `run` tasks. Although this won't matter if all your code (including libraries) is respecting module boundaries, you may need to align Conveyor with Gradle by adding some negative entries to the modules list to push modular JARs back onto the classpath.
+
 **Module system flags.** If non-reflective usage of internal APIs is statically detected you'll get a warning and the necessary `--add-opens` flags will be passed. If you need to access internal APIs that aren't detected by jdeps, you'll need to add the necessary `--add-opens` flags yourself in the `app.jvm.options` key. If you add an inferred flag then that will suppress the warning.
 
 When adding module related flags to the `app.jvm.options` key, be aware that there must not be a space between the flag name and value. Although that works with the normal Java launcher, the special launcher used by Conveyor-packaged apps requires them in native JVM form. Write e.g. `app.jvm.options += "--add-modules=jdk.incubator.foreign"` and not `app.jvm.options += --add-modules jdk.incubator.foreign`.
 
-**Diagnosing issues.** If you'd like to see what decisions Conveyor has made about your app, you can make the `repacked-jars` task for some machine and look at the files called `required-jdk-modules.txt` (this is the output of jdeps run over your jars) and `modular-jars.txt` which is a list of the JARs that will be linked in to the optimized JVM.
+**Diagnosing issues.** If you'd like to see what decisions Conveyor has made about your app, you can make the `processed-jars` task for some machine and look at the files called `required-jdk-modules.txt` (this is the output of jdeps run over your jars) and `modular-jars.txt` which is a list of the JARs that will be linked in to the optimized JVM.
 
 ## Launchers
 
