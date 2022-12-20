@@ -7,6 +7,10 @@
   the files are together in the same directory) continues to be used for projects that have already uploaded a flat site, or for projects 
   targeting GitHub Releases, as GitHub doesn't allow uploads of files in directories. The type of site can be controlled with the new
   `app.site.flat` key.
+* Updated JVM template apps to Gradle plugin 1.3, and refreshed the JDK standard library. 
+* Bugfix: improved UNIX flavor detection for native libraries in JAR files.
+* Bugfix: fixed an issue with restarting the app after a forced update on Windows if the application name has a space in it.
+* Bugfix: ensure that `app.version` is always interpreted as a string even if unquoted in HOCON.
 
 ## Conveyor 5
 
