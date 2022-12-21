@@ -1,5 +1,9 @@
 # Release notes
 
+## Conveyor 6.1
+
+* Bugfix: resolved an issue with using HSM drivers on macOS.
+
 ## Conveyor 6
 
 * To improve compatibility with Amazon S3/CloudFront, the way Debian packages are placed in the generated apt site has been changed.
