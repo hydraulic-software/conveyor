@@ -125,3 +125,15 @@ and upload the resulting download site to a remote server. The directory should 
 in the machine part (it's basically an `ssh://` url but minus the scheme). Public/private keys and the `known_hosts` file will be read from
 the usual locations as used by OpenSSH, but Conveyor won't log in to a server it doesn't recognize, so if you would get a new key warning
 from regular `ssh` you will need to log in first, to ensure the key goes into the `known_hosts` file.
+
+## Remote site checks
+
+Conveyor makes a number of checks to the published download site (if it's been published before) to ensure that users will be able to update
+to new versions of your software.
+The way detected issues are surfaced is controlled by key `app.site-check-failure`. The possible values are:
+
+* `error`: (default) Conveyor throws an error explaining the problem and stops processing.
+* `warn`: Conveyor displays a warning explaining the problem, but otherwise allows the site to be built to completion. This is useful for
+  the rare cases where
+  you might want to bypass the checks.
+ 
