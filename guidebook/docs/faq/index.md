@@ -20,7 +20,7 @@ in e.g. your download page, website, README file etc.
 
 No. Conveyor generates [standard package formats](../outputs.md) and on macOS it uses an open source update framework called
 [Sparkle](https://www.sparkle-framework.org/). All these can be produced with native toolchains. If you want to stop using Conveyor, you
-will just have to set up your own packaging scripts and do the integration work yourself. In other words, you'll have spend the time you
+will just have to set up your own packaging scripts and do the integration work yourself. In other words you'll have spend the time you
 saved by using Conveyor, but nothing will break.
 
 ## Why isn't Conveyor a service?
@@ -45,14 +45,14 @@ It has advantages for us too:
 
 ## What kinds of app can you package with it?
 
-It can package any kind of app, it just has some built-in features to make packaging JVM apps easy. The [tutorial](../tutorial/1-get-started.md) 
-shows how to package a CMake based C++ OpenGL app, for example.
+It can package any kind of app, it just has some built-in features to make packaging Electron and JVM apps easy. 
+The [tutorial](../tutorial/1-get-started.md) shows how to package a CMake based C++ OpenGL app, for example.
 
 Although you can package any kind of app, over time Conveyor will gain features to apps using specific frameworks easier to package.
 
 ## Is Conveyor only for desktop apps?
 
-Not at all! It also has some support for:
+It also has some support for:
 
 1. Servers that run outside of containers. See the [package a server](../tutorial/2-adapt-a-server.md) task page for an example that demonstrates systemd 
    integration, Apache 2/nginx reverse proxy integration and adding a dependency on Postgres.
@@ -64,6 +64,9 @@ Support for CLI apps will be improved in future releases.
 
 Yes, you can create packages straight from your Javascript/HTML/CSS files and your `node_modules` directory. Unlike with other Electron
 packaging solutions, you don't need special or custom servers and the results don't create problems for network administrators.
+
+See the [GitHub Desktop sample](https://github.com/hydraulic-software/github-desktop/) to see a config for a real, production-grade
+Electron app.
 
 ## Why should I make a desktop app?  
 
