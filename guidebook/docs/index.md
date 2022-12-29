@@ -45,9 +45,17 @@ It's free for open source apps and has [simple per-project pricing](https://www.
     * It makes standard formats and uses standard or open source update frameworks. 
     * To stop using it you can just write the scripts and integrations you'd have written anyway. 
 
-## Try sample apps that use Conveyor
+## Sample apps
 
-### Compose Multiplatform
+### Electron: GitHub Desktop
+
+This shows how a production-grade Electron app can be packaged using Conveyor, GitHub Actions and GitHub Releases.
+
+<img src="https://desktop.github.com/images/github-desktop-screenshot-mac.png" style="box-shadow: 0 10px 35px rgb(0 0 0 / 35%)"></img>
+
+[Download a Conveyor-ized GitHub Desktop](https://hydraulic-software.github.io/github-desktop/download.html){ .md-button .md-button--primary } [View source](https://github.com/hydraulic-software/github-desktop/){ .md-button }
+
+### JVM: Jetpack Compose
 
 <video width="100%" playsinline autoplay muted loop style="margin-left: -50px"><source src="https://www.hydraulic.software/assets/images/video/Eton.mp4" type="video/mp4"></video>
 
@@ -61,7 +69,7 @@ It's free for open source apps and has [simple per-project pricing](https://www.
 
 [Eton Notes](https://github.com/hydraulic-software/eton-desktop) is an open source example app written in Kotlin. It uses Material Design and the [Jetpack Compose](https://www.jetbrains.com/lp/compose-desktop/) reactive UI toolkit, which is the new standard Android GUI toolkit and also has a desktop port supported by JetBrains.
 
-### AtlantaFX Sampler
+### JVM: AtlantaFX Sampler
 
 <video width="100%" playsinline autoplay muted loop style="margin-left: -70px"><source type="video/mp4" src="https://www.hydraulic.software/assets/images/video/AtlantaFX-1.1.mp4"/></video>
 
