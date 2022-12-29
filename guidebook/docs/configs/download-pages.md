@@ -129,11 +129,10 @@ from regular `ssh` you will need to log in first, to ensure the key goes into th
 ## Remote site checks
 
 Conveyor makes a number of checks to the published download site (if it's been published before) to ensure that users will be able to update
-to new versions of your software.
-The way detected issues are surfaced is controlled by key `app.site-check-failure`. The possible values are:
+to new versions of your software. The way detected issues are surfaced is controlled by key `app.site.consistency-checks`. The possible 
+values are `error` and `warn`.
 
-* `error`: (default) Conveyor throws an error explaining the problem and stops processing.
-* `warn`: Conveyor displays a warning explaining the problem, but otherwise allows the site to be built to completion. This is useful for
-  the rare cases where
-  you might want to bypass the checks.
- 
+The following checks are made:
+
+* That the Windows signing certificate matches the one used to upload packages previously. This is useful to catch the case where a certificate identity has changed e.g. due to a switch from OV to EV, change of company name and so on. Changing certificate identity without disrupting updates is not currently supported by Conveyor. If you need this feature please [let us know](mailto:contact@hydraulic.software).  
+* That you aren't overwriting a pre-existing MSIX file. Older versions of Windows contain bugs that cause updates to fail until the next reboot if a package file is overwritten.
