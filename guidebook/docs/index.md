@@ -61,18 +61,18 @@ This shows how a production-grade Electron app can be packaged using Conveyor, G
 
 <img src="images/compose-multiplatform.svg" style="float: left; padding-right: 1em"></img>
 
-[Download Eton Notes (fully signed)](https://downloads.hydraulic.dev/eton-sample/download.html){ .md-button .md-button--primary }
+[Download (fully signed)](https://downloads.hydraulic.dev/eton-sample/download.html){ .md-button .md-button--primary } [Download (self signed)](https://downloads.hydraulic.dev/eton-sample/selfsigned/download.html){ .md-button } 
 
-[Download Eton Notes (self signed)](https://downloads.hydraulic.dev/eton-sample/selfsigned/download.html){ .md-button .md-button--primary }
+[View source](https://github.com/hydraulic-software/eton-desktop){ .md-button }
 
 <br style="clear: right" />
 
-[Eton Notes](https://github.com/hydraulic-software/eton-desktop) is an open source example app written in Kotlin. It uses Material Design and the [Jetpack Compose](https://www.jetbrains.com/lp/compose-desktop/) reactive UI toolkit, which is the new standard Android GUI toolkit and also has a desktop port supported by JetBrains.
+This is an open source example app written in Kotlin. It uses Material Design and the [Jetpack Compose](https://www.jetbrains.com/lp/compose-desktop/) reactive UI toolkit, which is the new standard Android GUI toolkit and also has a desktop port supported by JetBrains.
 
 ### JVM: AtlantaFX Sampler
 
 <video width="100%" playsinline autoplay muted loop style="margin-left: -70px"><source type="video/mp4" src="https://www.hydraulic.software/assets/images/video/AtlantaFX-1.1.mp4"/></video>
 
-[Download AtlantaFX sampler](https://downloads.hydraulic.dev/atlantafx/sampler/download.html){ .md-button .md-button--primary }
+[Download AtlantaFX sampler](https://downloads.hydraulic.dev/atlantafx/sampler/download.html){ .md-button .md-button--primary } [View source](https://github.com/hydraulic-software/atlantafx){ .md-button }
 
 [AtlantaFX](https://github.com/mkpaz/atlantafx) is an open source theme for JavaFX that implements a modern design language using the GitHub Primer color system. The sampler app provides a gallery of the available controls and stylings. It's written in Java with Maven. Read [the blog post](https://hydraulic.software/blog/3-atlantafx-sampler.html) to learn how this app was packaged.
