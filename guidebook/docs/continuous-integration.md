@@ -51,15 +51,15 @@ The config for this looks like:
 ci-artifacts-url = nightly.link/hydraulic-software/github-desktop/workflows/ci/conveyorize
 
 app {
-      windows.amd64.inputs = ${ci-artifacts-url}/build-out-Windows-x64.zip
-      mac.amd64.inputs = [{
-        from = ${ci-artifacts-url}/build-out-macOS-x64.zip
-        extract = 2
-      }]
-      mac.aarch64.inputs = [{
-        from = ${ci-artifacts-url}/build-out-macOS-arm64.zip
-        extract = 2
-      }]
+  windows.amd64.inputs = ${ci-artifacts-url}/build-out-Windows-x64.zip
+  mac.amd64.inputs = [{
+    from = ${ci-artifacts-url}/build-out-macOS-x64.zip
+    extract = 2
+  }]
+  mac.aarch64.inputs = [{
+    from = ${ci-artifacts-url}/build-out-macOS-arm64.zip
+    extract = 2
+  }]
 }
 ```
 
