@@ -54,6 +54,7 @@ nav:
     - faq/comparisons.md
   - Troubleshooting:
     - Windows: troubleshooting/troubleshooting-windows.md
+    - Linux: troubleshooting/troubleshooting-linux.md
     - JVM apps: troubleshooting/troubleshooting-jvm.md
     - Building: troubleshooting/troubleshooting-builds.md
 

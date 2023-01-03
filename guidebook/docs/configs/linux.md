@@ -2,7 +2,7 @@
 
 ## Synopsis
 
-```properties
+```
 # Make building test packages faster by disabling compression.
 app.linux.compression-level = none
 
@@ -14,7 +14,7 @@ app.linux.prefix = /usr/local
 app.linux.install-path = /opt/myapp
 
 # Change the menu categories, or any other key in the .desktop file.
-app.linux.desktop-file.Categories = "GTK;Gnome;Game"
+app.linux.desktop-file."Desktop Entry".Categories = "GTK;Gnome;Game"
 
 # Add a default SystemD service file which runs the app as a non-root dynamic user.
 # The key "server" is an arbitrary name here - you can define as many unit files as
@@ -70,9 +70,6 @@ These keys under `app.linux` control Linux specific packaging aspects.
 !!! note "Config directories"
     The config directory is implemented by symlinking `/etc/${app.long-fsname-dir} to the conf directory in your app files. If this directory already exists when a package is installed it will be left alone. Therefore, if your users may have already created files in this directory, the conf-dir mechanism won't be useful as the files expected to be there won't be added. The way this feature works may change in future.  
 
-**`desktop-file`** An INI file object. The `file-name` subkey controls what the file is called (defaulting to `${app.long-fsname}.desktop`). Then the `"Desktop Entry"` subkey defines the contents of that section with keys and values being mapped as appropriate. 
-You should only rarely need to configure the .desktop file directly, but, you may wish to set the `app.linux.desktop-file."Desktop Entry".Categories` key as on some desktop environments that key controls the menus where the app appears. Please refer to the [registered categories list](https://specifications.freedesktop.org/menu-spec/latest/apa.html#main-category-registry) for what you can place there. Metadata that appears in the Software Center apps some desktop environments have is a combination of data from the .desktop entry file and an AppStream XML file, which will also be generated for you.
-
 **`symlinks`** A list of strings, where each string consists of two parts separated by ` -> `. The first part is the location of a symlink, the second part its destination. If the location isn't absolute it's relative to the install path. The second part is just copied to the symlink directly, so can be absolute or relative. By default the list looks like this:
 
 ```
@@ -101,6 +98,14 @@ If you want to run extra code as root at install time, you can append a fragment
 **`contact-email`** This is needed for package, repository and PGP metadata which all have some notion of a maintainer. Defaults to `${app.contact-email}`.
 
 **`signing-key`** See [signing keys](index.md#signing).
+
+## Desktop integration
+
+**`desktop-file`** An INI file object. The `file-name` subkey controls what the file is called (defaulting to `${app.long-fsname}.desktop`). Then the `"Desktop Entry"` subkey defines the contents of that section with keys and values being mapped as appropriate.
+
+You should only rarely need to configure the .desktop file directly. The main entry you may need to change is `StartupWMClass` which may need to be altered if you aren't seeing your icon get associated with your app in the taskbar. To find out what it should be you can use the `lg` command from GNOME Shell "Run Command" dialog (press alt-f2), or `xprop WM_CLASS` if not using Wayland, and then select the window of your running app.
+
+You may also wish to set the `app.linux.desktop-file."Desktop Entry".Categories` key as on some desktop environments that key controls the menus where the app appears. Please refer to the [registered categories list](https://specifications.freedesktop.org/menu-spec/latest/apa.html#main-category-registry) for what you can place there. Metadata that appears in the Software Center apps some desktop environments have is a combination of data from the .desktop entry file and an AppStream XML file, which will also be generated for you.
 
 ## SystemD units
 
