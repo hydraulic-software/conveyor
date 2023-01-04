@@ -2,7 +2,13 @@
 
 ## Conveyor 6.1
 
-* Bugfix: resolved an issue with using HSM drivers on macOS.
+Bugfixes:
+
+* **Important:** Fix a non-determinism in generation of self-signing certificates that would cause upgrade failures for self-signed apps re-built after January 1st 2023.
+* Resolved an issue with using HSM drivers on macOS.
+* Enforce that the `app.fsname` key is written in `kebab-case`, as this name is transformed into different casing styles for different platforms to match native conventions and thus kebab-case was as previously undocumented assumption.
+* Fix a crash that could occur if the Mac finder placed `.DS_Store` files inside the private disk cache area.
+* Improved documentation around how to fix missing app icons on Linux.
 
 ## Conveyor 6
 
