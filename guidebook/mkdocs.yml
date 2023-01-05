@@ -19,6 +19,9 @@ nav:
     - release-notes.md
     - known-issues.md
     - min-sys-requirements.md
+    - Comparison vs alternatives:
+        - Electron: comparisons/electron-comparisons.md
+        - JVM: comparisons/jvm-comparisons.md
   - Tutorial:
     - tutorial/1-get-started.md
     - tutorial/2-create-or-adapt-a-project.md
@@ -51,7 +54,6 @@ nav:
     - faq/output-formats.md
     - faq/making-packages.md
     - faq/signing-and-certificates.md
-    - faq/comparisons.md
   - Troubleshooting:
     - Windows: troubleshooting/troubleshooting-windows.md
     - Linux: troubleshooting/troubleshooting-linux.md

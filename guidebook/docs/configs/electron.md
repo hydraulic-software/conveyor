@@ -1,29 +1,14 @@
 # Electron
 
 !!! tip
+    Learn how we packaged [GitHub Desktop with Conveyor](https://hydraulic.software/blog/8-packaging-electron-apps.html), a production-grade Electron app. Over 1,500 lines of code can be deleted, the resulting config is easy to read, and the app can be packaged and released from your laptop. We show how to combine it with GitHub Releases, Sites and Actions.
+
+!!! tip
     The [tutorial](../tutorial/1-get-started.md) shows you how to generate and package a simple Electron app.
 
 ## Overview
 
-There are several packaging tools and update engines that can be used with Electron, however they all have a variety of problems:
-
-* [Squirrel.Windows is only intermittently maintained](https://github.com/Squirrel/Squirrel.Windows/issues/1470), has been abandoned several times in the past and has serious design issues like installing into the user's *roaming* home directory (meaning it can break Windows networks). 
-* [Squirrel.Mac didn't have a release since 2017 and was completely abandoned in 2021](https://github.com/Squirrel/Squirrel.Mac). Switching to Sparkle (which is what Conveyor uses) [was requested by users](https://github.com/electron/electron/issues/29057) but got no response. 
-* Electron update solutions often require a custom server, or the use of a centralized update service which only works for open source apps.
-* They sometimes point you to [doc pages that don't document the config keys](https://www.electronforge.io/config/makers/appx).
-
-Conveyor uses [native updates on Windows/Linux, Sparkle 2 on macOS, and regular HTTP servers](../outputs.md).
-
-The other standard features of Conveyor can also eliminate hassle:
-
-* No need to find machines for each target OS to build packages. You can make packages for every OS on your laptop.
-* Use more convenient config syntax and features than raw JSON.
-* Handles all the details of code signing without native tools, which are often awkward to use.
-* Can self-sign if you don't want to use signing keys. Other tools make unsigned apps if you don't have keys, but these don't integrate with the host operating system as well.
-* You get a self-contained download site with HTML that detects your users operating system and CPU.
-* It's fully documented.
-
-Conveyor treats Electron apps mostly the same as native apps, meaning that no code changes are necessary to get working software updates.
+No changes to your JS are necessary to get working software updates with Conveyor. [Curious why you'd use Conveyor over other tools?](../comparisons/electron-comparisons.md)
 
 ## Synopsis
 
