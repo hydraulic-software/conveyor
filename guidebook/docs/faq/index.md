@@ -63,10 +63,9 @@ Support for CLI apps will be improved in future releases.
 ## Does it support Electron apps?
 
 Yes, you can create packages straight from your Javascript/HTML/CSS files and your `node_modules` directory. Unlike with other Electron
-packaging solutions, you don't need special or custom servers and the results don't create problems for network administrators.
+packaging solutions, you don't need special or custom servers and the results don't create problems for network administrators. 
 
-See the [GitHub Desktop sample](https://github.com/hydraulic-software/github-desktop/) to see a config for a real, production-grade
-Electron app.
+[Here's an in depth comparison of Conveyor vs other tools](../comparisons/electron-comparisons.md).
 
 ## Why should I make a desktop app?  
 
