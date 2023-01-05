@@ -100,13 +100,7 @@ app.jvm.cli.foo-cli {
 * `app.revision` - equal to the `${app.revision}` key.
 * `app.vendor` - equal to the `${app.vendor}` key.
 
-Some special tokens are supported. See [JVM options](#jvm-options) for details.
-
-If you include [the client enhancements config from the standard library](../stdlib/jvm-clients.md), you also get:
-
-* `jna.nosys` - set to false, which makes JNA work in the packaged environment.
-* `picocli.ansi` - set to `tty`, to make sure PicoCLI always uses colors even on Windows.
-* `java.net.useSystemProxies` - set to true, to make the JVM use the system HTTP proxy settings.
+Some special tokens are supported. See [JVM options](#jvm-options) for details.  Some additional properties are also added, see [JVM clients](#jvm-clients) below.
 
 **`app.jvm.options`** See [JVM options](#jvm-options) 
 
@@ -372,3 +366,40 @@ The launcher supports some of the same features as the java launcher, for exampl
     configured [AppCDS](https://openjdk.java.net/jeps/310), exposing APIs to control and monitor the update process, integrating
     NodeJS and using JavaScript modules through it, automatically moving apps to `/Applications` on macOS and regularizing how file/URL
     open requests are exposed to the OS (which currently requires operating-system specific approaches and APIs).
+
+## JVM clients
+
+The default config makes a few changes to improve compatibility and fix issues that might otherwise arise when packaging:
+
+* Sets system properties for various popular libraries to make them search for their libraries in the unpacked locations.
+* Enable HTTP proxy auto-detection.
+* Ensure the `jdk.crypto.ec` module is always linked in, as otherwise some TLS/HTTPS websites may not work.
+
+```
+app {
+  jvm {
+    system-properties {
+      # Force JNA to load its library from the normal path here.
+      #
+      # https://github.com/java-native-access/jna/issues/384
+      "jna.nosys" = false
+
+      # Same for FlatLAF (a modern Swing theme). 
+      # Supported starting from the October 2022 release.
+      "flatlaf.nativeLibraryPath" = system
+
+      # Force PicoCLI to always use ANSI mode even on 
+      # Windows, where our launcher enables them.
+      "picocli.ansi" = tty
+
+      # Read HTTP proxy settings from the OS.
+      "java.net.useSystemProxies" = true
+    }
+
+    # Needed for Ed25519 provider and modern SSL.
+    modules += jdk.crypto.ec
+  }
+}
+```
+
+Other enhancements may be added in future releases, for example, tuning JVM flags.

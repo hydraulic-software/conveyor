@@ -52,9 +52,6 @@ include required("/stdlib/jdk/17/openjdk.conf")
 // Import JavaFX JMODs.
 include required("/stdlib/jvm/javafx/from-jmods.conf")
 
-// Small tweaks e.g. enabling proxy detection (https://conveyor.hydraulic.dev/2/stdlib/jvm-clients/)
-include required("/stdlib/jvm/enhancements/client/v1.conf")
-
 javafx.version = 18.0.2
 
 app {
@@ -87,11 +84,10 @@ There are several tasks accomplished by this config:
 
 1. Import a JDK of the right version from your preferred vendor.
 2. Import the JavaFX JMODs so the JVM will have it linked in.
-3. Add the [client enhancements config](../stdlib/jvm-clients.md) (this line is optional).
-4. Set the names, versions and get a free license by pointing to the GitHub URL.
-5. Supply Conveyor with the directory where the app JARs can be found.
-6. Import icons for macOS and Windows. Icons must be PNG files. You don't have to supply all the sizes.
-7. Define the main class and the JDK modules (including the javafx modules) that you want to use.
-8. Define the URL where the packages will look for online updates.
+3. Set the names, versions and get a free license by pointing to the GitHub URL.
+4. Supply Conveyor with the directory where the app JARs can be found.
+5. Import icons for macOS and Windows. Icons must be PNG files. You don't have to supply all the sizes.
+6. Define the main class and the JDK modules (including the javafx modules) that you want to use.
+7. Define the URL where the packages will look for online updates.
 
 Please see the [Gradle page](2-gradle.md#adapting-a-javafx-app) to see how to set your stage icons.
