@@ -1,5 +1,20 @@
 # Release notes
 
+## Conveyor 7
+
+This release focuses on improved icons support. You can now supply an SVG file as your icon instead of PNGs, and it'll be rendered to each platform's native format
+
+* **SVG support:** Conveyor can now render an SVG file to icons using the appropriate style for Windows, macOS and Linux, with a rounded rectangle+drop shadow background compliant with Apple's guidelines being used automatically.
+* **Synthetic icons**. Reduces the required effort to quickly package apps like internal tools, dashboards and demos where drawing an icon would be too much effort. Conveyor can generate an icon for you with a one or two character label on a gradient background.
+
+Minor changes:
+
+* Consistency checks against the target upload site, to catch cases where you're changing your signing certificates or where you're overwriting already published packages with different contents. This can help avoid broken updates.
+* Tweaked the colors used for code blocks in printed Markdown messages to improve readability on different background colors.
+* Rolled the JVM client enhancements config into the defaults. These 'enhancements' were mostly in the end JVM settings tweaks to avoid problems in the packaging process.
+* Bugfix: Updated the OpenJFX Gradle plugin to resolve an issue using `gradle run` on Mac ARM.
+* Bugfix: Resolved a crash that could occur if the `jlink` command line got too long. 
+
 ## Conveyor 6.1
 
 Bugfixes:
@@ -21,3 +36,7 @@ Bugfixes:
 * Bugfix: improved UNIX flavor detection for native libraries in JAR files.
 * Bugfix: fixed an issue with restarting the app after a forced update on Windows if the application name has a space in it.
 * Bugfix: ensure that `app.version` is always interpreted as a string even if unquoted in HOCON.
+
+## Older
+
+For older release notes please use the version picker in the top bar.
