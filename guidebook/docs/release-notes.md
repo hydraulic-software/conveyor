@@ -12,6 +12,7 @@ Minor changes:
 * Consistency checks against the target upload site, to catch cases where you're changing your signing certificates or where you're overwriting already published packages with different contents. This can help avoid broken updates.
 * Tweaked the colors used for code blocks in printed Markdown messages to improve readability on different background colors.
 * Rolled the JVM client enhancements config into the defaults. These 'enhancements' were mostly in the end JVM settings tweaks to avoid problems in the packaging process.
+* Windows update metadata no longer allows downgrades when `conveyor.compatibility-level >= 7`. Downgrades aren't allowed by Sparkle on macOS and require admin intervention on Linux, so it's better to be consistent and disallow them on Windows too. This has the advantage that you can distribute packages of a higher version than the update stream it's connected to, e.g. to distribute one-off patched versions to specific users. They will return to the mainline when you next do an upgrade past the version used for the one-off builds.   
 * Bugfix: Updated the OpenJFX Gradle plugin to resolve an issue using `gradle run` on Mac ARM.
 * Bugfix: Resolved a crash that could occur if the `jlink` command line got too long. 
 
