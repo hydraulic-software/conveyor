@@ -91,11 +91,9 @@ By default the app requests `rescap:runFullTrust` which is intended for normal W
 
 **`app.windows.manifests.msix.{display-name,description,vendor}`** Package metadata that will appear in the Windows user interface. Taken from the top level app metadata by default but can be overridden.
 
-**`app.windows.manifests.msix.extensions-xml`** Raw XML that will be added into the `<Extensions></Extensions>` tag in the manifest. Useful for adding operating system integrations that Conveyor doesn't yet support out of the box. 
+**`app.windows.manifests.msix.extensions-xml`** Raw XML that will be added into the `<Extensions></Extensions>` tag in the manifest. Useful for adding operating system integrations that Conveyor doesn't yet support out of the box.
 
-**`app.windows.manifests.msix.content`** If set, supplies a string containing a complete manifest that replaces the standard one. The other keys will be ignored in this case, as they are only used to customize the built-in template.
-
-The list of available XML namespaces is:
+**`app.windows.manifests.msix.namespaces`** A map of namespace ID to XML namespace URL. You can use this to add declarations of additional namespaces if the default list doesn't have the one you need.  The list of XML namespaces in the default config is:
 
 * `com:` http://schemas.microsoft.com/appx/manifest/com/windows10
 * `com2:` http://schemas.microsoft.com/appx/manifest/com/windows10/2
@@ -117,6 +115,10 @@ The list of available XML namespaces is:
 * `uap5:` http://schemas.microsoft.com/appx/manifest/uap/windows10/5
 * `uap6:` http://schemas.microsoft.com/appx/manifest/uap/windows10/6
 * `uap7:` http://schemas.microsoft.com/appx/manifest/uap/windows10/7
+
+**`app.windows.manifests.msix.ignorable-namespaces`** A list of XML namespace IDs to add to the `IgnorableNamespaces` attribute on the root element. This is part of how Microsoft enables graceful degradation on older versions of Windows. The default list is `[ rescap6, uap7, uap8 ]`.
+
+**`app.windows.manifests.msix.content`** If set, supplies a string containing a complete manifest that replaces the standard one. The other keys will be ignored in this case, as they are only used to customize the built-in template.
 
 ### The EXE manifest
 
