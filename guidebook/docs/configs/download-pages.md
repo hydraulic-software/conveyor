@@ -52,9 +52,12 @@ app.site {
 
 ## Icon
 
-The `app.site.icons` key works the same way as the other icon keys do (in the `windows`, `mac` and `linux` sections respectively). The default `app.site.inputs` list contains the value of `${app.site.icons}` so you can use alternative file names by just setting the image name here. However, if you have a file named `icon.svg` as an input, it'll be used as the icon instead of the rendered files.
+The `app.site.icons` key works the same way as the other icon keys do (in the `windows`, `mac` and `linux` sections respectively). The
+default `app.site.inputs` list contains the value of `${app.site.icons}` so you can use alternative file names by just setting the image
+name here. However, if you an SVG file as an input, it'll be used as the icon instead of the rendered files.
 
-Here's an example of how to import icons from a different directory than the one containing the config and use it at the top of the generated HTML.
+Here's an example of how to import icons from a different directory than the one containing the config and use it at the top of the
+generated HTML.
 
 ```
 app.site {
