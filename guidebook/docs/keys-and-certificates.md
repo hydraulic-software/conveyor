@@ -179,4 +179,7 @@ Example for using a SafeNet HSM from MacOS:
 app.windows.signing-key = /Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib
 ```
 
-Then make sure to use the `--passphrase` flag, and you should be set.
+Then make sure to use the `--passphrase` flag, and you should be set. You don't need to set the `app.windows.certificate` key if you're using an HSM, because the certificate will be read from the device.
+
+!!! note "HSM passphrase expiry"
+    Some CAs issue HSMs that require you to change your password every 30 days or so. When this happens Conveyor will give you an error message, saying that your PIN has expired. To change it you will need to use the management app that comes with your HSM. Conveyor requires all passphrases to be aligned. After changing your HSM passphrase or PIN to something new, run `conveyor keys passphrase` to update your root key so the passphrases match.
