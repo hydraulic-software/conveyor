@@ -157,7 +157,9 @@ unwanted-jdk-files = [
 
 **`app.jvm.extract-native-libraries`** If true (the default) then native libraries will be deleted from JARs and placed in the lib directory of the bundled JVM. If false, they are left alone. [See below](#jar-stripping) for more information.
 
-## Importing a JVM/JDK
+## Importing files
+
+### Importing a JDK
 
 These days there are many distributions of Java to choose from. You've probably already chosen your JVM/JDK for development purposes, but you'll need to specify which one you want so Conveyor can download the different versions for different platforms.
 
@@ -175,6 +177,15 @@ app {
   }
 }
 ```
+
+### Importing files
+
+The top level `app.inputs` hierarchy (see [Inputs](inputs.md)) will be placed in the `app` subdirectory inside the package and install directories. It may contain:
+
+* `JAR files`. Explicit modular JARs (i.e. not auto-modules) that only depend on other explicit modular JARS will be removed and linked into the `lib/modules` file, which is a format optimized for fast loading.
+* Shared libraries. Moved to the same directory as all other shared libraries for the JVM are in. You can use this to add JNI libs without needing to put them into a self-extracting JAR.
+* On Windows, EXE files are moved to the `bin` directory (`conveyor.compatibility-level >= 7`) and exposed on the user's PATH.
+* Executables for other platforms are left in the `app` directory.
 
 ## JAR stripping
 

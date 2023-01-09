@@ -17,8 +17,10 @@ JVM specific improvements:
 
 * You are now warned if using a JavaFX version lower than 19 on Windows, as earlier versions can fail to start on some Windows installs. 
 * Rolled the JVM client enhancements config into the defaults as some are necessary for apps to run successfully when packaged.
+* EXEs added to the app inputs will be moved to the bin directory and added to the PATH automatically. 
 * Bugfix: Updated the OpenJFX Gradle plugin to resolve an issue using `gradle run` on Mac ARM.
-* Bugfix: Resolved a crash that could occur if the `jlink` command line got too long. 
+* Bugfix: Resolved a crash that could occur if the `jlink` command line got too long.
+* Bugfix: Improved UNIX flavor detection. Don't delete static Linux binaries from the package due to thinking they're not for Linux.
 
 ## Conveyor 6.1
 
