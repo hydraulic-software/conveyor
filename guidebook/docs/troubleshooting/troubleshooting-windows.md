@@ -29,3 +29,7 @@ The workaround is to always ensure you change your version number for any new up
 
 PowerShell 7 isn't backwards compatible with PowerShell 6 (a.k.a. "Windows PowerShell"). When self-signing, the `install.ps1` scripts must
 be run from the default PowerShell that comes with Windows. This issue is planned to be worked around in a future Conveyor release.
+
+## My HSM PIN has expired
+
+Some CAs configure their HSMs to require frequent passphrase changes. If you're using a hardware device to hold your signing key and get a message about "PIN expiry" then you need to follow the instructions found in the [HSM section](../keys-and-certificates.md#hardware-security-modules) of the docs to change your HSM passphrase and then also your software paspshrase. They must be kept aligned. 
