@@ -100,14 +100,10 @@ app.display-name = LittleCorp Example App
 ## Icons
 
 ```
-# Import some PNG files of different sizes/resolutions for the icon
-# and alter the name pattern that it looks for.
 app.icons = "myapp-icon-*.png"
-
-# Import an SVG for the icon.
 app.icons = "myapp-icon.svg"
 
-# Generate a simple icon based on a small label and a background gradient.
+# Render a simple icon with a label, a background gradient and macOS compliant rounded corners.
 app.icons = {
   label = "AP"
   gradient = "blue;green"
@@ -128,7 +124,7 @@ app.icons = {
       two [CSS style colors](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)
       separated by a semicolon (;). If not provided, a random gradient color is provided using the `label` as a seed.
 
-  Generated icons have rounded edges on all systems except Windows, where they instead have square edges to comply with the platform style.
+  Generated icons have rounded corners on all systems except Windows, where they instead fill the entire icon to comply with the platform style.
 
 The icons are processed and converted into square images of sizes 16, 32, 64, 128, 256, 512 and 1024, as well as 44 and 150 for
 Windows. You can provide images with those sizes directly if you prefer to handle rescaling directly. Otherwise, it's a good idea to

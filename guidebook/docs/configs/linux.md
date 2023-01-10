@@ -81,6 +81,11 @@ symlinks = [
 Later entries override earlier entries and if the target is blank the link won't be created at all, so you can edit this list by adding
 items to it. The default means that the launcher will be symlinked into `bin`.
 
+??? note "Older compatibility levels"
+    In configs with `conveyor.compatibility-level < 7` there are some additional symlinks added to paths in `/var`. This was meant for servers and is of little practical use in most apps so it was removed from the defaults starting from compatibility level 7.
+
+**`main-binary`** The path relative to the package contents which is treated as the primary entrypoint. This is used for the symlink placed in `/usr/bin` and the `.desktop` file. It defaults to `bin/${app.fsname}` but can be set to something else if your input layout doesn't follow this convention.
+
 **`debian.control`** Keys and values copied into the control file. The defaults here are normally fine but you can add others if you want
 more precise control. See below for an example.
 
