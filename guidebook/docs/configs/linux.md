@@ -75,15 +75,14 @@ These keys under `app.linux` control Linux specific packaging aspects.
 ```
 symlinks = [
   ${app.linux.prefix}/bin/${app.fsname} -> ${app.linux.install-path}/bin/${app.fsname}
-  logs -> /var/log/${app.long-fsname-dir}
-  data -> /var/lib/${app.linux.var-lib-dir}
-  cache -> /var/cache/${app.long-fsname-dir}
 ]
 ```
 
-Later entries override earlier entries and if the target is blank the link won't be created at all, so you can edit this list by adding items to it. The defaults mean that the launcher will be symlinked into `bin`. These directories don't necessarily exist, but can usually be created if your app has permission.
+Later entries override earlier entries and if the target is blank the link won't be created at all, so you can edit this list by adding
+items to it. The default means that the launcher will be symlinked into `bin`.
 
-**`debian.control`** Keys and values copied into the control file. The defaults here are normally fine but you can add others if you want more precise control. See below for an example.
+**`debian.control`** Keys and values copied into the control file. The defaults here are normally fine but you can add others if you want
+more precise control. See below for an example.
 
 **`debian.{postinst,postrm,preinst,prerm}`** Maintainer/package scripts invoked by the package management system when the package is installed, upgraded or uninstalled. The default values should normally be left alone. They take care of registering and starting systemd services, desktop files for icons and other metadata, and so on. They also print out advice to system administrators using the command line when HTTP server config files are installed.
 
