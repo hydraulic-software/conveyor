@@ -103,16 +103,43 @@ app.display-name = LittleCorp Example App
 # Import some PNG files of different sizes/resolutions for the icon
 # and alter the name pattern that it looks for.
 app.icons = "myapp-icon-*.png"
+
+# Import an SVG for the icon.
+app.icons = "myapp-icon.svg"
+
+# Generate a simple icon based on a small label and a background gradient.
+app.icons = {
+  label = "AP"
+  gradient = "blue;green"
+}
 ```
 
-**`app.icons`, `app.{windows,mac,linux,site}.icons`** An [input definition](inputs.md) that should import square PNG images. The default is `icons-*.png` for all platforms, so just having files with this name pattern next to your `conveyor.conf` will work. The images must be sized as a power of 2 between 16 and 1024 e.g. 256x256. It's a good idea to provide at least a few different resolutions so scaling of the icon between sizes is smoother. Windows also wants images sized 44x44 and 150x150. It can be useful to have different icons for each OS to match the platform native styles.
+**`app.icons`, `app.{windows,mac,linux,site}.icons`** An icon definition that can be:
 
-!!! warning
-    Conveyor currently won't rescale your images for you. Therefore you must supply at least one image <= 512x512 as larger images won't be reduced, and Windows requires smaller images in some circumstances. Also, consider using actually different images for small sizes that have less detail in them, rather than just scaling down a larger image. Scaling a large image to small sizes can yield blurry images.
+* An [input definition](inputs.md) that should import either square images or an SVG file.
+  The default is `icons-*.png` for all platforms, so just having files with this name pattern next to your `conveyor.conf`
+  will work. You can provide any number of square image files, as Conveyor will rescale the images to provide appropriate image
+  sizes for all platforms. You can directly provide the appropriate sizes (see below) to avoid artifacts from resampling.
+  Besides `.svg`, currently supported image file types are: `.bmp`, `.gif`, `.png`, `.tif` and `.tiff`. Only images that support
+  transparency are allowed.
+* An icon generation definition, consisting of the following fields:
+    * **`label`** An optional short string containing one or two characters which will be rendered as the icon. If not provided, a
+      label is derived from the `app.display-name` key.
+    * **`gradient`** An optional string containing one or
+      two [CSS style colors](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)
+      separated by a semicolon (;). If not provided, a random gradient color is provided using the `label` as a seed.
+
+  Generated icons have rounded edges on all systems except Windows, where they instead have square edges to comply with the platform style.
+
+The icons are processed and converted into square images of sizes 16, 32, 64, 128, 256, 512 and 1024, as well as 44 and 150 for
+Windows. You can provide images with those sizes directly if you prefer to handle rescaling directly. Otherwise, it's a good idea to
+provide at least a few different resolutions so scaling of the icon between sizes is smoother.
+It can be useful to have different icons for each OS to match the platform native styles.
 
 ## Download site settings
 
-The `site` section controls the generation of the download site. Currently you must have a download site because it's where the packages will check for online updates, although you don't need to use the generated HTML file. [Learn more](download-pages.md).
+The `site` section controls the generation of the download site. Currently you must have a download site because it's where the packages
+will check for online updates, although you don't need to use the generated HTML file. [Learn more](download-pages.md).
 
 ## Machines
 
