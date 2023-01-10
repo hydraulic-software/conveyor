@@ -52,7 +52,7 @@ Don't worry about the details of `conveyor.conf` too much right now. Most projec
 !!! notice "Open source vs commercial apps"
     If your app is open source, you should set the `app.vcs-url` key to the URL where your source repository can be found. If this is a `https://github.com/org/project` url then the `app.site.base-url` key (where apps will search for online updates) will be [automatically set to use GitHub Releases](../configs/download-pages.md#publishing-through-github).  
     
-    If your app is commercial, you should set `app.site.base-url` to something like `"https://www.mycompany.com/downloads"`. The first time you use Conveyor a new line will appear in your config file containing a license key, linked to your choice of site URL. For now Conveyor is free, so you don't need to do anything. Once the introductory period ends, you will need to associate this license key with a paid account.   
+    If your app is commercial, you should set `app.site.base-url` to something like `http://localhost:8888` to start with and later (after you're ready) set it to the real URL e.g. `"https://www.mycompany.com/downloads"`. The first time you use Conveyor a new line will appear in your config file containing a license key, linked to your choice of site URL.   
 
 === "Native"
 

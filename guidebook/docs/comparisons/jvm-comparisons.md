@@ -24,5 +24,5 @@
     * This is convenient for the developer but leads to the risk of jdeploy being permanently revoked if malware ever abuses it. If that were to happen there would be no way to execute any jdeploy-using apps, nor update them.
     * Conveyor follows the spirit of each operating system's rules by making it as easy as possible for developers to sign their apps, whilst also allowing for self signed apps using small CLI scripts that enable non-CA-signed installs.
     * Conveyor may support the execution of sandboxed apps without CA signing in future, similar to how web browsers do it.
-* jdeploy is free and open source. Conveyor is free only during the introductory period; after that it will be free only for open source apps.
+* jdeploy is free and open source. Conveyor is free only for open source apps.
 * jdeploy is, as the name implies, only for Java apps. Conveyor works for any kind of app including Electron and native.

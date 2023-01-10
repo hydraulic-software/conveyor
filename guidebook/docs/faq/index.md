@@ -9,12 +9,13 @@ systemd as a service manager.
 
 ## Is Conveyor free?
 
-During the introductory period it's free for everyone. Once the introductory period ends, it will be free for open source apps and
-require a subscription when used with proprietary apps. You can learn what it'll cost on the [pricing page](https://www.hydraulic.software/pricing.html).
+Conveyor is free for open source projects if you set the `app.vcs-url` key to where your source repository can be found, or if your update
+site is set to localhost (i.e. for testing). Once you set your `app.site.base-url` key to a public website for a commercial project you'll
+be asked to pay. [Learn more about pricing](https://www.hydraulic.software/pricing.html). A subscription includes commercial support.
 
-Open source apps that use it should advertise the fact that they're packaged with Conveyor somewhere and link to the website. Using the generated download page 
-makes this easy, because it contains a "Packaged with Conveyor" badge. If you don't use that HTML then you'll need to provide your own link
-in e.g. your download page, website, README file etc.
+Open source apps that use it should advertise the fact that they're packaged with Conveyor somewhere and link to the website. Using the
+generated download page makes this easy, because it contains a "Packaged with Conveyor" badge. If you don't use that HTML then you'll need
+to provide your own link in e.g. your download page, website, README file etc.
 
 ## Am I locked in?
 
