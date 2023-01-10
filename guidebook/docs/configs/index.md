@@ -114,11 +114,10 @@ app.icons = {
 }
 ```
 
-**`app.icons`, `app.{windows,mac,linux,site}.icons`** An icon definition that can be:
+**`app.icons`, `app.{windows,mac,linux,site}.icons`** An icon definition that can be either:
 
 * An [input definition](inputs.md) that should import either square images or an SVG file.
-  The default is `icons-*.png` for all platforms, so just having files with this name pattern next to your `conveyor.conf`
-  will work. You can provide any number of square image files, as Conveyor will rescale the images to provide appropriate image
+  You can provide any number of square image files, as Conveyor will rescale the images to provide appropriate image
   sizes for all platforms. You can directly provide the appropriate sizes (see below) to avoid artifacts from resampling.
   Besides `.svg`, currently supported image file types are: `.bmp`, `.gif`, `.png`, `.tif` and `.tiff`. Only images that support
   transparency are allowed.
@@ -135,6 +134,8 @@ The icons are processed and converted into square images of sizes 16, 32, 64, 12
 Windows. You can provide images with those sizes directly if you prefer to handle rescaling directly. Otherwise, it's a good idea to
 provide at least a few different resolutions so scaling of the icon between sizes is smoother.
 It can be useful to have different icons for each OS to match the platform native styles.
+
+By default, icons will be generated with a label based on the contents of `app.display-name` with a random gradient background.
 
 ## Download site settings
 
