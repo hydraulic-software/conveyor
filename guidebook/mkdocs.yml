@@ -40,9 +40,10 @@ nav:
     - Syntax: configs/hocon-spec.md
     - Standard Library: stdlib/index.md
     - Runtimes:
-      - configs/native-apps.md
-      - configs/jvm.md
-      - configs/electron.md
+      - Native apps: configs/native-apps.md
+      - Electron: configs/electron.md
+      - JVM: configs/jvm.md
+      - Flutter: configs/flutter.md
     - Operating systems:
       - configs/windows.md
       - configs/mac.md

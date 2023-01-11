@@ -20,13 +20,16 @@ It's free for open source apps and has [simple per-project pricing](https://www.
 * **[Background updates or check-on-launch.](configs/index.md#update-modes)**
     * In aggressive mode your app will check for and apply updates on every launch, without user interaction being required.
     * In background mode updates will be downloaded and applied in the background, without disturbing the user.
-* **[Support for Electron apps](configs/electron.md).**
-    * Benefit from well maintained platform native software updates without relying on Squirrel or any centralized update servers.
-    * Import config directly from your `package.json` file.
-* **[Support for JVM apps](configs/jvm.md).**
-    * Bundles a JVM from a vendor of your choice, and then uses jlink/jdeps to minimize the size.
-    * Uses a native launcher that [adds useful features](configs/jvm.md#launcher-features).
-    * Import configuration from Maven and Gradle.
+* **Extra support for popular app frameworks**: 
+    * **[Electron](configs/electron.md)**
+        * Benefit from well maintained platform native software updates without relying on Squirrel or any centralized update servers.
+        * Import config directly from your `package.json` file.
+    * **[JVM](configs/jvm.md)**
+        * Bundles a JVM from a vendor of your choice, and then uses jlink/jdeps to minimize the size.
+        * Uses a native launcher that [adds useful features](configs/jvm.md#launcher-features).
+        * Import configuration from Maven and Gradle.
+    * **[Flutter](configs/flutter.md)**
+        * See the [demo app](https://github.com/hydraulic-software/flutter-demo) for how to package Flutter apps. 
 * **Automatic icon conversion.**
     * Supply a set of PNGs and Conveyor turns them into the platform specific formats for you. 
 * **Generates download sites.**
@@ -54,6 +57,12 @@ This shows how a production-grade Electron app can be packaged using Conveyor, G
 <img src="https://desktop.github.com/images/github-desktop-screenshot-mac.png" style="box-shadow: 0 10px 35px rgb(0 0 0 / 35%)"></img>
 
 [Download a Conveyor-ized GitHub Desktop](https://hydraulic-software.github.io/github-desktop/download.html){ .md-button .md-button--primary } [View source](https://github.com/hydraulic-software/github-desktop/){ .md-button }
+
+### Flutter
+
+<img src="images/flutter-demo.png" style="float: left; margin-left: -60px"></img>
+
+[Download](https://hydraulic-software.github.io/flutter-demo/download.html){ .md-button .md-button--primary } [View source](https://github.com/hydraulic-software/flutter-demo){ .md-button }
 
 ### JVM: Jetpack Compose
 

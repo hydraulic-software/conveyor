@@ -28,6 +28,14 @@ An alternative approach is to set a passphrase, then put the encrypted `app.sign
 
 To get Conveyor onto your build agents either download the Linux tarball or pre-install it on your agents. You can get a link for the current version from the [download page](https://downloads.hydraulic.dev/conveyor/download.html), which will look like this: `https://downloads.hydraulic.dev/conveyor/conveyor-6.0-linux-amd64.tar.gz`.
 
+## Forcing re-downloads of artifacts
+
+Conveyor assumes by default that input URLs are stable/versioned and caches them. If you need to rebuild your package because the contents of your input URLs changed without the URL itself changing, add the `--rerun=all` flag at the end of your command line:
+
+```
+conveyor make site --rerun=all
+```
+
 ## Using GitHub Actions
 
 GitHub Actions has a couple of limitations that require workarounds:

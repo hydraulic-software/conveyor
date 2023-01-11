@@ -9,6 +9,7 @@ This release adds support for Flutter apps and adds new icon features.
 * **Synthetic icons**. Conveyor can now make icons for you. This reduces the required effort to quickly package apps like internal tools, dashboards and demos where drawing an icon would be too much effort. The generated icon has a one or two character label on a gradient background.
 * **MSVC++ redistributables**. Apps often require these DLLs on Windows, but they don't come with the OS. [You can now easily bundle them into your app](stdlib/index.md#microsoft-visual-c-redistributables).
 
+
 Usability improvements:
 
 * Consistency checks against the target upload site, to catch cases where you're changing your signing certificates or where you're overwriting already published packages with different contents. This can help avoid broken updates.
@@ -24,28 +25,5 @@ Bug fixes:
 * Resolved a crash that could occur if the `jlink` command line got too long.
 * Improved UNIX flavor detection. Don't delete static Linux binaries from the package due to thinking they're not for Linux.
 
-## Conveyor 6.1
-
-Bugfixes:
-
-* **Important:** Fix a non-determinism in generation of self-signing certificates that would cause upgrade failures for self-signed apps re-built after January 1st 2023.
-* Resolved an issue with using HSM drivers on macOS.
-* Enforce that the `app.fsname` key is written in `kebab-case`, as this name is transformed into different casing styles for different platforms to match native conventions and thus kebab-case was as previously undocumented assumption.
-* Fix a crash that could occur if the Mac finder placed `.DS_Store` files inside the private disk cache area.
-* Improved documentation around how to fix missing app icons on Linux.
-
-## Conveyor 6
-
-* To improve compatibility with Amazon S3/CloudFront, the way Debian packages are placed in the generated apt site has been changed.
-  The new default "non-flat" layout places the apt and .deb files into a `debian` subdirectory. The previous "flat" layout (where all 
-  the files are together in the same directory) continues to be used for projects that have already uploaded a flat site, or for projects 
-  targeting GitHub Releases, as GitHub doesn't allow uploads of files in directories. The type of site can be controlled with the new
-  `app.site.flat` key.
-* Updated JVM template apps to Gradle plugin 1.3, and refreshed the JDK standard library. 
-* Bugfix: improved UNIX flavor detection for native libraries in JAR files.
-* Bugfix: fixed an issue with restarting the app after a forced update on Windows if the application name has a space in it.
-* Bugfix: ensure that `app.version` is always interpreted as a string even if unquoted in HOCON.
-
-## Older
-
-For older release notes please use the version picker in the top bar.
+!!! note 
+    For older release notes please use the version picker in the top bar.

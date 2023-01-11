@@ -46,7 +46,7 @@ It has advantages for us too:
 
 ## What kinds of app can you package with it?
 
-It can package any kind of app, it just has some built-in features to make packaging Electron and JVM apps easy. 
+It can package any kind of app, it just has some built-in features to make packaging Electron, JVM and Flutter apps easy. 
 The [tutorial](../tutorial/1-get-started.md) shows how to package a CMake based C++ OpenGL app, for example.
 
 Although you can package any kind of app, over time Conveyor will gain features to apps using specific frameworks easier to package.
