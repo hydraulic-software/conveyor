@@ -1,19 +1,5 @@
 # Windows
 
-Windows apps are laid out as follows:
-
-* `app`: Where non-binary input files are placed.
-    * `app\app.ico`: The icon of the program in standalone form. It's also embedded into your EXE but some app frameworks like Jetpack Compose for Desktop prefer to have it be outside the EXE ([see how to use it](../tutorial/2-gradle.md#adapting-a-compose-desktop-app)).
-* `bin`: Where EXE and DLL files are placed, along with any data files they expect to find in the same location as themselves.
-
-For JVM apps there are additionally:
-
-* `lib`: JVM data files.
-* `legal`: Open source license files.
-* `conf`: JVM config files.
-
-Inside an MSIX zip there are additionally some metadata files in the root, like the AppX Manifest.
-
 ## Synopsis
 
 ```properties
@@ -140,3 +126,8 @@ You can adjust some of the values using config keys; if they don't meet your nee
 * `asInvoker` - whatever privilege level the user has.
 * `highestAvailable` - whatever privilege level the user can potentially escalate to.
 * `asAdministrator` - requires administrator access and cannot run without it.
+
+## Visual C++ redistributables
+
+If your app needs the MSVC++ runtime DLLs you should [ship them with your app](../stdlib/index.md#microsoft-visual-c-redistributables), as 
+Windows doesn't come with these DLLs out of the box. Conveyor has built in support for this.
