@@ -12,8 +12,8 @@ You will probably want to [use GitHub Releases to host your binaries](../configs
 
 ## Proprietary projects
 
-If you don't specify a public source repository then the config will be edited to include a freshly issued license key.
+License keys are associated with projects, and projects are defined by the download site URL. Anyone can build a project - Conveyor isn't licensed on a per user basis.
 
-License keys are associated with projects, and projects are defined by the download site URL. Anyone can build a project - Conveyor isn't licensed on a per user basis. During the introductory period Conveyor is free to use even for apps that aren't open source. Once the introductory period ends, you will need to link each license key you're using with a subscription. You'll be notified via the app when the introductory period is coming to an end. 
+If you don't specify a public source repository then the config will be edited to include a freshly issued license key. Once you set your site URL to a non-localhost address you'll be asked to pay. This lets you overlap development and testing work with purchasing, which can be useful in companies where purchases might take time. You can change your site URL in a forwards direction, i.e. you can change the site URL associated with a key if you make a mistake but can't reset it to one you've used previously. If you need to do this anyway please contact us and we'll sort it out for you.
 
 <script>var tutorialSection = 9;</script>
