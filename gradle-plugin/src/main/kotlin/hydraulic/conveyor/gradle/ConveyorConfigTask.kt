@@ -52,22 +52,24 @@ abstract class ConveyorConfigTask : DefaultTask() {
             app.nativeDistributions.description?.let { appendLine("app.description = " + quote(it)) }
             app.nativeDistributions.vendor?.let { appendLine("app.vendor = " + quote(it)) }
             app.nativeDistributions.appResourcesRootDir.let {
-                appendLine("app.jvm.system-properties.\"compose.application.resources.dir\" = ${quote("&&")}")
-                for ((key, source) in mapOf(
-                    "inputs" to "common",
-                    "mac.inputs" to "macos",
-                    "windows.inputs" to "windows",
-                    "linux.inputs" to "linux",
-                    "mac.amd64.inputs" to "macos-x64",
-                    "mac.aarch64.inputs" to "macos-arm64",
-                    "windows.amd64.inputs" to "windows-x64",
-                    "windows.aarch64.inputs" to "windows-arm64",
-                    "linux.amd64.inputs" to "linux-x64",
-                    "linux.aarch64.inputs" to "linux-arm64",
-                )) {
-                    val dir = it.dir(source).get()
-                    if (dir.asFile.exists()) {
-                        appendLine("app.$key += ${quote(dir)}")
+                if (it.isPresent) {
+                    appendLine("app.jvm.system-properties.\"compose.application.resources.dir\" = ${quote("&&")}")
+                    for ((key, source) in mapOf(
+                        "inputs" to "common",
+                        "mac.inputs" to "macos",
+                        "windows.inputs" to "windows",
+                        "linux.inputs" to "linux",
+                        "mac.amd64.inputs" to "macos-x64",
+                        "mac.aarch64.inputs" to "macos-arm64",
+                        "windows.amd64.inputs" to "windows-x64",
+                        "windows.aarch64.inputs" to "windows-arm64",
+                        "linux.amd64.inputs" to "linux-x64",
+                        "linux.aarch64.inputs" to "linux-arm64",
+                    )) {
+                        val dir = it.dir(source).get()
+                        if (dir.asFile.exists()) {
+                            appendLine("app.$key += ${quote(dir)}")
+                        }
                     }
                 }
             }
