@@ -56,10 +56,10 @@ nav:
     - faq/making-packages.md
     - faq/signing-and-certificates.md
   - Troubleshooting:
+    - Building: troubleshooting/troubleshooting-builds.md
     - Windows: troubleshooting/troubleshooting-windows.md
     - Linux: troubleshooting/troubleshooting-linux.md
     - JVM apps: troubleshooting/troubleshooting-jvm.md
-    - Building: troubleshooting/troubleshooting-builds.md
 
 theme:
   name: 'material'
