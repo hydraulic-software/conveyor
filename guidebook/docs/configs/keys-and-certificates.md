@@ -157,11 +157,13 @@ To get the platform-specific private keys in formats understood by other program
 
 ## Passphrases
 
-Keys can be encrypted under a passphrase. You'll be asked for one when first building a target or when first running `conveyor keys generate`, and you can change it with `conveyor keys passphrase`.
+**Setting.** Keys can be encrypted under a passphrase. You'll be asked for one when first building a target or when first running `conveyor keys generate`. Passphrases are optional, you can avoid setting one by just pressing enter when prompted.
 
-You can pass the passphrase programmatically using the `--passphrase` flag. If given a value that starts with `env:` then the rest is the name of an environment variable containing the passphrase. This is useful for continuous build systems. Otherwise the value is the passphrase.
+**Providing.** You can pass the passphrase programmatically using the `--passphrase` flag. If given a value that starts with `env:` then the rest is the name of an environment variable containing the passphrase. This is useful for continuous build systems. Otherwise, the value is the passphrase.
 
-The same passphrase is used for the root key, any PKCS#12 files (`.p12` or `.pfx`) and hardware security modules. Therefore they must all match. Using different passphrases for different key stores isn't supported at this time.
+**Changing.** You can change your passphrase with `conveyor keys passphrase`. The same passphrase is used for the root key, any PKCS#12 files (`.p12` or `.pfx`) and hardware security modules. Therefore they must all match. Using different passphrases for different key stores isn't supported at this time. Your HSM passphrase can't be changed with Conveyor, you will have to use the manufacturer specific tools to keep the HSM passphrase in sync. 
+
+Changing your passphrase updates the value of the `app.signing-key` key in [your `defaults.conf` file](index.md#per-user-defaults). If you're copying your key elsewhere - like into a continuous integration system - then you'll need to re-copy it any time your passphrase is changed.
 
 ## Hardware security modules
 
