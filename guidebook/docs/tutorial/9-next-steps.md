@@ -6,7 +6,7 @@ To get rid of security warnings you can use a proper code signing certificate. T
 
 Conveyor can use existing keys, certificates and hardware security modules you may have, and it can also assist you in getting certificates if you don't already have them. 
 
-**[Read about keys and certificates](../keys-and-certificates.md)**
+**[Read about keys and certificates](../configs/keys-and-certificates.md)**
 
 ## Check for updates in your app
 

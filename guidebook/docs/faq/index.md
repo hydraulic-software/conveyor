@@ -30,7 +30,7 @@ saved by using Conveyor, but nothing will break.
 1. You can run it from your dev laptop, a preferred CI machine or wherever else because Conveyor can build packages for any OS from every OS.
 1. It generates [everything you need](../outputs.md) in one go: full download site complete with packages, update metadata, a download page and bootstrap scripts.
 1. Online updates work out of the box. Unlike with many other tools, with this one no code changes are required, not even if you use the mode that does an update check on every launch.
-1. It handles [signing and Apple notarization](../keys-and-certificates.md) for you. It can even help you buy certificates, by generating a CSR for you.
+1. It handles [signing and Apple notarization](../configs/keys-and-certificates.md) for you. It can even help you buy certificates, by generating a CSR for you.
 1. The [config syntax](../configs/hocon-spec.md) is clean and lightweight whilst still letting you flexibly compose config together, use substitutions and more. It's a JSON superset so lots of tooling works with it too. 
 1. It knows popular app frameworks and can use their build system output directly (JVM, Electron and Flutter).
 1. It has lots of little code paths that check for common mistakes and tries to give you high quality errors. Try setting a key like `app { app.url-schemes = [ foo ] }` and Conveyor will notice that you made a copy/paste error.

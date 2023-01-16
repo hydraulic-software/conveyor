@@ -12,7 +12,6 @@ nav:
   - Welcome:
     - Getting started: index.md
     - download-conveyor.md
-    - keys-and-certificates.md
     - outputs.md
     - running.md
     - continuous-integration.md
@@ -37,6 +36,7 @@ nav:
     - configs/inputs.md
     - configs/download-pages.md
     - configs/os-integration.md
+    - configs/keys-and-certificates.md
     - Syntax: configs/hocon-spec.md
     - Standard Library: stdlib/index.md
     - Runtimes:

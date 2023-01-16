@@ -30,7 +30,7 @@ be run from the default PowerShell that comes with Windows. This issue is planne
 
 ## My HSM PIN has expired
 
-Some CAs configure their HSMs to require frequent passphrase changes. If you're using a hardware device to hold your signing key and get a message about "PIN expiry" then you need to follow the instructions found in the [HSM section](../keys-and-certificates.md#hardware-security-modules) of the docs to change your HSM passphrase and then also your software passphrase. They must be kept aligned.
+Some CAs configure their HSMs to require frequent passphrase changes. If you're using a hardware device to hold your signing key and get a message about "PIN expiry" then you need to follow the instructions found in the [HSM section](../configs/keys-and-certificates.md#hardware-security-modules) of the docs to change your HSM passphrase and then also your software passphrase. They must be kept aligned.
 
 ## Error 0x80D05011
 
