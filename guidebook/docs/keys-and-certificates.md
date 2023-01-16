@@ -172,14 +172,30 @@ Using a token is simple:
 1. Install the drivers for your host platform (it doesn't have to be Windows).
 2. Find the path to the PKCS#11 driver library. HSM user guides will often give you this path under instructions for setting up Firefox or Thunderbird.
 3. Set the path as the value of `app.windows.signing-key` .
+4. Use `conveyor keys passphrase` to ensure your Conveyor passphrase is the same as the HSM passphrase. All passphrases must be aligned.
 
-Example for using a SafeNet HSM from MacOS:
+Then make sure to use the `--passphrase` flag, and you should be set. You don't need to set the `app.windows.certificate` key if you're using an HSM, because the certificate will be read from the device.
+
+!!! note "Initial activation"
+    Your certificate authority will probably have mailed you a USB device. Normally before it can be used you have to activate it (report to the CA that it's been received) in order to receive the initial passphrase.  
+
+!!! note "HSM passphrase expiry"
+    Some CAs issue HSMs that require you to change your password every 30 days or so. When this happens Conveyor will give you an error message, saying that your PIN has expired. To change it you will need to use the management app that comes with your HSM. Conveyor requires all passphrases to be aligned. After changing your HSM passphrase or PIN to something new, run `conveyor keys passphrase` to update your root key so the passphrases match.
+
+### SafeNet HSM
+
+Here's an example for how to use a SafeNet HSM from macOS. Install the SafeNet software and then add to your config: 
 
 ```
 app.windows.signing-key = /Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib
 ```
 
-Then make sure to use the `--passphrase` flag, and you should be set. You don't need to set the `app.windows.certificate` key if you're using an HSM, because the certificate will be read from the device.
+### YubiKeys
 
-!!! note "HSM passphrase expiry"
-    Some CAs issue HSMs that require you to change your password every 30 days or so. When this happens Conveyor will give you an error message, saying that your PIN has expired. To change it you will need to use the management app that comes with your HSM. Conveyor requires all passphrases to be aligned. After changing your HSM passphrase or PIN to something new, run `conveyor keys passphrase` to update your root key so the passphrases match.
+Also an example for macOS. If we do a web search for `site:yubico.com yubikey pkcs 11` then we find [this page](https://developers.yubico.com/yubico-piv-tool/YKCS11/) which gives us the paths we need. So, [install the Yubico manager GUI and PIV tool](https://www.yubico.com/support/download/smart-card-drivers-tools/) and then set:
+
+```
+app.windows.signing-key = /usr/local/lib/libykcs11.dylib
+```
+
+On Windows you'll need to add the `Yubico PIV Tool\bin` directory to your path - the instructions page tells you what to do.
