@@ -19,6 +19,10 @@ Also make sure your app follows these rules:
 
 Windows discards stdout/stderr by default, even when an app is run from the command line. When `app.windows.console = true` running the app will either use the terminal you started it from, or cause a console window to open, so you can see the output.
 
+## "The application has experienced an internal error and must quit."
+
+This error dialog from JVM apps on Windows indicates that an exception escaped the main method. The first lines of the exception are in the message box and the full stack trace is printed to `stdout`. You won't be able to see that by default due to the way Windows separates CLI and GUI apps. See [println debugging](#println-debugging) above for how to view the full stack trace. 
+
 ## Missing `vcruntime`/`msvcp140` DLLs
 
 If you get errors about missing runtime Visual C++ runtime DLLs you may need to [bundle them with your app](../stdlib/index.md#microsoft-visual-c-redistributables).
