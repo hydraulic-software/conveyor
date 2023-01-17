@@ -182,6 +182,9 @@ Then make sure to use the `--passphrase` flag, and you should be set. You don't 
 !!! note "HSM passphrase expiry"
     Some CAs issue HSMs that require you to change your password every 30 days or so. When this happens Conveyor will give you an error message, saying that your PIN has expired. To change it you will need to use the management app that comes with your HSM. Conveyor requires all passphrases to be aligned. After changing your HSM passphrase or PIN to something new, run `conveyor keys passphrase` to update your root key so the passphrases match.
 
+!!! note "HSMs with multiple keys"
+    In some cases your CA may provision you with an HSM that contains more than one private key. If this happens Conveyor will stop and request that you specify the 'alias' of the key you want to use. If you aren't sure which alias is correct you may need to contact your certificate authority, or failing that, contact [Hydraulic support](mailto:contact@hydraulic.software).
+
 ### SafeNet HSM
 
 Here's an example for how to use a SafeNet HSM from macOS. Install the SafeNet software and then add to your config: 
