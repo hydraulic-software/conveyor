@@ -5,80 +5,76 @@
 Conveyor has integrated support for apps that run on the JVM (for any supported language). You get the following:
 
 * A custom launcher that replaces the `java` command and adds [extra features](#launcher-features).
-* Support for the module system:
-    * Usage of `jlink` and `jdeps` to create minimal JVM distributions, containing only the modules that your app needs.
-    * Fully modular JARs are detected and linked into the `modules` file, yielding faster startup and smaller downloads.
-* Native libraries are extracted from JARs so they can be either signed, or discarded if they're for the wrong OS/CPU.
+* Usage of `jlink` and `jdeps` to create a minimal bundled JVM.
+* Support for signing native libraries:
+    * Dynamic libraries are signed _inside_ JARs, ensuring they work on end user systems.
+    * They can also be unpacked from JARs and discarded if they're for the wrong OS/CPU, which yields [several benefits](#jar-processing).
 * [Maven and Gradle integration](maven-gradle.md):
     * A Gradle plugin that automatically generates configuration snippets.
     * Maven projects can have their classpath read directly, without needing a plugin.
-* Integrated support for GUI frameworks like JavaFX and Compose Desktop.
-
-To package an app that uses the JVM, you must choose a JDK and at least one JAR.
+* Integrated support for GUI frameworks like Jetpack Compose and JavaFX.
 
 ??? note "Java versions"
     Conveyor only supports apps that use Java 11 or later - Java 8 won't work. All classes must be inside a JAR. If you need Java 8 support
-    please [email contact@hydraulic.software](mailto:contact@hydraulic.software).
+    please [email us](mailto:contact@hydraulic.software).
 
 ## Synopsis
 
 ```properties
-# Add some app JARs to the classpath, taken from build/libs relative to the config file.
-app.inputs += "build/libs/*.jar"
-
 # Add the latest Java 17 JDK distributed by OpenJDK.
 import required("/stdlib/jdk/17/openjdk.conf")
 
 # Or define a custom JDK locally.
 basedir = my-jdk-dir/myjdk-17.0
-app.jvm {
-  linux.amd64.inputs += ${basedir}-linux-x64.tar.gz
-  linux.amd64.muslc.inputs += ${basedir}-alpine-linux-x64.tar.gz
-  linux.aarch64.inputs += ${basedir}-linux-aarch64.tar.gz
-  windows.amd64.inputs += ${basedir}-windows-x64-jdk.zip
-  mac.amd64.inputs += ${basedir}-macosx-x64.tar.gz
-}
 
-# Request extra modules that weren't auto-detected by jdeps.
-app.jvm.modules += java.{desktop,logging,net.http}
+app {
+  # Add some app JARs to the classpath/modulepath, taken from build/libs relative to the config file.
+  inputs += "build/libs/*.jar"
 
-# Set the main GUI class.
-app.jvm.gui = com.foobar.Main
-
-# Add JVM arguments for every launcher.
-app.jvm.options += -Xmx1024m
-app.jvm.windows.options += -Xss4M
-app.jvm.mac.aarch64.options += -Xss4M
-
-# Set system properties.
-app.jvm.system-properties {
-	mylib.nativeLibPath = <libpath>
-}
-
-# Plumb the app version through to the app using constant command line arguments.
-app.jvm.constant-app-arguments = [ --app-version, ${app.version} ]
-
-# Add a supplementary CLI tool that'll be a part of the same package.
-# It'll be named foo-tool[.exe] based on the class name. Any Kt suffix is stripped.
-app.jvm.cli = [ com.foobar.FooTool ]
-
-# You can control the name:
-app.jvm.cli.foo-cli.main-class = com.foobar.FooTool
-
-# And have more than one.
-app.jvm.cli {
-	foo-cli.main-class = com.foobar.FooTool
-	foo-dump.main-class = com.foobar.FooDumper
-}
-
-# And control some of the settings for each one independently.
-app.jvm.cli.foo-cli {
-    main-class = com.foobar.FooTool
-    # Set an explicit class path. You normally never need this because the
-    # default of *.jar is good enough. 
-    class-path = "some-prefix-*.jar"
-    # JVM options added to the global list.
-    options = [ -Xmx500M ]
+  jvm {
+    linux.amd64.inputs += ${basedir}-linux-x64.tar.gz
+    linux.amd64.muslc.inputs += ${basedir}-alpine-linux-x64.tar.gz
+    linux.aarch64.inputs += ${basedir}-linux-aarch64.tar.gz
+    windows.amd64.inputs += ${basedir}-windows-x64-jdk.zip
+    mac.amd64.inputs += ${basedir}-macosx-x64.tar.gz
+    
+    # Add or remove modules from jlink 
+    modules += java.{desktop,logging,net.http}
+    modules -= foo.bar
+    
+    # Set the main class name.
+    gui = com.foobar.Main
+    
+    options += -Xmx1024m
+    windows.options += -Xss4M
+    mac.aarch64.options += -Xss4M
+    
+    system-properties {
+    	mylib.nativeLibPath = <libpath>
+    }
+    
+    # Args that are always passed.
+    constant-app-arguments = [ --app-version, ${app.version} ]
+    
+    # Add a supplementary CLI tool named foo-tool.
+    cli = [ com.foobar.FooTool ]
+    
+    # You can have more than one and control their names:
+    cli {
+    	foo-cli.main-class = com.foobar.FooTool
+    	foo-dump.main-class = com.foobar.FooDumper
+    }
+    
+    # And control some of the settings for each one independently.
+    cli.foo-cli {
+        main-class = com.foobar.FooTool
+        # Set an explicit class path. You normally never need this because the
+        # default of *.jar is good enough. 
+        class-path = "some-prefix-*.jar"
+        # JVM options added to the global list.
+        options = [ -Xmx500M ]
+    }
+  }
 }
 ```
 
@@ -92,6 +88,9 @@ app.jvm.cli.foo-cli {
 
 **`app.jvm.constant-app-arguments`** A list of arguments that will always be passed to the app in addition to whatever the user specifies. Can be useful to plumb metadata from the app definition through to the app itself, like by telling it its own version number.
 
+!!! warning
+    * Watch out for accidental mis-use of HOCON syntax when writing something like `constant-app-arguments = [ --one --two ]`. This creates a _single_ argument containing "--one --two" which is unlikely to be what you want. Instead, write `constant-app-arguments = [ --one, --two ]` or put each argument on a separate line. Conveyor will warn you if you seem to be doing this.
+
 **`app.jvm.system-properties`** A map of system properties. The default properties are:
 
 * `app.dir` - points at the install directory where input files are placed.
@@ -100,19 +99,9 @@ app.jvm.cli.foo-cli {
 * `app.revision` - equal to the `${app.revision}` key.
 * `app.vendor` - equal to the `${app.vendor}` key.
 
-Some special tokens are supported. See [JVM options](#jvm-options) for details.  Some additional properties are also added, see [JVM clients](#jvm-clients) below.
+Some special tokens are supported. See [JVM options](#jvm-options) for details.  Some additional properties are also added, see [default config](#default-config) below.
 
 **`app.jvm.options`** See [JVM options](#jvm-options) 
-
-!!! warning
-    * Watch out for accidental mis-use of HOCON syntax when writing something like `constant-app-arguments = [ --one --two ]`. This creates a _single_ argument containing "--one --two" which is unlikely to be what you want. Instead, write `constant-app-arguments = [ --one, --two ]` or put each argument on a separate line. Conveyor will warn you if you seem to be doing this.
-
-!!! important
-    When a JVM app is signed on macOS or Windows the JVM attach mechanism is disabled using the `-XX:+DisableAttachMechanism` flag. That's because the attach mechanism allows any local user to overwrite the app's code in memory without needing to alter files on disk, thus defeating code signing.
-    
-    As a consequence debuggers and profilers won't be able to find a signed JVM app, by design.
-    
-    This rule doesn't apply on Linux because that platform doesn't use code signing in the same way. On macOS the OS forbids debugger attachment unless the app opts in to allowing this, thus apps cannot tamper with each other's memory even when running as the same user. On Windows anti-virus checks are done when code is loaded, and so programs that allow arbitrary code injection allow lateral movement by malware.
 
 **`app.jvm.modules`** List of modules to take from the underlying JDK for the usage of classpath JARs. The modules and their transitive dependencies will be included, all others will be dropped. Defaults to `[ detect ]`. The special entry `detect`  is replaced with modules detected using the `jdeps` tool (see below). Note that this is *not* the place to list modular JARs in your app - it's only for modules to take from the JDK or any other supplied JMODs. Modular JARs should be added to base inputs like any other JARs.
 
@@ -155,7 +144,7 @@ unwanted-jdk-files = [
 ]
 ```
 
-**`app.jvm.extract-native-libraries`** If true (the default) then native libraries will be deleted from JARs and placed in the lib directory of the bundled JVM. If false, they are left alone. [See below](#jar-stripping) for more information.
+**`app.jvm.extract-native-libraries`** If true (the default) then native libraries will be deleted from JARs and placed in the lib directory of the bundled JVM. If false, they are left alone. [More information](#jar-processing).
 
 ## Importing files
 
@@ -187,27 +176,33 @@ The top level `app.inputs` hierarchy (see [Inputs](inputs.md)) will be placed in
 * On Windows, EXE files are moved to the `bin` directory (`conveyor.compatibility-level >= 7`) and exposed on the user's PATH.
 * Executables for other platforms are left in the `app` directory.
 
-## JAR stripping
+## JAR processing
 
-The JAR files that get shipped are rewritten in three ways:
+**`app.jvm.extract-native-libraries`** Defaults to false. If true, native libraries (.so, .dll, .dylib etc) are moved from inside JARs to the JVM lib directory which has these benefits:
 
-1. Native shared/JNI libraries are moved out of the JAR.
-2. The metadata of the files is canonicalized to eliminate non-determinism that would otherwise reduce the efficiency of update mechanisms.
-3. Debug info is (optionally) stripped.
-
-Therefore, your software should always attempt to load shared libraries by using `System.loadLibrary` first, before trying to extract native libraries from a JAR. If you use a library that doesn't then try the following options:
-
-1. File a bug against the upstream library asking them to use `System.loadLibrary` only try to extract libs if they catch an exception. This is a pretty standard way to avoid problems when packaging. 
-2. If there's a system property you can set you can use the `<libpath>` token, e.g. `app.jvm.system-properties.fooLib.jniPath = <libpath>`. At runtime this will become the path to where the extracted native libraries can be found.
-3. You can set `app.jvm.extract-native-libraries = false` to disable this behaviour but then you're likely to hit the fact that the files
-   won't be signed, and Apple's notarization servers will detect them and reject the app. So you will have to pre-process the JAR to replace shared libraries with the signed versions.
-
-Moving native libraries out of JARs has these benefits:
-
-* On Windows and macOS the security systems want to see that all native code is signed. Libraries hidden inside JARs would not be signed by the regular processes and on macOS this can result in the OS refusing to load them.
-* Unpacking shared libraries improves startup time. 
-* It improves the effectiveness of update delta compression.
+* It improves startup time. 
+* It avoids cluttering the user's home directory with native library caches, ensuring clean uninstalls.
 * It reduces download sizes by deleting libraries meant for other operating systems or CPU architectures.
+* It reduces disk usage by removing unnecessary duplication.
+
+If false then libraries are left alone, except that libraries for macOS and Windows will be signed in-place (inside the JAR). This ensures that Apple's notarization process accepts them, and that when the libraries are extracted the operating system won't cause problems due to them being unsigned.
+
+??? note "Compatibility level < 7"
+    If your `conveyor.compatibility-level` key is less than 7 then extraction is enabled by default.
+
+### Library sysprops project
+
+Many JVM libraries require additional configuration to be compatible with native library extraction. If there's a system property for specifying where to load libraries from you can use the `<libpath>` token, e.g. `app.jvm.system-properties.fooLib.jniPath = <libpath>`. At runtime this will become the path to where the extracted native libraries can be found.
+
+To make library extraction easier to use we maintain an open source config that sets the right system properties for common libraries. It can be used like this: 
+
+```
+include required("https://raw.githubusercontent.com/hydraulic-software/conveyor/master/configs/jvm/extract-native-libraries.conf")
+```
+
+[View source](https://github.com/hydraulic-software/conveyor/blob/master/configs/jvm/extract-native-libraries.conf){ .md-button .md-button--primary }
+
+If you find a library that needs a custom system property to be compatible with library extraction please [send us a pull request](https://github.com/hydraulic-software/conveyor).
 
 ## Modules
 
@@ -317,6 +312,15 @@ The options to set `app.jvm.system-properties` are added automatically. Options 
   call `System.loadLibrary` before attempting to extract JNI libs to the user's home directory, but do support overriding the behavior
   with a system property.
 
+
+!!! important
+    When a JVM app is signed fpr macOS or Windows the JVM attach mechanism is disabled using the `-XX:+DisableAttachMechanism` flag. That's because the attach mechanism allows any local user to overwrite the app's code in memory without needing to alter files on disk, thus defeating code signing.
+
+    As a consequence debuggers and profilers won't be able to find a signed JVM app, by design.
+    
+    This rule doesn't apply on Linux because that platform doesn't use code signing in the same way. On macOS the OS forbids debugger attachment unless the app opts in to allowing this, thus apps cannot tamper with each other's memory even when running as the same user. On Windows anti-virus checks are done when code is loaded, and so programs that allow arbitrary code injection allow lateral movement by malware.
+
+
 ### Defining launchers
 
 You can define them in several ways, depending on how many defaults you accept:
@@ -378,7 +382,7 @@ The launcher supports some of the same features as the java launcher, for exampl
     NodeJS and using JavaScript modules through it, automatically moving apps to `/Applications` on macOS and regularizing how file/URL
     open requests are exposed to the OS (which currently requires operating-system specific approaches and APIs).
 
-## JVM clients
+## Default config
 
 The default config makes a few changes to improve compatibility and fix issues that might otherwise arise when packaging:
 
