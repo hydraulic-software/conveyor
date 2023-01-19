@@ -144,8 +144,6 @@ unwanted-jdk-files = [
 ]
 ```
 
-**`app.jvm.extract-native-libraries`** If true (the default) then native libraries will be deleted from JARs and placed in the lib directory of the bundled JVM. If false, they are left alone. [More information](#jar-processing).
-
 ## Importing files
 
 ### Importing a JDK
@@ -314,7 +312,7 @@ The options to set `app.jvm.system-properties` are added automatically. Options 
 
 
 !!! important
-    When a JVM app is signed fpr macOS or Windows the JVM attach mechanism is disabled using the `-XX:+DisableAttachMechanism` flag. That's because the attach mechanism allows any local user to overwrite the app's code in memory without needing to alter files on disk, thus defeating code signing.
+    When a JVM app is signed for macOS or Windows the JVM attach mechanism is disabled using the `-XX:+DisableAttachMechanism` flag. That's because the attach mechanism allows any local user to overwrite the app's code in memory without needing to alter files on disk, thus defeating code signing.
 
     As a consequence debuggers and profilers won't be able to find a signed JVM app, by design.
     
@@ -386,7 +384,7 @@ The launcher supports some of the same features as the java launcher, for exampl
 
 The default config makes a few changes to improve compatibility and fix issues that might otherwise arise when packaging:
 
-* Sets system properties for various popular libraries to make them search for their libraries in the unpacked locations.
+* Sets some useful system properties for third party libraries.
 * Enable HTTP proxy auto-detection.
 * Ensure the `jdk.crypto.ec` module is always linked in, as otherwise some TLS/HTTPS websites may not work.
 
@@ -394,15 +392,6 @@ The default config makes a few changes to improve compatibility and fix issues t
 app {
   jvm {
     system-properties {
-      # Force JNA to load its library from the normal path here.
-      #
-      # https://github.com/java-native-access/jna/issues/384
-      "jna.nosys" = false
-
-      # Same for FlatLAF (a modern Swing theme). 
-      # Supported starting from the October 2022 release.
-      "flatlaf.nativeLibraryPath" = system
-
       # Force PicoCLI to always use ANSI mode even on 
       # Windows, where our launcher enables them.
       "picocli.ansi" = tty
