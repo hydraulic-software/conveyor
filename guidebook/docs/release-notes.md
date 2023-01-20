@@ -34,12 +34,12 @@ Improvements for JVM apps:
 * Rolled the JVM client enhancements config into the defaults as some are necessary for apps to run successfully when packaged.
 * Updated the OpenJFX Gradle plugin to resolve an issue using `gradle run` on Mac ARM.
 * Resolved a crash that could occur if the `jlink` command line got too long for Windows to handle.
-* Improved UNIX flavor detection. Don't delete static Linux binaries from the package due to thinking they're not for Linux.
 * EXEs added to the app inputs will be moved to the bin directory and added to the PATH automatically.
 
 Bug fixes:
 
 * On macOS the `LSMinimumSystemVersion` value is set to the min of what the app requests and what Conveyor/Sparkle itself needs.
+* Improved UNIX flavor detection. Don't delete static Linux binaries from the package due to thinking they're not for Linux.
 
 !!! note 
     For older release notes please use the version picker in the top bar.
