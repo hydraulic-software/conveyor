@@ -125,7 +125,7 @@ You can adjust some of the values using config keys; if they don't meet your nee
 
 * `asInvoker` - whatever privilege level the user has.
 * `highestAvailable` - whatever privilege level the user can potentially escalate to.
-* `asAdministrator` - requires administrator access and cannot run without it.
+* `requireAdministrator` - requires administrator access and cannot run without it.
 
 ## Visual C++ redistributables
 

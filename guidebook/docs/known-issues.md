@@ -12,13 +12,14 @@
 
 ## Issues with planned fixes
 
+* On Windows, marking your program as requiring UAC elevation is incompatible with aggressive updates.
 * Some older versions of Windows have caching bugs in which replacing an MSIX on a remote download site will cause re-downloads to fail until a reboot. In future versions Conveyor will warn you if you're re-building a site for the same version that currently exists remotely.  
 * Changes in terminal size whilst a build is in progress won't be respected.
 * Providing a directory as your primary input will cause an icons related crash. Make sure your first input points to a file.
 * Specifying an input glob in combination with a target will cause the destination to be incorrectly treated as a file (e.g. `"foo.* -> bar"`).
+* The JavaCV OpenBLAS library is incompatible with JNI library extraction. If this library is detected you will be told how to disable library extraction.
 
 ## Low priority issues 
 
 * The commands used for installing self-signed apps must be run in "Windows PowerShell", not PowerShell 7. PowerShell 7 must be explicitly installed by users and installs in parallel to PowerShell 6, so this should not cause any unexpected issues.
 * When using JDK11, you must use patch level 16+ (i.e. JDK 11.0.16+). Earlier builds will fail with a jlink error talking about hash mismatches. This is due to a format change that got backported to JDK11.
-* The JavaCV OpenBLAS library is incompatible with JNI library extraction. If this library is detected you will be told how to disable library extraction.
