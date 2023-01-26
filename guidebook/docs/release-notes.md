@@ -28,7 +28,7 @@ Small improvements:
 
 Improvements for JVM apps:
 
-* The `appResourcesRootDir` property is imported from the Jetpack Compose Gradle plugin.
+* In version `1.3` of the Conveyor Gradle plugin the `appResourcesRootDir` property is now imported from the Jetpack Compose Gradle plugin.
 * Improved the protection against JVM argument injection via environment variables.
 * You are now warned if using a JavaFX version lower than 19 on Windows, as earlier versions can fail to start on some Windows installs.
 * Rolled the JVM client enhancements config into the defaults as some are necessary for apps to run successfully when packaged.
@@ -36,9 +36,9 @@ Improvements for JVM apps:
 
 Bug fixes:
 
-* Improvements to requesting administrator access on Windows:
-    * It now works with aggressive updates.
-    * The right keys to use are now documented.
+* Fixes to aggressive updates mode:
+    * Don't hang (macOS) or show an error (Windows) when running a version newer than the one on the update site (a downgrade).
+    * It now works with administrator UAC elevations on Windows. 
 * On macOS:
     * The `LSMinimumSystemVersion` value is set to the min of what the app requests and what Conveyor/Sparkle itself needs.
     * Apps no longer hang if they are using aggressive updates and the version in the update site is lower than the app version. 
