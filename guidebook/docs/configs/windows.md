@@ -111,7 +111,7 @@ By default the app requests `rescap:runFullTrust` which is intended for normal W
 An [application manifest](https://docs.microsoft.com/en-us/windows/win32/sbscs/application-manifests) is an XML file embedded into the executable of a program. It controls:
 
 * Backwards compatibility modes.
-* Whether the app needs administrator privileges or not ([see here for more info](https://docs.microsoft.com/en-us/previous-versions/bb756929(v=msdn.10))).
+* Whether the app needs administrator privileges or not ([see below](#requesting-administrator-access)).
 * HiDPI scaling options.
 * Scroll event resolution.
 
@@ -121,13 +121,30 @@ You can adjust some of the values using config keys; if they don't meet your nee
 
 **`app.windows.manifests.exe.content`** The EXE manifest XML embedded into the binary. It incorporates the following keys into the default XML content:
 
-**`app.windows.manifests.exe.requested-execution-level`** Controls whether the user sees a privilege escalation prompt when running. One of:
+**`app.windows.manifests.exe.requested-execution-level`** [See below](#requesting-administrator-access). One of:
 
 * `asInvoker` - whatever privilege level the user has.
 * `highestAvailable` - whatever privilege level the user can potentially escalate to.
-* `requireAdministrator` - requires administrator access and cannot run without it.
+* `requireAdministrator` - requires administrator access and cannot run without it (see below).
 
 ## Visual C++ redistributables
 
-If your app needs the MSVC++ runtime DLLs you should [ship them with your app](../stdlib/index.md#microsoft-visual-c-redistributables), as 
-Windows doesn't come with these DLLs out of the box. Conveyor has built in support for this.
+If your app needs the MSVC++ runtime DLLs you should ship them with your app, as Windows doesn't come with these DLLs out of the box. [Conveyor has built in support for this](../stdlib/index.md#microsoft-visual-c-redistributables).
+
+## Requesting administrator access
+
+To show a request Windows administrator access for your program you will need to set two keys:
+
+```
+app {
+    // Request administrator access.
+    windows.manifests {
+        exe.requested-execution-level = requireAdministrator
+        msix.capabilities += "rescap:allowElevation"
+    }
+}
+```
+
+The user will see a UAC prompt that looks like this one:
+
+![UAC prompt](https://learn.microsoft.com/en-us/windows/security/identity-protection/user-account-control/images/uacconsentprompt.png)
