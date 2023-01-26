@@ -15,12 +15,13 @@ nav:
     - outputs.md
     - running.md
     - continuous-integration.md
-    - release-notes.md
-    - known-issues.md
-    - min-sys-requirements.md
     - Comparison vs alternatives:
         - Electron: comparisons/electron-comparisons.md
         - JVM: comparisons/jvm-comparisons.md
+    - Versions:
+        - release-notes.md
+        - known-issues.md
+        - min-sys-requirements.md
   - Tutorial:
     - tutorial/1-get-started.md
     - tutorial/2-create-or-adapt-a-project.md
