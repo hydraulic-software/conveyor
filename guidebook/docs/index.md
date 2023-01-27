@@ -2,11 +2,11 @@
 
 [ :material-arrow-up-box: Start tutorial](tutorial/1-get-started.md){ .md-button .md-button--primary } [ :material-forum: Discussion forum](https://github.com/hydraulic-software/conveyor/discussions){ .md-button .md-button--primary }
 
-[Hydraulic Conveyor](https://www.hydraulic.software) makes distributing desktop and command line apps as easy as shipping a web app. It's a tool not a service, it generates and signs [self-upgrading packages for Windows, macOS and Linux using each platform's native package formats](outputs.md) without requiring you to have those operating systems, and it looks like this:
+[Hydraulic Conveyor](https://www.hydraulic.software) makes distributing desktop apps as easy as shipping a web app. It's a tool not a service, it generates and signs [self-upgrading packages for Windows, macOS and Linux using each platform's native package formats](outputs.md) without requiring you to have those operating systems, and it looks like this:
 
 <video width="100%" poster="https://conveyor.hydraulic.dev/assets/promo.jpg" controls><source src="https://conveyor.hydraulic.dev/assets/promo.mp4" type="video/mp4"></video>
 
-It's free for open source apps and has [simple per-project pricing](https://www.hydraulic.software/pricing.html) for commercial apps.
+It has integrated support for Electron, JVM and Flutter apps. It's free for open source apps and has [simple per-project pricing](https://www.hydraulic.software/pricing.html) for commercial apps.
 
 ## Features
 
@@ -30,23 +30,25 @@ It's free for open source apps and has [simple per-project pricing](https://www.
         * Import configuration from Maven and Gradle.
     * **[Flutter](configs/flutter.md)**
         * See the [demo app](https://github.com/hydraulic-software/flutter-demo) for how to package Flutter apps. 
-* **Automatic icon conversion.**
-    * Supply a set of PNGs and Conveyor turns them into the platform specific formats for you. 
+* **Brainless code signing.**
+    * Sign your Windows/Mac downloads for a better UX, or ignore it and get self-signed packages with a `curl | bash` style install.
+    * You can sign and notarize on any OS.
+    * You can back up your single root key by writing it down as words on paper.
+* **Automatic icons.**
+    * Converts to the platform specific formats for you.
+    * Renders SVG files to icons with optional macOS-style rounded rectangle masking and gradient fills.
+    * Generates synthetic icons if you don't supply any. 
 * **Generates download sites.**
     * Static HTML detects the user's operating system and CPU architecture.
     * [Release via GitHub releases](configs/download-pages#publishing-through-github).
-* **Brainless code signing.**
-    * Sign your Windows/Mac downloads for a better UX, or ignore it and get self-signed packages with a `curl | bash` style install.    
-    * You can sign and notarize on any OS. 
-    * You can back up your single root key by writing it down as words on paper.
 * **Pre-made template projects** for native C++, Electron, JavaFX (JVM) and Jetpack Compose Desktop (JVM).
 * **Pierce the abstraction!** Cross-platform tooling doesn't mean giving up platform-specific features. Over 120 different settings let you precisely configure your packages, including your:
     * Mac `Info.plist` files.
     * Windows manifests.
     * Linux `.desktop` files and package install/uninstall scripts.
-* **No lockin**. You can stop using Conveyor at any time.
+* **No lockin**.
+    * To stop using Conveyor you can just write the scripts and integrations you'd have written anyway.
     * It makes standard formats and uses standard or open source update frameworks. 
-    * To stop using it you can just write the scripts and integrations you'd have written anyway. 
 
 ## Sample apps
 
