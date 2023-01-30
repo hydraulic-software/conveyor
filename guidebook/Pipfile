@@ -5,7 +5,6 @@ name = "pypi"
 
 [packages]
 mkdocs-material = "9.0.6"
-markdown-include = "0.8.0"
 
 [dev-packages]
 
