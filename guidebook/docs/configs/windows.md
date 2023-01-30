@@ -28,6 +28,8 @@ app.windows {
 
 **`app.windows.signing-key`**, **`app.windows.certificate`** See [signing keys](index.md#signing).
 
+**`app.windows.override-icon`** Boolean. If an icon is already present in the EXE resources, controls whether to replace it with the icon produced by Conveyor. Useful when working with frameworks that use their own logo as the default EXE icon. 
+
 ## Start on login
 
 **`app.windows.start-on-login`** If `true` then your app will be started automatically when users log in to Windows. 
