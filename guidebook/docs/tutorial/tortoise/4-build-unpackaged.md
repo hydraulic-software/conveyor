@@ -25,7 +25,7 @@ Create a self-contained but unpackaged app directory for your current platform:
 
 These commands will create an unzipped, un-packaged app in the `output` directory.
 
-* [ ] At this point Conveyor will generate a new cryptographic [root key](../configs/keys-and-certificates.md) and ask you set to set a passphrase on it. It will also generate files you can use to buy certificates if you want them and don't already have them. For now you can ignore this topic, as Conveyor will generate self-signed apps. For a better download user experience however, you will need to learn about [code signing](../configs/keys-and-certificates.md). 
+* [ ] At this point Conveyor will generate a new cryptographic [root key](../../configs/keys-and-certificates.md) and ask you set to set a passphrase on it. It will also generate files you can use to buy certificates if you want them and don't already have them. For now you can ignore this topic, as Conveyor will generate self-signed apps. For a better download user experience however, you will need to learn about [code signing](../../configs/keys-and-certificates.md). 
 
 * [ ] Run the generated program directly in the usual manner for your operating system to check it works.
 
@@ -34,8 +34,8 @@ These commands will create an unzipped, un-packaged app in the `output` director
 
 !!! tip
     * You don't have to run these commands normally. Conveyor understands task dependencies so running `make site` will automatically build everything. The commands above let you inspect the results of some of the intermediate tasks.
-    * The `make` command makes use of a local file cache, downloading for any external files only once, and re-using them in subsequent project builds. Thus, a new download of the same file will be triggered only in case of events like cache or cache content removal, cache file system location change, etc. [Learn more about the disk cache](../running.md#the-cache).
-    * The generated project configuration file uses a small subset of the options available for your project configuration. For a detailed review of the configuration file structure and advanced configuration options please visit the [Writing config files](../configs/index.md) section.
+    * The `make` command makes use of a local file cache, downloading for any external files only once, and re-using them in subsequent project builds. Thus, a new download of the same file will be triggered only in case of events like cache or cache content removal, cache file system location change, etc. [Learn more about the disk cache](../../running.md#the-cache).
+    * The generated project configuration file uses a small subset of the options available for your project configuration. For a detailed review of the configuration file structure and advanced configuration options please visit the [Writing config files](../../configs/index.md) section.
 
 
 ??? tip "Error messages"

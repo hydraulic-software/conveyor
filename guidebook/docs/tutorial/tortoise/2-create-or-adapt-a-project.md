@@ -35,6 +35,10 @@ This is the quickest way to try Conveyor without getting distracted by details o
     * [ ] `./gradlew jar`  - this step will download Gradle if you don't already have it.
     * [ ] `conveyor make site`
 
+=== "Flutter"
+
+    There's no pre-generated starter project for Flutter, but it's easy to create one. See the [Flutter tutorial in hare mode](../hare/flutter.md).
+
 You now have a demo project with a `conveyor.conf` file in it, and possibly some build system integration.
 
 ## Packaging a project with Conveyor
@@ -45,18 +49,18 @@ There are three steps:
 1. Preparing the build system.
 1. Running Conveyor to generate packages or update sites.
 
-`conveyor.conf` defines your packages and is defined using a superset of JSON called [HOCON](../configs/hocon-spec.md) with a few [Conveyor-specific extensions](../configs/hocon-extensions.md). This makes it much more pleasant to express configuration whilst preserving the simple JSON data model. It also means you can import JSON into your config directly, including config generated dynamically by other programs.
+`conveyor.conf` defines your packages and is defined using a superset of JSON called [HOCON](../../configs/hocon-spec.md) with a few [Conveyor-specific extensions](../../configs/hocon-extensions.md). This makes it much more pleasant to express configuration whilst preserving the simple JSON data model. It also means you can import JSON into your config directly, including config generated dynamically by other programs.
 
 Don't worry about the details of `conveyor.conf` too much right now. Most projects don't need many settings.
 
 !!! notice "Open source vs commercial apps"
-    If your app is open source, you should set the `app.vcs-url` key to the URL where your source repository can be found. If this is a `https://github.com/org/project` url then the `app.site.base-url` key (where apps will search for online updates) will be [automatically set to use GitHub Releases](../configs/download-pages.md#publishing-through-github).  
+    If your app is open source, you should set the `app.vcs-url` key to the URL where your source repository can be found. If this is a `https://github.com/org/project` url then the `app.site.base-url` key (where apps will search for online updates) will be [automatically set to use GitHub Releases](../../configs/download-pages.md#publishing-through-github).  
     
     If your app is commercial, you should set `app.site.base-url` to something like `http://localhost:8888` to start with and later (after you're ready) set it to the real URL e.g. `"https://www.mycompany.com/downloads"`. The first time you use Conveyor a new line will appear in your config file containing a license key, linked to your choice of site URL.   
 
 === "Native"
 
-    Most of the `conveyor.conf` for a native app is straightforward. However, look at the lines defining the [`inputs`](../configs/inputs.md). They are defining where the binaries should be found on local disk, and where they should be placed in the package for each OS.
+    Most of the `conveyor.conf` for a native app is straightforward. However, look at the lines defining the [`inputs`](../../configs/inputs.md). They are defining where the binaries should be found on local disk, and where they should be placed in the package for each OS.
 
     ```javascript title="conveyor.conf"
     app {
@@ -86,7 +90,7 @@ Don't worry about the details of `conveyor.conf` too much right now. Most projec
     1. The display name is the natural language name of the project as it appears to the user. It's initialized with a guess based on de-dashifying the `fsname` key.
     2. The `fsname` is the name of the project as it appears on disk, e.g. in file names.
     3. This is a directory on a web server where packages will look for update files.
-    4. You can restrict which platforms you support. See ["Machines"](../configs/index.md#machines) for details.
+    4. You can restrict which platforms you support. See ["Machines"](../../configs/index.md#machines) for details.
     5. The templates come with pre-made icons. You should replace these files with your own. Conveyor will take care of converting to native formats and embedding the icon into the Windows EXE file.
     6. The CMake build system produces an install directory that uses non-Mac UNIX conventions. Here, we adapt it to a Mac bundle layout. If your build system produces a `.app` bundle already you can just provide the path of the bundle directory. See Apple's document ["Placing content in a bundle"](https://developer.apple.com/documentation/bundleresources/placing_content_in_a_bundle).
 
@@ -101,7 +105,7 @@ Don't worry about the details of `conveyor.conf` too much right now. Most projec
         For Sparkle to work it must be initialized at app startup. To avoid you needing to write Mac specific code in Objective-C or Swift, Conveyor will edit the Mach-O headers of your binary when it builds the bundle to inject a shared library that starts up Sparkle for you. This happens automatically for any app that links against Cocoa or AppKit and not Sparkle. This feature is particularly useful for apps that aren't written in C++, as long as they provide sufficient header padding space. The amount of space left for adding headers can be controlled using Apple's `ld` linker with the `-headerpad` flag. If your language toolchain doesn't support header padding, this technique won't work and you'll have to link against `Sparkle.framework` yourself.
 
     ??? note "Icons and manifests on Windows"
-        Windows programs contain embedded metadata like icon files, XML manifests and whether it's a console app. Conveyor will edit the EXE to reflect settings in your config, so you don't need to set these things up in your build system. Any icons or manifests already there will be replaced. [Learn how to control the binary manifest](../configs/windows.md#manifest-keys).
+        Windows programs contain embedded metadata like icon files, XML manifests and whether it's a console app. Conveyor will edit the EXE to reflect settings in your config, so you don't need to set these things up in your build system. Any icons or manifests already there will be replaced. [Learn how to control the binary manifest](../../configs/windows.md#manifest-keys).
 
     The `CMakeLists.txt` file of the OpenGL sample project contains commands with comments explaining what they do. This build system demonstrates importing a third party library from a source zip, compiling it, dynamically linking against it, and passing the right linker flags to produce binaries that will work with Conveyor. It looks like this:
     
@@ -149,7 +153,7 @@ Don't worry about the details of `conveyor.conf` too much right now. Most projec
 
     It's possible to package JVM apps with no code changes. Nonetheless:
     
-    1. The `app.version` and `app.dir` system properties may prove useful. You can [set any other system properties you like in the config](../configs/jvm.md).
+    1. The `app.version` and `app.dir` system properties may prove useful. You can [set any other system properties you like in the config](../../configs/jvm.md).
     1. Compose and JavaFX apps can load their window icons from the packaged files. See the Gradle page or the code of the template apps to get this snippet.
 
     How to integrate a JVM project depends on your build system. Please select:
@@ -185,7 +189,7 @@ Don't worry about the details of `conveyor.conf` too much right now. Most projec
 
     The next few lines take advantage of the fact that HOCON is a superset of JSON, and thus all valid JSON is also valid HOCON. It imports
     the `package.json` file into your Conveyor config, so values in it are available for substitution. Inside the 
-    `/stdlib/electron/electron.conf` file that comes with Conveyor is code like this (see [full version](../configs/electron.md#stdlib-config)):
+    `/stdlib/electron/electron.conf` file that comes with Conveyor is code like this (see [full version](../../configs/electron.md#stdlib-config)):
     
     ```hocon
     app {
@@ -223,5 +227,21 @@ Don't worry about the details of `conveyor.conf` too much right now. Most projec
     !!! note
         Conveyor doesn't currently generate [ASAR files](https://github.com/electron/asar), which Electron can use to speed startup. Your
         build system will need to generate those itself.
+
+=== "Flutter"
+
+    The [Flutter Demo repository](https://github.com/hydraulic-software/flutter-demo) shows how to package a Flutter app with Conveyor.
+    From Conveyor's perspective a Flutter app is very similar to a native app. There are a few things to note about the `conveyor.conf`:
+
+    1. We include the `/stdlib/flutter/flutter.conf` file. Amongst other things this imports the Visual C++ runtime on Windows, and ensures
+       the icon set in your config overrides the icons supplied by Flutter. 
+    1. We use GitHub Actions to compile the Flutter program for each target OS. The [nightly.link](https://nightly.link) service is used 
+       to get a URL where we can download the output of GitHub Actions, and use the `extract = 2` key to unwrap the tarball contained 
+       within the zip. These steps are needed to work around limitations of GitHub Actions ([learn more](../../continuous-integration.md).
+    1. We use the useful [yq utility](https://github.com/mikefarah/yq) to convert the `pubspec.yaml` file to JSON so it can be imported
+       into the config. This is done using [hashbang includes](../../configs/hocon-extensions.md#including-the-output-of-external-commands).
+    
+    Conveyor overrides the entitlements on macOS, so you should set those in your `conveyor.conf`, not in the files Flutter generated for you.
+    You should *not* enable the app sandbox for now, as it requires more work to be compatible with Sparkle updates in that case.
 
 <script>var tutorialSection = 2;</script>

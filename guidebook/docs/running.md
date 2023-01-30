@@ -31,7 +31,7 @@ conveyor generate {electron.cmake,compose,javafx} \
                           com.example.my-project
 ````
 
-To learn more see the [tutorial](tutorial/1-get-started.md).
+To learn more see the [tutorial](tutorial/new.md).
 
 ## Common tasks
 

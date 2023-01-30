@@ -52,5 +52,5 @@ app {
 
 Sometimes you don't want the settings to be inferred from the first input like that. In this case you can specify the config directly. Look at these sections of the guidebook to learn more:
 
-* [Generic configuration for any kind of app](../configs/index.md)
-* [Configuration for JVM apps](../configs/jvm.md)
+* [Generic configuration for any kind of app](../../configs/index.md)
+* [Configuration for JVM apps](../../configs/jvm.md)

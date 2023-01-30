@@ -60,7 +60,7 @@ It has advantages for us too:
 ## What kinds of app can you package with it?
 
 It can package any kind of app, it just has some built-in features to make packaging Electron, JVM and Flutter apps easy. 
-The [tutorial](../tutorial/1-get-started.md) shows how to package a CMake based C++ OpenGL app, for example.
+The [tutorial](../tutorial/new.md) shows how to package a CMake based C++ OpenGL app, for example.
 
 Although you can package any kind of app, over time Conveyor will gain features to apps using specific frameworks easier to package.
 
@@ -68,7 +68,7 @@ Although you can package any kind of app, over time Conveyor will gain features 
 
 It also has some support for:
 
-1. Servers that run outside of containers. See the [package a server](../tutorial/2-adapt-a-server.md) task page for an example that demonstrates systemd 
+1. Servers that run outside of containers. See the [package a server](../tutorial/tortoise/2-adapt-a-server.md) task page for an example that demonstrates systemd 
    integration, Apache 2/nginx reverse proxy integration and adding a dependency on Postgres.
 2. Command line (CLI) apps. Conveyor is packaged with itself, in fact.
 

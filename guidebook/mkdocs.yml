@@ -23,15 +23,22 @@ nav:
         - known-issues.md
         - min-sys-requirements.md
   - Tutorial:
-    - tutorial/1-get-started.md
-    - tutorial/2-create-or-adapt-a-project.md
-    - tutorial/3-compile.md
-    - tutorial/4-build-unpackaged.md
-    - tutorial/5-serve-the-site.md
-    - tutorial/6-install-the-app.md
-    - tutorial/7-release-an-update.md
-    - tutorial/8-site.md
-    - tutorial/9-next-steps.md
+    - Choose your path: tutorial/new.md
+    - The Hare:
+        - tutorial/hare/electron.md
+        - tutorial/hare/jvm.md
+        - tutorial/hare/flutter.md
+        - tutorial/hare/native.md
+    - The Tortoise:
+        - tutorial/tortoise/1-get-started.md
+        - tutorial/tortoise/2-create-or-adapt-a-project.md
+        - tutorial/tortoise/3-compile.md
+        - tutorial/tortoise/4-build-unpackaged.md
+        - tutorial/tortoise/5-serve-the-site.md
+        - tutorial/tortoise/6-install-the-app.md
+        - tutorial/tortoise/7-release-an-update.md
+        - tutorial/tortoise/8-site.md
+        - tutorial/tortoise/9-next-steps.md
   - Configuration:
     - configs/index.md
     - configs/inputs.md
@@ -71,7 +78,9 @@ theme:
     - navigation.tabs
     - navigation.tracking
     - navigation.sections
+    - navigation.path
     - content.code.annotate
+    - content.code.copy
     - content.tabs.link
 
   palette:
@@ -94,7 +103,15 @@ theme:
     text: Titillium Web
     code: Roboto Mono
 
+  icon:
+    admonition:
+      mac: simple/apple
+      windows: simple/windows
+      linux: simple/linux
+
 markdown_extensions:
+  - markdown_include.include:
+      base_path: docs
   - admonition
   - codehilite
   - meta

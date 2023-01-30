@@ -6,7 +6,7 @@
 conveyor make site
 ```
 
-The previous contents of the output directory will be replaced. You'll now find there packages for each OS in multiple formats, some update metadata files and a download page ([details](../outputs.md)). You can use whatever files you wish: there is no requirement to use them all.
+The previous contents of the output directory will be replaced. You'll now find there packages for each OS in multiple formats, some update metadata files and a download page ([details](../../outputs.md)). You can use whatever files you wish: there is no requirement to use them all.
 
 The default generated `conveyor.conf` file tells each package to look for updates on `localhost:8899`. This is good enough for testing and Conveyor doesn't require a license for localhost projects, so grab your favourite web server and serve that directory. We recommend [Caddyserver](https://caddyserver.com/). You can just run `caddy file-server --browse --listen :8899` from inside the output directory.
 

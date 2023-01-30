@@ -3,7 +3,7 @@
 ## tl;dr
 
 
-* **Want to experiment?** [Go straight to the tutorial](../tutorial/1-get-started.md). You'll use self-signing for now and can think about certificates later.
+* **Want to experiment?** [Go straight to the tutorial](../tutorial/new.md). You'll use self-signing for now and can think about certificates later.
 * **Already have certificates, or want to buy them?** Read on.
 
 ----
