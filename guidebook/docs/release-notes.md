@@ -1,5 +1,12 @@
 # Release notes
 
+## Conveyor 6.2.1
+
+Bugfixes:
+
+* Fix compatibility of aggressive updates mode with Windows administrator escalation.
+* Fix support for Yubikeys as used by ssl.com
+
 ## Conveyor 6.1
 
 Bugfixes:
