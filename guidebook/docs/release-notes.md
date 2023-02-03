@@ -1,5 +1,11 @@
 # Release notes
 
+## Conveyor 6.3
+
+Bugfixes:
+
+* Fix a bug that could cause build failures on Windows that led to spurious warnings about virus scanners.
+
 ## Conveyor 6.2.1
 
 Bugfixes:
