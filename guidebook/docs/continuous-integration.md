@@ -26,7 +26,7 @@ Call it something like `ci.conveyor.conf`. Copy your `.cer`/`.pem` files to be n
 
 An alternative approach is to set a passphrase, then put the encrypted `app.signing-key` value into your main app config that gets checked into version control. You can then put the passphrase into an environment variable and specify it on the command line with `--passphrase=env:PASSPHRASE`.
 
-To get Conveyor onto your build agents either download the Linux tarball or pre-install it on your agents. You can get a link for the current version from the [download page](https://downloads.hydraulic.dev/conveyor/download.html), which will look like this: `https://downloads.hydraulic.dev/conveyor/conveyor-6.0-linux-amd64.tar.gz`.
+To get Conveyor onto your build agents either download the Linux tarball or pre-install it on your agents. You can get a link for the current version from the [download page](https://downloads.hydraulic.dev/conveyor/download.html), which will look like this: `https://downloads.hydraulic.dev/conveyor/conveyor-6.3-linux-amd64.tar.gz`.
 
 ## Using GitHub Actions
 
