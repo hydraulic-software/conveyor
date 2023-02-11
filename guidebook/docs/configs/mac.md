@@ -18,6 +18,12 @@ app.mac {
   
     # All others can be specified.
   }
+  
+  # Add file associations.
+  file-associations += {
+    name = "Text files"     
+    uniform-type-identifiers = ["public.plain-text"]  
+  }
 
   # Disable signing even if keys are available.
   sign = false
@@ -75,6 +81,59 @@ the `Contents` directory.
 **`app.mac.sparkle-options`** An object whose values are put in the `Info.plist` that controls Sparkle's behavior. [See here for a reference guide](https://sparkle-project.org/documentation/customization/). You should normally leave this alone unless you want precise behavioral control.
 
 **`app.mac.sparkle-framework`** An input definition that points to a release of the [Sparkle 2 update framework](https://sparkle-project.org/). You can normally leave this at the default unless you want to use a custom fork of Sparkle for some reason.
+
+## File associations
+
+**`app.mac.file-associations`** A list of objects defining file associations. Each object contains the fields:
+  * **`name`** A user readable string describing the association.
+  * **`uniform-type-identifiers`** (Mac only) An optional list of Apple's [Uniform Type Identifiers](https://developer.apple.com/documentation/uniformtypeidentifiers) specifying the types of files associated with this app. If an identifier is not pre-defined as a [System declared UTI](https://developer.apple.com/documentation/uniformtypeidentifiers/system-declared_uniform_type_identifiers), you need to [define your data type in the Info.plist](https://developer.apple.com/documentation/uniformtypeidentifiers/defining_file_and_data_types_for_your_app) within either `UTExportedTypeDeclarations` or `UTImportedTypeDeclarations`. See below for examples on how to define types in your Conveyor config.
+  * **`file-extensions`** An optional list of file extensions associated with this app. If a file extension is not pre-defined as a [System declared UTI](https://developer.apple.com/documentation/uniformtypeidentifiers/system-declared_uniform_type_identifiers), you need to [define your data type in the Info.plist](https://developer.apple.com/documentation/uniformtypeidentifiers/defining_file_and_data_types_for_your_app) within either `UTExportedTypeDeclarations` or `UTImportedTypeDeclarations`. Here's a short config example of how to specify your own type in your Conveyor config:
+    ```properties
+    app {
+      mac {
+        info-plist {
+          // Specify the exported type.
+          UTExportedTypeDeclarations = [{
+            UTTypeIdentifier = "com.hydraulic.config"
+            UTTypeConformsTo = ["public.json"]
+            UTTypeTagSpecification = {
+              "public.filename-extension" = ["conf"]
+            }
+          }]
+        }
+    
+        // Make the association
+        file-associations = {
+          name = "Config file"
+          file-extensions = [".conf"]
+        }
+      }
+    }
+    ```
+  * **`mime-types`** An optional list of [MIME types](https://en.wikipedia.org/wiki/Media_type) associated with this app. If a mime type is not pre-defined as a [System declared UTI](https://developer.apple.com/documentation/uniformtypeidentifiers/system-declared_uniform_type_identifiers), you need to [define your data type in the Info.plist](https://developer.apple.com/documentation/uniformtypeidentifiers/defining_file_and_data_types_for_your_app) within either `UTExportedTypeDeclarations` or `UTImportedTypeDeclarations`. Here's a short config example of how to specify an imported type in your Conveyor config:
+    ```properties
+    app {
+      mac {
+        info-plist {
+          // Specify the imported type.
+          UTImportedTypeDeclarations = [{
+            UTTypeIdentifier = "com.microsoft.excel.xls"
+            UTTypeConformsTo = ["public.composite-content", "public.data"]
+            UTTypeTagSpecification = {
+              "public.filename-extension" = ["xls"]
+              "public.mime-type" = ["application/vnd.ms-excel"]
+            }
+          }]
+        }
+    
+        // Make the association
+        file-associations = {
+          name = "Config file"
+          mime-types = ["application/vnd.ms-excel"]
+        }
+      }
+    }
+    ```
 
 ## Entitlements
 
