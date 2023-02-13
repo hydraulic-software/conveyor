@@ -174,7 +174,7 @@ Don't worry about the details of `conveyor.conf` too much right now. Most projec
     include required("/stdlib/electron/electron.conf") 
     
     package-json {  
-      include "package.json"
+      include required("package-lock.json")
     }
     
     app {
@@ -188,7 +188,7 @@ Don't worry about the details of `conveyor.conf` too much right now. Most projec
     The configuration is straightforward. The first line activates Electron support by importing configuration from the standard library.
 
     The next few lines take advantage of the fact that HOCON is a superset of JSON, and thus all valid JSON is also valid HOCON. It imports
-    the `package.json` file into your Conveyor config, so values in it are available for substitution. Inside the 
+    the `package-lock.json` file into your Conveyor config, so values in it are available for substitution. Inside the 
     `/stdlib/electron/electron.conf` file that comes with Conveyor is code like this (see [full version](../../configs/electron.md#stdlib-config)):
     
     ```hocon
@@ -196,7 +196,7 @@ Don't worry about the details of `conveyor.conf` too much right now. Most projec
       // Read core metadata from the package.json file.
       fsname = ${package-json.name}
       version = ${package-json.version}
-      electron.version = ${package-lock.packages.node_modules/electron.version}
+      electron.version = ${package-json.packages.node_modules/electron.version}
     
       // Import typical files that make up the app.
       inputs = ${app.inputs} [
@@ -213,9 +213,8 @@ Don't worry about the details of `conveyor.conf` too much right now. Most projec
     }
     ```
     
-    As you can see, HOCON syntax lets us copy data out of the `package.json` file and assign to the right place in the Conveyor config
-    schema. You can also read the `package-lock.json` file, which can be useful because the lockfile has the specific version
-    of Electron that you've chosen to use, whereas `package.json` may contain a version range.
+    As you can see, HOCON syntax lets us copy data out of the `package-lock.json` file and assign to the right place in the Conveyor config
+    schema. You can also read the `package.json` file if you aren't using version ranges.
     
     The default inputs will copy JavaScript, JSON, CSS and HTML files from the project root into the app along with the `node_modules` directory,
     whilst excluding the `dist` sub-directory of the `electron` module (which contains a complete Mac app bundle that isn't needed). 

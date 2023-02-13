@@ -54,6 +54,16 @@ app {
 
 {!tutorial/hare/hocon-tip.md!}
 
+!!! tip "Setting the Electron version"
+    An Electron app must set the `app.electron.version` key. The `/stdlib/electron/electron.conf` file imported in the snippet above contains a line
+    like this: 
+
+    ```
+    app.electron.version = ${?package-json.packages.node_modules/electron.version}
+    ```
+
+    which will import it from the `package-lock.json` file.
+
 ## Change the icon
 
 The current icon is the Electron logo, which isn't a great choice for your app. Conveyor can draw icons for you.
