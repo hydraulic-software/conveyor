@@ -2,6 +2,13 @@
 
 Stuck? Can't find what you need here? If you're a commercial user then you can write to [contact@hydraulic.software](mailto:contact@hydraulic.software). Otherwise, feel free to post in [the GitHub discussion forum](https://github.com/hydraulic-software/conveyor/discussions).
 
+## Web server doesn't support HTTP Range requests
+
+Windows installs MSIX packages incrementally using the Windows [Background Intelligent Transfer Service](https://learn.microsoft.com/en-us/windows/win32/bits/background-intelligent-transfer-service-portal). This requires the web server to advertise support for byte range HTTP requests. Almost all web servers do, but watch out for these exceptions:
+
+* The Python built in web server. Consider using `npx serve` instead.
+* AWS S3 when using the default static serving endpoint, which looks like  `https://bucketname.s3-website-us-east-1.amazonaws.com/package.msix`. Use the object URL that ends in `.s3.amazonaws.com` instead (e.g. `https://hydraulic-downloads-ue1.s3.amazonaws.com/package.msix`). For unclear reasons, Amazon don't advertise the `Accept-Range: bytes` header when using the first form.
+
 ## Where to store files
 
 Windows apps installed with Conveyor (MSIX) run inside an app container that prevents modification of the program's installed files. It also prevents listing of the `c:\Program Files\WindowsApps` directory where apps are located. To view the installed program files in Explorer and get other useful packaging related features, grab [MSIX Hero](https://msixhero.net/). Then select your package and use the toolbar to open an Explorer inside the right directory.
