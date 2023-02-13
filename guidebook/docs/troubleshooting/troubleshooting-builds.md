@@ -24,4 +24,4 @@ If a change you're making doesn't seem to be picked up on a re-run of your chose
 
 ## Increase cache size limit if tasks rerun unnecessarily
 
-The default cache size limit is 5 gigabytes, which is a reasonable size to contain all intermediate files for a single app. If you're building multiple different apps with Conveyor then the cache may start evicting entries more often than convenient. If you see tasks re-running and can't figure out why, try passing `--cache-limit=10.0` to give it more room.
+The default cache size limit is 10 gigabytes, which is a reasonable size to contain all intermediate files for a single app. If you're building multiple different apps with Conveyor then the cache may start evicting entries more often than convenient. If you see tasks re-running and can't figure out why, try passing `--cache-limit=20.0` to give it more room.
