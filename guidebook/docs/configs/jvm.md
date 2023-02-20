@@ -7,7 +7,7 @@ Conveyor has integrated support for apps that run on the JVM (for any supported 
 * A custom launcher that replaces the `java` command and adds [extra features](#launcher-features).
 * Usage of `jlink` and `jdeps` to create a minimal bundled JVM.
 * Support for signing native libraries:
-    * Dynamic libraries are signed _inside_ JARs, ensuring they work on end user systems.
+    * Dynamic libraries can be signed _inside_ JARs, ensuring they work on end user systems.
     * They can also be unpacked from JARs and discarded if they're for the wrong OS/CPU, which yields [several benefits](#jar-processing).
 * [Maven and Gradle integration](maven-gradle.md):
     * A Gradle plugin that automatically generates configuration snippets.
