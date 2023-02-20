@@ -16,11 +16,7 @@ You can register a URL handler by just setting the `app.url-schemes` key; see th
 
 File type associations are a high priority feature that's already in development. You can find out when it's ready by following [this GitHub issue](https://github.com/hydraulic-software/conveyor/issues/5).
 
-## 3. Why aren't I seeing icons show up?
-
-Make sure you provide icon images at the full range of sizes. Conveyor won't currently rescale icons if you don't provide enough of them. In particular, note that the biggest icon size Windows supports is 256x256 so if you only provide an image larger than that, you won't get any icons.
-
-## 4. How do I do a new version for every commit?
+## 3. How do I do a new version for every commit?
 
 Something like:
 
@@ -36,6 +32,6 @@ and then just trigger Conveyor from your CI system. This is an example of [a has
 !!! important "Revision numbers vs commit hashes"
     Note that revision must be a number. You can't set it to be a commit hash. This is because package managers don't generally allow non-integer versions, and for Windows and macOS this is a hard rule.
 
-## 5. How do I display a license agreement at install time?
+## 4. How do I display a license agreement at install time?
 
-You can't. User interactivity during installation is idiomatic on macOS, extremely discouraged on Linux and causes problems for network admins on Windows. Ask the user to agree in your app on first run instead.
+That's not supported. User interactivity during installation is un-idiomatic on macOS, extremely discouraged on Linux and causes problems for network admins on Windows. Ask the user to agree in your app on first run instead.
