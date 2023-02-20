@@ -1,10 +1,10 @@
 # Release notes
 
-## Jan 2023
+## February 2023
 
-This release focuses on [**Flutter support.**](configs/flutter.md), improvements to icon handling and usability improvements.
+This release focuses on [**Flutter support**](configs/flutter.md), improvements to icon handling and usability improvements.
 
-New features:
+### New features
 
 * **Flutter support**. Flutter apps can be packaged and distributed more easily than with the default tools.  See the [sample Flutter app on GitHub](https://github.com/hydraulic-software/flutter-demo) to learn how to cross-compile the app using GitHub Actions and then package it.
 * **MSVC++ redistributables**. Apps often require these DLLs, but they don't come with the OS. [You can now easily bundle them](stdlib/index.md#microsoft-visual-c-redistributables). The CMake C++ sample was updated to use this feature.
@@ -15,7 +15,7 @@ New features:
 * **Synthetic icons.** Conveyor can now make icons for you. This reduces the required effort to quickly package apps like internal tools, dashboards and demos where drawing an icon would be too much effort. The generated icon has a one or two character label on a gradient background.
 * **Setting Windows icons.** You can now forcibly override the EXE icon used on Windows, if you're using a framework that supplies an inappropriate default.
 
-Improvements for JVM apps:
+### Improvements for JVM apps
 
 * **In-place signing for JVM apps.** Native libraries are now signed inside JARs when `app.jvm.extract-native-libraries` is false (which is the default for new projects). This avoids creating problems with third party libraries that don't use `System.loadLibrary` before attempting to do extraction. Native library extraction is still available and still recommended to improve your app's user experience.
 * In version `1.4` of the Conveyor Gradle plugin the `appResourcesRootDir` property is now imported from the Jetpack Compose Gradle plugin.
@@ -24,7 +24,7 @@ Improvements for JVM apps:
 * Rolled the JVM client enhancements config into the defaults as some are necessary for apps to run successfully when packaged.
 * EXEs added to the app inputs will be moved to the bin directory and added to the PATH automatically.
 
-Small improvements:
+### Small improvements
 
 * Sparkle was updated to version 2.3.1
 * Windows update metadata no longer allows downgrades when `conveyor.compatibility-level >= 7`. Downgrades aren't allowed by Sparkle on macOS and require admin intervention on Linux, so it's better to be consistent and disallow them on Windows too. This has the advantage that you can distribute packages of a higher version than the update stream it's connected to, e.g. to distribute one-off patched versions to specific users. They will return to the mainline when you next do an upgrade past the version used for the one-off builds.
@@ -34,7 +34,7 @@ Small improvements:
 * The Windows installer now gives more helpful error messages in some cases, e.g. if your web server doesn't support range requests.
 * The default cache size has been restricted. 
 
-Bug fixes:
+### Bug fixes
 
 * Fixes to aggressive updates mode:
     * Don't hang (macOS) or show an error (Windows) when running a version newer than the one on the update site (a downgrade).
