@@ -40,7 +40,7 @@ This release focuses on [**Flutter support**](configs/flutter.md), improvements 
     * Don't hang (macOS) or show an error (Windows) when running a version newer than the one on the update site (a downgrade).
     * It now works with administrator UAC elevations on Windows. 
     * Fixed an error that could occur on Windows 10 only when using version numbers with four components. 
-* On macOS the `LSMinimumSystemVersion` value is set to the min of what the app requests and what Conveyor/Sparkle itself needs.
+* On macOS the `LSMinimumSystemVersion` value is set to the max of what the app requests and what Conveyor/Sparkle itself needs.
 * Improved UNIX flavor detection. Don't delete static Linux binaries from the package due to thinking they're not for Linux.
 * Improved file type detection to avoid mis-classifying `.class` files as Mach-O binaries if the extension has been changed (they share magic numbers).
 * Don't ask for a passphrase unless it's needed by one of the executing tasks.
