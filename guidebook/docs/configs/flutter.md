@@ -3,7 +3,7 @@
 [Flutter](https://flutter.dev/) is a cross-platform UI development platform for mobile and desktop. Flutter apps are easy to package
 with Conveyor.
 
-[View sample app on GitHub](https://github.com/hydraulic-software/flutter-sample/){ .md-button .md-button--primary }
+[View sample app on GitHub](https://github.com/hydraulic-software/flutter-demo/){ .md-button .md-button--primary }
 
 There are no Flutter-specific configuration keys at this time. Just include `flutter.conf` from the Conveyor standard library and go.
 You can also use a tool like `yq` to read values out of your `pubspec.yaml` file. To learn about the rest of the config and how it works,
