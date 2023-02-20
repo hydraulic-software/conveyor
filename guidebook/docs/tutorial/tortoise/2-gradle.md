@@ -45,7 +45,7 @@ To add the plugin:
     ```
     ```kotlin title="build.gradle.kts"
     plugins {
-        id("dev.hydraulic.conveyor") version "1.3"
+        id("dev.hydraulic.conveyor") version "1.4"
     }
     ```
 
@@ -60,7 +60,7 @@ To add the plugin:
     ```
     ```groovy title="build.gradle"
     plugins {
-        id 'dev.hydraulic.conveyor' version '1.3'
+        id 'dev.hydraulic.conveyor' version '1.4'
     }
     ```
 
@@ -69,7 +69,7 @@ The plugin adds two tasks, `printConveyorConfig` and `writeConveyorConfig`. The 
 * [ ] Run `./gradlew -q printConveyorConfig` and examine the output.
 
 !!! note
-     The plugin can read config from other plugins like the Java application plugin, the Jetpack Compose plugin and the OpenJFX plugin. It can in some cases identify which JDK you want to bundle with your app from the Java toolchains setting. If it doesn't then it'll emit a comment to the generated config explaining why not, and you'll have to add another line of config to [import a JDK](../../configs/jvm.md#importing-a-jvmjdk).
+     The plugin can read config from other plugins like the Java application plugin, the Jetpack Compose plugin and the OpenJFX plugin. It can in some cases identify which JDK you want to bundle with your app from the Java toolchains setting. If it doesn't then it'll emit a comment to the generated config explaining why not, and you'll have to add another line of config to [import a JDK](../../configs/jvm.md#importing-a-jdk).
 
 ### Hashbang includes
 
@@ -86,8 +86,8 @@ Sometimes you need different versions of a library depending on which OS you use
 
 For [Jetpack Compose Desktop](https://www.jetbrains.com/lp/compose-desktop/) apps a bit more work is required. Different Conveyor plugin versions support different Compose Desktop versions:
 
-* For Compose 1.2, use Conveyor plugin `1.3` or higher.
-* For Compose 1.0/1.1, use Conveyor plugin `1.0.1`. You'll need to [import a JDK](../../configs/jvm.md#importing-a-jvmjdk) yourself.
+* For Compose 1.2, use Conveyor plugin `1.4` or higher.
+* For Compose 1.0/1.1, use Conveyor plugin `1.0.1`. You'll need to [import a JDK](../../configs/jvm.md#importing-a-jdk) yourself.
 
 If you use the wrong one you'll get a `NoSuchMethodError` exception. Both JVM and Multiplatform Kotlin plugins are supported.
 
@@ -225,7 +225,7 @@ SWT is a small JVM UI toolkit that maps directly to the operating system's nativ
 plugins {
 	`java-library`
     application
-    id("dev.hydraulic.conveyor") version "1.3"
+    id("dev.hydraulic.conveyor") version "1.4"
 }
 
 repositories {

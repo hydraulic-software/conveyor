@@ -18,7 +18,7 @@ New features:
 Improvements for JVM apps:
 
 * **In-place signing for JVM apps.** Native libraries are now signed inside JARs when `app.jvm.extract-native-libraries` is false (which is the default for new projects). This avoids creating problems with third party libraries that don't use `System.loadLibrary` before attempting to do extraction. Native library extraction is still available and still recommended to improve your app's user experience.
-* In version `1.3` of the Conveyor Gradle plugin the `appResourcesRootDir` property is now imported from the Jetpack Compose Gradle plugin.
+* In version `1.4` of the Conveyor Gradle plugin the `appResourcesRootDir` property is now imported from the Jetpack Compose Gradle plugin.
 * Improved the protection against JVM argument injection via environment variables.
 * You are now warned if using a JavaFX version lower than 19 on Windows, as earlier versions can fail to start on some Windows installs.
 * Rolled the JVM client enhancements config into the defaults as some are necessary for apps to run successfully when packaged.
