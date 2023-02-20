@@ -4,30 +4,24 @@ Stuck? Can't find what you need here? If you're a commercial user then you can w
 
 ## Problems loading native libraries
 
-Conveyor moves native libraries out of JARS to ensure [a better end-user experience](../configs/jvm.md#jar-stripping). It's conventional to always try to load native libraries using `System.loadLibrary` first unpacking bundled native code, but some libraries don't do this. They may require a custom system property to be set. You can do it like this:
+Conveyor can move native libraries out of JARS to ensure [a better end-user experience](../configs/jvm.md#jar-processing). It's conventional to always try to load native libraries using `System.loadLibrary` first unpacking bundled native code, but some libraries don't do this. 
+
+You have two possible solutions:
+
+* Set `app.jvm.extract-native-libraries = false`. This will cause Conveyor to find and sign any native libraries inside the JARs, allowing your app to extract them to the user's home directory or temp directory at startup. It's not ideal because it will litter your user's system with stuff that uninstalls won't clean up, it slows down app startup and it bloats the size of your download. But it *is* simple for the developer.
+* Provide the right system properties for your third party library to find its native code. You can do it using the special `<libpath>` token, like this:
 
 ```
 app {
     jvm {
         system-properties {
-            my.library.nativePathLib = <libpath>
+            "my.library.nativePathLib" = <libpath>
         }
     }
 }
 ```
 
-It's often worth reporting these bugs to the upstream projects, so they can use `loadLibrary` first and only try unpacking libraries afterwards.
-
-!!! tip
-    JAR stripping can be disabled, but then you will face problems with Mac notarization detecting unsigned code inside your JARS. Future
-    versions of Conveyor may add support for signing files inside JARs, but this wouldn't fix the user experience problems such as slower
-    startup and littering home directories.
-
-## FlatLAF doesn't use correct window decorations
-
-Make sure you're using 2.6+ and that your config is including the JVM enhancements config (`include required("/stdlib/jvm/enhancements/client/v1.conf")`).
-
-For more details see [problems loading native libraries](#problems-loading-native-libraries).
+It's often worth reporting these bugs to the upstream projects, so they can use `loadLibrary` first and only try unpacking libraries afterwards. We are collecting [such system properties here](https://conveyor.hydraulic.dev/7.0/configs/jvm/#library-sysprops-project) - why not send us a PR.
 
 ## Big delta updates
 
