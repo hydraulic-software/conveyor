@@ -18,6 +18,9 @@ app.mac {
   
     # All others can be specified.
   }
+  
+  # Add file associations.
+  file-associations += ".txt"
 
   # Disable signing even if keys are available.
   sign = false
@@ -75,6 +78,46 @@ the `Contents` directory.
 **`app.mac.sparkle-options`** An object whose values are put in the `Info.plist` that controls Sparkle's behavior. [See here for a reference guide](https://sparkle-project.org/documentation/customization/). You should normally leave this alone unless you want precise behavioral control.
 
 **`app.mac.sparkle-framework`** An input definition that points to a release of the [Sparkle 2 update framework](https://sparkle-project.org/). You can normally leave this at the default unless you want to use a custom fork of Sparkle for some reason.
+
+## File associations
+
+**`app.mac.file-associations`** A list of objects defining file associations. Each object contains the fields:
+  * **`extensions`** A list of file extensions associated with this app. If a file extension is not pre-defined as a [System declared UTI](https://developer.apple.com/documentation/uniformtypeidentifiers/system-declared_uniform_type_identifiers), you need to [define your data type in the Info.plist](https://developer.apple.com/documentation/uniformtypeidentifiers/defining_file_and_data_types_for_your_app) within either `UTExportedTypeDeclarations` or `UTImportedTypeDeclarations`.
+  * **`mime-type`** An optional string with the [MIME type](https://en.wikipedia.org/wiki/Media_type) associated with the file extensions.
+  * **`uti`** (Mac only) An optional string with Apple's [Uniform Type Identifiers](https://developer.apple.com/documentation/uniformtypeidentifiers) specifying the types of files associated with this app. If an identifier is not pre-defined as a [System declared UTI](https://developer.apple.com/documentation/uniformtypeidentifiers/system-declared_uniform_type_identifiers), you need to [define your data type in the Info.plist](https://developer.apple.com/documentation/uniformtypeidentifiers/defining_file_and_data_types_for_your_app) within either `UTExportedTypeDeclarations` or `UTImportedTypeDeclarations`. See below for examples on how to define types in your Conveyor config.
+
+  For simple file extensions, you can replace the object with a string with the syntax `".extension1 [.extension2]* [mime/type]"`. For UTIs, you need to use the object syntax.
+
+  Here's a larger example of how to define file associations, including defining your own types:
+
+  ```properties
+    app {
+      mac {
+        info-plist {
+          // Specify the exported type.
+          UTExportedTypeDeclarations = [{
+            UTTypeIdentifier = "com.hydraulic.config"
+            UTTypeConformsTo = ["public.json"]
+            UTTypeTagSpecification = {
+              "public.filename-extension" = ["conf"]
+            }
+          }]
+        }
+    
+        // Make the association
+        file-associations += ".conf"
+        // Using the full object syntax:
+        file-associations += {
+          extensions = [".txt", ".text"]
+          mime-type = "text/plain"
+        }
+        // Using Uniform Type Identifiers:
+        file-associations += {
+          uti = "com.hydraulic.config"
+        }
+      }
+    }
+  ```
 
 ## Entitlements
 
