@@ -105,21 +105,39 @@ Notice that the newline characters are escaped and the indent/leading whitespace
 
 ## Publishing through GitHub
 
+### Synopsis
+
+```
+app {
+  # Reference to the GitHub repository where the project is hosted.
+  vcs-url = "github.com/user/repo"
+  site {    
+    github {
+      oauth-token = "github_pat_SOME_TOKEN_VALUE"
+      // Optional: upload the download site to a branch. 
+      pages-branch = "gh-pages"
+    }
+  }
+}
+```
+
 Conveyor's repository sites are designed to be compatible with GitHub releases. Using them is easy:
 
-1. Set your `app.vcs-url` to point to `https://github.com/user/repo`. This will automatically set `app.site.base-url` to be `github.com/$user/$repo/releases/latest/download`. If you aren't packaging an open source app then don't set `vcs-url` and set the `site.base-url` key to that location manually. 
-2. Run `conveyor make site` as usual to get an output directory.
-3. Create a new release and upload the contents of the output directory, minus `download.html` and any extra files you used, like icon files. [Take a look at this example release to see what you should have.](https://github.com/hydraulic-software/eton-desktop/)
-4. Take the generated `download.html` file and stick it on your website somewhere.
+1. Set your `app.vcs-url` to point to `github.com/user/repo`. This will automatically set `app.site.base-url` to be `https://github.com/$user/$repo/releases/latest/download`. If you aren't packaging an open source app then don't set `vcs-url` and set the `site.base-url` key to that location manually.
+2. In GitHub, set up an OAuth token to allow Conveyor to upload releases to your project:
+   1. Create either a [Fine Grained Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-fine-grained-personal-access-token) with *Read and Write access* to your repository contents, or a [Classic personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-personal-access-token-classic) with *repo:status* scope.
+   2. Copy the value of the token into `conveyor.conf` under `app.site.github.oauth-token`.
+3. (Optional) Set up `app.site.github.pages-branch` to the branch where you want to release the download site. For instance, if you set it to "gh-pages" your download will automatically be available from `https://$user.github.io/$repo/download.html`.
+4. Run `conveyor make copied-site`.
 
-That's it! To upgrade your users just create a new GitHub release as normal. The auto-update engines will be checking the metadata files on whatever your latest release is to discover what to download.
+That's it! To upgrade your users just run `conveyor make copied-site` on newer versions of your app. The auto-update engines will be checking the metadata files on whatever your latest release is to discover what to download.
+
+Under the hood, releasing to GitHub Releases is controlled by setting key `app.site.copy-to` to a special value `github:$user/$repo`. You could set this key directly to publish to GitHub Releases for any repository you control, though it probably only makes sense to publish to the same repo where your code is. Conveyor will set this key automatically if it detects that `app.site.base-url` points to a GitHub Releases page.
 
 Be aware of these caveats:
 
 * Your users will upgrade to whatever the `/releases/latest` URL points to. Therefore, you shouldn't do beta releases or other forms of pre-release this way. Stick those files somewhere else or use draft releases, etc.
-* The `download.html` file contains links to the "latest" files but their file names will contain the version number. Therefore you should copy the HTML to your website each time you do a release, otherwise users will get 404 errors.
 
-Future versions of Conveyor might automate the process of doing the uploads to GitHub.
 
 ## Publishing via SFTP
 
