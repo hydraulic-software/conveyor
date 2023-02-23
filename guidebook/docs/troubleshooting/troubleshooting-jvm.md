@@ -23,6 +23,28 @@ app {
 
 It's often worth reporting these bugs to the upstream projects, so they can use `loadLibrary` first and only try unpacking libraries afterwards. We are collecting [such system properties here](https://conveyor.hydraulic.dev/7.0/configs/jvm/#library-sysprops-project) - why not send us a PR.
 
+## "UnsatisfiedLinkError: ... Mapping process and mapped file (non-platform) have different Team IDs ..."
+
+The file identified as being unloadable is probably in a cache or temp location in your home directory.
+
+This error from macOS can occur when using an app on the same machine used to develop it. It's related to the discussion above about native libraries. When `app.jvm.extract-native-libraries = false` (which is the default when `conveyor.compatibility-level >= 7`) Java libraries with native components will go back to the regular behavior of extracting their libs at startup to somewhere in the user's home directory (or a temporary directory). During development the library that gets extracted to this cache path will be unsigned, but when you build your app the embedded .jnilib or .dylib file inside the JAR will be code signed with your identity and the operating system expects them to match. If they don't then you'll get this error. This problem is inherent to the way the JVM ecosystem handles native code and Conveyor gives you several options to resolve it.
+
+The best solution is to opt in to native library extraction. This will place native code in the right places inside the Mac app ensuring no conflicts, fast startup time and avoiding problems with GateKeeper. The downside is you may need to [set extra system properties](../configs/jvm.md#library-sysprops-project) to make your Java libraries look in the right place for their native components.
+
+The quickest solution is to delete the file that the error identifies as being unloadable, then run your packaged and signed app. This will replace the cached version with the version from your app, signed by you. This should also work fine whilst developing your app. The problem with this is that if any of your users have two different apps that use the _same_ Java library, then they will fight over the shared cache location and the signature mismatch error may return.
+
+The final solution is to opt out of Apple's library validation feature. This will make the error go away in all cases without needing extra system properties. However, Apple views apps that do this to be less secure than normal and GateKeeper will run extra checks on them, which might cause your app to be blocked. Do it like this:
+
+```
+app {
+    mac { 
+        entitlements-plist {
+            "com.apple.security.cs.disable-library-validation" = true
+        }
+    }
+}
+```
+
 ## Big delta updates
 
 You can make updates faster by using individual JARs as inputs. This will work much better with delta compression (as used by MSIX/AppInstaller on Windows). Note that explicit JPMS modules will be still be bundled into a single `modules` file, as this can yield better startup times.
