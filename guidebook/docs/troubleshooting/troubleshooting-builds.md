@@ -2,6 +2,18 @@
 
 Stuck? Can't find what you need here? If you're a commercial user then you can write to [contact@hydraulic.software](mailto:contact@hydraulic.software). Otherwise feel free to post in [the GitHub discussion forum](https://github.com/hydraulic-software/conveyor/discussions).
 
+## I get an error about site consistency checks
+
+Conveyor will probe your download site to catch certain types of mistakes. If it can't do this probe e.g. because the site isn't online yet then you'll get an error. You can convert these errors to warnings by setting `app.site.consistency-checks = warn`. AWS S3 can cause problems because it can return 403 Permission Denied for files that don't exist instead of the more normal 404 Not Found. You can add the `s3:ListBucket` permission to the bucket policy to solve this.
+
+Conveyor currently does the following checks:
+
+1. Ensures you aren't building a version that was already uploaded when targeting Windows. Overwriting already released versions is never a good idea but can especially cause problems for Windows 10 (Windows 11 is more robust).
+2. Ensures you aren't changing the signing identity of Windows packages. Changing your signing identity e.g. due to a corporate renaming, change of HQ location or change of certificate type will break updates by making Windows think it's a totally separate app from a different vendor. It requires a special process that Conveyor doesn't currently directly support to establish continuity of identity.
+3. Checks whether your site is using "flat" layout or not. This check can usually be ignored, as it exists for backwards compatibility.
+
+In the future it will do other checks to catch other kinds of issues.
+
 ## Use good config style
 
 Conveyor has a large default configuration that is included before your own. Following two simple rules will help avoid problems:

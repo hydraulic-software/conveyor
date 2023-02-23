@@ -4,11 +4,11 @@ Stuck? Can't find what you need here? If you're a commercial user then you can w
 
 ## Problems loading native libraries
 
-Conveyor can move native libraries out of JARS to ensure [a better end-user experience](../configs/jvm.md#jar-processing). It's conventional to always try to load native libraries using `System.loadLibrary` first unpacking bundled native code, but some libraries don't do this. 
+Conveyor can move native libraries out of JARS to ensure [a better end-user experience](../configs/jvm.md#jar-processing). It's conventional to always try to load native libraries using `System.loadLibrary` before unpacking bundled native code, but some libraries don't do this. 
 
 You have two possible solutions:
 
-* Set `app.jvm.extract-native-libraries = false`. This will cause Conveyor to find and sign any native libraries inside the JARs, allowing your app to extract them to the user's home directory or temp directory at startup. It's not ideal because it will litter your user's system with stuff that uninstalls won't clean up, it slows down app startup and it bloats the size of your download. But it *is* simple for the developer.
+* Set `app.jvm.extract-native-libraries = false`. This will cause Conveyor to find and sign any native libraries inside the JARs, allowing your app to extract them to the user's home directory or temp directory at startup. It's not ideal because it will litter your user's system with stuff that uninstalls won't clean up, it slows down app startup, bloats your download and can cause problems with Apple's GateKeeper (see below). But it *is* simple for the developer and will get you running fast.
 * Provide the right system properties for your third party library to find its native code. You can do it using the special `<libpath>` token, like this:
 
 ```
