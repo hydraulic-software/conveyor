@@ -57,8 +57,8 @@ Usually, certificate authorities give you several options for what format you do
 
 Export them to `.cer`, `.pem`, `.p12` or `.pfx` files:
 
-* **macOS:** Export the keys from Keychain Access to a .p12 file (see below). Set `app.mac.signing-key` to point to that file. If you have a separate key and certificate file, set `app.mac.certificate` to point to the `.cer` file.
-* **Windows:** Set `app.windows.signing-key` to the path of either a .p12/.pfx file containing your private key and certificate, or set `app.windows.signing-key` and `app.windows.certificate` separately.
+* **macOS:** Export the keys from Keychain Access to a .p12 file (see below). Set both `app.mac.signing-key` and `app.mac.certificate` to point to that file (the .p12 will contain both).
+* **Windows:** Set `app.windows.signing-key` and `app.windows.certificate` to the path of either a .p12/.pfx file containing your private key and certificate, or set `app.windows.signing-key` and `app.windows.certificate` separately (e.g. to PEM files).
 
 To learn more about configuring keys and certificates see [signing configuration](index.md#signing).
 
@@ -70,7 +70,7 @@ To learn more about configuring keys and certificates see [signing configuration
 
 **Step 2.** Select both, right click and choose "Export 2 items". Save as .p12 format.
 
-**Step 3.** Pick a strong passphrase and enter it. It may have spaces in it. Click OK.
+**Step 3.** Use the same passphrase as you used for your Conveyor root key. Click OK.
 
 **Step 4.** Enter your login password to unlock the keychain. The export should now complete.
 
