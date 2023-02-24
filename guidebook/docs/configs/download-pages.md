@@ -138,6 +138,33 @@ Be aware of these caveats:
 
 * Your users will upgrade to whatever the `/releases/latest` URL points to. Therefore, you shouldn't do beta releases or other forms of pre-release this way. Stick those files somewhere else or use draft releases, etc.
 
+## Publishing through Amazon S3
+
+### Synopsis
+
+```
+app {  
+  site {
+    base-url = "https://my-bucket.s3.amazonaws.com/path/to/site"
+    // Optional: if the base-url host ends with .s3.amazonaws.com, Conveyor infers the correct value of copy-to.
+    copy-to = "s3:my-bucket/path/to/site"
+    s3 {
+      region = "us-east-1"
+      access-key-id = ${env.AWS_ACCESS_KEY_ID}
+      secret-access-key = ${env.AWS_SECRET_ACCESS_KEY}        
+    }
+  }
+}
+```
+
+It's easy to configure Conveyor to upload your site to an Amazon S3 repository:
+
+1. Set key `app.site.copy-to` to `s3:$bucket/$path`. If your `app.site.base-url` has a host ending with `.s3.amazonaws.com`, you don't need to set the value of `app.site.copy-to`, as Conveyor can infer the correct value. 
+2. Set `app.site.s3.region` to the appropriate region for your S3 bucket.
+3. Set `app.site.s3.access-key-id` and `app.site.s3.secret-access-key` with the details of your [AWS programmatic access key](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/setup.html#setup-iamuser). 
+As seen it the example above, you can configure Conveyor to retrieve those from environment variables by using the syntax `${env.NAME_OF_VARIABLE}`, so you don't have to store your credentials in the Conveyor config file.
+
+That's it! To upgrade your users just run `conveyor make copied-site` on newer versions of your app. The auto-update engines will be checking the metadata files on whatever your latest release is to discover what to download.
 
 ## Publishing via SFTP
 
