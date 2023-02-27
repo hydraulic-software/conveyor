@@ -1,6 +1,12 @@
 # Release notes
 
-## February 2023
+## February 2023 (v7.1)
+
+* Fix a regression in the Compose for Desktop generated sample.
+* Allow more types of site consistency check errors to be downgraded to warnings. This fix is especially useful when working with Amazon S3 
+  which by default reports 404 Not Found as 403 Permission Denied.
+
+## February 2023 (v7.0)
 
 This release focuses on [**Flutter support**](configs/flutter.md), improvements to icon handling and usability improvements.
 
