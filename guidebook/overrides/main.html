@@ -8,5 +8,14 @@ You're not viewing the latest version.
 {% endblock %}
 
 {% block extrahead %}
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XBMC1WYKH3"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-XBMC1WYKH3');
+</script>
+
 <script defer data-domain="conveyor.hydraulic.dev" src="https://plausible.io/js/plausible.js"></script>
 {% endblock %}
