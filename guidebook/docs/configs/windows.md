@@ -81,6 +81,10 @@ By default the app requests `rescap:runFullTrust` which is intended for normal W
 
 **`app.windows.manifests.msix.extensions-xml`** Raw XML that will be added into the `<Extensions></Extensions>` tag in the manifest. Useful for adding operating system integrations that Conveyor doesn't yet support out of the box.
 
+**`app.windows.manifests.msix.additional-properties-xml`** Raw XML that will be added into the `<Properties></Properties>` tag in the manifest. Useful for adding operating system integrations that Conveyor doesn't yet support out of the box.
+
+**`app.windows.manifests.msix.virtualization`** Virtualization options. See [Virtualization](#virtualization) for details.
+
 **`app.windows.manifests.msix.namespaces`** A map of namespace ID to XML namespace URL. You can use this to add declarations of additional namespaces if the default list doesn't have the one you need.  The list of XML namespaces in the default config is:
 
 * `com:` http://schemas.microsoft.com/appx/manifest/com/windows10
@@ -107,6 +111,27 @@ By default the app requests `rescap:runFullTrust` which is intended for normal W
 **`app.windows.manifests.msix.ignorable-namespaces`** A list of XML namespace IDs to add to the `IgnorableNamespaces` attribute on the root element. This is part of how Microsoft enables graceful degradation on older versions of Windows. The default list is `[ rescap6, uap7, uap8 ]`.
 
 **`app.windows.manifests.msix.content`** If set, supplies a string containing a complete manifest that replaces the standard one. The other keys will be ignored in this case, as they are only used to customize the built-in template.
+
+#### Virtualization
+
+Microsoft's Universal Windows Platform provides a [virtualization mechanism](https://learn.microsoft.com/en-us/windows/msix/desktop/flexible-virtualization#default-msix-behavior) that aims to isolate data between applications such that data written by one app can only be read by that app. Besides isolation, this mechanism also allows for a clean uninstall, as all the data belonging to a given app can be identified and excluded along with it.
+
+There are some circumstances where apps might want or need to share data, and Microsoft provides a [mechanism to allow excluding certain files from virtualization](https://learn.microsoft.com/en-us/windows/msix/desktop/flexible-virtualization). Conveyor makes it simple to use this mechanism by providing the following key:
+
+**`app.windows.manifests.msix.virtualization.excluded-directories`** List of strings containing directories that should be excluded from virtualization. The first part of each directory must be the name of a [Known Folder](https://learn.microsoft.com/en-us/uwp/schemas/appxpackage/uapmanifestschema/element-virtualization-excludeddirectory#remarks) such as `RoamingAppData` or `LocalAppData`. For example:
+```properties
+app.windows.manifests.msix.virtualization = {
+  excluded-directories = [
+    # Exclude the entire RoamingAppData folder from virtualization.
+    RoamingAppData
+    # Exclude a single folder within LocalAppData folder from virtualization.
+    LocalAppData/MyAppFolder
+  ]
+}
+```
+
+Setting this key will not only generate the correct fragment of the MSIX manifest, it will also implicitly enable the `unvirtualizedResources` restricted capability, which is necessary in this case.
+
 
 ### The EXE manifest
 

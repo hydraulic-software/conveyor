@@ -109,6 +109,16 @@ Some special tokens are supported. See [JVM options](#jvm-options) for details. 
 
 **`app.jvm.mac.plist`** HOCON structure converted to the `Info.plist` file used for the linked JVM on macOS. You can normally ignore this.
 
+**`app.jvm.windows.override-appdata-env`** If set (defaults to true), Conveyor will override the values of the `APPDATA` and `LOCALAPPDATA` environment values as seen by the JVM to point to the corresponding private folders of your app's package. This is convenient for instance if you need to pass a full path to an app data file to a subprocess, as otherwise the subprocess wouldn't be able to locate the app's files due to Microsoft's UWP [Virtualization](windows.md#virtualization).
+
+For advanced cases where you need to access files from the user's `APPDATA` or `LOCALAPPDATA` folders bypassing virtualization, you might want to set this key to false.
+
+As an added convenience, Conveyor also provides the following environment variables:
+  * `PACKAGE_APPDATA`: Always points to the package private version of `%APPDATA%`
+  * `PACKAGE_LOCALAPPDATA`: Always points to the package private version of `%LOCALAPPDATA%`
+  * `USER_APPDATA`: Always points to the user `%USERPROFILE%` version of `%APPDATA%`
+  * `USER_LOCALAPPDATA`: Always points to the user `%USERPROFILE%` version of `%LOCALAPPDATA%`
+
 **`app.jvm.strip-debug-info`** If true (defaults to false) then JVM classfile debug attributes are stripped during repacking.
 
 **`app.jvm.unwanted-jdk-files`** A list of file names that are erased from the application after jlinking and launcher creation is done. This is useful for cleaning up files that are usually only needed for development purposes. You can remove default items from the list by prefixing them with a `-` (minus). The list defaults to: 
