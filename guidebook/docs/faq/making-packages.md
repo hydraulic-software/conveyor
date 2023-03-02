@@ -12,9 +12,7 @@ Conveyor will run `jsonnet conveyor.jsonnet` and treat the output as if it was a
 
 ## 2. Can I define URL handlers or file associations?
 
-You can register a URL handler by just setting the `app.url-schemes` key; see the [operating system integration section](../configs/os-integration.md) for details. 
-
-File type associations are a high priority feature that's already in development. You can find out when it's ready by following [this GitHub issue](https://github.com/hydraulic-software/conveyor/issues/5).
+You can register a URL handler by just setting the `app.url-schemes` key, and file associations by just setting the `app.file-associations` key; see the [operating system integration section](../configs/os-integration.md) for details. 
 
 ## 3. How do I do a new version for every commit?
 
