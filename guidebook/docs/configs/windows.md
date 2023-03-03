@@ -175,3 +175,13 @@ app {
 The user will see a UAC prompt that looks like this one:
 
 ![UAC prompt](https://learn.microsoft.com/en-us/windows/security/identity-protection/user-account-control/images/uacconsentprompt.png)
+
+## Application User Model ID (AUMID)
+
+If you need to know your app's [AUMID](https://learn.microsoft.com/en-us/windows/win32/shell/appids), just run:
+
+```shell
+conveyor make app-user-model-id
+```
+
+It will output the AUMID to the standard output.
