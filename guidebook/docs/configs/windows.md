@@ -114,18 +114,19 @@ By default the app requests `rescap:runFullTrust` which is intended for normal W
 
 #### Virtualization
 
-Microsoft's Universal Windows Platform provides a [virtualization mechanism](https://learn.microsoft.com/en-us/windows/msix/desktop/flexible-virtualization#default-msix-behavior) that aims to isolate data between applications such that data written by one app can only be read by that app. Besides isolation, this mechanism also allows for a clean uninstall, as all the data belonging to a given app can be identified and excluded along with it.
+Windows provides a [virtualization mechanism](https://learn.microsoft.com/en-us/windows/msix/desktop/flexible-virtualization#default-msix-behavior) that aims to provide a clean uninstall, by ensuring that the app-private files and registry keys belonging to a given app can be identified and removed along with it. This is implemented by redirecting writes to the user's `AppData` directory to an app-specific location created by Windows. The app is unaware this is happening because it sees an overlay filesystem view.
 
-There are some circumstances where apps might want or need to share data, and Microsoft provides a [mechanism to allow excluding certain files from virtualization](https://learn.microsoft.com/en-us/windows/msix/desktop/flexible-virtualization). Conveyor makes it simple to use this mechanism by providing the following key:
+There are some circumstances where apps might need to share data with each other, and Microsoft provides a [mechanism to allow excluding certain files from virtualization](https://learn.microsoft.com/en-us/windows/msix/desktop/flexible-virtualization). Conveyor makes it simple to use this mechanism by providing the following key:
 
 **`app.windows.manifests.msix.virtualization.excluded-directories`** List of strings containing directories that should be excluded from virtualization. The first part of each directory must be the name of a [Known Folder](https://learn.microsoft.com/en-us/uwp/schemas/appxpackage/uapmanifestschema/element-virtualization-excludeddirectory#remarks) such as `RoamingAppData` or `LocalAppData`. For example:
-```properties
+
+```
 app.windows.manifests.msix.virtualization = {
   excluded-directories = [
     # Exclude the entire RoamingAppData folder from virtualization.
     RoamingAppData
     # Exclude a single folder within LocalAppData folder from virtualization.
-    LocalAppData/MyAppFolder
+    LocalAppData/OtherAppsFolder
   ]
 }
 ```

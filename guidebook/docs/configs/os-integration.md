@@ -18,11 +18,12 @@ app.url-schemes = [ my-app ]
 
 If users won't directly see your links then a reasonable choice for the URL scheme is your app's `rdns-name`, because that's meant to be globally unique, and only contains characters valid for URL schemes.
 
-**Important!** This only registers your app for that URL scheme. You still have to receive and handle open requests from the
-OS. This differs by platform and runtime. On macOS the OS delivers the request via your Cocoa app delegate and no work is required for
-single instance mode. On Linux and Windows the request is delivered by executing a new process with the URL as the command line parameter.
-It's up to you to locate the other instance of the app if there is one and relay the request to it. For Electron apps this is built in. For
-JVM apps you can use a library like [unique4j](https://github.com/prat-man/unique4j) on Windows/Linux and [java.awt.Desktop.setOpenURIHandler](https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Desktop.html#setOpenURIHandler(java.awt.desktop.OpenURIHandler)) on macOS.
+!!! important
+    This only registers your app for that URL scheme. You still have to receive and handle open requests from the
+    OS. This differs by platform and runtime. On macOS the OS delivers the request via your Cocoa app delegate and no work is required for
+    single instance mode. On Linux and Windows the request is delivered by executing a new process with the URL as the command line parameter.
+    It's up to you to locate the other instance of the app if there is one and relay the request to it. For Electron apps this is built in. For
+    JVM apps you can use a library like [unique4j](https://github.com/prat-man/unique4j) on Windows/Linux and [java.awt.Desktop.setOpenURIHandler](https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Desktop.html#setOpenURIHandler(java.awt.desktop.OpenURIHandler)) on macOS.
 
 ## File associations
 
@@ -37,11 +38,12 @@ And that's it! It should automatically open `.foo` with your app on *every platf
 
 You can even define different file associations for different platforms by using the keys `app.mac.file-assocations`, `app.linux.file-assocations` and `app.windows.file-assocations`. By default, the value of all of those keys is the same as `app.file-associations`.
 
-**Important!** This only registers your app for that file extension. You still have to receive and handle open requests from the
-OS. This differs by platform and runtime. On macOS the OS delivers the request via your Cocoa app delegate and no work is required for
-single instance mode. On Linux and Windows the request is delivered by executing a new process with the file path as the command line parameter.
-It's up to you to locate the other instance of the app if there is one and relay the request to it. For Electron apps this is built in. For
-JVM apps you can use a library like [unique4j](https://github.com/prat-man/unique4j) on Windows/Linux and [java.awt.Desktop.setOpenFileHandler](https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Desktop.html#setOpenFileHandler(java.awt.desktop.OpenFilesHandler)) on macOS.
+!!! important
+    This only registers your app for that file extension. You still have to receive and handle open requests from the
+    OS. This differs by platform and runtime. On macOS the OS delivers the request via your Cocoa app delegate and no work is required for
+    single instance mode. On Linux and Windows the request is delivered by executing a new process with the file path as the command line parameter.
+    It's up to you to locate the other instance of the app if there is one and relay the request to it. For Electron apps this is built in. For
+    JVM apps you can use a library like [unique4j](https://github.com/prat-man/unique4j) on Windows/Linux and [java.awt.Desktop.setOpenFileHandler](https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Desktop.html#setOpenFileHandler(java.awt.desktop.OpenFilesHandler)) on macOS.
 
 
 ### Platform specific details
@@ -51,7 +53,7 @@ JVM apps you can use a library like [unique4j](https://github.com/prat-man/uniqu
 Linux requires you to specify MIME types for file associations. Conveyor takes care of that for you by generating a MIME type based on your app's `rdns-name`, specifically `application/vnd.${app.rdns-name}.${extension}`. If you prefer to set the MIME yourself, you can do so like this:
 
 ```hocon
-app.file-associations = [".foo application/x-my-mime-type"]
+app.file-associations = [ ".foo application/x-my-mime-type" ]
 ```
 
 Whenever there are file associations, Conveyor checks the entry under `app.linux.desktop-file."Desktop Entry".Exec` for the presence of one of `%f`, `%F`, `%u` or `%U`, conforming to the [Exec entry spec](https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s07.html). If none is present, Conveyor appends `%f` to that entry automatically.
@@ -101,11 +103,7 @@ please refer to any Windows programming guide to learn how to work with COM APIs
 Some Windows APIs require you to know your "app user model ID". When packaged with Conveyor this will be a string that looks like this:
 `ExampleApp_49jahnq5qzr1m!ExampleApp`.
 
-To discover your AUMID the simplest way is to run:
-```shell
-conveyor make app-user-model-id
-```
-Which will output your AUMID to standard output.
+To discover your AUMID the simplest way is to run `conveyor make app-user-model-id` which will output your AUMID to standard output.
 The code in the middle of the AUMID is a hash of your signing certificate, so you may be prompted for your passphrase.
 
 ## Custom integrations

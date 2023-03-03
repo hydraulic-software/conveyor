@@ -81,138 +81,67 @@ the `Contents` directory.
 
 ## File associations
 
-**`app.mac.file-associations`** A list of objects defining file associations. Each object contains the fields:
-  * **`extensions`** A list of file extensions associated with this app. If a file extension is not pre-defined as a [System declared UTI](https://developer.apple.com/documentation/uniformtypeidentifiers/system-declared_uniform_type_identifiers), Conveyor will [generate an UTExportedTypeDeclaration for you](#generated-type-declarations).
-  * **`mime-type`** An optional string with the [MIME type](https://en.wikipedia.org/wiki/Media_type) associated with the file extensions. If set, this is used on [Generated Type Declarations](#generated-type-declarations). 
-  * **`uti`** (Mac only) An optional string with Apple's [Uniform Type Identifiers](https://developer.apple.com/documentation/uniformtypeidentifiers) specifying the types of files associated with this app. If an identifier is not pre-defined as a [System declared UTI](https://developer.apple.com/documentation/uniformtypeidentifiers/system-declared_uniform_type_identifiers), and not present in `app.mac.info-plist` under `UTExportedTypeDeclaration` or `UTImportedTypeDeclaration`  Conveyor will [generate an UTExportedTypeDeclaration for you](#generated-type-declarations). 
+**`app.mac.file-associations`** A list of strings or objects defining file associations. Defaults to the value of `app.file-associations` so you should only rarely need to set this key unless you want to use Apple's proprietary UTI system (see below). Normally you should use the top level multi-platform key instead.  
 
-  For simple file extensions, you can replace the object with a string with the syntax `".extension1 [.extension2]* [mime/type]"`. For UTIs, you need to use the object syntax.
-  You can [define your data types in the `Info.plist`](https://developer.apple.com/documentation/uniformtypeidentifiers/defining_file_and_data_types_for_your_app) within either `UTExportedTypeDeclarations` or `UTImportedTypeDeclarations`.
-  Here's a larger example of how to define file associations, including defining your own types:
+The simplest way to define a file association is to add a file extension to the list:
 
-  ```properties
-    app {
-      mac {
-        info-plist {
-          // Specify an exported type.
-          UTExportedTypeDeclarations = [{
-            UTTypeIdentifier = "com.hydraulic.config"
-            UTTypeConformsTo = ["public.json"]
-            UTTypeTagSpecification = {
-              "public.filename-extension" = ["conf"]
-            }
-          }]
-          
-          // Specify an imported type.
-          UTImportedTypeDeclarations = [{
-            UTTypeIdentifier = "com.microsoft.excel.xls"
-            UTTypeConformsTo = ["public.composite-content", "public.data"]
-            UTTypeTagSpecification = {
-              "public.filename-extension" = ["xls"]
-              "public.mime-type" = ["application/vnd.ms-excel"]
-            }
-          }]
-        }
-    
-        // Make an association to the exported type.
-        file-associations += ".conf"
-        // Make an association to the imported type.
-        file-associations += ".xls"
-        // Make an association to an undeclared type. Conveyor will generate a declaration for you.
-        file-associations += ".alt"
-        // Undeclared type with multiple extensions and an optional MIME type. Conveyor will generate a declaration for you.
-        file-associations += ".alt1 .alt2 application/x-alternative"
-        
-        // Using Uniform Type Identifiers:
-        file-associations += {
-          // This type is declared above.
-          uti = "com.hydraulic.config"
-        }
-        file-associations += {
-          // This type is undeclared. Conveyor will generate a declaration for you if you specify at least one file extension.
-          uti = "com.hydraulic.foo"
-          extensions = [".foo"]
-          // Optional mime-type, if not provided Conveyor will generate one.
-          mime-type = "application/x-foo"
-        }
-      }
-    }
-  ```
+```
+app.mac.file-associations += .superfile
+```
 
-### Generated Type Declarations
+The OS also needs a MIME type. If you don't specify a MIME type then Conveyor will generate one for you in the `application/vnd` hierarchy, but you can control it by just appending it to the string form like this:
 
-For convenience, Conveyor creates `UTExportedTypeDeclarations` for types that aren't pre-defined as a [System declared UTI](https://developer.apple.com/documentation/uniformtypeidentifiers/system-declared_uniform_type_identifiers) nor already defined under `app.mac.info-plist`. The minimal element necessary for defining types is the extension; everything else is inferred from `app.rdns-name`. For example, for the `conveyor.conf` below:
+```
+app.mac.file-associations += .superfile application/vnd.superfile
+```
 
-```properties
-app {
-  rdns-name = "org.example.my-app"
-  file-associations += ".aaa"
-  file-associations += ".bbb application/x-type-b"
-  file-associations += ".cc1 .cc2 .cc3"
-  mac {
-    file-associations += {
-      uti = "com.my-type.d"
-      extenstions = [".ddd"]
-    }
-    file-associations += {
-      uti = "com.my-type.e"
-      extenstions = [".eee"]
-      mime-type = "application/x-type-e"
-    }
-  }
+Some file types may have more than one valid extension, e.g. for an image editor you could write:
+
+```
+app.mac.file-associations += .jpg .jpeg image/jpeg
+app.mac.file-associations += .tif .tiff image/tiff
+```
+
+### Uniform Type Identifiers
+
+Apple platforms have their own more powerful equivalent to MIME types called [Uniform Type Identifiers](https://developer.apple.com/documentation/uniformtypeidentifiers). UTIs can be arranged in a hierarchy to express the fact that e.g. a file format is based on JSON but adds additional semantics on top. You can normally ignore this because Conveyor will generate the necessary metadata for you. If you want to customize them then read on.
+
+To set up a UTI you must first use the object form and then create a unique reverse DNS name for the file type, like this:
+
+```
+app.mac.file-associations += {
+    extensions = [ .superfile ]
+    mime-type = application/vnd.superfile
+    uti = ${app.rdns-name}.superfile
 }
 ```
 
-Conveyor will generate the equivalent of the declaration below into your app's `Info.plist`:
-```properties
-app {
-  mac {
-    info-plist {      
-      UTExportedTypeDeclarations = [{
-        // Only the extension was provided, UTTypeIdentifier and the MIME type are inferred.
-        UTTypeIdentifier = "org.example.my-app.aaa"
-        UTTypeConformsTo = ["public.data"]
-        UTTypeTagSpecification = {
-          "public.filename-extension" = ["aaa"]
-          "public.mime-type" = ["application/vnd.org.example.my-app.aaa"]
-        }
-      }, {
-        UTTypeIdentifier = "org.example.my-app.bbb"
-        UTTypeConformsTo = ["public.data"]
-        UTTypeTagSpecification = {
-          "public.filename-extension" = ["bbb"]
-          "public.mime-type" = ["application/x-type-b"]
-        }
-      }, {
-        // Only the first unknown extension in the group is used to infer the UTTypeIdentifier and MIME types.
-        UTTypeIdentifier = "org.example.my-app.cc1"
-        UTTypeConformsTo = ["public.data"]
-        UTTypeTagSpecification = {
-          "public.filename-extension" = ["cc1", "cc2", "cc3"]
-          "public.mime-type" = ["application/vnd.org.example.my-app.cc1"]
-        }
-      }, {
-        // If you specify a UTI, it is used instead.
-        UTTypeIdentifier = "com.my-type.d"
-        UTTypeConformsTo = ["public.data"]
-        UTTypeTagSpecification = {
-          "public.filename-extension" = ["ddd"]
-          "public.mime-type" = ["application/vnd.org.example.my-app.ddd"]
-        }
-      }, {        
-        UTTypeIdentifier = "com.my-type.e"
-        UTTypeConformsTo = ["public.data"]
-        UTTypeTagSpecification = {
-          "public.filename-extension" = ["eee"]
-          "public.mime-type" = ["application/x-type-e"]
-        }
-      }]
+Apple distinguishes between exported types (you own the format) and imported types (someone else owns the format). If an identifier is not pre-defined as a [System declared UTI](https://developer.apple.com/documentation/uniformtypeidentifiers/system-declared_uniform_type_identifiers), and not present in `app.mac.info-plist` under `UTExportedTypeDeclaration` or `UTImportedTypeDeclaration`  Conveyor will generate a `UTExportedTypeDeclaration` for you (generate a Mac app and then look at the `Info.plist` to see exactly what it creates).
+
+If you want to define your own UTIs explicitly, you can define the plist items like this:
+
+```
+app.mac.info-plist {
+  UTExportedTypeDeclarations = [{
+    UTTypeIdentifier = "com.example.config"
+    UTTypeConformsTo = ["public.json"]
+    UTTypeTagSpecification = {
+      "public.filename-extension" = ["conf"]
     }
-  }
+  }]
+  
+  UTImportedTypeDeclarations = [{
+    UTTypeIdentifier = "com.microsoft.excel.xls"
+    UTTypeConformsTo = ["public.composite-content", "public.data"]
+    UTTypeTagSpecification = {
+      "public.filename-extension" = ["xls"]
+      "public.mime-type" = ["application/vnd.ms-excel"]
+    }
+  }]
 }
 ```
 
-If you need to fine tune it even further, you'll have to make the declarations directly into `app.mac.info-plist`.
+and then define a file association object with `uti = com.example.config` to reference it.
 
 ## Entitlements
 
