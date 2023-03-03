@@ -103,9 +103,9 @@ release-note=New feature: We've integrated AI and blockchain to make your work r
 
 Notice that the newline characters are escaped and the indent/leading whitespace were stripped. 
 
-## Publishing through GitHub
+## Hosting providers
 
-### Synopsis
+### Publishing through GitHub
 
 ```
 app {
@@ -113,7 +113,9 @@ app {
   vcs-url = "github.com/user/repo"
   site {    
     github {
-      oauth-token = "github_pat_SOME_TOKEN_VALUE"
+      // Token looks like "github_pat_SOME_TOKEN_VALUE"
+      oauth-token = ${env.GITHUB_TOKEN}
+      
       // Optional: upload the download site to a branch. 
       pages-branch = "gh-pages"
     }
@@ -125,8 +127,8 @@ Conveyor's repository sites are designed to be compatible with GitHub releases. 
 
 1. Set your `app.vcs-url` to point to `github.com/user/repo`. This will automatically set `app.site.base-url` to be `https://github.com/$user/$repo/releases/latest/download`. If you aren't packaging an open source app then don't set `vcs-url` and set the `site.base-url` key to that location manually.
 2. In GitHub, set up an OAuth token to allow Conveyor to upload releases to your project:
-   1. Create either a [Fine Grained Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-fine-grained-personal-access-token) with *Read and Write access* to your repository contents, or a [Classic personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-personal-access-token-classic) with *repo:status* scope.
-   2. Copy the value of the token into `conveyor.conf` under `app.site.github.oauth-token`.
+    1. Create either a [Fine Grained Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-fine-grained-personal-access-token) with *Read and Write access* to your repository contents, or a [Classic personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-personal-access-token-classic) with *repo:status* scope.
+    2. Set `app.site.github.oauth-token` to the token, or use the `${env.VARNAME}` feature to substitute it from an environment variable.
 3. (Optional) Set up `app.site.github.pages-branch` to the branch where you want to release the download site. For instance, if you set it to "gh-pages" your download will automatically be available from `https://$user.github.io/$repo/download.html`.
 4. Run `conveyor make copied-site`.
 
@@ -134,39 +136,41 @@ That's it! To upgrade your users just run `conveyor make copied-site` on newer v
 
 Under the hood, releasing to GitHub Releases is controlled by setting key `app.site.copy-to` to a special value `github:$user/$repo`. You could set this key directly to publish to GitHub Releases for any repository you control, though it probably only makes sense to publish to the same repo where your code is. Conveyor will set this key automatically if it detects that `app.site.base-url` points to a GitHub Releases page.
 
-Be aware of these caveats:
+!!! note
+    Your users will upgrade to whatever the `/releases/latest` URL points to. Therefore, you shouldn't do beta releases or other forms of pre-release this way. Stick those files somewhere else or use draft releases, etc.
 
-* Your users will upgrade to whatever the `/releases/latest` URL points to. Therefore, you shouldn't do beta releases or other forms of pre-release this way. Stick those files somewhere else or use draft releases, etc.
+### Publishing through Amazon S3
 
-## Publishing through Amazon S3
-
-### Synopsis
+It's easy to configure Conveyor to upload your site to an Amazon S3 repository:
 
 ```
 app {  
   site {
     base-url = "https://my-bucket.s3.amazonaws.com/path/to/site"
-    // Optional: if the base-url host ends with .s3.amazonaws.com, Conveyor infers the correct value of copy-to.
-    copy-to = "s3:my-bucket/path/to/site"
+    copy-to = "s3:my-bucket/path/to/site"   // Optional, inferred automatically.
     s3 {
       region = "us-east-1"
       access-key-id = ${env.AWS_ACCESS_KEY_ID}
-      secret-access-key = ${env.AWS_SECRET_ACCESS_KEY}        
+      secret-access-key = ${env.AWS_SECRET_ACCESS_KEY}
     }
   }
 }
 ```
 
-It's easy to configure Conveyor to upload your site to an Amazon S3 repository:
-
 1. Set key `app.site.copy-to` to `s3:$bucket/$path`. If your `app.site.base-url` has a host ending with `.s3.amazonaws.com`, you don't need to set the value of `app.site.copy-to`, as Conveyor can infer the correct value. 
 2. Set `app.site.s3.region` to the appropriate region for your S3 bucket.
-3. Set `app.site.s3.access-key-id` and `app.site.s3.secret-access-key` with the details of your [AWS programmatic access key](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/setup.html#setup-iamuser). 
+3. Set `app.site.s3.access-key-id` and `app.site.s3.secret-access-key` with the details of your [AWS programmatic access key](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/setup.html#setup-iamuser).
+
 As seen it the example above, you can configure Conveyor to retrieve those from environment variables by using the syntax `${env.NAME_OF_VARIABLE}`, so you don't have to store your credentials in the Conveyor config file.
 
 That's it! To upgrade your users just run `conveyor make copied-site` on newer versions of your app. The auto-update engines will be checking the metadata files on whatever your latest release is to discover what to download.
 
-## Publishing via SFTP
+!!! warning "S3 URLs"
+    Windows updates will fail when using the default static serving endpoint (e.g. `https://bucketname.s3-website-us-east-1.amazonaws.com/`). Use the object URL that ends in `.s3.amazonaws.com` instead (e.g. `https://bucketname.s3.amazonaws.com/`). 
+
+    For unclear reasons, Amazon don't advertise the `Accept-Range: bytes` header when using the first form and Windows requires this as part of its optimized download system, where it won't download files the user already has.
+
+### Publishing via SFTP
 
 If you set `app.site.copy-to` to a string like `//hostname/directory` then you can use the `copied-site` task to both build the downloads
 and upload the resulting download site to a remote server. The directory should be absolute, and you can specify both username and password
