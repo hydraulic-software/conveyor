@@ -101,8 +101,12 @@ please refer to any Windows programming guide to learn how to work with COM APIs
 Some Windows APIs require you to know your "app user model ID". When packaged with Conveyor this will be a string that looks like this:
 `ExampleApp_49jahnq5qzr1m!ExampleApp`.
 
-The code in the middle is a hash of your signing certificate, so to discover your AUMID the simplest way is to create the (signed) package
-by running `conveyor make windows-msix`, install it on Windows and then running `Get-StartApps` from PowerShell.
+To discover your AUMID the simplest way is to run:
+```shell
+conveyor make app-user-model-id
+```
+Which will output your AUMID to standard output.
+The code in the middle of the AUMID is a hash of your signing certificate, so you may be prompted for your passphrase.
 
 ## Custom integrations
 
