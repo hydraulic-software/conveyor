@@ -9,9 +9,9 @@ systemd as a service manager.
 
 ## Is Conveyor free?
 
-Conveyor is free for open source projects if you set the `app.vcs-url` key to where your source repository can be found, or if your update
-site is set to localhost (i.e. for testing). Once you set your `app.site.base-url` key to a public website for a commercial project you'll
-be asked to pay. [Learn more about pricing](https://www.hydraulic.software/pricing.html). A subscription includes commercial support.
+Conveyor is free if your update site is set to localhost (i.e. for testing) and for open source projects if you set the `app.vcs-url` key to
+where your source repository can be found. Once you set your `app.site.base-url` key to a public website for a commercial project you'll be
+asked to pay. [Learn more about pricing](https://www.hydraulic.software/pricing.html). A subscription includes commercial support.
 
 Open source apps that use it should advertise the fact that they're packaged with Conveyor somewhere and link to the website. Using the
 generated download page makes this easy, because it contains a "Packaged with Conveyor" badge. If you don't use that HTML then you'll need
@@ -61,8 +61,6 @@ It has advantages for us too:
 
 It can package any kind of app, it just has some built-in features to make packaging Electron, JVM and Flutter apps easy. 
 The [tutorial](../tutorial/new.md) shows how to package a CMake based C++ OpenGL app, for example.
-
-Although you can package any kind of app, over time Conveyor will gain features to apps using specific frameworks easier to package.
 
 ## Is Conveyor only for desktop apps?
 
