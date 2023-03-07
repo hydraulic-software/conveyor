@@ -1,6 +1,6 @@
 # Getting started
 
-[ :material-arrow-up-box: Start tutorial](tutorial/new.md){ .md-button .md-button--primary } [ :simple-discord: Chat](https://discord.gg/E87dFeuMFc){ .md-button .md-button--primary } [ :material-forum: Forum](https://github.com/hydraulic-software/conveyor/discussions){ .md-button .md-button--primary }
+[ :material-arrow-down-circle: Download](https://downloads.hydraulic.dev/conveyor/download.html){ .md-button .md-button--primary } [ :material-arrow-up-box: Start tutorial](tutorial/new.md){ .md-button .md-button--primary } [ :simple-discord: Chat](https://discord.gg/E87dFeuMFc){ .md-button .md-button--primary } [ :material-forum: Forum](https://github.com/hydraulic-software/conveyor/discussions){ .md-button .md-button--primary }
 
 [Hydraulic Conveyor](https://www.hydraulic.software) makes distributing desktop apps as easy as shipping a web app. It's a tool not a service, it generates and signs [self-upgrading packages for Windows, macOS and Linux using each platform's native package formats](outputs.md) without requiring you to have those operating systems, and it looks like this:
 
