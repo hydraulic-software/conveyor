@@ -35,6 +35,12 @@ To learn more see the [tutorial](tutorial/new.md).
 
 ## Common tasks
 
+**Create a packaged app directory/bundle and execute your program from it:**
+
+```bash
+conveyor run
+```
+
 **Build a download site for all available platforms in a directory called `output`:**
 
 ```bash
