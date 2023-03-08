@@ -121,17 +121,19 @@ There are some circumstances where apps might need to share data with each other
 **`app.windows.manifests.msix.virtualization.excluded-directories`** List of strings containing directories that should be excluded from virtualization. The first part of each directory must be the name of a [Known Folder](https://learn.microsoft.com/en-us/uwp/schemas/appxpackage/uapmanifestschema/element-virtualization-excludeddirectory#remarks) such as `RoamingAppData` or `LocalAppData`. For example:
 
 ```
-app.windows.manifests.msix.virtualization = {
-  excluded-directories = [
-    # Exclude the entire RoamingAppData folder from virtualization.
-    RoamingAppData
-    # Exclude a single folder within LocalAppData folder from virtualization.
-    LocalAppData/OtherAppsFolder
-  ]
+app.windows.manifests.msix.virtualization {
+  # Exclude the entire RoamingAppData folder from virtualization.
+  excluded-directories += RoamingAppData
+
+  # Exclude a single folder within LocalAppData folder from virtualization.
+  excluded-directories += LocalAppData/OtherAppsFolder
 }
 ```
 
 Setting this key will not only generate the correct fragment of the MSIX manifest, it will also implicitly enable the `unvirtualizedResources` restricted capability, which is necessary in this case.
+
+!!! note "UNIX domain sockets"
+    Some versions of Windows have a kernel bug that breaks UNIX domain sockets when they are stored in a virtualized directory. By default, the `excluded-directories` key contains `LocalAppData/Temp` thus excluding the temp dir from virtualization and JVM apps rely on this being the case. If you alter `excluded-directories` key, make sure to append to it as in the example above.  
 
 
 ### The EXE manifest
