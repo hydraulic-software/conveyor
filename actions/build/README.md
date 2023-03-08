@@ -43,6 +43,7 @@ It needs to be run from a Linux runner (e.g. `ubuntu-latest`).
 ## Example
 
 This is an example of how to deploy a Flutter app to a private SSH repository using the Build action:
+
 ```yaml
 name: Deploy
 on: [workflow_dispatch]
