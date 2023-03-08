@@ -1,0 +1,88 @@
+name: 'Conveyor'
+description: 'Download, install and run Conveyor'
+inputs:
+  command:
+    description: 'Which conveyor command to execute. For example, "make copied-site"'
+    type: string
+    required: false
+    default: 'make site'
+
+  signing_key:
+    description: 'The root signing key for your application, corresponding to config key "app.signing-key"'
+    type: string
+    required: true
+
+  agree_to_license:
+    description: >
+      The version of the [Conveyor license](https://hydraulic.software/eula.html) you agree to.
+      You must agree with the license to run Conveyor. Current version is 1.
+    type: string
+    required: true
+
+  extra_flags:
+    description: Additional flags to pass to Conveyor.
+    type: string
+    required: false
+
+  cache_key:
+    description: Optional cache key used to store the Conveyor installation and task cache.
+    type: string
+    required: false
+    default: 'conveyor'
+
+  cache_path:
+    description: Optional path to the location where Conveyor will be installed and keep the task cache.
+    type: string
+    required: false
+    default: '.conveyor'
+
+  conveyor_version:
+    description: Version of Conveyor to run.
+    type: string
+    required: false
+    default: '7.1'
+
+runs:
+  using: composite
+  steps:
+    # Workaround to https://github.com/actions/runner/issues/1070
+    - name: Check inputs
+      shell: bash
+      run: |
+        if [ -z "${{ inputs.signing_key }}" ]; then
+          echo "Missing required input: signing_key"
+          exit 1
+        fi
+        if [ -z "${{ inputs.agree_to_license }}" ]; then
+          echo "Missing required input: agree_to_license"
+          exit 1
+        fi
+        if [ "${{ runner.os }}" != "Linux" ]; then
+          echo "This action must be run in a Linux runner"
+          exit 1
+        fi
+
+    - name: Load cache
+      uses: actions/cache@v3
+      with:
+        key: ${{ inputs.cache_key }}-${{github.run_id }}
+        path: ${{ inputs.cache_path }}
+        restore-keys: ${{ inputs.cache_key }}
+
+    - name: Download Conveyor
+      shell: bash
+      run: |
+        if [ ! -d "${{ inputs.cache_path }}" ]; then
+          wget https://downloads.hydraulic.dev/conveyor/conveyor-${{ inputs.conveyor_version }}-linux-amd64.tar.gz
+          mkdir -p ${{ inputs.cache_path }}/install
+          tar xzvf conveyor-${{ inputs.conveyor_version }}-linux-amd64.tar.gz -C ${{ inputs.cache_path }}/install      
+        fi
+
+    - name: Run Conveyor
+      env:
+        SIGNING_KEY: ${{ inputs.signing_key }}
+        CONVEYOR_AGREE_TO_LICENSE: ${{ inputs.agree_to_license }}
+      shell: bash
+      run: |
+        PATH="$PATH:${{ inputs.cache_path }}/install/conveyor-${{ inputs.conveyor_version }}/bin"
+        conveyor --cache-dir=${{ inputs.cache_path }}/cache "-Kapp.signing-key=$SIGNING_KEY" ${{ inputs.extra_flags }} ${{ inputs.command }}
