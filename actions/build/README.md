@@ -45,6 +45,7 @@ It needs to be run from a Linux runner (e.g. `ubuntu-latest`).
 This is an example of how to deploy a Flutter app to a private SSH repository using the Build action:
 
 ```yaml
+# This file can be stored in your repository under .github/workflows/deploy.yml, for example.
 name: Deploy
 on: [workflow_dispatch]
 jobs:
@@ -109,6 +110,7 @@ jobs:
 This workflow works in conjunction with a `conveyor.conf` file like below:
 
 ```hocon
+# To work with the workflow above, this file should be in the root of your repository.
 include required("/stdlib/flutter/flutter.conf")
 
 pubspec {
