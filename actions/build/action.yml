@@ -85,4 +85,8 @@ runs:
       shell: bash
       run: |
         PATH="$PATH:${{ inputs.cache_path }}/install/conveyor-${{ inputs.conveyor_version }}/bin"
-        conveyor --cache-dir=${{ inputs.cache_path }}/cache "-Kapp.signing-key=$SIGNING_KEY" ${{ inputs.extra_flags }} ${{ inputs.command }}
+        conveyor --cache-dir="${{ inputs.cache_path }}/cache" "-Kapp.signing-key=$SIGNING_KEY" ${{ inputs.extra_flags }} ${{ inputs.command }}
+
+branding:
+  icon: 'package'
+  color: 'blue'
