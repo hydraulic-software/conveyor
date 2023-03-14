@@ -124,7 +124,7 @@ abstract class ConveyorConfigTask : DefaultTask() {
         appendLine("app.inputs += " + quote(jarTask.outputs.files.singleFile.toString()))
 
         // Emit cross-platform artifacts.
-        val crossPlatformDeps: Set<File> = crossPlatformRuntimeClasspath.files - machineConfigs[Machine.current()]!!.files
+        val crossPlatformDeps: Set<File> = crossPlatformRuntimeClasspath.files - machineConfigs.values.flatMap { it.files }.toSet()
         if (crossPlatformDeps.isNotEmpty()) {
             appendLine("app.inputs = ${'$'}{app.inputs} [")
             for (entry in crossPlatformDeps.sorted())
