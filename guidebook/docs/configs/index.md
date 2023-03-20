@@ -12,11 +12,14 @@ When working with lists it's good style to always add to them rather than overri
 
 ## Per-user defaults
 
-Config placed in the following paths will be merged into every build file:
+Config placed in the following location will be merged into every build file:
 
 * **Windows:** `%USERPROFILE%\Hydraulic\Conveyor\defaults.conf`
 * **Linux:** `~/.config/hydraulic/conveyor/defaults.conf`
 * **macOS:** `~/Library/Preferences/Hydraulic/Conveyor/defaults.conf`
+
+!!! note "Other files"
+    Only `defaults.conf` is read from this directory. If you want other bits of config there too, you will need to use an `include` statement. Paths in config files are resolved relative to the config file in which they are found.
 
 ## Compatibility levels
 
