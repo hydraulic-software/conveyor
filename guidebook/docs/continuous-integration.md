@@ -77,9 +77,10 @@ By defining the inputs as an object and then using the `extract` key, the outer 
 
 You can use the [Conveyor GitHub Action](https://github.com/hydraulic-software/conveyor/tree/master/actions/build) to perform releases from GitHub.
 
-These workflows contain examples of how to use the Conveyor action to:
-* [Deploy via SSH](.github/workflows/deploy-to-ssh.yml)
-* [Deploy to GitHub Releases](.github/workflows/deploy-to-gh.yml)
+These workflows contain examples of how to use the Conveyor action:
+
+* [Deploy via SSH](https://github.com/hydraulic-software/flutter-demo/tree/master/.github/workflows/deploy-to-ssh.yml)
+* [Deploy to GitHub Releases](https://github.com/hydraulic-software/flutter-demo/tree/master/.github/workflows/deploy-to-gh.yml)
 
 You will need to change your `conveyor.conf` to point your inputs to the
 paths specified in the `download-artifact` steps:
