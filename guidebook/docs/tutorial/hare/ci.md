@@ -2,37 +2,20 @@ Compiling your app on every supported OS is annoying. Let's use GitHub Actions t
 of course, the procedure will be similar.
 
 - [x] Upload your sample app to GitHub.
-- [x] Go to [nightly.link](https://nightly.link) and request URLs for your project. You may have to authorize the app to access to your GitHub account.
-- [x] At the top level of your config, outside the `app {}` block, add:
-  ```
-  ci-artifacts-url = nightly.link/<github user>/<github project>/workflows/build/master
-  ```
 - [x] Delete the inputs section of your config and replace it with this:
   ```
-  windows.amd64.inputs += ${ci-artifacts-url}/build-windows-amd64.zip
-
-  linux.amd64.inputs += {
-    from = ${ci-artifacts-url}/build-linux-amd64.zip
-    extract = 2
-  }
-
-  mac.amd64.inputs += {
-    from = ${ci-artifacts-url}/build-macos-amd64.zip
-    extract = 2
-  }
-
-  mac.aarch64.inputs += {
-    from = ${ci-artifacts-url}/build-macos-aarch64.zip
-    extract = 2
-  }
+  windows.amd64.inputs += artifacts/windows
+  linux.amd64.inputs += artifacts/build-linux-amd64.tar
+  mac.amd64.inputs += artifacts/build-macos-amd64.tar
+  mac.aarch64.inputs += artifacts/build-macos-aarch64.tar
   ```
-- [x] Add a workflow file to `.github/workflows` and commit/push it. It should look like [this example](https://github.com/hydraulic-software/flutter-demo/blob/master/.github/workflows/build.yml). 
+- [x] Add a build workflow file to `.github/workflows` and commit/push it. It should look like [the `build.yml` file on this example](https://github.com/hydraulic-software/flutter-demo/blob/master/.github/workflows/build.yml).
+- [x] Locate the [`defaults.conf` file in your system](https://conveyor.hydraulic.dev/7.1/configs/#per-user-defaults) and copy the value of the `app.signing-key` config key.
+- [x] Create a [GitHub Encrypted Secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets) named SIGNING_KEY, and paste the value copied above (without the surrounding quotes).
+- [x] Add a deploy workflow file to `.github/workflows` and commit/push it. It should look like [the `deploy-to-gh.yml` file on this example](https://github.com/hydraulic-software/flutter-demo/blob/master/.github/workflows/deploy-to-gh.yml).
 
 !!! note
-    - Conveyor can download and extract archives for you, including from servers that are behind authentication.
-    - [nightly.link](https://nightly.link) is a service that lets us get direct download URLs for artifacts exported by GitHub Actions.
-      With GitHub alone you unfortunately can't get simple download URLs straight from a CI job. 
-    - The `extract = 2` line is needed to work around another limitation of GitHub Actions.
+    - This deploy workflow in this example will release your app to GitHub Releases. To deploy via SSH to a private server instead, you can use a workflow like [the `deploy-to-ssh.yml` file on this example](https://github.com/hydraulic-software/flutter-demo/blob/master/.github/workflows/deploy-to-ssh.yml). Take note of the additional secrets necessary for that workflow.
     - Explore the [Conveyor/Flutter demo repository](https://github.com/hydraulic-software/flutter-demo/blob/master/.github/workflows/build.yml)
       to see how it all fits together.
 

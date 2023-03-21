@@ -75,8 +75,25 @@ By defining the inputs as an object and then using the `extract` key, the outer 
 
 ### Doing releases from within GitHub Actions
 
-We don't currently have an example of doing this, but it should be no different to using any other tool. Please remember to cache the download, and be aware that Microsoft plan to phase out non-hardware protected signing keys in future. To release Windows apps with hardware protected keys you have a few options:
+You can use the [Conveyor GitHub Action](https://github.com/hydraulic-software/conveyor/tree/master/actions/build) to perform releases from GitHub.
 
+These workflows contain examples of how to use the Conveyor action to:
+* [Deploy via SSH](.github/workflows/deploy-to-ssh.yml)
+* [Deploy to GitHub Releases](.github/workflows/deploy-to-gh.yml)
+
+You will need to change your `conveyor.conf` to point your inputs to the
+paths specified in the `download-artifact` steps:
+
+```hocon
+app {
+  windows.amd64.inputs += artifacts/windows
+  linux.amd64.inputs += artifacts/build-linux-amd64.tar
+  mac.amd64.inputs += artifacts/build-macos-amd64.tar
+  mac.aarch64.inputs += artifacts/build-macos-aarch64.tar  
+}
+```
+
+To release Windows apps with hardware protected keys you have a few options:
 1. Run Conveyor locally instead of driving it from CI, with your key HSM plugged in via USB.
 2. Provide GitHub or your CI system with a build agent that has the signing key plugged in, and supply the passphrase via a secret environment variable (e.g. `--passphrase=env:SIGNING_PASSPHRASE`).
 3. Use a cloud HSM or signing service like [SignPath](https://about.signpath.io/)

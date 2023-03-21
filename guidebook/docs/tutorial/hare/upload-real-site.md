@@ -30,6 +30,8 @@ To release an update you just re-upload/overwrite the files at the site URL.
 !!! tip "Automatic site uploads"
     If you aren't using GitHub Releases and your download site is accessible using SSH, Conveyor can upload the results for you.
     Set `app.site.copy-to` to something like `"sftp://example.com/var/www/example.com/downloads"` i.e. the URL you'd use with `sftp`.
-    Then use `conveyor make copied-site` to build the site and upload it all in one step.
+    Then use `conveyor make copied-site` to build the site and upload it all in one step. Also, remember the deploy workflow created in
+    GitHub actions? You can run it to start a build/package/release sequence automatically.
+
 
 [ :material-arrow-right-box: Learn more about download sites](../../configs/download-pages.md){ .md-button .md-button--primary }
