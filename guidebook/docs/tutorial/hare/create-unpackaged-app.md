@@ -1,3 +1,11 @@
+* [x] Use the run command to create the packaged form of the app and run it.
+
+  ```
+  conveyor run
+  ```
+
+* [x] Get the app into the `output` directory.
+
 === ":simple-windows: Windows"
     ```
     conveyor make windows-app
