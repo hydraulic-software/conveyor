@@ -450,3 +450,11 @@ The Skiko runtime paths here come from running `./gradlew printConveyorConfig` a
 
 !!! note "Machine specific configs"
     If you're using the Conveyor Gradle plugin's machine specific configs then this won't work because you'll overwrite the machine-specific inputs lists. So in these more advanced cases you may need to post-process the generated config, or write your own Gradle task to generate it.  
+
+## Shipping apps that use JCEF (Java Chromium Embedding Framework)
+
+JCEF lets you embed Chromium into your app. It's easy to ship the CEF binaries with your app such that everything is signed and put in the
+right places. 
+
+The procedure for this is documented in a [blog post](https://hydraulic.software/blog/13-deploying-apps-with-jcef.html) and we provide a
+[sample app](https://github.com/hydraulic-software/jcef-conveyor) you can use as a reference.
