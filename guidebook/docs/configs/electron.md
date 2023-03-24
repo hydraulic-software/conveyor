@@ -68,6 +68,48 @@ app {
 }
 ```
 
+## Adapting a project that used `npx create-electron-app`
+
+The easiest way to get started with Conveyor and Electron is to create a fresh project using `conveyor create electron com.example.my-app`, replacing the reverse DNS name with one that is unique to your project (e.g. `io.github.username.projectname`). [Learn more in the Electron tutorial](../tutorial/hare/electron.md).
+
+If you have a project that was already created using `npx create-electron-app` you'll need to adapt it for Conveyor. We'll be removing references to Electron Forge and Squirrel.
+
+1. Run `npx create-electron-app`.
+2. `rm forge.vconfig.js`, this file isn't needed anymore.
+3. In `package.json`:
+   - Remove references to electron-forge and Squirrel. Conveyor doesn't use Squirrel for updates.
+   - Replace script "start" with "electron ."
+4. In `src/index.js`, remove the reference to Squirrel.
+5. `rm -rf node_modules && npm install`. This will get rid of the packages you don't need any more.
+
+Now add a new `conveyor.conf` file and adapt it for your needs:
+
+```hocon
+include required("/stdlib/electron/electron.conf")
+
+// Import metadata from your package.json file, like your fsname, version and which version of Electron to use.
+package-json {
+  include required("package-lock.json")
+}
+
+app {
+  display-name = "My project"
+  rdns-name = org.example.my-project
+  site.base-url = "localhost:3000"
+
+  inputs = [
+    package.json
+    src -> src    
+
+    {
+      from = node_modules
+      to = node_modules      
+      remap = [ "-electron/dist/**" ]
+    }
+  ]
+}
+```
+
 ## Caveats
 
 Be aware of the following caveats:
