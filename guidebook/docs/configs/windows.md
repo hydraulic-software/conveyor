@@ -133,8 +133,10 @@ app.windows.manifests.msix.virtualization {
 Setting this key will not only generate the correct fragment of the MSIX manifest, it will also implicitly enable the `unvirtualizedResources` restricted capability, which is necessary in this case.
 
 !!! note "UNIX domain sockets"
-    Some versions of Windows have a kernel bug that breaks UNIX domain sockets when they are stored in a virtualized directory. By default, the `excluded-directories` key contains `LocalAppData/Temp` thus excluding the temp dir from virtualization and JVM apps rely on this being the case. If you alter `excluded-directories` key, make sure to append to it as in the example above.  
+    Some versions of Windows have a kernel bug that breaks UNIX domain sockets when they are stored in a virtualized directory. This particularly affects Java 19+ because it uses a UNIX domain socket as part of establishing outbound TCP connections. When your app uses a JVM and `conveyor.compatibility-level >= 8` the `excluded-directories` key will have `LocalAppData/Temp` added to it, thus excluding the temp dir from virtualization.  
 
+!!! note "Old Windows 10 versions"
+    Windows 10 builds before 21H1 will have filesystem virtualization disabled entirely when there are any excluded directories, as the ability to control virtualization on a per-directory level was only introduced in that version.
 
 ### The EXE manifest
 
