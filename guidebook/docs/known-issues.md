@@ -3,11 +3,10 @@
 ## Missing features
 
 * Supported apps and packages:
-    * Only GUI apps are supported in this release. Support for CLI-only apps is implemented (Conveyor is packaged with itself), but the feature needs more polish before being ready to launch. Let us know if you'd like to try it out anyway.
+    * Only GUI apps are supported currently. Support for CLI-only apps is implemented (Conveyor is packaged with itself), but the feature needs more polish before being ready to launch. Let us know if you'd like to try it out anyway.
     * Only DEB based Linux distros get native packages. For other distros Conveyor creates a tarball which doesn't auto update. RPM / FlatPak support is on the roadmap.
     * ARM Linux isn't yet supported.
     * Packages for app stores aren't yet supported.
-* Registration of file type associations isn't yet supported.
 * For JVM apps, there's no direct support for importing Maven projects and the supplied command to read classpaths only works on UNIX.
 
 ## Issues with planned fixes
@@ -18,5 +17,4 @@
 
 ## Low priority issues 
 
-* The commands used for installing self-signed apps must be run in "Windows PowerShell", not PowerShell 7. PowerShell 7 must be explicitly installed by users and installs in parallel to PowerShell 6, so this should not cause any unexpected issues.
 * When using JDK11, you must use patch level 16+ (i.e. JDK 11.0.16+). Earlier builds will fail with a jlink error talking about hash mismatches. This is due to a format change that got backported to JDK11.
