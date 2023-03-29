@@ -72,7 +72,7 @@ This shows how a production-grade Electron app can be packaged using Conveyor, G
 
 <img src="images/compose-multiplatform.svg" style="float: left; padding-right: 1em"></img>
 
-[Download (fully signed)](https://downloads.hydraulic.dev/eton-sample/download.html){ .md-button .md-button--primary } [Download (self signed)](https://downloads.hydraulic.dev/eton-sample/selfsigned/download.html){ .md-button } 
+[Download (fully signed)](https://hydraulic-software.github.io/eton-desktop/download.html){ .md-button .md-button--primary } [Download (self signed)](https://downloads.hydraulic.dev/eton-sample/selfsigned/download.html){ .md-button } 
 
 [View source](https://github.com/hydraulic-software/eton-desktop){ .md-button }
 
