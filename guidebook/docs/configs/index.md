@@ -179,26 +179,41 @@ How to choose?
 
 For full information about signing, see [Keys and certificates](keys-and-certificates.md).
 
-**`app.sign`** A default value for `app.mac.sign` and `app.windows.sign`, which control whether or not to digitally sign executables. If this is true (the default) and you don't have signing certificates in your Conveyor data directory then you'll see a notice explaining what to do.
+**`app.sign`** A default value for `app.mac.sign` and `app.windows.sign`, which control whether or not to digitally sign executables. If
+this is true (the default) and you don't have signing certificates in your Conveyor data directory then you'll see a notice explaining what
+to do.
 
-**`app.signing-key`** Should be set to a random string plus the date on which it was generated. A typical signing key will be encoded like this:
+**`app.signing-key`** Should be set to a random string plus the date on which it was generated. A typical signing key will be encoded like
+this:
 
 ```
 app.signing-key = "loud apology vital team rent champion better pluck cargo love knee tornado tomato man mammal lake sick possible ozone giggle suggest sail aunt multiply/2022-08-09T12:07:08Z"
-```
+``` 
 
-A piece of config like this can be generated with the `conveyor keys generate` command (see [Keys and certificates](keys-and-certificates.md)). It will normally be placed in your `defaults.conf` file, but can be placed anywhere or imported from the environment (see the [HOCON extensions](hocon-extensions.md) page for details). The randomly chosen words aren't used as a private key directly. Instead they're used to derive any other keys that aren't explicitly provided. The following keys can be derived from this root entropy (randomness) are:
+A piece of config like this can be generated with the `conveyor keys generate` command (
+see [Keys and certificates](keys-and-certificates.md)). It will normally be placed in your `defaults.conf` file, but can be placed anywhere
+or imported from the environment (see the [HOCON extensions](hocon-extensions.md) page for details). On macOS, Conveyor will try to store
+the random string in the system default login keychain (see [Keys and certificates: Keyrings](keys-and-certificates.md#keyrings)).
+The randomly chosen words aren't used as a private key directly. Instead, they're used to derive any other keys that aren't explicitly
+provided. The following keys can be derived from this root entropy (randomness) are:
 
 1. Windows and Mac code signing keys.
 2. PGP keys for signing Debian apt repositories.
 3. An EdDSA key for signing Sparkle (Mac) update repositories.
 
-**`app.mac.signing-key`**,**`app.windows.signing-key`** The private key to use for each platform. If they're set to `derived` (the default) then derivation from the root private key is used and these specific keys aren't stored on disk, otherwise the value should contain the path to a standard PEM or PKCS#12 key store file relative to the app config file.
+**`app.mac.signing-key`**,**`app.windows.signing-key`** The private key to use for each platform. If they're set to `derived` (the default)
+then derivation from the root private key is used and these specific keys aren't stored on disk, otherwise the value should contain the path
+to a standard PEM or PKCS#12 key store file relative to the app config file.
 
-**`app.mac.certificate`**, **`app.windows.certificate`** Should point to files containing the certificates. See [Keys and certificates](keys-and-certificates.md) for information on supported formats. The paths are relative to the app config file and they default to `{windows,apple}.cer` respectively. Alternatively, these can be set like this: `app.mac.certificate = "self signed by CN=Nobody in particular"` (the default value is this but using your display name). In that case a self-signed certificate is deterministically derived from the root key. 
+**`app.mac.certificate`**, **`app.windows.certificate`** Should point to files containing the certificates.
+See [Keys and certificates](keys-and-certificates.md) for information on supported formats. The paths are relative to the app config file
+and they default to `{windows,apple}.cer` respectively. Alternatively, these can be set like
+this: `app.mac.certificate = "self signed by CN=Nobody in particular"` (the default value is this but using your display name). In that case
+a self-signed certificate is deterministically derived from the root key.
 
 !!! note
-    The words used to encode the signing key come from a predefined dictionary, so you can't choose your own sentences here. This encoding makes the key easier to write down with a pen and paper, which can be a low tech but reliable way to back it up.
+    The words used to encode the signing key come from a predefined dictionary, so you can't choose your own sentences here. This encoding makes
+    the key easier to write down with a pen and paper, which can be a low tech but reliable way to back it up.
 
 ## Update modes
 
