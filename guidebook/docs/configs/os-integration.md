@@ -34,8 +34,6 @@ the `app.file-associations` key, like this:
 app.file-associations = [ .foo ]
 ```
 
-And that's it! It should automatically open `.foo` with your app on *every platform*!
-
 You can even define different file associations for different platforms by using the keys `app.mac.file-assocations`, `app.linux.file-assocations` and `app.windows.file-assocations`. By default, the value of all of those keys is the same as `app.file-associations`.
 
 !!! important

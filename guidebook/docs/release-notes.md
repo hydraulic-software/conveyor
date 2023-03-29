@@ -25,6 +25,7 @@
 * Internal symbols in the injected native code components are now hidden and inside a C++ namespace.
 * Linux: Debian packages that contained no native ELF files but did contain a `Depends` key in the config were generated incorrectly.
 * JVM: Restrict the dependency scope when reading Maven classpaths.
+* Linux: fix a permissions error that could occur when creating new projects.
 * Windows: Exclude the temp directory from filesystem virtualization when a JVM is imported and `conveyor.compatibility-level >= 8`. This fixes network related crashes that appear on some Windows machines when using a very recent JVM.
 * Windows: Refreshed the schemas used to validate AppX manifests.
 * macOS: Don't show an error on macOS when updates are set to aggressive mode and the update site isn't reachable.
