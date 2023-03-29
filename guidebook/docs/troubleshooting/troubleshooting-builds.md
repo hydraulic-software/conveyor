@@ -2,6 +2,23 @@
 
 Stuck? Can't find what you need here? If you're a commercial user then you can write to [contact@hydraulic.software](mailto:contact@hydraulic.software). Otherwise feel free to post in [the GitHub discussion forum](https://github.com/hydraulic-software/conveyor/discussions).
 
+## My public keys don't match
+
+If you get an error like this:
+
+```
+The private key (foo.key) doesn't match the public key found in the certificate file bar.crt.
+```
+
+then either:
+
+1. You have multiple keys/certificates and are mixing them up, or
+2. Your CA has given you a `.crt` file containing _intermediate_ certificates, i.e. _their_ certificates and then supplied yours in a 
+   separate file. If that's the case and you have more than one `.crt` file, create a combined file like this: 
+   `cat smaller.crt bigger.crt >combined.crt` and then set `app.windows.certificate = combined.crt`. Remember that these file paths
+   are interpreted relative to the config file that contains them, so place the combined crt file next to `defaults.conf` if that's where
+   you're setting these keys.
+
 ## I get an error about site consistency checks
 
 Conveyor will probe your download site to catch certain types of mistakes. If it can't do this probe e.g. because the site isn't online yet then you'll get an error. You can convert these errors to warnings by setting `app.site.consistency-checks = warn`. AWS S3 can cause problems because it can return 403 Permission Denied for files that don't exist instead of the more normal 404 Not Found. You can add the `s3:ListBucket` permission to the bucket policy to solve this.
