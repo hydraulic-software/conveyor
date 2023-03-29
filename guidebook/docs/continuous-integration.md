@@ -95,6 +95,7 @@ app {
 ```
 
 To release Windows apps with hardware protected keys you have a few options:
+
 1. Run Conveyor locally instead of driving it from CI, with your key HSM plugged in via USB.
 2. Provide GitHub or your CI system with a build agent that has the signing key plugged in, and supply the passphrase via a secret environment variable (e.g. `--passphrase=env:SIGNING_PASSPHRASE`).
 3. Use a cloud HSM or signing service like [SignPath](https://about.signpath.io/)
