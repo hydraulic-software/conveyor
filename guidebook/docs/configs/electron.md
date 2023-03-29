@@ -75,7 +75,7 @@ The easiest way to get started with Conveyor and Electron is to create a fresh p
 If you have a project that was already created using `npx create-electron-app` you'll need to adapt it for Conveyor. We'll be removing references to Electron Forge and Squirrel.
 
 1. Run `npx create-electron-app`.
-2. `rm forge.vconfig.js`, this file isn't needed anymore.
+2. `rm forge.config.js`, this file isn't needed anymore.
 3. In `package.json`:
    - Remove references to electron-forge and Squirrel. Conveyor doesn't use Squirrel for updates.
    - Replace script "start" with "electron ."
