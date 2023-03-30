@@ -52,21 +52,18 @@ syntax (`"""foo"""`). The words contain a checksum so mistakes can be detected q
 
 ## Keyrings
 
-!!! info "Currently Keyrings are only supported on macOS."
-    
-
-If your system contains safe Keyring support Conveyor will try to store its root key in it when you run `conveyor keys generate`. The keys
-are stored under domain `Hydraulic Software`, and the generated `defaults.conf` file will contain the line:
+On macOS Conveyor will try to store its root key in the system keyring when you run `conveyor keys generate`. The advantage is that the key
+will be protected from other applications trying to read it. Keys are stored under domain `Hydraulic Software`, and the generated
+`defaults.conf` file will contain the line:
 
 ```
 app.signing-key = "keyring"
 ```
 
-This will tell Conveyor to load the root key from the Keyring on startup. Because the access is restricted per application and secured with
-the user's login credentials, only Conveyor will have access to it and so it's stored without a passphrase. You can directly inspect the
-contents of the key by checking your Keyring directly (On macOS, you can use the *Keychain Access* app). The format is exactly the same that
-would be written to your `defaults.conf` without a Keyring, so if you prefer not using it you can simply copy the value directly into the
-setting for `app.signing-key` of your config.
+Because the access is restricted per application and secured with the user's login credentials, only Conveyor will have access to it and so
+it's stored without a passphrase. You can directly inspect the contents of the key by using the *Keychain Access* app. The format is exactly
+the same that would be written to your `defaults.conf` without a keyring, so if you prefer not using it you can simply copy the value
+directly into the setting for `app.signing-key` of your config.
 
 ## Certificates in Conveyor
 
