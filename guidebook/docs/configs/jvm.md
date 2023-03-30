@@ -419,6 +419,22 @@ app {
 
 Other enhancements may be added in future releases, for example, tuning JVM flags.
 
+## Localization
+
+Conveyor uses `jlink` to shrink the size of the bundled JVM. Translations can be large, so by default `jlink` throws out non-US locales.
+To add e.g. German locale data, use config like this:
+
+```
+app {
+    jvm {
+        modules += jdk.localedata
+        jlink-flags += "--include-locales=en,de"
+    }
+}
+```
+
+To learn how to specify languages, please read the [jlink user guide](https://docs.oracle.com/en/java/javase/17/docs/specs/man/jlink.html#plugin-include-locales).
+
 ## ProGuard / obfuscation
 
 The output of tools like ProGuard or R8 can be straightforwardly integrated with Conveyor. At this time, Conveyor won't run these tools for you. You should use your build system to do it instead.  

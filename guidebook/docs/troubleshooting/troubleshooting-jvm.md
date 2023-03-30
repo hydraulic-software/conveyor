@@ -45,6 +45,22 @@ app {
 }
 ```
 
+## Localization doesn't work when packaged
+
+Conveyor uses `jlink` to shrink the size of the bundled JVM. Translations can be large, so by default `jlink` throws out non-US locales.
+To add e.g. German locale data, use config like this:
+
+```
+app {
+    jvm {
+        modules += jdk.localedata
+        jlink-flags += "--include-locales=en,de"
+    }
+}
+```
+
+To learn how to specify languages, please read the [jlink user guide](https://docs.oracle.com/en/java/javase/17/docs/specs/man/jlink.html#plugin-include-locales).
+
 ## Big delta updates
 
 You can make updates faster by using individual JARs as inputs. This will work much better with delta compression (as used by MSIX/AppInstaller on Windows). Note that explicit JPMS modules will be still be bundled into a single `modules` file, as this can yield better startup times.
