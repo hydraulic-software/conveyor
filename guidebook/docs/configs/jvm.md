@@ -185,25 +185,31 @@ The top level `app.inputs` hierarchy (see [Inputs](inputs.md)) will be placed in
 * On Windows, EXE files are moved to the `bin` directory (`conveyor.compatibility-level >= 7`) and exposed on the user's PATH.
 * Executables for other platforms are left in the `app` directory.
 
-## JAR processing
+## Native code
 
-**`app.jvm.extract-native-libraries`** Defaults to false. If true, native libraries (.so, .dll, .dylib etc) are moved from inside JARs to the JVM lib directory which has these benefits:
+**`app.jvm.extract-native-libraries`** Defaults to false. If true, native libraries (.so, .dll, .dylib etc) are moved from inside JARs to 
+the JVM lib directory which has these benefits:
 
 * It improves startup time. 
 * It avoids cluttering the user's home directory with native library caches, ensuring clean uninstalls.
 * It reduces download sizes by deleting libraries meant for other operating systems or CPU architectures.
 * It reduces disk usage by removing unnecessary duplication.
 
-If false then libraries are left alone, except that libraries for macOS and Windows will be signed in-place (inside the JAR). This ensures that Apple's notarization process accepts them, and that when the libraries are extracted the operating system won't cause problems due to them being unsigned.
+If false then libraries are left alone, except that libraries for macOS and Windows will be signed in-place (inside the JAR). 
+This ensures that Apple's notarization process accepts them, and that when the libraries are extracted the operating system won't cause 
+problems due to them being unsigned.
 
 ??? note "Compatibility level < 7"
     If your `conveyor.compatibility-level` key is less than 7 then extraction is enabled by default.
 
-### Library sysprops project
+### Library compatibility: generic
 
-Many JVM libraries require additional configuration to be compatible with native library extraction. If there's a system property for specifying where to load libraries from you can use the `<libpath>` token, e.g. `app.jvm.system-properties.fooLib.jniPath = <libpath>`. At runtime this will become the path to where the extracted native libraries can be found.
+Many JVM libraries require additional configuration to be compatible with `extract-native-libraries = true`. If there's a system property 
+for specifying where to load libraries from you can use the `<libpath>` token, e.g. `app.jvm.system-properties.fooLib.jniPath = <libpath>`. 
+At runtime this will become the path to where the extracted native libraries can be found.
 
-To make library extraction easier to use we maintain an open source config that sets the right system properties for common libraries. It can be used like this: 
+To make library extraction easier to use we maintain an open source config that sets the right system properties for common libraries. 
+It can be used like this: 
 
 ```
 include required("https://raw.githubusercontent.com/hydraulic-software/conveyor/master/configs/jvm/extract-native-libraries.conf")
@@ -211,7 +217,12 @@ include required("https://raw.githubusercontent.com/hydraulic-software/conveyor/
 
 [View source](https://github.com/hydraulic-software/conveyor/blob/master/configs/jvm/extract-native-libraries.conf){ .md-button .md-button--primary }
 
-If you find a library that needs a custom system property to be compatible with library extraction please [send us a pull request](https://github.com/hydraulic-software/conveyor).
+If you find a library that needs a custom system property to be compatible with library extraction please 
+[send us a pull request](https://github.com/hydraulic-software/conveyor).
+
+### Library compatibility: usb4java
+
+This library [needs specific code changes to work](../troubleshooting/troubleshooting-jvm.md#usb4java).
 
 ## Modules
 

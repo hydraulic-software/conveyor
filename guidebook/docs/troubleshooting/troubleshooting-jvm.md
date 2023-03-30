@@ -61,6 +61,50 @@ app {
 
 To learn how to specify languages, please read the [jlink user guide](https://docs.oracle.com/en/java/javase/17/docs/specs/man/jlink.html#plugin-include-locales).
 
+## usb4java
+
+This popular library needs a special fix when deploying with `app.jvm.extract-native-libraries = true`. It uses a way to load native code 
+that isn't quite normal nor compatible with the Java API specification. To fix it include the following class and call the `fix` method 
+before accessing usb4java for the first time:
+
+```java
+public class Usb4JavaPackaging {
+    public static void fix() {
+        if (System.getProperty("app.dir") == null)
+            return;   // In dev, nothing to do.
+
+        try {
+            var field = org.usb4java.Loader.class.getDeclaredField("loaded");
+            field.setAccessible(true);
+            field.set(null, true);
+
+            try {
+                System.loadLibrary("usb4java");
+                return;
+            } catch (UnsatisfiedLinkError e) {
+            }
+
+            // On Windows usb4java uses an non-Java-spec compliant DLL 
+            // name, so we have to try again.
+            System.loadLibrary("libusb4java");
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+!!! note "If you don't use machine specific dependencies"
+    If you add usb4java to your build system in the standard way, you'll end up with every possible native library JAR on your classpath.
+    This is OK! But be aware that:
+
+    * Your app will contain every native library JAR on every platform. If you look inside you'll notice they're empty. Conveyor 
+      extracted the native library, noticed it was for a different OS and didn't include it in the package. So don't worry, you aren't 
+      bloating your app. These empty JARs are harmless and can be ignored.
+    * You will get warnings of the form `libusb4java-1.3.0-linux-x86-64.jar doesn't seem to contain artifacts for mac.amd64`. This is
+      Conveyor telling you that you seem to have native libraries for the wrong OS on your classpath for each machine. Again, this is
+      harmless in this context and can be ignored, because Conveyor will fix things automatically.
+
 ## Big delta updates
 
 You can make updates faster by using individual JARs as inputs. This will work much better with delta compression (as used by MSIX/AppInstaller on Windows). Note that explicit JPMS modules will be still be bundled into a single `modules` file, as this can yield better startup times.
