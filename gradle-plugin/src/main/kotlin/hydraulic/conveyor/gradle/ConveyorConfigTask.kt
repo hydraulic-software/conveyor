@@ -125,7 +125,9 @@ abstract class ConveyorConfigTask : DefaultTask() {
         // Exclude current machine specific config from the runtime classpath, to retain only the dependencies that should go
         // to all platforms.
         val currentMachineDependencies = machineConfigs[Machine.current()]!!.dependencies
-        val commonClasspath = project.configurations.getByName("runtimeClasspath").copyRecursive {
+        val runtimeClasspath =
+            project.configurations.findByName("runtimeClasspath") ?: project.configurations.getByName("jvmRuntimeClasspath")
+        val commonClasspath = runtimeClasspath.copyRecursive {
             // We need to filter the runtimeClasspath here, before making the recursive copy, otherwise the dependencies from the current
             // machine config won't match.
             it !in currentMachineDependencies && (javafxExtension == null || it.group != "org.openjfx")
