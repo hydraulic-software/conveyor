@@ -21,7 +21,20 @@ app {
 }
 ```
 
-It's often worth reporting these bugs to the upstream projects, so they can use `loadLibrary` first and only try unpacking libraries afterwards. We are collecting [such system properties here](https://conveyor.hydraulic.dev/7.0/configs/jvm/#library-sysprops-project) - why not send us a PR.
+It's often worth reporting these bugs to the upstream projects, so they can use `loadLibrary` first and only try unpacking libraries afterwards.
+
+To make library extraction easier to use we maintain an open source config that sets the right system properties for common libraries.
+It can be used like this:
+
+```
+include required("https://raw.githubusercontent.com/hydraulic-software/conveyor/master/configs/jvm/extract-native-libraries.conf")
+```
+
+[View source](https://github.com/hydraulic-software/conveyor/blob/master/configs/jvm/extract-native-libraries.conf){ .md-button .md-button--primary }
+
+If you find a library that needs a custom system property to be compatible with library extraction please
+[send us a pull request](https://github.com/hydraulic-software/conveyor).
+
 
 ## "UnsatisfiedLinkError: ... Mapping process and mapped file (non-platform) have different Team IDs ..."
 
