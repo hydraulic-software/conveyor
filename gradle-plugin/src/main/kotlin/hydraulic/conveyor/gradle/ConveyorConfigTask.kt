@@ -12,7 +12,6 @@ import org.gradle.jvm.toolchain.JvmVendorSpec.*
 import org.jetbrains.compose.ComposeExtension
 import org.jetbrains.compose.desktop.DesktopExtension
 import org.openjfx.gradle.JavaFXOptions
-import java.io.File
 
 /**
  * A base class for tasks that work with generated Conveyor configuration.
@@ -138,24 +137,14 @@ abstract class ConveyorConfigTask : DefaultTask() {
             if (config.isEmpty) null else {
                 machine to config.copy().extendsFrom(commonClasspath).copyRecursive()
             }
-        }.toMap()
-
-        // Emit cross-platform artifacts.
-        val crossPlatformDeps: Set<File> = commonClasspath.files
-        if (crossPlatformDeps.isNotEmpty()) {
-            appendLine("app.inputs = ${'$'}{app.inputs} [")
-            for (entry in crossPlatformDeps.sorted())
-                appendLine("    " + quote(entry.toString()))
-            appendLine("]")
-        }
+        }.toMap().toSortedMap()
 
         // Emit platform specific artifacts into the right config sections.
         for ((platform, config) in expandedConfigs) {
-            val configOnlyFiles = config - crossPlatformDeps
-            if (configOnlyFiles.isEmpty()) continue
+            if (config.isEmpty) continue
             appendLine()
             appendLine("app.$platform.inputs = ${'$'}{app.$platform.inputs} [")
-            for (entry in configOnlyFiles.sorted())
+            for (entry in config.sorted())
                 appendLine("    " + quote(entry.toString()))
             appendLine("]")
         }
