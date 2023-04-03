@@ -3,7 +3,7 @@
 Import a JDK:
 
 ```
-import required("/stdlib/jdk/YOUR_VERSION/YOUR_DISTRO.conf")
+include required("/stdlib/jdk/YOUR_VERSION/YOUR_DISTRO.conf")
 ```
 
 `YOUR_VERSION` can be replaced with either a major Java feature version e.g. `11`, `14`, `17` etc, in which case it will resolve to the latest known version of that Java release by the given distributor. Or you can specify the precise version, like `17.0.1`. Be aware that not all versions are available from all distributors.
