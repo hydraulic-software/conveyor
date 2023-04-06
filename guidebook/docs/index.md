@@ -2,7 +2,7 @@
 
 [ :material-arrow-down-circle: Download](https://downloads.hydraulic.dev/conveyor/download.html){ .md-button .md-button--primary } [ :material-arrow-up-box: Start tutorial](tutorial/new.md){ .md-button .md-button--primary } [ :simple-discord: Chat](https://discord.gg/E87dFeuMFc){ .md-button .md-button--primary } [ :material-forum: Forum](https://github.com/hydraulic-software/conveyor/discussions){ .md-button .md-button--primary }
 
-[Hydraulic Conveyor](https://www.hydraulic.software) makes distributing desktop apps as easy as shipping a web app. It's a tool not a service, it generates and signs [self-upgrading packages for Windows, macOS and Linux using each platform's native package formats](outputs.md) without requiring you to have those operating systems, and it looks like this:
+Conveyor makes distributing desktop apps as easy as shipping a web app. It's a tool not a service, it generates and signs [self-upgrading packages for Windows, macOS and Linux using each platform's native package formats](outputs.md) without requiring you to have those operating systems, and it looks like this:
 
 <video width="100%" poster="https://conveyor.hydraulic.dev/assets/promo.jpg" controls><source src="https://conveyor.hydraulic.dev/assets/promo.mp4" type="video/mp4"></video>
 
@@ -11,44 +11,18 @@ It has integrated support for Electron, JVM and Flutter apps. It's free for open
 ## Features
 
 * **Self-updating packages for every OS, built on any OS.**
-    * Build applications that use the built-in [Windows MSIX package manager](outputs.md).
-        * Windows keeps them up to date in the background.
-        * Installs and updates reuse data blocks and hard link files, even between apps from different vendors.
-        * Has everything IT departments need to easily deploy to managed networks.
-    * Build Mac applications that automatically use the popular [Sparkle 2 update framework](https://sparkle-project.org/), without code changes.
-    * Build apt repositories for Debian/Ubuntu, tarballs for other distros. Integrates with systemd for servers and cron jobs.
 * **[Background updates or check-on-launch.](configs/index.md#update-modes)**
-    * In aggressive mode your app will check for and apply updates on every launch, without user interaction being required.
-    * In background mode updates will be downloaded and applied in the background, without disturbing the user.
 * **Extra support for popular app frameworks**: 
     * **[Electron](configs/electron.md)**
-        * Benefit from well maintained platform native software updates without relying on Squirrel or any centralized update servers.
-        * Import config directly from your `package.json` file.
     * **[JVM](configs/jvm.md)**
-        * Bundles a JVM from a vendor of your choice, and then uses jlink/jdeps to minimize the size.
-        * Uses a native launcher that [adds useful features](configs/jvm.md#launcher-features).
-        * Import configuration from Maven and Gradle.
     * **[Flutter](configs/flutter.md)**
-        * See the [demo app](https://github.com/hydraulic-software/flutter-demo) for how to package Flutter apps. 
-* **Brainless code signing.**
-    * Sign your Windows/Mac downloads for a better UX, or ignore it and get self-signed packages with a `curl | bash` style install.
-    * You can sign and notarize on any OS.
-    * You can back up your single root key by writing it down as words on paper.
-* **Automatic icons.**
-    * Converts to the platform specific formats for you.
-    * Renders SVG files to icons with optional macOS-style rounded rectangle masking and gradient fills.
-    * Generates synthetic icons if you don't supply any. 
-* **Generates download sites.**
-    * Static HTML detects the user's operating system and CPU architecture.
-    * [Release via GitHub releases](configs/download-pages#publishing-through-github).
-* **Pre-made template projects** for native C++, Electron, JavaFX (JVM) and Jetpack Compose Desktop (JVM).
-* **Pierce the abstraction!** Cross-platform tooling doesn't mean giving up platform-specific features. Over 120 different settings let you precisely configure your packages, including your:
-    * Mac `Info.plist` files.
-    * Windows manifests.
-    * Linux `.desktop` files and package install/uninstall scripts.
-* **No lockin**.
-    * To stop using Conveyor you can just write the scripts and integrations you'd have written anyway.
-    * It makes standard formats and uses standard or open source update frameworks. 
+* **Brainless code signing**, also with self-signing support.
+* **Icon generation, rendering and format conversion** 
+* **Generates download sites**
+* **Automatic releasing** to web servers, S3 or [GitHub releases](configs/download-pages#publishing-through-github).
+* **Generate starter projects** for native C++, Electron, JavaFX (JVM) and Jetpack Compose Desktop (JVM).
+* **Pierce the abstraction!** Over 120 different settings let you take control of every OS specific detail.
+* **No lockin** thanks to using standard package formats and open source frameworks.
 
 ## Sample apps
 
