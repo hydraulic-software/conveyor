@@ -121,11 +121,13 @@ abstract class ConveyorConfigTask : DefaultTask() {
         val jarTask = project.tasks.findByName("jvmJar") ?: project.tasks.getByName("jar")
         appendLine("app.inputs += " + quote(jarTask.outputs.files.singleFile.toString()))
 
-        // Exclude current machine specific config from the runtime classpath, to retain only the dependencies that should go
-        // to all platforms.
-        val currentMachineDependencies = machineConfigs[Machine.current()]!!.dependencies
         val runtimeClasspath =
             project.configurations.findByName("runtimeClasspath") ?: project.configurations.getByName("jvmRuntimeClasspath")
+        val currentMachineConfig = machineConfigs[Machine.current()]!!
+
+        // Exclude current machine specific config from the runtime classpath, to retain only the dependencies that should go
+        // to all platforms.
+        val currentMachineDependencies = currentMachineConfig.dependencies
         val commonClasspath = runtimeClasspath.copyRecursive {
             // We need to filter the runtimeClasspath here, before making the recursive copy, otherwise the dependencies from the current
             // machine config won't match.
@@ -139,12 +141,27 @@ abstract class ConveyorConfigTask : DefaultTask() {
             }
         }.toMap().toSortedMap()
 
+        // If there are any expanded configs, use the intersection as the common files. Otherwise, just use all files from the common
+        // classpath.
+        // If there are any expanded configs, we can't really use the common classpath, because it might need the platform specific
+        // dependencies to properly resolve versions.
+        val commonFiles = if (expandedConfigs.isNotEmpty()) expandedConfigs.values.map { it.files }
+            .reduce { a, b -> a.intersect(b) } else commonClasspath.files
+
+        if (commonFiles.isNotEmpty()) {
+            appendLine("app.inputs = ${'$'}{app.inputs} [")
+            for (entry in commonFiles.sorted())
+                appendLine("    " + quote(entry.toString()))
+            appendLine("]")
+        }
+
         // Emit platform specific artifacts into the right config sections.
         for ((platform, config) in expandedConfigs) {
-            if (config.isEmpty) continue
+            val files = config.files - commonFiles
+            if (files.isEmpty()) continue
             appendLine()
             appendLine("app.$platform.inputs = ${'$'}{app.$platform.inputs} [")
-            for (entry in config.sorted())
+            for (entry in files.sorted())
                 appendLine("    " + quote(entry.toString()))
             appendLine("]")
         }
