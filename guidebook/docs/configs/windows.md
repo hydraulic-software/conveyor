@@ -75,7 +75,9 @@ An XML file in the final generated MSIX package. It controls many different inte
 
 By default the app requests `rescap:runFullTrust` which is intended for normal Win32 apps, and means the app is hardly sandboxed at all. A small amount of filesystem virtualization is applied to ensure the app can be uninstalled cleanly and apps aren't allowed to write to their own install folder, but that's about it. You shouldn't list any other capabilities unless you are explicitly using modern UWP Windows APIs that support sandboxing.
 
-**`app.windows.manifests.msix.identity-name`** An ASCII name for the program used for internal identification, that doesn't have to be globally unique. Should be written in lower case `kebab-case` and defaults to `${app.fsname}`. It will be converted to `PascalCase` to match the normal Windows style.
+**`app.windows.manifests.msix.identity-name`** An ASCII name for the program used for internal identification, that doesn't have to be globally unique. If written in lower case `kebab-case` it will be converted to `PascalCase` to match the normal Windows style. Defaults to `${app.fsname}`, which will get converted to `PascalCase`.
+
+**`app.windows.manifests.msix.application-id`** An ASCII name for the identification of the applications within the package, that doesn't have to be globally unique. If written in lower case `kebab-case` it will be converted to `PascalCase` to match the normal Windows style. Defaults to `${app.fsname}`, which will get converted to `PascalCase`.
 
 **`app.windows.manifests.msix.{display-name,description,vendor}`** Package metadata that will appear in the Windows user interface. Taken from the top level app metadata by default but can be overridden.
 
