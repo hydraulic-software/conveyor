@@ -178,6 +178,11 @@ in the machine part (it's basically an `ssh://` url but minus the scheme). Publi
 the usual locations as used by OpenSSH, but Conveyor won't log in to a server it doesn't recognize, so if you would get a new key warning
 from regular `ssh` you will need to log in first, to ensure the key goes into the `known_hosts` file.
 
+### Publishing to the App Stores
+
+Conveyor currently supports submitting your app to the [Microsoft Store](https://apps.microsoft.com/). In this case you don't use the `copied-site`
+command, since the "site" would actually be the store. Instead, you use the `ms-store-release` command. For details, check the [Store config documentation](windows.md#release-to-the-microsoft-store).
+
 ## Remote site checks
 
 Conveyor makes a number of checks to the published download site (if it's been published before) to ensure that users will be able to update

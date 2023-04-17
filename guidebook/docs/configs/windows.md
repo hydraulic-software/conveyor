@@ -192,3 +192,45 @@ conveyor make app-user-model-id
 ```
 
 It will output the AUMID to the standard output.
+
+## Release to the Microsoft Store
+
+Conveyor supports releasing to the [Microsoft Store](https://apps.microsoft.com/). Due to [limitations in the Store API](https://learn.microsoft.com/en-us/windows/uwp/monetize/create-and-manage-submissions-using-windows-store-services#step-1-complete-prerequisites-for-using-the-microsoft-store-submission-api), the first submission of your app has to be done manually at the Microsoft Partner Center.
+
+The first thing you need is to set up an account the Microsoft Partner Center: 
+1. [Register as a Windows app developer in Microsoft Partner Center](https://learn.microsoft.com/en-us/windows/apps/publish/partner-center/partner-center-developer-account).
+2. Have a tenant associated with your Partner Center account. You can achieve that by either [associating an existing Azure AD in Partner Center](https://learn.microsoft.com/en-us/windows/apps/publish/partner-center/associate-existing-azure-ad-tenant-with-partner-center-account) or by [creating a new Azure AD in Partner Center](https://learn.microsoft.com/en-us/windows/apps/publish/partner-center/create-new-azure-ad-tenant).
+
+With the account properly set up, you'll need to make the first release:
+1. In the Partner Center, [reserve your app's name](https://learn.microsoft.com/en-us/windows/apps/publish/publish-your-app/reserve-your-apps-name?pivots=store-installer-msix). Make sure to select **MSIX or PWA app** when specifying the app type.
+2. In your `conveyor.conf`, Make sure your `app.display-name` matches the name you reserved for your app.
+3. In the new app overview, go to the **Product Identity** page. You'll need to fill out the `app.windows.store` keys in your `conveyor.conf` with the values from this page as follows:
+   * `app.windows.store.identity-name`: copy the value of the **Package/Identity/Name** field
+   * `app.windows.store.publisher`: copy the value of the **Package/Identity/Publisher** field.
+   * `app.windows.store.publisher-display-name`: copy the value of the **Package/Properties/PublisherDisplayName** field.
+   * `app.windows.store.store-id`: copy the value of the **Store ID** field.
+   
+   For example, if the **Product Identity** page looks like this:
+   ![Product Identity Sample](ms-store-product-identity-sample.png)
+
+   Then these fields in your config should look like this:
+   ```hocon
+   app.display-name = "My Store App"
+   app.windows.store {
+     identity-name = "12345MyCompany.MyStoreApp"
+     publisher = "CN=00000000-0000-0000-0000-000000000000"
+     publisher-display-name = "My Company"
+     store-id = "1ABCD2EFGHI3"
+   }
+   ```
+4. *Important*: Currently Conveyor doesn't support `app.windows.updates = aggressive` when releasing to the Microsoft Store. This will be supported in a future release, but in the meantime make sure you're not using aggressive updates. 
+5. Build the initial version of your app and run `conveyor make windows-msix`. It will generate an MSIX file in the `output` dir that you'll need to submit to the store.
+6. [Create an app submission for your app](https://learn.microsoft.com/en-us/windows/apps/publish/publish-your-app/create-app-submission?pivots=store-installer-msix). In the **Packages** section, upload the MSIX file generated in the previous step.
+
+Once your initial submission gets approved, Conveyor can manage the updates for you. You'll need to authorize Conveyor to send submissions on your behalf:
+1. [Create a new Azure AD application](https://learn.microsoft.com/en-us/partner-center/marketplace/manage-aad-apps#add-new-azure-ad-applications) to be used by Conveyor. You can enter any [valid address](https://learn.microsoft.com/en-us/azure/active-directory/develop/security-best-practices-for-app-registration#application-id-uri) for **Reply URL** and **App ID URI**, as long as those values are not used by any other Azure AD application in your directory. A simple suggestion is to use `https://<your microsoft domain>.onmicrosoft.com/conveyor` for both. Select **Manager (Windows)** as the role for this new application.
+2. Select the newly created application and click **Add new key**. Take note of the **Client ID** and **Key** values, copy them into your Conveyor config 
+ as the values for `app.windows.store.client-id` and `app.windows.store.client-secret` respectively.
+3. Click **Cancel** to move to the next screen. Take note of the **Tenant ID**, copy it into your Conveyor config as the value for `app.windows.store.tenant-id`
+ 
+And that's it. Now you can run `conveyor make ms-store-release`, and Conveyor will submit the new versions of your app directly to the Microsoft Store.
