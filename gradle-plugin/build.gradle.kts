@@ -1,8 +1,9 @@
 plugins {
     `java-gradle-plugin`
     `maven-publish`
-    id("com.gradle.plugin-publish") version "0.20.0"
+    id("com.gradle.plugin-publish") version "1.0.0"
     kotlin("jvm") version "1.6.10"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 group = "dev.hydraulic"
@@ -13,6 +14,16 @@ repositories {
     gradlePluginPortal()
     maven {
         url = uri("https://maven.hq.hydraulic.software")
+    }
+}
+
+tasks {
+    shadowJar {
+        archiveClassifier.set("")
+        mergeServiceFiles()
+        dependencies {
+            exclude("kotlin/**")
+        }
     }
 }
 
