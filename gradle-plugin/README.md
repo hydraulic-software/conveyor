@@ -9,18 +9,7 @@ To apply this plugin [look up the latest version](https://plugins.gradle.org/plu
 
 ```
 plugins {
-    id("dev.hydraulic.conveyor") version "1.3"
-}
-```
-
-You will also need to add our repository to your `settings.gradle`:
-
-```
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        maven("https://maven.hq.hydraulic.software")
-    }
+    id("dev.hydraulic.conveyor") version "1.5"
 }
 ```
 
@@ -66,7 +55,7 @@ A simple app that depends on [Conscrypt](https://github.com/google/conscrypt), a
 plugins {
     `java-library`
     application
-    id("dev.hydraulic.conveyor") version "1.3"
+    id("dev.hydraulic.conveyor") version "1.5"
 }
 
 dependencies {
@@ -90,7 +79,7 @@ specific dependencies using a bit of refactored generic code. It's for an app th
 plugins {
     `java-library`
     application
-    id("dev.hydraulic.conveyor") version "1.3"
+    id("dev.hydraulic.conveyor") version "1.5"
 }
 
 repositories {
