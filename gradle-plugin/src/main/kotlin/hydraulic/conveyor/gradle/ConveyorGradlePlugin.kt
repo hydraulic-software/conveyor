@@ -21,13 +21,16 @@ class ConveyorGradlePlugin : Plugin<Project> {
     private fun machineConfig(project: Project, machine: Machine): Configuration {
         val configsMap = project.configurations.asMap
         // The Kotlin Multiplatform plugin puts dependencies in a different configuration than the normal Java plugin.
-        val impl: Configuration? = configsMap["implementation"] ?: configsMap["jvmMainImplementation"]
+        val impl: Configuration? =
+            configsMap["implementation"] ?: configsMap["jvmMainImplementation"] ?: configsMap["commonMainImplementation"]
         return machineConfigs.getOrPut(machine) {
             var configName = "${machine.os.identifier}${machine.cpu.identifier.capitalize()}"
             if (machine is LinuxMachine && machine.cLibrary != CLibraries.GLIBC)
                 configName += machine.cLibrary.identifier.capitalize()
             project.configurations.create(configName).also {
                 if (machine == currentMachine)
+                // Make implementation extend from the current machine config, so that those dependencies get included to the runtime when
+                // executing './gradlew run'.
                     impl?.extendsFrom(it)
             }
         }

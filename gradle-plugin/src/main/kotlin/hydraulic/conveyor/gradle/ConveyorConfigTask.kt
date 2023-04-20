@@ -12,7 +12,6 @@ import org.gradle.jvm.toolchain.JvmVendorSpec.*
 import org.jetbrains.compose.ComposeExtension
 import org.jetbrains.compose.desktop.DesktopExtension
 import org.openjfx.gradle.JavaFXOptions
-import java.io.File
 
 /**
  * A base class for tasks that work with generated Conveyor configuration.
@@ -88,16 +87,15 @@ abstract class ConveyorConfigTask : DefaultTask() {
         // - Icons?
     }
 
-    // This copy of the runtime dependency set ("configuration") will be modified to remove libraries that aren't cross-platform.
-    private val crossPlatformRuntimeClasspath: Configuration by lazy {
-        project.configurations.getByName("runtimeClasspath").copyRecursive()
+    // Can't use type JavaFXOptions here because Gradle can't decorate the class.
+    private val javafxExtension: Any? by lazy {
+        project.extensions.findByName("javafx")
     }
 
-    private fun StringBuilder.importFromJavaFXPlugin(project: Project) {
+    private fun StringBuilder.importFromJavaFXPlugin() {
         try {
-            val jfxExtension: JavaFXOptions? = project.extensions.findByName("javafx") as? JavaFXOptions
+            val jfxExtension = javafxExtension as? JavaFXOptions
             if (jfxExtension != null) {
-                crossPlatformRuntimeClasspath.dependencies.removeAll { it.group == "org.openjfx" }
                 appendLine()
                 appendLine("// Config from the OpenJFX plugin.")
                 appendLine("include required(\"/stdlib/jvm/javafx/from-jmods.conf\")")
@@ -123,21 +121,47 @@ abstract class ConveyorConfigTask : DefaultTask() {
         val jarTask = project.tasks.findByName("jvmJar") ?: project.tasks.getByName("jar")
         appendLine("app.inputs += " + quote(jarTask.outputs.files.singleFile.toString()))
 
-        // Emit cross-platform artifacts.
-        val crossPlatformDeps: Set<File> = crossPlatformRuntimeClasspath.files - machineConfigs.values.flatMap { it.files }.toSet()
-        if (crossPlatformDeps.isNotEmpty()) {
+        val runtimeClasspath =
+            project.configurations.findByName("runtimeClasspath") ?: project.configurations.getByName("jvmRuntimeClasspath")
+        val currentMachineConfig = machineConfigs[Machine.current()]!!
+
+        // Exclude current machine specific config from the runtime classpath, to retain only the dependencies that should go
+        // to all platforms.
+        val currentMachineDependencies = currentMachineConfig.dependencies
+        val commonClasspath = runtimeClasspath.copyRecursive {
+            // We need to filter the runtimeClasspath here, before making the recursive copy, otherwise the dependencies from the current
+            // machine config won't match.
+            it !in currentMachineDependencies && (javafxExtension == null || it.group != "org.openjfx")
+        }
+
+        // Make machine configs extend the common classpath so the dependencies are resolved correctly.
+        val expandedConfigs = machineConfigs.mapNotNull { (machine, config) ->
+            if (config.isEmpty) null else {
+                machine to config.copy().extendsFrom(commonClasspath).copyRecursive()
+            }
+        }.toMap().toSortedMap()
+
+        // If there are any expanded configs, use the intersection as the common files. Otherwise, just use all files from the common
+        // classpath.
+        // If there are any expanded configs, we can't really use the common classpath, because it might need the platform specific
+        // dependencies to properly resolve versions.
+        val commonFiles = if (expandedConfigs.isNotEmpty()) expandedConfigs.values.map { it.files }
+            .reduce { a, b -> a.intersect(b) } else commonClasspath.files
+
+        if (commonFiles.isNotEmpty()) {
             appendLine("app.inputs = ${'$'}{app.inputs} [")
-            for (entry in crossPlatformDeps.sorted())
+            for (entry in commonFiles.sorted())
                 appendLine("    " + quote(entry.toString()))
             appendLine("]")
         }
 
         // Emit platform specific artifacts into the right config sections.
-        for ((platform, config) in machineConfigs) {
-            if (config.isEmpty) continue
+        for ((platform, config) in expandedConfigs) {
+            val files = config.files - commonFiles
+            if (files.isEmpty()) continue
             appendLine()
             appendLine("app.$platform.inputs = ${'$'}{app.$platform.inputs} [")
-            for (entry in (config - crossPlatformDeps).sorted())
+            for (entry in files.sorted())
                 appendLine("    " + quote(entry.toString()))
             appendLine("]")
         }
@@ -223,7 +247,7 @@ abstract class ConveyorConfigTask : DefaultTask() {
             appendLine("app.rdns-name = ${project.group}.${'$'}{app.fsname}")
 
             // This strips deps so must run before we calculate dep configurations.
-            importFromJavaFXPlugin(project)
+            importFromJavaFXPlugin()
             importFromJavaPlugin(project)
             importFromComposePlugin(project)
             importFromDependencyConfigurations(project)
