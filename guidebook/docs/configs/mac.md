@@ -5,10 +5,11 @@
 ```properties
 # Mac specific stuff.
 app.mac { 
-  # Require at least macOS 10.10, or set any other Info.plist key.
-  info-plist.LSMinimumSystemVersion = 10.10
+  info-plist { 
+    LSMinimumSystemVersion = 12.0
+  }
 
-  # Add entitlements (requested permissions).
+  # Request permissions.
   entitlements-plist {
     # Allow recording from the microphone
     "com.apple.security.device.audio-input" = true
@@ -78,6 +79,8 @@ the `Contents` directory.
 **`app.mac.sparkle-options`** An object whose values are put in the `Info.plist` that controls Sparkle's behavior. [See here for a reference guide](https://sparkle-project.org/documentation/customization/). You should normally leave this alone unless you want precise behavioral control.
 
 **`app.mac.sparkle-framework`** An input definition that points to a release of the [Sparkle 2 update framework](https://sparkle-project.org/). You can normally leave this at the default unless you want to use a custom fork of Sparkle for some reason.
+
+**`app.mac.check-binary-versions`** If true (the default) then native binaries that declare a minimum required macOS version in their headers will have that be checked against the `LSMinimumSystemVersion` key in the `Info.plist` file. If you are trying to ship native binaries that require a newer macOS version than the declared minimum for your app bundle, Conveyor will stop with an error. Please note that this check does not recurse into JARs or other archives, so requires `app.jvm.extract-native-libraries` to be true to be effective for JVM apps. The declared version header can be viewed using the command `otool -l foobar.dylib | grep -A3 LC_BUILD_VERSION`.
 
 ## File associations
 
