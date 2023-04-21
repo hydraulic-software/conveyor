@@ -35,32 +35,16 @@ Many settings are missing (e.g. `app.rdns-name`) because they'll be read from yo
 To add the plugin:
 
 === "Kotlin"
-    ```kotlin title="settings.gradle.kts"
-    pluginManagement {
-        repositories {
-            gradlePluginPortal()
-            maven("https://maven.hq.hydraulic.software")
-        }
-    }
-    ```
     ```kotlin title="build.gradle.kts"
     plugins {
-        id("dev.hydraulic.conveyor") version "1.4"
+        id("dev.hydraulic.conveyor") version "1.5"
     }
     ```
 
 === "Groovy"
-    ```groovy title="settings.gradle"
-    pluginManagement {
-        repositories {
-            gradlePluginPortal()
-            maven { uri = "https://maven.hq.hydraulic.software" }
-        }
-    }
-    ```
     ```groovy title="build.gradle"
     plugins {
-        id 'dev.hydraulic.conveyor' version '1.4'
+        id 'dev.hydraulic.conveyor' version '1.5'
     }
     ```
 
@@ -84,16 +68,28 @@ Sometimes you need different versions of a library depending on which OS you use
 !!! tip
     You can [get the source to an example Compose Desktop based note taking application](https://github.com/hydraulic-software/eton-desktop).
 
-For [Jetpack Compose Desktop](https://www.jetbrains.com/lp/compose-desktop/) apps a bit more work is required. Different Conveyor plugin versions support different Compose Desktop versions:
+You should use Compose 1.2 or higher. Older versions can be packaged but you'll need to [import a JDK](../../configs/jvm.md#importing-a-jdk) yourself. 
 
-* For Compose 1.2, use Conveyor plugin `1.4` or higher.
-* For Compose 1.0/1.1, use Conveyor plugin `1.0.1`. You'll need to [import a JDK](../../configs/jvm.md#importing-a-jdk) yourself.
-
-If you use the wrong one you'll get a `NoSuchMethodError` exception. Both JVM and Multiplatform Kotlin plugins are supported.
-
-* [ ] Add machine-specific dependencies to the top level of your build file.
+* [ ] Add `withJava()` and also ensure you're using the right version of the Kotlin standard library in your project dependencies.
+* [ ] Add machine-specific dependencies to the **top level** of your build file, note that this is **not** the `dependencies` block inside the `jvmMain` section, but rather in the usual place for JVM dependencies in non-KMM projects. 
 
 ```kotlin
+kotlin {
+    jvm {
+        withJava()
+    }
+    jvmToolchain(17)
+
+    sourceSets {
+        val jvmMain: KotlinSourceSet by getting {
+            dependencies {
+                // ...
+            }
+        }
+    }
+}
+
+
 dependencies {
     linuxAmd64(compose.desktop.linux_x64)
     macAmd64(compose.desktop.macos_x64)
@@ -102,52 +98,12 @@ dependencies {
 }
 ```
 
-* [ ] Add workarounds for Compose issues.
-
-You'll need to add the following snippet to your build file (translate to Groovy if not using Kotlin Gradle syntax).
+* [ ] Add a workaround for [a Compose issue](https://github.com/JetBrains/compose-jb/issues/1404#issuecomment-1146894731).
 
 ```kotlin
-// region Work around temporary Compose bugs.
 configurations.all {
     attributes {
-        // https://github.com/JetBrains/compose-jb/issues/1404#issuecomment-1146894731
         attribute(Attribute.of("ui", String::class.java), "awt")
-    }
-}
-
-// Force override the Kotlin stdlib version used by Compose to 1.7, as otherwise we can end up with a mix of 1.6 and 1.7 on our classpath.
-dependencies {
-    val v = "1.7.10"
-    for (m in setOf("linuxAmd64", "macAmd64", "macAarch64", "windowsAmd64")) {
-        m("org.jetbrains.kotlin:kotlin-stdlib:$v")
-        m("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$v")
-        m("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$v")
-    }
-}
-// endregion
-```
-#### Kotlin Multiplatform
-
-If using Kotlin Multiplatform:
-
-* [ ] Add `withJava()` and also ensure you're using the right version of the Kotlin standard library in your project dependencies.
-
-```kotlin
-kotlin {
-    jvm {
-        compilations.all {
-            kotlinOptions.jvmTarget = "11"
-        }
-        withJava()
-    }
-
-    sourceSets {
-        val jvmMain: KotlinSourceSet by getting {
-            dependencies {
-                implementation(kotlin("stdlib-jdk8"))
-                implementation(compose.desktop.currentOs)
-            }
-        }
     }
 }
 ```
