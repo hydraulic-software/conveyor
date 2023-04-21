@@ -67,6 +67,12 @@ app.inputs += {
   to = bin/sample.sh
 }
 
+# You can specify that some inputs are optional.
+app.inputs += { 
+  from = an/optional/file
+  optional = true  
+}
+
 # Archives are extracted by default (but not JARs).
 #
 # Any input spec may use brace expansion with nesting. {} are special in HOCON so you
@@ -139,6 +145,9 @@ can necessitate putting a tarball inside the zip. If not set then a heuristic is
 tarball, otherwise it won't be (i.e. file formats based on zip like JARs won't be extracted).
 
 **`http-headers`** A map of key-value pairs that contains additional HTTP headers to be sent when downloading a URL.
+
+**`optional`** A boolean that specifies whether the input is optional. Conveyor will normally throw an error if inputs are missing, but for
+inputs marked as optional a warning is shown and execution proceeds.
 
 ## Remap rules
 
