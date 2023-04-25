@@ -4,7 +4,10 @@ Your installs will look for updates at the location set by `app.site.base-url`.
 
     * [x] Set the `app.license` key to the name of your software license e.g. `Apache 2`, `GPL-3` etc. Use SPDX codes if you aren't sure what to put here.
     * [x] Upload your project source code to GitHub. In your config set this key: `app.vcs-url = "https://github.com/you/your-project"`.
-    * [x] Run `conveyor make site` and create a GitHub Release with the contents of the `output` directory (you can skip the icon and `download.html` files, but need all the rest).
+    * [x] Create a [Fine Grained Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-fine-grained-personal-access-token) with *Read and Write access* to your repository *Contents*.
+    * [x] Set the `app.site.github.oauth-token` key to the value of the token created above.
+    * [x] (optional) Set the `app.site.github.pages-branch` key to `gh-pages`.
+    * [x] Run `conveyor make copied-site`.
     
     Your installs will update to whatever the latest release is.
 
