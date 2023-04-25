@@ -98,6 +98,7 @@ app {
 * `app.version` - equal to the `${app.version}` key.
 * `app.revision` - equal to the `${app.revision}` key.
 * `app.vendor` - equal to the `${app.vendor}` key.
+* `app.repositoryUrl` - equal to the `${app.site.base-url}` key. 
 
 Some special tokens are supported. See [JVM options](#jvm-options) for details.  Some additional properties are also added, see [default config](#default-config) below.
 

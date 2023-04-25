@@ -33,3 +33,7 @@ and then just trigger Conveyor from your CI system. This is an example of [a has
 ## 4. How do I display a license agreement at install time?
 
 That's not supported. User interactivity during installation is un-idiomatic on macOS, extremely discouraged on Linux and causes problems for network admins on Windows. Ask the user to agree in your app on first run instead.
+
+## 5. How do I forcibly update my app whilst it's running?
+
+Please [see here](../configs/index.md#aggressive-updates). 
