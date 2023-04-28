@@ -4,6 +4,8 @@ plugins {
     id("com.gradle.plugin-publish") version "1.0.0"
     kotlin("jvm") version "1.6.10"
     id("com.github.johnrengelman.shadow") version "7.1.2"
+    // Better test output.
+    id("com.adarshr.test-logger") version "3.0.0"
 }
 
 group = "dev.hydraulic"
@@ -36,6 +38,25 @@ dependencies {
     }
     compileOnly("org.openjfx:javafx-plugin:0.0.11") {
         because("Supporting projects that use the OpenJFX Gradle plugin.")
+    }
+    testImplementation(gradleTestKit())
+    testImplementation(kotlin("test"))
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.1")
+    testImplementation("com.typesafe:config:1.4.2")
+}
+
+tasks.named<Test>("test") {
+    useJUnitPlatform()
+    testlogger {
+        setTheme("mocha-parallel")
+        showStandardStreams = false
+        showFailedStandardStreams = true
+        logLevel = LogLevel.QUIET
+        showStackTraces = true
+        showFullStackTraces = true
+        showExceptions = true
     }
 }
 
