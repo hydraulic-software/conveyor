@@ -484,5 +484,5 @@ The Skiko runtime paths here come from running `./gradlew printConveyorConfig` a
 JCEF lets you embed Chromium into your app. It's easy to ship the CEF binaries with your app such that everything is signed and put in the
 right places. 
 
-The procedure for this is documented in a [blog post](https://hydraulic.software/blog/13-deploying-apps-with-jcef.html) and we provide a
+The procedure for this is documented in a [blog post](https://hydraulic.dev/blog/13-deploying-apps-with-jcef.html) and we provide a
 [sample app](https://github.com/hydraulic-software/jcef-conveyor) you can use as a reference.
