@@ -8,6 +8,11 @@ import kotlin.io.path.toPath
 import kotlin.io.path.writeText
 import kotlin.test.assertEquals
 
+/**
+ * Basic test for the Conveyor Gradle Plugin.
+ *
+ * NOTE: Due to difficulties with using the Gradle TestKit, not all tests are covered here. Some are tested internally by Hydraulic.
+ */
 class ConveyorGradlePluginTest {
 
     @TempDir
