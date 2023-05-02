@@ -8,7 +8,7 @@ Conveyor has integrated support for apps that run on the JVM (for any supported 
 * Usage of `jlink` and `jdeps` to create a minimal bundled JVM.
 * Support for signing native libraries:
     * Dynamic libraries can be signed _inside_ JARs, ensuring they work on end user systems.
-    * They can also be unpacked from JARs and discarded if they're for the wrong OS/CPU, which yields [several benefits](#jar-processing).
+    * They can also be unpacked from JARs and discarded if they're for the wrong OS/CPU, which yields [several benefits](#native-code).
 * [Maven and Gradle integration](maven-gradle.md):
     * A Gradle plugin that automatically generates configuration snippets.
     * Maven projects can have their classpath read directly, without needing a plugin.
@@ -16,7 +16,7 @@ Conveyor has integrated support for apps that run on the JVM (for any supported 
 
 ??? note "Java versions"
     Conveyor only supports apps that use Java 11 or later - Java 8 won't work. All classes must be inside a JAR. If you need Java 8 support
-    please [email us](mailto:contact@hydraulic.software).
+    please [email us](mailto:contact@hydraulic.dev).
 
 ## Synopsis
 
@@ -229,7 +229,7 @@ This library [needs specific code changes to work](../troubleshooting/troublesho
 
 Conveyor can use the Java Platform Module System (JPMS a.k.a. Jigsaw).
 
-**Linked JVMs.** Conveyor always bundles a specialized JVM created using `jlink`. That's why Java 8 isn't supported (if you need support for Java 8 please [let us know](mailto:contact@hydraulic.software)). Linking is primarily a size and startup time optimization: it gets rid of parts of the JDK you don't need, and linked modules get incorporated into the single `modules` file which uses an more optimized format called "jimage". Classes can be loaded more quickly and take up less space when processed this way. You can use the `jimage` command line tool in any JDK to view the contents of a `modules` file.
+**Linked JVMs.** Conveyor always bundles a specialized JVM created using `jlink`. That's why Java 8 isn't supported (if you need support for Java 8 please [let us know](mailto:contact@hydraulic.dev)). Linking is primarily a size and startup time optimization: it gets rid of parts of the JDK you don't need, and linked modules get incorporated into the single `modules` file which uses an more optimized format called "jimage". Classes can be loaded more quickly and take up less space when processed this way. You can use the `jimage` command line tool in any JDK to view the contents of a `modules` file.
 
 **Modular JARs.** Conveyor will link a JAR that provides a `module-info.class` into the bundled JVM as long as it doesn't depend on any auto-modules and isn't excluded (see below). As a consequence those JARs won't be found in the app data directory, only JARs on the classpath will be placed there.  Conveyor always puts automatic modules (those that declare a module name in their manifest) as ordinary classpath JARs.
 

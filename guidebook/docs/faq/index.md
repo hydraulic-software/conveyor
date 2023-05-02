@@ -39,7 +39,7 @@ And loads of other things. We built Conveyor due to experience distributing desk
 
 ## Why isn't Conveyor a service?
 
-Services can sometimes be convenient and if you'd like to have Conveyor-as-a-service, please [let us know](mailto:contact@hydraulic.software). 
+Services can sometimes be convenient and if you'd like to have Conveyor-as-a-service, please [let us know](mailto:contact@hydraulic.dev). 
 Also, if you work on a code hosting service/forge of some kind and you'd like to incorporate Conveyor's features into your site,
 then get in touch and ask for a reseller license.
 

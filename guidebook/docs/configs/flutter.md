@@ -45,7 +45,7 @@ app {
     gradient = "aqua;navy"
   }
   
-  contact-email = "contact@hydraulic.software"
+  contact-email = "contact@hydraulic.dev"
   rdns-name = dev.hydraulic.samples.FlutterDemo
   vendor = YourCompany
 }
