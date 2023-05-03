@@ -16,6 +16,7 @@
   `Info.plist` file. This can catch mistakes where you think you are targeting a certain older macOS version but incorporate code that
   has a higher requirement. Note that this check only applies to code shipped as individual files, not code inside zips.
 * A crash reporter was added.
+* Certificates that are about to expire now trigger a warning.
 
 ## Bug fixes
 
