@@ -147,33 +147,11 @@ will check for online updates, although you don't need to use the generated HTML
 
 * `windows.amd64`
 * `mac.amd64` (Intel Macs)
-* `mac.aarch64`   (Apple Silicon)
+* `mac.aarch64` (Apple Silicon)
 * `linux.amd64.glibc`
 
-Additional supported targets may be added in future, in particular ARM Linux distributions and muslc based Linux distributions.
-
-You can also write just `mac`, which expands to both Intel and Apple Silicon Macs. However if you request a short form like `windows` or `linux` then you'll get an error, because that expands to also request `windows.aarch64`, which isn't currently supported. To avoid being surprised by Conveyor updates that add such support, which could create packages targeting a CPU architecture you didn't want, you're required to be explicit about what you wish for here.
-
-Normally you don't need to fill this key out. Reasonable defaults will be calculated for you based on whether your config lists inputs for those machine types and whether the relevant config section for that OS is nulled out. As a consequence, you can select what machines you want either additively:
-
-```
-// Only Intel Linux, nothing else even if we could potentially build it
-app.machines = [ linux.amd64.glibc ]
-```
-
-... or subtractively ...
-
-```
-app {
-  // Everything we can support, except macOS.
-	mac = null
-}
-```
-
-How to choose?
-
-* Setting `app.machines` explicitly means you're opting in. Pick this for best control.
-* Nulling out sections means you're opting out. Pick this if you don't want to support a particular type of machine, but are OK with automatically getting newly supported package types other than that.
+Additional supported targets may be added in future. You can also use shorthand like `windows` on its own, but you'll get a warning
+that Windows ARM isn't supported yet.
 
 ## Signing
 
