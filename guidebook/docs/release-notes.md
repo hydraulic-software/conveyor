@@ -23,6 +23,7 @@
 * Input definitions with globs and placement arrows now treat the right hand side as a directory instead of a file to overwrite.
 * JVM: JavaFX apps are now marked as supporting both integrated and discrete graphics on macOS, speeding up startup and avoiding an annoying screen flash.
 * A few minor UX bugs in the `conveyor keys export` command were resolved.
+* Don't try to unlock keys for machines that are disabled by the `app.machines` key.
 
 !!! note 
     For older release notes please use the version picker in the top bar.
