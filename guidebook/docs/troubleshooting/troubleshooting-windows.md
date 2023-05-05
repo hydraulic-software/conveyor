@@ -48,3 +48,7 @@ Some CAs configure their HSMs to require frequent passphrase changes. If you're 
 Old versions of Windows have a caching bug that will cause install/update failure if you change the size of a file in your download/update site. Conveyor puts version numbers into file names and ensures the size of the `.appinstaller` file is constant, but if you change your package without changing the version number you may encounter install failures. Conveyor will error out if you try this, but you can override that error and if you do this problem may occur. 
 
 The workaround is to always ensure you change your version number for any new upload, even whilst testing. Alternatively you can reboot Windows to clear the buggy cache. 
+
+## Error opening sockets on JVM apps
+
+[See here](troubleshooting-jvm.md#error-opening-sockets-on-windows).
