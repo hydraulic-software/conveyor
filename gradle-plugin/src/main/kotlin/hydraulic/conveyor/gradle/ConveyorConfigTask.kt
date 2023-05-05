@@ -123,6 +123,11 @@ abstract class ConveyorConfigTask : DefaultTask() {
 
         val runtimeClasspath =
             project.configurations.findByName("runtimeClasspath") ?: project.configurations.getByName("jvmRuntimeClasspath")
+
+        // We need to resolve the runtimeClasspath before copying out the dependencies because the at the start of the resolution process
+        // the set of dependencies can be changed via [Configuration.defaultDependencies] or [Configuration.withDependencies].
+        runtimeClasspath.resolve()
+
         val currentMachineConfig = machineConfigs[Machine.current()]!!
 
         // Exclude current machine specific config from the runtime classpath, to retain only the dependencies that should go
