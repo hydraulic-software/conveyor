@@ -53,8 +53,11 @@ conveyor make site
 conveyor -Kapp.revision=2 make site
 conveyor -Kapp.sign=false make site
 
-# In Windows PowerShell you have to quote the argument like this:
+# In Windows PowerShell you have to quote the argument:
 conveyor "-Kapp.sign=false" make site
+
+# You can specify lists:
+conveyor "-Kapp.inputs=[a,b,c]"
 ```
 
 **Show all invokable task names, using a different config file to the default:**

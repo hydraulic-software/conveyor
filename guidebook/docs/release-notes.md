@@ -15,6 +15,7 @@
 * Conveyor now verifies that the min macOS version required by individual binaries is consistent with the min version advertised in the
   `Info.plist` file. This can catch mistakes where you think you are targeting a certain older macOS version but incorporate code that
   has a higher requirement. Note that this check only applies to code shipped as individual files, not code inside zips.
+* JVM: App JARs are now always placed on the classpath unless listed explicitly in the `app.jvm.modules` list. Previously, 
 * A crash reporter was added.
 * Certificates that are about to expire now trigger a warning.
 
