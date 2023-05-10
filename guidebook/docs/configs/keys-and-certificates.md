@@ -65,6 +65,15 @@ it's stored without a passphrase. You can directly inspect the contents of the k
 the same that would be written to your `defaults.conf` without a keyring, so if you prefer not using it you can simply copy the value
 directly into the setting for `app.signing-key` of your config.
 
+If you already have a root key in your `defaults.conf` and you wish to store it into the system keyring, you can use the following command:
+
+```bash
+conveyor keys migrate-to-keyring
+```
+
+This command will store your current root key into the keyring and modify your `defaults.conf` in place to point to it. You can always retrieve
+your root key back as described above.
+
 ## Certificates in Conveyor
 
 Certificates link your public key to a verified identity. Conveyor supports the following certificate formats:
