@@ -11,6 +11,7 @@ extra:
 nav:
   - Welcome:
     - Getting started: index.md
+    - sample-apps.md
     - download-conveyor.md
     - outputs.md
     - running.md
