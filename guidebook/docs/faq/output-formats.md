@@ -1,8 +1,8 @@
 # Output formats
 
-## 1. RPMs?
+## 1. App stores
 
-It's in progress.
+Conveyor supports automatically uploading new releases to the Microsoft Store. [Vote for Mac App Store support here](https://github.com/hydraulic-software/conveyor/issues/9).
 
 ## 2. DMGs?
 
@@ -15,7 +15,7 @@ We'd like to add PKG support in the future. These are needed for uploading to th
 
 ## 4. MSIs?
 
-At the moment we have no plans to do this. MSI is deprecated. MSIX is Microsoft's current recommended install technology, but we're interested in learning about use cases that require alternatives. 
+We have no plans to do this. MSI is deprecated. MSIX is Microsoft's current recommended install technology, but we're interested in learning about use cases that require alternatives. 
 
 ## 5. FlatPak? Other distros? Non-Intel Linux?
 
@@ -25,9 +25,9 @@ FlatPak looks promising, doesn't it? [Vote for support here](https://github.com/
 
 Linux/Aarch64 may be added later. [Vote for support here](https://github.com/hydraulic-software/conveyor/issues/8).
 
-## 6. App stores?
+## 6. RPMs
 
-Not yet. [Vote for Mac App Store support here](https://github.com/hydraulic-software/conveyor/issues/9), and vote for [support for the Microsoft app store here](https://github.com/hydraulic-software/conveyor/issues/10).
+Some initial work was done. If there's interest this can be added.
 
 ## 7. Why does the Debian install process differ to normal?
 
