@@ -197,15 +197,19 @@ a self-signed certificate is deterministically derived from the root key.
 
 Conveyor supports three different approaches to software updates:
 
-1. Background mode: the default.
-2. Aggressive mode. Set `app.updates = aggressive`.
-3. None. Set `app.updates = none`.
+1. `app.updates = background` (the default)
+2. `app.updates = aggressive`
+3. `app.updates = none`
 
-In aggressive mode an update check will be performed synchronously on each app start. If a new version is available then the update process will start and the update downloaded and applied, without any user interaction being required. In background mode the behaviour differs by OS:
+In aggressive mode an update check will be performed synchronously on each app start. If a new version is available then the update process will start and the update downloaded and applied, without any user interaction being required. 
+
+In background mode the behaviour differs by OS:
 
 * :simple-windows: The OS itself will check for updates every 8 hours and upgrade the app in the background, even if it's not being used. Your users will never see an update prompt.
 * :simple-apple: The app will check for updates on startup without blocking the user, and on a schedule whilst the app runs. Once the user agrees, updates will be downloaded and applied in the background ready for the next launch.
 * :simple-linux: No difference, forced updates are not supported.
+
+When `app.updates = none` support for auto updates is removed, except on Linux where apt repositories will continue to be installed (this is a [known issue](../known-issues.md)). Note that this doesn't simply turn off polling: on macOS Sparkle won't be shipped, and there isn't any way to trigger an update.
 
 Which mode to use depends heavily on how often your users will start the app and how important it is for updates to be applied quickly. If your app is a client for a server that speaks a complex protocol and you don't want to preserve protocol backwards compatibility, aggressive mode is appropriate. If your app is self-contained or the protocols it speaks evolve in a compatible way, background mode gives a better user experience as the user won't be interrupted by the update process.
 
