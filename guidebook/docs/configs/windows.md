@@ -195,24 +195,28 @@ It will output the AUMID to the standard output.
 
 ## Release to the Microsoft Store
 
-Conveyor supports releasing to the [Microsoft Store](https://apps.microsoft.com/). Due to [limitations in the Store API](https://learn.microsoft.com/en-us/windows/uwp/monetize/create-and-manage-submissions-using-windows-store-services#step-1-complete-prerequisites-for-using-the-microsoft-store-submission-api), the first submission of your app has to be done manually.
+Conveyor supports releasing to the [Microsoft Store](https://apps.microsoft.com/). This can be a great choice as the store offers various
+useful features and an account is much cheaper than buying a code signing certificate.
 
 The first thing you need is to set up an account at the Microsoft Partner Center:
 
 1. [Register as a Windows app developer in Microsoft Partner Center](https://learn.microsoft.com/en-us/windows/apps/publish/partner-center/partner-center-developer-account).
 2. Have a tenant associated with your Partner Center account. You can achieve that by either [associating an existing Azure AD in Partner Center](https://learn.microsoft.com/en-us/windows/apps/publish/partner-center/associate-existing-azure-ad-tenant-with-partner-center-account) or by [creating a new Azure AD in Partner Center](https://learn.microsoft.com/en-us/windows/apps/publish/partner-center/create-new-azure-ad-tenant).
 
-With the account properly set up, you'll need to make the first release.
+With the account properly set up, you'll need to make the first release. Due to [limitations in the Store API](https://learn.microsoft.com/en-us/windows/uwp/monetize/create-and-manage-submissions-using-windows-store-services#step-1-complete-prerequisites-for-using-the-microsoft-store-submission-api), the first submission of your app has to be done manually.
 
+- [ ] Make sure you're logged in to Partner Center as the Azure AD tenant user name (e.g. `user@yourdomain.onmicrosoft.com`). If you're logged in as a personal user name you may receive permission errors when reserving your app name.
 - [ ] In the Partner Center, [reserve your app's name](https://learn.microsoft.com/en-us/windows/apps/publish/publish-your-app/reserve-your-apps-name?pivots=store-installer-msix). Make sure to select **MSIX or PWA app** when specifying the app type.
 - [ ] In your `conveyor.conf`, make sure your `app.display-name` matches the name you reserved for your app.
 - [ ] In the new app overview, go to the **Product Identity** page. You'll need to fill out the `app.windows.store` keys in your `conveyor.conf` with the values from this page as follows:
 
-* `app.windows.store.identity-name`: copy the value of the **Package/Identity/Name** field
-* `app.windows.store.publisher`: copy the value of the **Package/Identity/Publisher** field.
-* `app.windows.store.publisher-display-name`: copy the value of the **Package/Properties/PublisherDisplayName** field.
-* `app.windows.store.store-id`: copy the value of the **Store ID** field.
-   
+    * `app.windows.store.identity-name`: copy the value of the **Package/Identity/Name** field
+    * `app.windows.store.publisher`: copy the value of the **Package/Identity/Publisher** field.
+    * `app.windows.store.publisher-display-name`: copy the value of the **Package/Properties/PublisherDisplayName** field.
+    * `app.windows.store.store-id`: copy the value of the **Store ID** field.
+
+- [ ] If you've already configured a regular Windows signing certificate set `app.windows.certificate = "self signed by "${app.windows.store.publisher}"` in your config to turn it off and use self-signing (you don't need to, and should not, CA sign a Microsoft Store upload). 
+
 For example, if the **Product Identity** page looks like this:
 
 ![Product Identity Sample](ms-store-product-identity-sample.png)
@@ -220,18 +224,33 @@ For example, if the **Product Identity** page looks like this:
 Then these fields in your config should look like this:
 
 ```
-app.display-name = "My Store App"
-app.windows.store {
-    identity-name = "12345MyCompany.MyStoreApp"
-    publisher = "CN=00000000-0000-0000-0000-000000000000"
-    publisher-display-name = "My Company"
-    store-id = "1ABCD2EFGHI3"
+app {
+    display-name = "My Store App"
+
+    windows {
+        store {
+            identity-name = "12345MyCompany.MyStoreApp"
+            publisher = "CN=00000000-0000-0000-0000-000000000000"
+            publisher-display-name = "My Company"
+            store-id = "1ABCD2EFGHI3"
+        }
+        
+        // Optional, see above.
+        certificate = "self signed by "${app.windows.store.publisher}"
+    }
 }
 ```
-
-- [ ] *Important*: Currently Conveyor doesn't support `app.windows.updates = aggressive` when releasing to the Microsoft Store. This will be supported in a future release, but in the meantime make sure you're not using aggressive updates. 
+ 
+- [ ] As a quick double check, run `conveyor make app-user-model-id` and ensure the output string matches the "Product Family Name" on the product identity page.
 - [ ] Build the initial version of your app by running `conveyor make windows-msix`. It will generate an MSIX file in the `output` dir that you'll need to submit to the store.
-- [ ] [Create an app submission for your app](https://learn.microsoft.com/en-us/windows/apps/publish/publish-your-app/create-app-submission?pivots=store-installer-msix). In the **Packages** section, upload the MSIX file generated in the previous step.
+
+### Creating the initial submission
+
+[Create an app submission for your app](https://learn.microsoft.com/en-us/windows/apps/publish/publish-your-app/create-app-submission?pivots=store-installer-msix). 
+
+- [ ] Go to **App Overview** and click **Start Submission**. In the **Packages** section, upload the MSIX file generated in the previous step. Fill out the other details as required (screenshot, privacy policy etc).
+- [ ] When asked why you need `runFullTrust`, say: "This is a native Win32 app and thus cannot run in the UWP sandbox".
+- [ ] If asked why you need `unvirtualizedResources`, say "This is required to work around a Windows bug affecting UNIX domain sockets that can cause Java apps to crash".
 
 Once your initial submission gets approved, Conveyor can manage the updates for you. You'll need to authorize Conveyor to send submissions on your behalf:
 
@@ -247,6 +266,7 @@ Now you can run `conveyor make ms-store-release`, and Conveyor will submit the n
 Here are some Microsoft-imposed limitations to be aware of when publishing to the store:
 
 - You can't switch between out-of-store and in-store distribution.
+- You can't use aggressive updates mode.
 - The `app.revision` number must be zero as the store uses the revision number for its own purposes.
 - The first version of your app must be uploaded manually.
 - Microsoft may need to verify your identity as part of setting up an account.
