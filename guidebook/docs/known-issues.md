@@ -5,11 +5,16 @@
 * Supported apps and packages:
     * Only GUI apps are supported currently. Support for CLI-only apps is implemented (Conveyor is packaged with itself), but the feature needs more polish before being ready to launch. Let us know if you'd like to try it out anyway.
     * Only DEB based Linux distros get native packages. For other distros Conveyor creates a tarball which doesn't auto update. RPM / FlatPak support is on the roadmap.
-    * ARM Linux
+    * ARM Linux.
     * ARM Windows.
-* App store packages.
+* Mac App Store support (Microsoft Store support is available).
 * Cloud HSM services.
 * JVM: support for reading Maven classpaths on non-UNIX platforms.
+* There is no `app.updates` mode that lets you preserve the ability to auto update but only trigger it from your app.
+
+## Issues
+
+* Setting `app.updates = none` won't remove the apt repository from the Debian package.
 
 ## Windows-specific issues
 
@@ -29,6 +34,7 @@ Windows apps are packaged using MSIX, which changes some aspects of the runtime 
     * Files stored under `AppData` will be cleaned up on uninstall automatically. This is usually what you want, but it's best to be aware of that and not store data the user can't afford to lose there.
     * Your app won't be able to see the `AppData` directories of other apps unless you adjust your configuration to de-virtualize those directories. 
     * UNIX domain sockets may fail if you create them in a virtualized directory on some versions of Windows. Conveyor 8+ configures your package to devirtualize the Temp directory so sockets created there should work, but sockets created elsewhere may encounter errors. [Devirtualize](configs/windows.md#virtualization) a directory if you plan to create UNIX domain sockets there.
+* DLLs are no longer searched for in the `%PATH%`. If you want to load DLLs from other installed applications, you should locate that directory and then use `LoadLibraryEx` with the `LOAD_WITH_ALTERED_SEARCH_PATH` flag, passing in an absolute path to the desired DLL.
 
 ## Low priority issues 
 
