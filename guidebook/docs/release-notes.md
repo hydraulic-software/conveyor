@@ -20,11 +20,13 @@
 * Non-colored terminal output is now less verbose.
 * The `-K` command line flag can now be given string lists e.g. `conveyor "-Kapp.machines=[mac,windows]" make site`.
 * Missing signing keys now yield an error rather than a warning.
-* JVM: App JARs are now always placed on the classpath unless listed explicitly in the `app.jvm.modules` list. Previously, Conveyor would
-  try to identify the module sub-graphs that could be optimized by jlink; unfortunately there are too many broken module graphs in the wild
-  and this feature has now been removed. This change should make no noticeable difference to the execution of most apps but resolves bugs
-  that could cause build failures when using some third party libraries.
-* JVM: Better icon loading code in the Compose sample.
+* JVM: 
+    * App JARs are now always placed on the classpath unless listed explicitly in the `app.jvm.modules` list. Previously, Conveyor would
+      try to identify the module sub-graphs that could be optimized by jlink; unfortunately there are too many broken module graphs in the wild
+      and this feature has now been removed. This change should make no noticeable difference to the execution of most apps but resolves bugs
+      that could cause build failures when using some third party libraries.
+    * Better icon loading code in the Compose sample.
+    * A safety check has been added for misconfiguration of the popular JNA library.
 
 ## Bug fixes
 
@@ -36,12 +38,13 @@
 * Don't try to unlock keys for machines that are disabled by the `app.machines` key.
 * Don't fail if the user deletes the working directory inside the cache.
 * Abort early if there's no home directory or it's not writeable (this can occur inside some kinds of Docker containers).
-* JVM: Version 1.6 of the Gradle plugin has been released. This fixes some bugs that could occur when working with machine specific 
-  dependency graphs that contained conflicting library versions. Additionally, it's no longer needed to add an extra Maven repository.
-  We recommend all projects to upgrade.
-* JVM: JavaFX apps are now marked as supporting both integrated and discrete graphics on macOS, speeding up startup and avoiding an
-  annoying screen flash.
-* JVM: Don't fail if there are spaces in the system username.
+* JVM: 
+    * Version 1.6 of the Gradle plugin has been released. This fixes some bugs that could occur when working with machine specific 
+      dependency graphs that contained conflicting library versions. Additionally, it's no longer needed to add an extra Maven repository.
+      We recommend all projects to upgrade.
+    * JavaFX apps are now marked as supporting both integrated and discrete graphics on macOS, speeding up startup and avoiding an
+      annoying screen flash.
+    * Don't fail if there are spaces in the system username.
 
 !!! note 
     For older release notes please use the version picker in the top bar.
