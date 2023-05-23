@@ -1,12 +1,18 @@
 # Release notes
 
-## New features
+## 9.1
+
+* Fix a regression in the creation of the Linux tarball.
+
+## 9.0
+
+### New features
 
 * [Automatic releasing to the Microsoft App Store](configs/windows.md#release-to-the-microsoft-store). This provides an alternative to 
   distribution via your own websites and avoids the need for a Windows signing key.
 * The root key can now be stored in the macOS key ring. This protects it from other applications on the computer, regardless of sandboxing.
 
-## Usability improvements
+### Usability improvements
 
 * Inputs can now be made optional. When the `conveyor.compatibility-level` >= 9, inputs are required by default. This makes it harder to
   accidentally build packages that are missing files.
@@ -28,7 +34,7 @@
     * Better icon loading code in the Compose sample.
     * A safety check has been added for misconfiguration of the popular JNA library.
 
-## Bug fixes
+### Bug fixes
 
 * The Windows installer now detects if admin privileges are necessary to install and elevates as necessary. Normally MSIX packages don't
   require admin access to install, but this situation can occur on managed Windows networks where the IT admins have disabled this 
