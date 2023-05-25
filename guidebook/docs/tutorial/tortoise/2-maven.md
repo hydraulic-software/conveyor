@@ -5,89 +5,97 @@ hide:
 
 # Maven projects
 
-For Maven there's no plugin. Instead, Conveyor will discover the JARs in your project by running the output of the `mvn` command and using it directly as configuration. Other aspects like project name must be specified explicitly. Better import from Maven is planned in a future release.
+Here's an example of how to package a Maven project. Firstly, adjust the `pom.xml` in your app module to configure the Maven dependencies 
+plugin. We'll use this to get a directory of JARs to ship. Pay attention to the exclusions. Maven will only give us the JARs for whatever
+platform happens to be running the build, but we will need all of them. They can be added back manually later.
 
-??? warning "Maven on Windows"
-    Currently, automatic import from Maven only works on UNIX. On Windows you'll need to follow the instructions below for "other build systems".
+```
+<project>
+<build>
+<plugins>
 
-Here's an example of how to package a Maven project:
+<!-- Copy all dependencies (excluding those with native components). -->
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-dependency-plugin</artifactId>
+    <executions>
+        <execution>
+            <id>copy-dependencies</id>
+            <phase>prepare-package</phase>
+            <goals>
+                <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+                <outputDirectory>target/classpath-jars</outputDirectory>
+                <includeScope>runtime</includeScope>
+                
+                <!-- Exclude JavaFX because we'll get that from JMODs if we need to. -->
+                <excludeGroupIds>org.openjfx</excludeGroupIds>
+                
+                <!-- Exclude anything else here where the artifacts are machine specific. We'll add them back later. -->
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+
+</plugins>
+</build>
+</project>
+```
+
+Now before building the packages you'll need to run `mvn prepare-package` to populate the `target/classpath-jars` directory.
 
 ```javascript title="conveyor.conf" linenums="1"
 include "/stdlib/jdk/17/openjdk.conf"  // (1)!
-include "/stdlib/jvm/from-maven.conf"  // (2)!
+
+include "#!=app.version mvn -q help:evaluate -Dexpression=project.version -DforceStdout"  // (2)!
 
 app {
-    fsname = my-program  // (3)!
-    display-name = myPROGRAM  // (4)!
-    vendor = Global MegaCorp  // (5)!
+    display-name = myPROGRAM  // (3)!
+    vendor = Global MegaCorp  // (4)!
     version = 1.0
     rdns-name = org.some-org.some-product
+
+    inputs += app/target/my-program-1.0-SNAPSHOT.jar  // (5)!
+    inputs += app/target/classpath-jars
     
     site.base-url = downloads.myproject.org/some/path  // (6)!
-    inputs += "icon-*.png"
 }
 ```
 
 1. You can import JDKs by major version, major/minor version, and by naming a specific distribution.
-2. This included file contains a single line, which runs Maven, tells it to print out the classpath and assigns the result to the `app.inputs` key: `include "#!=app.inputs[] mvn -q dependency:build-classpath -Dmdep.outputFile=/dev/stdout -Dmdep.pathSeparator=${line.separator}"`. In future this file will be updated to trigger a higher quality Maven import.
-3. The `fsname` is what's used for names on Linux e.g. in the `bin` directory, for directories under `lib`. In fact when specified the vendor is also used, and the program will be called `global-megacorp-my-program` unless the `long-fsname` key is overridden.
-4. You may not need to set this if the display name of your project is trivially derivable from the fsname. The default here would be `My Program`.
-5. This is optional. It'll be prefixed to the display name and used as a directory name  in various places; skip it if you don't work for an organization.
+2. You can assign Conveyor keys from Maven properties by using [hashbang includes](../../configs/hocon-extensions.md#including-the-output-of-external-commands).
+   Note that `-SNAPSHOT` isn't valid in package versions.
+3. You may not need to set this if the display name of your project is trivially derivable from the fsname. The default here would be `My Program`.
+4. This is optional. It'll be prefixed to the display name and used as a directory name  in various places; skip it if you don't work for an organization.
+5. This will import the app JAR and contents of the directory made by `mvn prepare-package`.
 6. This is where the created packages will look for update metadata.
 
 ## Adapting a JavaFX app
 
-The idea is straightforward - get all the JARs your app needs into a single directory. Below is a config that packages the gallery demo for [the modern AtlantaFX skin](https://github.com/hydraulic-software/atlantafx). Here's the [commit that added the packaging](https://github.com/hydraulic-software/atlantafx/commit/c1246ce1c377814a80d908bfd16a8d1aab600f03). The Maven POM in this project collects all the app JARs into the `sampler/target/dependencies` directory when the commands at the top of the file are run by hand. Conveyor can then just pick them up and package them.
+Given the above we can make some small adaptations for JavaFX. Make sure your POM fragment is excluding the JavaFX JARs and then do 
+something like this:
 
 ```
-// Before packaging do the build like this:
-//
-// mvn install -pl styles
-// mvn install -pl base
-// mvn prepare-package jar:jar -pl sampler
-
-// Use a vanilla Java 17 build, latest as of packaging.
 include required("/stdlib/jdk/17/openjdk.conf")
 
-// Import JavaFX JMODs.
+// Import JavaFX.
+include "#!=javafx.version mvn -q help:evaluate -Dexpression=openjfx.version -DforceStdout"
 include required("/stdlib/jvm/javafx/from-jmods.conf")
 
-javafx.version = 18.0.2
-
 app {
-  display-name = AtlantaFX Sampler
-  fsname = atlantafx-sampler
-
-  // Not allowed to have versions ending in -SNAPSHOT
-  version = 0.1
-
-  // Open source projects use Conveyor for free.
-  vcs-url = github.com/mkpaz/atlantafx
-  
-  // Import the JARs.
-  inputs += sampler/target/dependencies
-
-  // Linux/macOS want rounded icons, Windows wants square.
-  icons = "sampler/icons/icon-rounded-*.png"
-  windows.icons = "sampler/icons/icon-square-*.png"
-
   jvm {
-    gui.main-class = atlantafx.sampler.Launcher
-    modules = [ java.logging, jdk.localedata, java.desktop, javafx.controls, javafx.swing, javafx.web ]
+    gui.main-class = your.app.MainClass
+    modules = [ javafx.controls, javafx.swing, javafx.web ]
   }
-
-  site.base-url = downloads.hydraulic.dev/atlantafx/sampler
 }
 ```
 
-There are several tasks accomplished by this config:
+Please note:
 
-1. Import a JDK of the right version from your preferred vendor.
-2. Import the JavaFX JMODs so the JVM will have it linked in.
-3. Set the names, versions and get a free license by pointing to the GitHub URL.
-4. Supply Conveyor with the directory where the app JARs can be found.
-5. Import icons for macOS and Windows. Icons must be PNG files. You don't have to supply all the sizes.
-6. Define the main class and the JDK modules (including the javafx modules) that you want to use.
-7. Define the URL where the packages will look for online updates.
+* You should list the JavaFX modules you need in the `app.jvm.modules` list.
+* You can read the JavaFX version from whatever property you're using in your POM to control that. Here 
+  it's `openjfx.version` but it could be anything.
+* The `/stdlib/jvm/javafx/from-jmods.conf` file imports the JMODs from the Gluon releases.
 
 Please see the [Gradle page](2-gradle.md#adapting-a-javafx-app) to see how to set your stage icons.
