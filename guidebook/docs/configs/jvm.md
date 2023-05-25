@@ -321,11 +321,17 @@ The options to set `app.jvm.system-properties` are added automatically. Options 
 
 
 !!! important
-    When a JVM app is signed for macOS or Windows the JVM attach mechanism is disabled using the `-XX:+DisableAttachMechanism` flag. That's because the attach mechanism allows any local user to overwrite the app's code in memory without needing to alter files on disk, thus defeating code signing.
+    When a JVM app is signed for macOS or Windows the JVM attach mechanism is disabled using the `-XX:+DisableAttachMechanism` flag. That's 
+    because the attach mechanism allows any local user to overwrite the app's code in memory without needing to alter files on disk, 
+    thus defeating code signing. As a consequence debuggers and profilers won't be able to find a signed JVM app.
 
-    As a consequence debuggers and profilers won't be able to find a signed JVM app, by design.
+    To re-enable the attach mechanism, add `"-XX:-DisableAttachMechanism"` to the `options` key for the launcher. This is not recommended
+    for production use, but can be useful for development.
     
-    This rule doesn't apply on Linux because that platform doesn't use code signing in the same way. On macOS the OS forbids debugger attachment unless the app opts in to allowing this, thus apps cannot tamper with each other's memory even when running as the same user. On Windows anti-virus checks are done when code is loaded, and so programs that allow arbitrary code injection allow lateral movement by malware.
+    This rule doesn't apply on Linux because that platform doesn't use code signing in the same way. On macOS the OS forbids debugger 
+    attachment unless the app opts in to allowing this, thus apps cannot tamper with each other's memory even when running as the same user. 
+    On Windows anti-virus checks are done when code is loaded, and so programs that allow arbitrary code injection allow lateral movement 
+    by malware.
 
 
 ### Defining launchers
