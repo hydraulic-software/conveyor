@@ -1,5 +1,13 @@
 # Release notes
 
+## 9.2
+
+* Fix a crash on Mac systems that weren't set to use English as their system language.
+* Fix a bug that could occur when using Java libraries that depended on the `java.annotations` module.
+* Fix a crash that occurred if you ran `conveyor task-dependencies` without specifying a task.
+* Fix bad error messages if you try to change the passphrase for a key that's stored in the macOS keyring (for which no passphrase is required).
+* Suppress an unnecessary warning that occurs with apps using newer JavaFX versions.
+
 ## 9.1
 
 * Fix a regression in the creation of the Linux tarball.
