@@ -171,7 +171,7 @@ app.signing-key = "loud apology vital team rent champion better pluck cargo love
 A piece of config like this can be generated with the `conveyor keys generate` command (
 see [Keys and certificates](keys-and-certificates.md)). It will normally be placed in your `defaults.conf` file, but can be placed anywhere
 or imported from the environment (see the [HOCON extensions](hocon-extensions.md) page for details). On macOS, Conveyor will try to store
-the random string in the system default login keychain (see [Keys and certificates: Keyrings](keys-and-certificates.md#keyrings)).
+the random string in the system default login keychain (see [Keys and certificates: Root key in Keyring](keys-and-certificates.md#macos-root-key-in-keyring)).
 The randomly chosen words aren't used as a private key directly. Instead, they're used to derive any other keys that aren't explicitly
 provided. The following keys can be derived from this root entropy (randomness) are:
 
