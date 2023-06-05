@@ -72,7 +72,7 @@ runs:
     - name: Download Conveyor
       shell: bash
       run: |
-        if [ ! -d "${{ inputs.cache_path }}" ]; then
+        if [ ! -d "${{ inputs.cache_path }}/install/conveyor-${{ inputs.conveyor_version }}" ]; then
           wget https://downloads.hydraulic.dev/conveyor/conveyor-${{ inputs.conveyor_version }}-linux-amd64.tar.gz
           mkdir -p ${{ inputs.cache_path }}/install
           tar xzvf conveyor-${{ inputs.conveyor_version }}-linux-amd64.tar.gz -C ${{ inputs.cache_path }}/install      
