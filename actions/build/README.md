@@ -8,7 +8,7 @@ It needs to be run from a Linux runner (e.g. `ubuntu-latest`).
 ## Usage
 
 ```yaml
-- uses: hydraulic-software/conveyor/actions/build@v1
+- uses: hydraulic-software/conveyor/actions/build@v9.2
   with:
     # Which conveyor command to execute. For example, 'make copied-site'.
     # Default: 'make site'
@@ -97,7 +97,7 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
           
       - name: Run Conveyor     
-        uses: hydraulic-software/conveyor/actions/build@v1
+        uses: hydraulic-software/conveyor/actions/build@v9.2
         with:
           command: make copied-site
           signing_key: ${{ secrets.SIGNING_KEY }}          
