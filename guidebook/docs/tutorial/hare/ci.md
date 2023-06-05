@@ -16,6 +16,7 @@ of course, the procedure will be similar.
 
 !!! note
     - This deploy workflow in this example will release your app to GitHub Releases. To deploy via SSH to a private server instead, you can use a workflow like [the `deploy-to-ssh.yml` file on this example](https://github.com/hydraulic-software/flutter-demo/blob/master/.github/workflows/deploy-to-ssh.yml). Take note of the additional secrets necessary for that workflow.
+    - As an alternative, you can [build on GitHub Actions and run Conveyor outside](../../continuous-integration.md#building-from-github-actions-running-conveyor-outside), say, from your development machine.
     - Explore the [Conveyor/Flutter demo repository](https://github.com/hydraulic-software/flutter-demo/blob/master/.github/workflows/build.yml)
       to see how it all fits together.
 
