@@ -38,6 +38,8 @@ conveyor make site --rerun=all
 
 ## Using GitHub Actions
 
+### Building from GitHub Actions, running Conveyor outside
+
 GitHub Actions has a couple of limitations that require workarounds:
 
 1. No direct download links for artifacts exported from jobs.
@@ -73,9 +75,9 @@ app {
 
 By defining the inputs as an object and then using the `extract` key, the outer zip and inner tarball can be both unwrapped. This preserves file permissions and other UNIX metadata.
 
-### Doing releases from within GitHub Actions
+### Running Conveyor from within GitHub Actions
 
-You can use the [Conveyor GitHub Action](https://github.com/hydraulic-software/conveyor/tree/master/actions/build) to perform releases from GitHub.
+You can use the [Conveyor GitHub Action](https://github.com/hydraulic-software/conveyor/tree/master/actions/build) to perform releases directly from GitHub.
 
 These workflows contain examples of how to use the Conveyor action:
 
