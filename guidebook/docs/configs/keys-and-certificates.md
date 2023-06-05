@@ -83,11 +83,11 @@ There are some situations where you need to retrieve your existing root key (for
 
 * In most cases the root key will simply be stored in your [`defaults.conf` file](index.md#per-user-defaults) under the `app.signing-key` config key;
 * If the value of `app.signing-key` is set to `keyring`, you'll need to retrieve your root key using the Keychain Access app:
-   * Open Keychain Access and locate the `Hydraulic Conveyor Root Key` item under `passwords`:
-   ![Keychain Access](../images/root-key-from-keychain-access.png)
-   The `Account` value should be the path to your `defaults.conf` file. 
-   * Ctrl-click that item and select "Copy Password to Clipboard". You might be prompted for your keychain password.
-   * Paste the copied value where you need it to be.
+    * Open Keychain Access and locate the `Hydraulic Conveyor Root Key` item under `passwords`:
+    ![Keychain Access](../images/root-key-from-keychain-access.png)
+    The `Account` value should be the path to your `defaults.conf` file. 
+    * Ctrl-click that item and select "Copy Password to Clipboard". You might be prompted for your keychain password.
+    * Paste the copied value where you need it to be.
 
 ## Certificates in Conveyor
 
