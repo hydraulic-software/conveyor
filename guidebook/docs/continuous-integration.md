@@ -38,6 +38,8 @@ conveyor make site --rerun=all
 
 ## Using GitHub Actions
 
+### Building from GitHub Actions, running Conveyor outside
+
 GitHub Actions has a couple of limitations that require workarounds:
 
 1. No direct download links for artifacts exported from jobs.
@@ -73,9 +75,9 @@ app {
 
 By defining the inputs as an object and then using the `extract` key, the outer zip and inner tarball can be both unwrapped. This preserves file permissions and other UNIX metadata.
 
-### Doing releases from within GitHub Actions
+### Running Conveyor from within GitHub Actions
 
-You can use the [Conveyor GitHub Action](https://github.com/hydraulic-software/conveyor/tree/master/actions/build) to perform releases from GitHub.
+You can use the [Conveyor GitHub Action](https://github.com/hydraulic-software/conveyor/tree/master/actions/build) to perform releases directly from GitHub.
 
 These workflows contain examples of how to use the Conveyor action:
 
@@ -94,8 +96,77 @@ app {
 }
 ```
 
+You'll also need to [retrieve your root key](configs/keys-and-certificates.md#exporting-your-root-key) and store it as a [secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets).
+The deployment workflows above wire the secret into the Conveyor GitHub Action via the `signing_key` parameter:
+
+```yaml
+(...)
+- name: Run Conveyor     
+  uses: hydraulic-software/conveyor/actions/build@v9.2
+  with:
+    command: make copied-site
+    # This example uses a secret named SIGNING_KEY.
+    signing_key: ${{ secrets.SIGNING_KEY }}
+    agree_to_license: 1
+```
+
+
 To release Windows apps with hardware protected keys you have a few options:
 
 1. Run Conveyor locally instead of driving it from CI, with your key HSM plugged in via USB.
 2. Provide GitHub or your CI system with a build agent that has the signing key plugged in, and supply the passphrase via a secret environment variable (e.g. `--passphrase=env:SIGNING_PASSPHRASE`).
 3. Use a cloud HSM or signing service like [SignPath](https://about.signpath.io/)
+
+#### Apple Notarization
+
+You can also run notarization from GitHub Actions. The process is very similar to the general one described above for CI in general; just copy the certificate files and edit `ci.conveyor.conf` with the notarization data.
+The sensitive info can be stored in a [secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets).
+A few tweaks in the deployment script are necessary to wire the data into the GitHub action, like setting up secrets in env vars and passing additional command line flags.
+
+For example, for the `ci.conveyor.conf` file below:
+
+
+```hocon
+include required("conveyor.conf")
+
+app {
+    mac.certificate = apple.cer
+    windows.certificate = windows.cer
+    
+    mac.notarization {
+        app-specific-password = ${env.APPLE_ASP}
+        team-id = 6MD7Z8H86K
+        apple-id = "you@user.host"
+    }
+}
+```
+
+You can change your deployment workflow like this:
+
+```yaml
+(...)
+- name: Run Conveyor     
+  uses: hydraulic-software/conveyor/actions/build@v9.2
+  env:
+    # The app specific password in this example was  
+    # stored into a secret named APPLE_ASP.
+    APPLE_ASP: ${{ secrets.APPLE_ASP }}
+    
+    # Any other secrets can be passed into Conveyor 
+    # as environment variables using this mechanism,
+    # and refered to from the .conf file using the 
+    # syntax ${env.VARIABLE_NAME}.
+    
+  with:
+    command: make copied-site
+    
+    # Tell Conveyor to load the alternative CI config.
+    extra_flags: -f ci.conveyor.conf
+    
+    # The signing key is an action parameter,
+    # because it is mandatory.
+    signing_key: ${{ secrets.SIGNING_KEY }}
+    
+    agree_to_license: 1
+```
+
