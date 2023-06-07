@@ -97,7 +97,7 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
           
       - name: Run Conveyor     
-        uses: hydraulic-software/conveyor/actions/build@v1
+        uses: hydraulic-software/conveyor/actions/build@v9.2
         with:
           command: make copied-site
           signing_key: ${{ secrets.SIGNING_KEY }}          
