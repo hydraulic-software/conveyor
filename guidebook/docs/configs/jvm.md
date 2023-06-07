@@ -8,7 +8,7 @@ Conveyor has integrated support for apps that run on the JVM (for any supported 
 * Usage of `jlink` and `jdeps` to create a minimal bundled JVM.
 * Support for signing native libraries:
     * Dynamic libraries can be signed _inside_ JARs, ensuring they work on end user systems.
-    * They can also be unpacked from JARs and discarded if they're for the wrong OS/CPU, which yields [several benefits](#jar-processing).
+    * They can also be unpacked from JARs and discarded if they're for the wrong OS/CPU, which yields [several benefits](#native-code).
 * [Maven and Gradle integration](maven-gradle.md):
     * A Gradle plugin that automatically generates configuration snippets.
     * Maven projects can have their classpath read directly, without needing a plugin.
@@ -16,7 +16,7 @@ Conveyor has integrated support for apps that run on the JVM (for any supported 
 
 ??? note "Java versions"
     Conveyor only supports apps that use Java 11 or later - Java 8 won't work. All classes must be inside a JAR. If you need Java 8 support
-    please [email us](mailto:contact@hydraulic.software).
+    please [email us](mailto:contact@hydraulic.dev).
 
 ## Synopsis
 
@@ -476,5 +476,5 @@ The Skiko runtime paths here come from running `./gradlew printConveyorConfig` a
 JCEF lets you embed Chromium into your app. It's easy to ship the CEF binaries with your app such that everything is signed and put in the
 right places. 
 
-The procedure for this is documented in a [blog post](https://hydraulic.software/blog/13-deploying-apps-with-jcef.html) and we provide a
+The procedure for this is documented in a [blog post](https://hydraulic.dev/blog/13-deploying-apps-with-jcef.html) and we provide a
 [sample app](https://github.com/hydraulic-software/jcef-conveyor) you can use as a reference.

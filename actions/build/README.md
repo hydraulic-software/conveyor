@@ -20,7 +20,7 @@ It needs to be run from a Linux runner (e.g. `ubuntu-latest`).
     signing_key: ${{ secrets.SIGNING_KEY }}
     
     # Which version of the Conveyor End User License Agreement you agree to.
-    # You must agree to the EULA to run Conveyor: https://hydraulic.software/eula.html
+    # You must agree to the EULA to run Conveyor: https://hydraulic.dev/eula.html
     # The current version is 1.
     agree_to_license: 1
     

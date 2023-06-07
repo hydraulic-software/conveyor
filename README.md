@@ -55,5 +55,5 @@ and you can find the code + package config for the Eton Notes sample app in [a s
 If you'd like to:
 
 * Contribute improvements to the documentation or Gradle plugin, just open up a pull request.
-* Get help privately, [email us](mailto:contact@hydraulic.software).
+* Get help privately, [email us](mailto:contact@hydraulic.dev).
 * Ask questions, or get help publicly, use [GitHub discussions](https://github.com/hydraulic-software/conveyor/discussions) or [the chat room](https://hydraulic.zulipchat.com/#narrow/stream/329916-general).

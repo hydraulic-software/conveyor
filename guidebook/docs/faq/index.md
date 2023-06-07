@@ -11,7 +11,7 @@ systemd as a service manager.
 
 Conveyor is free if your update site is set to localhost (i.e. for testing) and for open source projects if you set the `app.vcs-url` key to
 where your source repository can be found. Once you set your `app.site.base-url` key to a public website for a commercial project you'll be
-asked to pay. [Learn more about pricing](https://www.hydraulic.software/pricing.html). A subscription includes commercial support.
+asked to pay. [Learn more about pricing](https://www.hydraulic.dev/pricing.html). A subscription includes commercial support.
 
 Open source apps that use it should advertise the fact that they're packaged with Conveyor somewhere and link to the website. Using the
 generated download page makes this easy, because it contains a "Packaged with Conveyor" badge. If you don't use that HTML then you'll need
@@ -39,7 +39,7 @@ And loads of other things. We built Conveyor due to experience distributing desk
 
 ## Why isn't Conveyor a service?
 
-Services can sometimes be convenient and if you'd like to have Conveyor-as-a-service, please [let us know](mailto:contact@hydraulic.software). 
+Services can sometimes be convenient and if you'd like to have Conveyor-as-a-service, please [let us know](mailto:contact@hydraulic.dev). 
 Also, if you work on a code hosting service/forge of some kind and you'd like to incorporate Conveyor's features into your site,
 then get in touch and ask for a reseller license.
 

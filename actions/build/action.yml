@@ -14,7 +14,7 @@ inputs:
 
   agree_to_license:
     description: >
-      The version of the [Conveyor license](https://hydraulic.software/eula.html) you agree to.
+      The version of the [Conveyor license](https://www.hydraulic.dev/eula.html) you agree to.
       You must agree with the license to run Conveyor. Current version is 1.
     type: string
     required: true

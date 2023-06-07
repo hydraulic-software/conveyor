@@ -6,7 +6,7 @@ Conveyor makes distributing desktop apps as easy as shipping a web app. It's a t
 
 <video width="100%" poster="https://conveyor.hydraulic.dev/assets/promo.jpg" controls><source src="https://conveyor.hydraulic.dev/assets/promo.mp4" type="video/mp4"></video>
 
-It's free for open source apps and has [simple per-project pricing](https://www.hydraulic.software/pricing.html) for commercial apps.
+It's free for open source apps and has [simple per-project pricing](https://www.hydraulic.dev/pricing.html) for commercial apps.
 
 ## Learn more
 

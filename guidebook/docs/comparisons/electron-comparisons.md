@@ -3,7 +3,7 @@
 There are several reasons to consider using Conveyor vs Electron Forge/Builder/Installer.
 
 !!! tip "See for yourself"
-    Learn how we packaged [GitHub Desktop with Conveyor](https://hydraulic.software/blog/8-packaging-electron-apps.html), a production-grade Electron app. Over 1,500 lines of code can be deleted, the resulting config is easy to read, and the app can be packaged and released from your laptop. We show how to combine it with GitHub Releases, Sites and Actions.
+    Learn how we packaged [GitHub Desktop with Conveyor](https://hydraulic.dev/blog/8-packaging-electron-apps.html), a production-grade Electron app. Over 1,500 lines of code can be deleted, the resulting config is easy to read, and the app can be packaged and released from your laptop. We show how to combine it with GitHub Releases, Sites and Actions.
 
 ## Simple
 

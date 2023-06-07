@@ -7,7 +7,7 @@ Conveyor supports automatically uploading new releases to the Microsoft Store. [
 ## 2. DMGs?
 
 No plans because [zips work better](../outputs.md#macos). The downside is you don't get to theme the 'install experience'. If you need
-DMGs for some reason we've overlooked, please [let us know](mailto:contact@hydraulic.software).
+DMGs for some reason we've overlooked, please [let us know](mailto:contact@hydraulic.dev).
 
 ## 3. Mac PKGs?
 
@@ -45,11 +45,11 @@ If you'd like your Mac apps to be fat please [vote for support here](https://git
 
 ## 9. Ubuntu Snaps?
 
-Not at this time. Snaps are a format specific to the Ubuntu app store. If you want Snap support, please [let us know](mailto:contact@hydraulic.software) so we can consider raising its priority. Without strong feedback on this we'll probably focus on FlatPak.
+Not at this time. Snaps are a format specific to the Ubuntu app store. If you want Snap support, please [let us know](mailto:contact@hydraulic.dev) so we can consider raising its priority. Without strong feedback on this we'll probably focus on FlatPak.
 
 ## 10. Docker?
 
-Conveyor supports making Linux servers with full [systemd integration](../configs/linux.md#systemd-units). It doesn't produce Docker images at this time. Other tools exist that make Docker images and so Conveyor probably doesn't have much to add here, but if you'd like this feature please [let us know](mailto:contact@hydraulic.software) so we can understand your needs. 
+Conveyor supports making Linux servers with full [systemd integration](../configs/linux.md#systemd-units). It doesn't produce Docker images at this time. Other tools exist that make Docker images and so Conveyor probably doesn't have much to add here, but if you'd like this feature please [let us know](mailto:contact@hydraulic.dev) so we can understand your needs. 
 
 Incidentally, although Docker is a great tool Conveyor supports systemd because we use Conveyor-generated packages for our own servers. We feel that:
 

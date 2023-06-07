@@ -1,6 +1,6 @@
 # Troubleshooting Windows
 
-Stuck? Can't find what you need here? If you're a commercial user then you can write to [contact@hydraulic.software](mailto:contact@hydraulic.software). Otherwise, feel free to post in [the GitHub discussion forum](https://github.com/hydraulic-software/conveyor/discussions).
+Stuck? Can't find what you need here? If you're a commercial user then you can write to [contact@hydraulic.dev](mailto:contact@hydraulic.dev). Otherwise, feel free to post in [the GitHub discussion forum](https://github.com/hydraulic-software/conveyor/discussions).
 
 ## Web server doesn't support HTTP Range requests
 
