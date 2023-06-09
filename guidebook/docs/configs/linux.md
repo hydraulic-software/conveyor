@@ -88,8 +88,6 @@ more precise control. See below for an example.
 
 If you want to run extra code as root at install time, you can append a fragment of shell script to the postinst string.
 
-**`ignore-dangling-dependencies`** If your package contains shared libraries that have dependencies which can't be found in the target distribution, a warning will be generated during the build. You can add the names of the needed shared libraries here (e.g. `[libfoo{,-extras}.so.2]`) to silence these warnings.
-
 **`appstream.{file-name,content}`** These keys control the content of the generated [AppStream XML file](https://www.freedesktop.org/software/appstream/docs/). This controls how your app appears in the Software Center/app store apps that some Linux desktop environments and distributions use (e.g. the GNOME Software / Snap Store tools utilize this metadata). You don't normally need to alter this.
 
 **`services`** A list of SystemD service definitions (see below).
@@ -174,14 +172,21 @@ The config files themselves come from the `app.server.http.{nginx,apache}` keys.
 !!! tip
     Set up a default command line argument in your systemd or JVM app settings blocks that substitutes the `app.server.http.port` key. That way if you want to change the default it can be all set in one place, and the server configs will automatically follow along.
 
-## Altering package dependencies
+## Package dependencies
 
-You can edit the Debian control file used to define package dependencies like this:
+Conveyor generates Debian packages with dependency metadata by scanning any ELF binaries or shared libraries to find their library dependencies,
+and then scanning the Debian package index to find which packages contain those libraries.
+
+**`app.linux.debian.control.Depends`** A list of _additional_ dependencies to add to the automatically determined set. If you wish to remove
+an automatically determined dependency, you can add an entry that starts with a `-`. You can also give a single comma separated string for
+convenience. Examples:
 
 ```
 app.linux.debian.control {
-  Depends: "postgresql (>= 12)"
+  Depends: [ "postgresql (>= 12)", postgresql-client-common, -libavcodec12 ]
 }
 ```
 
-The syntax is the same as a regular Debian control file. Note that dependencies determined from shared libraries in your package will always be appended to this list.
+The syntax is the same as a regular Debian control file.
+
+**`app.linux.ignore-dangling-dependencies`** If your package contains shared libraries that have dependencies which can't be found in the target distribution, a warning will be generated during the build. You can add the names of the needed shared libraries here (e.g. `[libfoo{,-extras}.so.2]`) to silence these warnings.
