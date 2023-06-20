@@ -47,6 +47,11 @@ app.site {
   # subdirectory or not. If not set this is inferred automatically.
   # You should normally never need to set this. 
   flat = true/false
+  
+  # Whether to show the "Packaged by Conveyor" badge at the bottom of the download page.
+  # Can only be disabled for commercial products. 
+  # Open source projects are required to advertise the fact that they're packaged with Conveyor.
+  show-conveyor-badge = true
 }
 ```
 
@@ -65,6 +70,13 @@ app.site {
   icons = "../../packaging/images/icon-{32,64,128,256}.png"
 }
 ```
+
+## Conveyor badge
+
+By default, Conveyor will generate a small badge at the bottom of the download page saying "Packaged with Conveyor". This is convenient
+for open source projects, since those are required to advertise the fact that they're packaged with Conveyor.
+
+Commercial projects that have acquired a Conveyor license can remove the badge by setting key `app.site.show-conveyor-badge` to `false`.
 
 ## Exporting to metadata.properties
 
