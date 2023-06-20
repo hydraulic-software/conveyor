@@ -239,11 +239,12 @@ Then make sure to use the `--passphrase` flag, and you should be set. You don't 
 
 ### SafeNet HSM
 
-Here's an example for how to use a SafeNet HSM from macOS. Install the SafeNet software and then add to your config: 
+Here's an example for how to use a SafeNet HS. Install the SafeNet software and then add to your config: 
 
-```
-app.windows.signing-key = /Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib
-```
+* **Windows**: `app.windows.signing-key = "C:\Windows\System32\eTPKCS11.dll"`
+* **macOS**: `app.windows.signing-key = /Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib`
+
+If signing from macOS on Apple Silicon make sure you use SafeNet 10.8 R1 or later, as otherwise you won't get ARM drivers.
 
 ### YubiKeys
 
