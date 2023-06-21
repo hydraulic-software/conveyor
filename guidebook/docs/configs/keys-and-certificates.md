@@ -255,3 +255,30 @@ app.windows.signing-key = /usr/local/lib/libykcs11.dylib
 ```
 
 On Windows you'll need to add the `Yubico PIV Tool\bin` directory to your path - the instructions page tells you what to do.
+
+## Cloud remote signing (Windows only)
+
+Conveyor can sign Windows binaries using remote cloud services. We currently support the following service providers:
+
+### SSL.com eSigner
+
+To sign with [SSL.com eSigner](https://www.ssl.com/esigner/), you just need to specify:
+
+```
+app.windows {
+  // Example using variables from the environment, for safety and ease of use in CI.
+  // You'll need to provide those enviromnent variables with the respective credentials. 
+  signing-key = {
+      ssl-esigner = {
+        username = ${env.ESIGNER_USERNAME}
+        password = ${env.ESIGNER_PASSWORD}
+        totp-secret = ${env.ESIGNER_TOTP_SECRET}
+      }
+  }
+  signing-key-alias = ${env.ESIGNER_KEY_ALIAS}
+}
+ 
+```
+
+The SSL.com eSigner service also stores certificates, so you don't need to specify those.
+For testing, you can use the SSL.com sandbox by specifying `app.windows.signing-key.ssl-esigner.url = "https://cs-try.ssl.com"`.
