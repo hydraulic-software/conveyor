@@ -1,5 +1,7 @@
 # Continuous integration
 
+## Configuring CI for Conveyor
+
 !!! important "Caching Conveyor downloads"
     Please be careful that your CI/build system doesn't download Conveyor over and over again. If you can't pre-install it on your workers for some reason, make sure the download is cached locally. IP addresses that seem to be re-downloading Conveyor on every build may be throttled or blocked.
 
@@ -27,6 +29,12 @@ Call it something like `ci.conveyor.conf`. Copy your `.cer`/`.pem` files to be n
 An alternative approach is to set a passphrase, then put the encrypted `app.signing-key` value into your main app config that gets checked into version control. You can then put the passphrase into an environment variable and specify it on the command line with `--passphrase=env:PASSPHRASE`.
 
 To get Conveyor onto your build agents either download the Linux tarball or pre-install it on your agents. You can get a link for the current version from the [download page](https://downloads.hydraulic.dev/conveyor/download.html), which will look like this: `https://downloads.hydraulic.dev/conveyor/conveyor-${CONVEYOR_VERSION}-linux-amd64.tar.gz`.
+
+## macOS keychain access
+
+Mac CI machines can be expensive but if you have one then the macOS keychain is a good way to keep your root key secure. When the key is stored there the OS will only supply it to Conveyor and no other app, not even a subprocess. Additionally, the OS will prevent Conveyor's memory space from being accessed via debug APIs.
+
+Normally the keychain is unlocked by physically logging in to the machine. You can unlock it for a remote session (e.g. via ssh) by using the `security unlock-keychain` command before running Conveyor..
 
 ## Forcing re-downloads of artifacts
 
@@ -169,4 +177,3 @@ You can change your deployment workflow like this:
     
     agree_to_license: 1
 ```
-
