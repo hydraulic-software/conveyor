@@ -2,7 +2,7 @@ Your installs will look for updates at the location set by `app.site.base-url`.
 
 === "Open source projects"
 
-    * [x] Set the `app.license` key to the name of your software license e.g. `Apache 2`, `GPL-3` etc. Use SPDX codes if you aren't sure what to put here.
+    * [x] Set the `app.license` key to the name of your software license e.g. `Apache 2`, `GPL-3` etc. Use [SPDX codes](https://spdx.org/licenses/) if you aren't sure what to put here.
     * [x] Upload your project source code to GitHub. In your config set this key: `app.vcs-url = "https://github.com/you/your-project"`.
     * [x] Create a [Fine Grained Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-fine-grained-personal-access-token) with *Read and Write access* to your repository *Contents*.
     * [x] Set the `app.site.github.oauth-token` key to the value of the token created above.
