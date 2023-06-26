@@ -264,7 +264,7 @@ Conveyor can sign Windows binaries using remote cloud services. We currently sup
 
 To sign with [SSL.com eSigner](https://www.ssl.com/esigner/), you just need to specify:
 
-```
+```hocon
 app.windows {
   // Example using variables from the environment, for safety and ease of use in CI.
   // You'll need to provide those enviromnent variables with the respective credentials. 
@@ -276,9 +276,56 @@ app.windows {
       }
   }
   signing-key-alias = ${env.ESIGNER_KEY_ALIAS}
-}
- 
+} 
 ```
 
 The SSL.com eSigner service also stores certificates, so you don't need to specify those.
 For testing, you can use the SSL.com sandbox by specifying `app.windows.signing-key.ssl-esigner.url = "https://cs-try.ssl.com"`.
+
+### DigiCert ONE
+
+To sign with [DigiCert ONE](http://one.digicert.com), you need to [obtain your credentials](https://docs.digicert.com/en/digicert-keylocker/get-started/signer-guide.html#create-your-credentials-511897) and set them up in your `conveyor.conf` file:
+
+```hocon
+app.windows {
+  // Example using variables from the environment, for safety and ease of use in CI.
+  // You'll need to provide those enviromnent variables with the respective credentials. 
+  signing-key = {
+      digi-cert-one = {
+        api-key = ${env.DIGICERT_USERNAME}
+        auth-certificate = "path/to/client/authentication/certificate.p12"
+        password = ${env.DIGICERT_PASSWORD}        
+      }
+  }
+  signing-key-alias = ${env.DIGICERT_KEY_ALIAS}
+}
+```
+
+DigiCert ONE also provides access to your signing certificate, so you don't need to specify `app.windows.certificate` in your config.
+
+### AWS Key Management Service
+
+[AWS Key Management Service (KMS)](https://aws.amazon.com/kms/) stores only the private key, the certificate must be provided separately.
+To sign, you just need to specify:
+
+```hocon
+app.windows {
+// Example using variables from the environment, for safety and ease of use in CI.
+  // You'll need to provide those enviromnent variables with the respective credentials. 
+  signing-key = {
+      aws = {
+        region = us-east-1  // The region where your AWS KMS key is configured.
+        access-key-id = ${AWS_KMS_ACCESS_KEY_ID}
+        secret-access-key = ${env.AWS_KMS_SECRET_ACCESS_KEY}
+        
+        // Optional session token.
+        session-token = ${env.AWS_KMS_SESSION_TOKEN}
+      }
+  }
+  signing-key-alias = ${env.AWS_KMS_KEY_ALIAS}
+  
+  // The signing certificate needs to be specified separately.
+  certificate = path/to/your/certificate.crt
+}
+```
+
