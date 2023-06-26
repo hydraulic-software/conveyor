@@ -6,6 +6,11 @@
 
 * [x] Get the app into the `output` directory.
 
+=== "Your current OS"
+    ```
+    conveyor make app
+    ```
+
 === ":simple-windows: Windows"
     ```
     conveyor make windows-app
