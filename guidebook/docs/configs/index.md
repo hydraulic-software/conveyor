@@ -181,7 +181,7 @@ provided. The following keys can be derived from this root entropy (randomness) 
 
 **`app.mac.signing-key`**,**`app.windows.signing-key`** The private key to use for each platform. If they're set to `derived` (the default)
 then derivation from the root private key is used and these specific keys aren't stored on disk, otherwise the value should contain the path
-to a standard PEM or PKCS#12 key store file relative to the app config file.
+to a standard PEM or PKCS#12 key store file relative to the app config file, or check the detailed documentation to use a [hardware security module](keys-and-certificates.md#hardware-security-modules) or a [cloud signing service](keys-and-certificates.md#cloud-remote-signing-windows-only). 
 
 **`app.mac.certificate`**, **`app.windows.certificate`** Should point to files containing the certificates.
 See [Keys and certificates](keys-and-certificates.md) for information on supported formats. The paths are relative to the app config file

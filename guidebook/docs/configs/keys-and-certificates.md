@@ -223,16 +223,19 @@ Using a token is simple:
 
 1. Install the drivers for your host platform (it doesn't have to be Windows).
 2. Find the path to the PKCS#11 driver library. HSM user guides will often give you this path under instructions for setting up Firefox or Thunderbird.
-3. Set the path as the value of `app.windows.signing-key` .
-4. Use `conveyor keys passphrase` to ensure your Conveyor passphrase is the same as the HSM passphrase. All passphrases must be aligned.
+3. Set the path as the value of `app.windows.signing-key.file.path`.
+4. Set the HSM passphrase as the value of `app.windows.signing-key.file.password`. For security reasons, you might want to use an environment value and refer to it by setting the value to something like `${env.PASSWORD_ENV_VAR}`. 
 
-Then make sure to use the `--passphrase` flag, and you should be set. You don't need to set the `app.windows.certificate` key if you're using an HSM, because the certificate will be read from the device.
+And that's it. You don't need to set the `app.windows.certificate` key if you're using an HSM, because the certificate will be read from the device.
 
 !!! note "Initial activation"
     Your certificate authority will probably have mailed you a USB device. Normally before it can be used you have to activate it (report to the CA that it's been received) in order to receive the initial passphrase.  
 
+!!! note "Default passphrase"
+    If you don't specify `app.windows.signing-key.file.password`, the Conveyor passphrase will be used by default. You can use `conveyor keys passphrase` to ensure your Conveyor passphrase is the same as the HSM passphrase.
+
 !!! note "HSM passphrase expiry"
-    Some CAs issue HSMs that require you to change your password every 30 days or so. When this happens Conveyor will give you an error message, saying that your PIN has expired. To change it you will need to use the management app that comes with your HSM. Conveyor requires all passphrases to be aligned. After changing your HSM passphrase or PIN to something new, run `conveyor keys passphrase` to update your root key so the passphrases match.
+    Some CAs issue HSMs that require you to change your password every 30 days or so. When this happens Conveyor will give you an error message, saying that your PIN has expired. To change it you will need to use the management app that comes with your HSM. After changing your HSM passphrase or PIN to something new, remember to update the password in your config.
 
 !!! note "HSMs with multiple keys"
     In some cases your CA may provision you with an HSM that contains more than one private key. If this happens Conveyor will stop and request that you specify the 'alias' of the key you want to use, which you'll need to assign to the `app.signing-key-alias` config key. If you aren't sure which alias is correct you may need to contact your certificate authority, or failing that, contact [Hydraulic support](mailto:contact@hydraulic.dev).
@@ -310,7 +313,7 @@ To sign, you just need to specify:
 
 ```hocon
 app.windows {
-// Example using variables from the environment, for safety and ease of use in CI.
+  // Example using variables from the environment, for safety and ease of use in CI.
   // You'll need to provide those enviromnent variables with the respective credentials. 
   signing-key = {
       aws = {
