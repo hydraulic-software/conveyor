@@ -171,7 +171,7 @@ app {
 
 1. Set key `app.site.copy-to` to `s3:$bucket/$path`. If your `app.site.base-url` has a host ending with `.s3.amazonaws.com`, you don't need to set the value of `app.site.copy-to`, as Conveyor can infer the correct value. 
 2. Set `app.site.s3.region` to the appropriate region for your S3 bucket.
-3. Set `app.site.s3.access-key-id` and `app.site.s3.secret-access-key` with the details of your [AWS programmatic access key](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/setup.html#setup-iamuser).
+3. Set `app.site.s3.access-key-id` and `app.site.s3.secret-access-key` with the details of your [AWS programmatic access key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey).
 
 As seen it the example above, you can configure Conveyor to retrieve those from environment variables by using the syntax `${env.NAME_OF_VARIABLE}`, so you don't have to store your credentials in the Conveyor config file.
 
