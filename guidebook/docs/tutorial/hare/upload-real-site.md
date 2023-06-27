@@ -25,15 +25,8 @@
     * [x] Run `conveyor make site`.
     * [x] You'll be asked to visit a payment URL where you can enter credit card data, and the `conveyor.license-key` key will be set to
           a short random code. This key is linked to your chosen download site URL.
-    * [x] Rerun `conveyor make site`. You should now get files that can be uploaded to your chosen site URL.
+    * [x] Rerun `conveyor make site`.
 
-To release an update you just re-upload/overwrite the files at the site URL.
-
-!!! tip "Upload using SFTP"
-    If your download site is accessible using SSH Conveyor can upload the site for you.
-    Set `app.site.copy-to` to something like `"sftp://example.com/var/www/example.com/downloads"` i.e. the URL you'd use with `sftp`.
-    Then use `conveyor make copied-site` to build the site and upload it all in one step. Also, remember the deploy workflow created in
-    GitHub actions? You can run it to start a build/package/release sequence automatically.
-
+To release an update you just re-upload the files to the site URL.
 
 [ :material-arrow-right-box: Learn more about download sites](../../configs/download-pages.md){ .md-button .md-button--primary }

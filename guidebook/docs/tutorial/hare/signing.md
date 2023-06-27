@@ -1,9 +1,7 @@
 Your users must follow annoying instructions to install the app. That's because it's being self-signed, not signed by a
 recognized certificate authority. Let's fix that.
 
-When you ran your first command Conveyor announced it had generated a "root key" and that you should back it up. It also generated
-two `.csr` files and printed the paths to them.
-
+When you ran your first command Conveyor announced it had generated a "root key" and that you should back it up. 
 The root key is stored in your `defaults.conf` file and looks like this:
 
 ```
@@ -19,11 +17,15 @@ app.signing-key = "little peace follow cave drive pluck pony rebel grant barrel 
 
 All the different keys you need can be deterministically derived from this one root key. 
 
+The cheapest way to release your app to everyone is to join the Apple Developer Programme (about $100/yr) and then sign up for the Microsoft
+Store (about $19/yr for an individual, a bit more for companies). [Conveyor can release via the Store](../../configs/windows.md#release-to-the-microsoft-store) 
+and when you do this Microsoft will sign your software for you. This is cheaper and easier than buying signing certificates.
+
 ??? info "How to buy new certificates"
 
     A _certificate request file_ (CSR) can be uploaded to a certificate authority like Apple, DigiCert or ssl.com to get back a
     _certificate_. The certificate links your public key to a verified personal or corporate identity and is included inside the app
-    binaries on Windows and macOS along with the signatures. 
+    binaries on Windows and macOS along with the signatures.  Conveyor generated two `.csr` files and printed the paths to them.
 
     === ":simple-apple: Apple"
 

@@ -271,11 +271,9 @@ Now you can run `conveyor make ms-store-release`, and Conveyor will submit the n
 Here are some Microsoft-imposed limitations to be aware of when publishing to the store:
 
 - You can't switch between out-of-store and in-store distribution.
-- You can't use aggressive updates mode.
+- You can't use [aggressive updates mode](index.md#aggressive-updates).
 - The `app.revision` number must be zero as the store uses the revision number for its own purposes.
 - The first version of your app must be uploaded manually.
 - Microsoft may need to verify your identity as part of setting up an account.
 - There is a setup process required to both create your app entry, and enable Conveyor to push to it.
 - There are [various policies](https://learn.microsoft.com/en-us/windows/apps/publish/store-policies) you must comply with, for example, it must be possible for an app tester to log in.
-
-Additionally, Conveyor's [aggressive updates mode](https://conveyor.hydraulic.dev/latest/configs/#aggressive-updates) doesn't currently work with Store apps.
