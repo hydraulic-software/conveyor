@@ -1,10 +1,10 @@
-* [x] Use the run command to create the packaged form of the app and run it.
+* [x] Create a self-contained directory and run the app from there:
 
   ```
   conveyor run
   ```
 
-* [x] Get the app into the `output` directory.
+* [x] Get the app into the `output` directory and take a look.
 
 === "Your current OS"
     ```
@@ -28,7 +28,3 @@
     ```
     conveyor make linux-app
     ```
-
-* [x] Open the `output` directory and run the app you find inside.
-
-The unpackaged app won't update. We'll fix that now by creating a download/update site.

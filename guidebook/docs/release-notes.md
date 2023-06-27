@@ -3,6 +3,7 @@
 ## New features
 
 * [Windows escape hatch feature](configs/escape-hatch.md) allows for emergency repair of installs in cases where the usual update mechanism can't be used. 
+* When you generate a project with a reverse DNS name of the form `io.github.your_username.your_repo_name`, the project is automatically set up for GitHub pushes and releases. 
 
 ## Bug fixes
 

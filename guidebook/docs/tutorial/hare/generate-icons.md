@@ -14,4 +14,6 @@ Basic, but functional.
   ```
 * [x] Rerun `conveyor make rendered-icons` and look at the results again.
 
+The generated icons will be used automatically. 
+
 {!tutorial/hare/learn-more-about-icons.md!}

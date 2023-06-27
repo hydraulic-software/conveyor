@@ -34,7 +34,7 @@ To get Conveyor onto your build agents either download the Linux tarball or pre-
 
 Mac CI machines can be expensive but if you have one then the macOS keychain is a good way to keep your root key secure. When the key is stored there the OS will only supply it to Conveyor and no other app, not even a subprocess. Additionally, the OS will prevent Conveyor's memory space from being accessed via debug APIs.
 
-Normally the keychain is unlocked by physically logging in to the machine. You can unlock it for a remote session (e.g. via ssh) by using the `security unlock-keychain` command before running Conveyor..
+Normally the keychain is unlocked by physically logging in to the machine. You can unlock it for a remote session (e.g. via ssh) by using the `security unlock-keychain` command before running Conveyor.
 
 ## Forcing re-downloads of artifacts
 
@@ -48,7 +48,7 @@ conveyor make site --rerun=all
 
 ### Building from GitHub Actions, running Conveyor outside
 
-GitHub Actions has a couple of limitations that require workarounds:
+You may want to run Conveyor locally if you have a code signing USB key. Downloading files from GitHub Actions has a couple of limitations that require workarounds:
 
 1. No direct download links for artifacts exported from jobs.
 2. Can only export files using zips, and those zips don't preserve UNIX file permissions.

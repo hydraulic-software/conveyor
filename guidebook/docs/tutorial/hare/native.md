@@ -49,6 +49,8 @@ We'll generate, compile and package a C++ app that uses OpenGL to render a pixel
       make install
       ```
 
+{!tutorial/hare/github-tip.md!}
+
 ## Edit the config
 
 In this tutorial we'll only build packages for the same OS you're running on, to avoid the need for cross-compilation. 

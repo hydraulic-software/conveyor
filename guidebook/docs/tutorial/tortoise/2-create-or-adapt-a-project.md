@@ -6,7 +6,9 @@
 
 Every project needs a reverse DNS (RDNS) name. RDNS names are used by some operating systems to keep apps separate even if they share a brand name. Domain name ownership isn't checked by anything. 
 
-If you don't have a website consider creating a [GitHub](https://www.github.com) account and then using `io.github.youruser.yourproject`, which will ensure no naming conflicts with anyone else.  Use `names-with-dashes` when separating words, not `camelCase`, as that way you'll get smarter defaults.
+Use `names-with-dashes` when separating words, not `camelCase`, as that way you'll get smarter defaults.
+
+If you don't have a website consider creating a [GitHub](https://www.github.com) account and then using `io.github.youruser.yourproject`, which will ensure no naming conflicts with anyone else. Generated projects will then be configured for GitHub Releases and Pages out of the box.
 
 ## Generating a starter project
 

@@ -12,6 +12,8 @@ cd my-project
 npm install
 ```
 
+{!tutorial/hare/github-tip.md!}
+
 ## Create the unpackaged app
 
 {!tutorial/hare/create-unpackaged-app.md!}

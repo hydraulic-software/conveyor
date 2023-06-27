@@ -26,6 +26,9 @@ Choose your path:
     ./gradlew jar
     ```
 
+{!tutorial/hare/github-tip.md!}
+
+
 ## Create the unpackaged app
 
 {!tutorial/hare/create-unpackaged-app.md!}

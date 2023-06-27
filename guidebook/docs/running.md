@@ -11,7 +11,7 @@ Conveyor is a build system. You give it a configuration file (`-f=conveyor.conf`
 
 ## Initial setup and default config
 
-The first time you use Conveyor, you will be asked to set a passphrase on a newly generated "root key". This is used to derive all the other keys you'll need. It's written to your per-user defaults file, which can be found here:
+The first time you use Conveyor you'll be asked to set a passphrase on a newly generated "root key". This is used to derive any keys you don't explicitly provide. It's written to your per-user defaults file, which can be found here:
 
 * **Windows:** `%USERPROFILE%\Hydraulic\Conveyor\defaults.conf`
 * **Linux:** `~/.config/hydraulic/conveyor/defaults.conf`
@@ -21,11 +21,11 @@ Config placed in those paths will be merged into every build file. There's nothi
 
 ## Template projects
 
-Conveyor has a simple project generation command that creates self-contained GUI projects complete with source code, build system and Conveyor configuration:
+Conveyor has a command that creates GUI projects with Conveyor configuration:
 
 ````sh
-# Generate a Jetpack Compose for Desktop app, or a JavaFX app.
-conveyor generate {electron.cmake,compose,javafx} \
+# Generate an Electron, C++, Jetpack Compose or JavaFX app.
+conveyor generate {electron,cmake,compose,javafx} \
                           --output-dir=path/to/my-project \
                           --display-name="My Amazing Project" \
                           com.example.my-project
@@ -33,12 +33,22 @@ conveyor generate {electron.cmake,compose,javafx} \
 
 To learn more see the [tutorial](tutorial/new.md).
 
+!!! tip "GitHub projects"
+    If you pick a reverse DNS name of the form `io.github.your_username.your_repo_name` then the project will be set up for releasing 
+    with GitHub Releases and putting the download page on GitHub Sites. 
+
 ## Common tasks
 
 **Create a packaged app directory/bundle and execute your program from it:**
 
 ```bash
 conveyor run
+```
+
+**Put that app directory into `output`**
+
+```bash
+conveyor make app
 ```
 
 **Build a download site for all available platforms in a directory called `output`:**

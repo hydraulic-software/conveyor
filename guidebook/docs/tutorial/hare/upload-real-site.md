@@ -1,9 +1,8 @@
-Your installs will look for updates at the location set by `app.site.base-url`.
-
 === "Open source projects"
 
     * [x] Set the `app.license` key to the name of your software license e.g. `Apache 2`, `GPL-3` etc. Use [SPDX codes](https://spdx.org/licenses/) if you aren't sure what to put here.
-    * [x] Upload your project source code to GitHub. In your config set this key: `app.vcs-url = "https://github.com/you/your-project"`.
+    * [x] Upload your project source code to GitHub. 
+    * [x] In your config set this key: `app.vcs-url = "https://github.com/you/your-project"`. This automatically sets `app.site.base-url` to point at the latest GitHub Release.
     * [x] Create a [Fine Grained Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-fine-grained-personal-access-token) with *Read and Write access* to your repository *Contents*.
     * [x] Set the `app.site.github.oauth-token` key to the value of the token created above.
     * [x] (optional) Set the `app.site.github.pages-branch` key to `gh-pages`.
@@ -26,12 +25,12 @@ Your installs will look for updates at the location set by `app.site.base-url`.
     * [x] Run `conveyor make site`.
     * [x] You'll be asked to visit a payment URL where you can enter credit card data, and the `conveyor.license-key` key will be set to
           a short random code. This key is linked to your chosen download site URL.
-    * [x] Pay us (boo/hooray!) and rerun `conveyor make site`. You should now get files that can be uploaded to your chosen site URL.
+    * [x] Rerun `conveyor make site`. You should now get files that can be uploaded to your chosen site URL.
 
 To release an update you just re-upload/overwrite the files at the site URL.
 
-!!! tip "Automatic site uploads"
-    If you aren't using GitHub Releases and your download site is accessible using SSH, Conveyor can upload the results for you.
+!!! tip "Upload using SFTP"
+    If your download site is accessible using SSH Conveyor can upload the site for you.
     Set `app.site.copy-to` to something like `"sftp://example.com/var/www/example.com/downloads"` i.e. the URL you'd use with `sftp`.
     Then use `conveyor make copied-site` to build the site and upload it all in one step. Also, remember the deploy workflow created in
     GitHub actions? You can run it to start a build/package/release sequence automatically.

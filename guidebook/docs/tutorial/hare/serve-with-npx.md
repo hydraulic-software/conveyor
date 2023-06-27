@@ -1,3 +1,5 @@
+A plain directory can't be installed or updated. Let's fix that by making self-updating packages.
+
 ```shell
 conveyor make site
 cd output
