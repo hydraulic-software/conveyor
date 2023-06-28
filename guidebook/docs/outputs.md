@@ -8,7 +8,7 @@ When you generate a repository site you will get the following files:
 
 * For Windows:
     * An MSIX package and `.appinstaller` XML file. The `.appinstaller` file is what's checked to find updates, and it contains its own URL so you can open it from any location (i.e. a download), and it will still work.
-    * An EXE file. This is a small program that requests Windows to install the MSIX file using the built-in software update mechanism, and renders a progress bar whilst Windows does so. Although the `.appinstaller` file can be opened directly to get the same results, using a custom Win32 program reduces needed user interaction and is more reliable.
+    * An EXE file. This is a small custom installer, see below for details.
     * A plain zip file (which doesn't auto update).
 * For macOS:
     * Zips containing separate Intel and ARM .app folders. They'll be signed and notarized if credentials were supplied.
@@ -37,6 +37,17 @@ Conveyor uses Windows' built-in packaging technology, [MSIX](https://docs.micros
 If you'd like to learn more about MSIX, check out [the Microsoft website for it](https://docs.microsoft.com/en-us/windows/msix). You can script the Windows package manager using PowerShell (e.g. with [the Appx cmdlets](https://docs.microsoft.com/en-us/powershell/module/appx/?view=windowsserver2022-ps)).
 
 For people who don't want to or can't use MSIX for some reason, Conveyor also creates a plain `.zip` version of the app. This version won't auto update and is especially useful for IT departments that have a custom software distribution system, who would otherwise need to repackage the MSIX.
+
+### Installer EXE
+
+Conveyor generates a small (~500kb) installer EXE. You don't have to use this (you can direct your users to the `.appinstaller` file which Windows has a built in app for), but it's strongly recommended that you do. The installer drives the installation or upgrade process using the Windows package manager/download APIs directly, yielding these benefits:
+
+1. Fewer clicks. The installer begins the process immediately and launches your app as soon as it's ready. This makes it more convenient for your users.
+2. Bug workarounds. The "App Installer" app that Microsoft ships for installing MSIX files unfortunately isn't always reliable, especially in Windows 10. The Conveyor installer works around bugs in Windows to ensure a reliable install.
+3. Users are familiar with installer EXEs.
+4. If the app is already installed and the user runs the installer again, it immediately launches the app. Users who aren't sure how to use the start menu can therefore get the right behavior without risking double installs, confusing UI etc.
+
+The EXE is also included into your package files. You can run it to do an update check, and it will be invoked as part of your app startup sequence if you've enabled [aggressive updates](configs/index.md#aggressive-updates) or the [escape hatch](configs/windows.md#escape-hatch-mechanism) feature.
 
 ## macOS
 
