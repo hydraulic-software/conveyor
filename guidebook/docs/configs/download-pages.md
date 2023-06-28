@@ -158,8 +158,12 @@ It's easy to configure Conveyor to upload your site to an Amazon S3 repository:
 ```
 app {  
   site {
-    base-url = "https://my-bucket.s3.amazonaws.com/path/to/site"
-    copy-to = "s3:my-bucket/path/to/site"   // Optional, inferred automatically.
+    // Your website, backed by an Amazon S3 bucket. 
+    base-url = "https://my-download-site.com/path/to/site"
+    
+    // Path to your site within your S3 bucket.
+    copy-to = "s3:my-bucket/path/to/site"
+    
     s3 {
       region = "us-east-1"
       access-key-id = ${env.AWS_ACCESS_KEY_ID}
@@ -169,7 +173,7 @@ app {
 }
 ```
 
-1. Set key `app.site.copy-to` to `s3:$bucket/$path`. If your `app.site.base-url` has a host ending with `.s3.amazonaws.com`, you don't need to set the value of `app.site.copy-to`, as Conveyor can infer the correct value. 
+1. Set key `app.site.copy-to` to `s3:$bucket/$path`. If your `app.site.base-url` has a host ending with `.s3.amazonaws.com`, you don't need to set the value of `app.site.copy-to`, as Conveyor can infer the correct value. We recommend that you use [CloudFront](https://aws.amazon.com/cloudfront/) instead of serving directly from your S3 bucket, though, as CloudFront provides a proper CDN that will make your downloads lower latency and faster. 
 2. Set `app.site.s3.region` to the appropriate region for your S3 bucket.
 3. Set `app.site.s3.access-key-id` and `app.site.s3.secret-access-key` with the details of your [AWS programmatic access key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey).
 
