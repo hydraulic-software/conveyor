@@ -9,6 +9,20 @@ is older than the one expected by the author of the config.
 
 Here is how behaviour changes at each level.
 
+## Level 10
+
+These new keys were added:
+
+* app.linux.debian.distribution.mirrors
+* app.linux.debian.distribution.name
+* app.site.ignore-connection-issues-for-hosts
+* app.site.show-conveyor-badge
+* app.windows.manifests.msix.append-publisher-id-to-appinstaller
+* app.windows.manifests.msix.reinstall-if-package-family-changes
+* app.windows.manifests.msix.update-escape-hatch.exe
+* app.windows.manifests.msix.update-escape-hatch.run-if
+* app.windows.manifests.msix.use-update-escape-hatch
+
 ## Level 9
 
 These new keys were added:

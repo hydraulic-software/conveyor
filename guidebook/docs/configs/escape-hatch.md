@@ -24,7 +24,7 @@ Windows identifies software using a [package family name](https://learn.microsof
 derived from your app's name and the subject name of the signing certificate you used. Changing these will cause Windows to become confused
 and conclude that your new version is actually an entirely different app.
 
-**app.windows.manifests.msix.reinstall-if-package-family-changes** When this key is set to true (defaults to false), Conveyor will set things
+**app.windows.manifests.msix.reinstall-if-package-family-changes** When this key is set to true (the default when your download site uses HTTPS), Conveyor will set things
 up so changes in your package family name automatically trigger uninstall and reinstall of the app. The user won't be asked to do anything,
 but will see a progress bar appear and reinstallation proceed the next time they start the app after the escape hatch is used.
 
@@ -60,7 +60,7 @@ identity](https://learn.microsoft.com/en-us/windows/msix/package/persistent-iden
 These are the keys that control the escape hatch mechanism:
 
 **`app.windows.manifests.msix.use-update-escape-hatch`** Set to true to enable the escape hatch mechanism. Upon launch, apps built with this setting will silently check the `metadata.properties` file for instructions
-on running an escape hatch repair tool.
+on running an escape hatch repair tool. Only supported if your download site uses HTTPS.
 
 !!! important "Enable the Escape Hatch in advance"
     For the escape hatch mechanism to operate successfully, it has to be enabled *before* you actually need it, so that the apps installed by your user base already check for it.
