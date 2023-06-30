@@ -23,6 +23,11 @@ These new keys were added:
 * app.windows.manifests.msix.update-escape-hatch.run-if
 * app.windows.manifests.msix.use-update-escape-hatch
 
+The [escape hatch mechanism](configs/windows.md#escape-hatch-mechanism) is enabled by default starting from compatibility level 10.
+It may be enabled for all compatibility levels in a later release.
+
+The distribution package index used for computing dependencies for Linux DEB packages changes from Ubuntu Focal to Ubuntu Jammy. 
+
 ## Level 9
 
 These new keys were added:
