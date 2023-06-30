@@ -153,15 +153,13 @@ Under the hood, releasing to GitHub Releases is controlled by setting key `app.s
 
 ### Publishing through Amazon S3
 
-It's easy to configure Conveyor to upload your site to an Amazon S3 repository:
+[Read our guide on configuring S3 and CloudFront for download sites](https://hydraulic.dev/blog/16-aws-static-website.html){ .md-button .md-button--primary }
+
+To configure Conveyor to upload your site to an Amazon S3 bucket, set the `copy-to` and `s3` keys:
 
 ```
 app {  
   site {
-    // Your website, backed by an Amazon S3 bucket. 
-    base-url = "https://my-download-site.com/path/to/site"
-    
-    // Path to your site within your S3 bucket.
     copy-to = "s3:my-bucket/path/to/site"
     
     s3 {
@@ -173,13 +171,11 @@ app {
 }
 ```
 
-1. Set key `app.site.copy-to` to `s3:$bucket/$path`. If your `app.site.base-url` has a host ending with `.s3.amazonaws.com`, you don't need to set the value of `app.site.copy-to`, as Conveyor can infer the correct value. We recommend that you use [CloudFront](https://aws.amazon.com/cloudfront/) instead of serving directly from your S3 bucket, though, as CloudFront provides a proper CDN that will make your downloads lower latency and faster. 
+1. Set key `app.site.copy-to` to `s3:$bucket/$path`. If your `app.site.base-url` has a host ending with `.s3.amazonaws.com`, you don't need to set the value of `app.site.copy-to`, as Conveyor can infer the correct value. 
 2. Set `app.site.s3.region` to the appropriate region for your S3 bucket.
 3. Set `app.site.s3.access-key-id` and `app.site.s3.secret-access-key` with the details of your [AWS programmatic access key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey).
 
-As seen it the example above, you can configure Conveyor to retrieve those from environment variables by using the syntax `${env.NAME_OF_VARIABLE}`, so you don't have to store your credentials in the Conveyor config file.
-
-That's it! To upgrade your users just run `conveyor make copied-site` on newer versions of your app. The auto-update engines will be checking the metadata files on whatever your latest release is to discover what to download.
+Now running `conveyor make copied-site` will build and upload the app to your S3 bucket.
 
 !!! warning "S3 URLs"
     Windows updates will fail when using the default static serving endpoint (e.g. `https://bucketname.s3-website-us-east-1.amazonaws.com/`). Use the object URL that ends in `.s3.amazonaws.com` instead (e.g. `https://bucketname.s3.amazonaws.com/`). 
