@@ -197,10 +197,8 @@ The syntax is the same as a regular Debian control file.
 
 **`app.linux.ignore-dangling-dependencies`** If your package contains shared libraries that have dependencies which can't be found in the target distribution, a warning will be generated during the build. You can add the names of the needed shared libraries here (e.g. `[libfoo{,-extras}.so.2]`) to silence these warnings.
 
-## Distribution
+**`app.linux.debian.distribution.name`** Short name of the distro to target, defaults to  `jammy` for [*Jammy Jellyfish*](https://releases.ubuntu.com/jammy/). Before compatibility level 10 the default was `focal`. This controls how ELF library names are mapped to packages.
 
-By default, Conveyor generates Debian package indexes for Ubuntu's [*Jammy Jellyfish*](https://releases.ubuntu.com/jammy/) distro at http://archive.ubuntu.com/ubuntu. You can modify distribution parameters with the following keys:
+**`app.linux.debian.distribution.mirrors`** List of mirrors of the distro, defaults to `["http://archive.ubuntu.com/ubuntu/"]`.
 
-**`app.linux.debian.distribution.name`** Short name of the distro, defaults to  `jammy` for *Jammy Jellyfish*.
-
-**`app.linux.debian.distribution.mirrors`** List of mirrors of the distro, defaults to  `["http://archive.ubuntu.com/ubuntu/"]`.
+Most of the time you won't need to change these. They matter more for apps that rely heavily on libraries expected to come with the distribution.
