@@ -223,16 +223,19 @@ Using a token is simple:
 
 1. Install the drivers for your host platform (it doesn't have to be Windows).
 2. Find the path to the PKCS#11 driver library. HSM user guides will often give you this path under instructions for setting up Firefox or Thunderbird.
-3. Set the path as the value of `app.windows.signing-key` .
-4. Use `conveyor keys passphrase` to ensure your Conveyor passphrase is the same as the HSM passphrase. All passphrases must be aligned.
+3. Set the path as the value of `app.windows.signing-key.file.path`.
+4. Set the HSM passphrase as the value of `app.windows.signing-key.file.password`. For security reasons, you might want to use an environment value and refer to it by setting the value to something like `${env.PASSWORD_ENV_VAR}`. 
 
-Then make sure to use the `--passphrase` flag, and you should be set. You don't need to set the `app.windows.certificate` key if you're using an HSM, because the certificate will be read from the device.
+And that's it. You don't need to set the `app.windows.certificate` key if you're using an HSM, because the certificate will be read from the device.
 
 !!! note "Initial activation"
     Your certificate authority will probably have mailed you a USB device. Normally before it can be used you have to activate it (report to the CA that it's been received) in order to receive the initial passphrase.  
 
+!!! note "Default passphrase"
+    If you don't specify `app.windows.signing-key.file.password`, the Conveyor passphrase will be used by default. You can use `conveyor keys passphrase` to ensure your Conveyor passphrase is the same as the HSM passphrase.
+
 !!! note "HSM passphrase expiry"
-    Some CAs issue HSMs that require you to change your password every 30 days or so. When this happens Conveyor will give you an error message, saying that your PIN has expired. To change it you will need to use the management app that comes with your HSM. Conveyor requires all passphrases to be aligned. After changing your HSM passphrase or PIN to something new, run `conveyor keys passphrase` to update your root key so the passphrases match.
+    Some CAs issue HSMs that require you to change your password every 30 days or so. When this happens Conveyor will give you an error message, saying that your PIN has expired. To change it you will need to use the management app that comes with your HSM. After changing your HSM passphrase or PIN to something new, remember to update the password in your config.
 
 !!! note "HSMs with multiple keys"
     In some cases your CA may provision you with an HSM that contains more than one private key. If this happens Conveyor will stop and request that you specify the 'alias' of the key you want to use, which you'll need to assign to the `app.signing-key-alias` config key. If you aren't sure which alias is correct you may need to contact your certificate authority, or failing that, contact [Hydraulic support](mailto:contact@hydraulic.dev).
@@ -255,3 +258,77 @@ app.windows.signing-key = /usr/local/lib/libykcs11.dylib
 ```
 
 On Windows you'll need to add the `Yubico PIV Tool\bin` directory to your path - the instructions page tells you what to do.
+
+## Cloud remote signing (Windows only)
+
+Conveyor can sign Windows binaries using remote cloud services. We currently support the following service providers:
+
+### SSL.com eSigner
+
+To sign with [SSL.com eSigner](https://www.ssl.com/esigner/), you just need to specify:
+
+```hocon
+app.windows {
+  // Example using variables from the environment, for safety and ease of use in CI.
+  // You'll need to provide those enviromnent variables with the respective credentials. 
+  signing-key = {
+      ssl-esigner = {
+        username = ${env.ESIGNER_USERNAME}
+        password = ${env.ESIGNER_PASSWORD}
+        totp-secret = ${env.ESIGNER_TOTP_SECRET}
+      }
+  }
+  signing-key-alias = ${env.ESIGNER_KEY_ALIAS}
+} 
+```
+
+The SSL.com eSigner service also stores certificates, so you don't need to specify those.
+For testing, you can use the SSL.com sandbox by specifying `app.windows.signing-key.ssl-esigner.url = "https://cs-try.ssl.com"`.
+
+### DigiCert ONE
+
+To sign with [DigiCert ONE](http://one.digicert.com), you need to [obtain your credentials](https://docs.digicert.com/en/digicert-keylocker/get-started/signer-guide.html#create-your-credentials-511897) and set them up in your `conveyor.conf` file:
+
+```hocon
+app.windows {
+  // Example using variables from the environment, for safety and ease of use in CI.
+  // You'll need to provide those enviromnent variables with the respective credentials. 
+  signing-key = {
+      digi-cert-one = {
+        api-key = ${env.DIGICERT_USERNAME}
+        auth-certificate = "path/to/client/authentication/certificate.p12"
+        password = ${env.DIGICERT_PASSWORD}        
+      }
+  }
+  signing-key-alias = ${env.DIGICERT_KEY_ALIAS}
+}
+```
+
+DigiCert ONE also provides access to your signing certificate, so you don't need to specify `app.windows.certificate` in your config.
+
+### AWS Key Management Service
+
+[AWS Key Management Service (KMS)](https://aws.amazon.com/kms/) stores only the private key, the certificate must be provided separately.
+To sign, you just need to specify:
+
+```hocon
+app.windows {
+  // Example using variables from the environment, for safety and ease of use in CI.
+  // You'll need to provide those enviromnent variables with the respective credentials. 
+  signing-key = {
+      aws = {
+        region = us-east-1  // The region where your AWS KMS key is configured.
+        access-key-id = ${AWS_KMS_ACCESS_KEY_ID}
+        secret-access-key = ${env.AWS_KMS_SECRET_ACCESS_KEY}
+        
+        // Optional session token.
+        session-token = ${env.AWS_KMS_SESSION_TOKEN}
+      }
+  }
+  signing-key-alias = ${env.AWS_KMS_KEY_ALIAS}
+  
+  // The signing certificate needs to be specified separately.
+  certificate = path/to/your/certificate.crt
+}
+```
+
