@@ -47,6 +47,12 @@ app.server.http.nginx = null
 
 # Add an extra Debian dependency.
 app.linux.debian.control.Depends = "postgresql (>= 12)"
+
+# Configure the target distribution.
+app.linux.debian.distribution {
+  name = "jammy"
+  mirrors = ["http://archive.ubuntu.com/ubuntu/"]  
+}
 ```
 
 ## Keys
@@ -190,3 +196,11 @@ app.linux.debian.control {
 The syntax is the same as a regular Debian control file.
 
 **`app.linux.ignore-dangling-dependencies`** If your package contains shared libraries that have dependencies which can't be found in the target distribution, a warning will be generated during the build. You can add the names of the needed shared libraries here (e.g. `[libfoo{,-extras}.so.2]`) to silence these warnings.
+
+## Distribution
+
+By default, Conveyor generates Debian package indexes for Ubuntu's [*Jammy Jellyfish*](https://releases.ubuntu.com/jammy/) distro at http://archive.ubuntu.com/ubuntu. You can modify distribution parameters with the following keys:
+
+**`app.linux.debian.distribution.name`** Short name of the distro, defaults to  `jammy` for *Jammy Jellyfish*.
+
+**`app.linux.debian.distribution.mirrors`** List of mirrors of the distro, defaults to  `["http://archive.ubuntu.com/ubuntu/"]`.
