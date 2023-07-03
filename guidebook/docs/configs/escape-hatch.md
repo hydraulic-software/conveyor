@@ -24,9 +24,9 @@ Windows identifies software using a [package family name](https://learn.microsof
 derived from your app's name and the subject name of the signing certificate you used. Changing these will cause Windows to become confused
 and conclude that your new version is actually an entirely different app.
 
-**app.windows.manifests.msix.reinstall-if-package-family-changes** When this key is set to true (the default when your download site uses HTTPS), Conveyor will set things
-up so changes in your package family name automatically trigger uninstall and reinstall of the app. The user won't be asked to do anything,
-but will see a progress bar appear and reinstallation proceed the next time they start the app after the escape hatch is used.
+**app.windows.manifests.msix.reinstall-if-required** When this key is set to true (the default when your download site uses HTTPS), Conveyor will set things
+up so changes in your package family name automatically trigger uninstall and reinstall of the app. 
+The user won't be asked to do anything, but will see a progress bar appear and reinstallation proceed the next time they start the app after the escape hatch is used.
 
 File `updatecheck.exe` is included on Conveyor generated MSIX packages. It contains the lightweight launcher that implements both aggressive
 updates and a reinstall mechanism. When reinstalling it makes a best effort attempt to back up data under the 
