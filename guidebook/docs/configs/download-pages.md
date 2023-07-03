@@ -52,6 +52,13 @@ app.site {
   # Can only be disabled for commercial products. 
   # Open source projects are required to advertise the fact that they're packaged with Conveyor.
   show-conveyor-badge = true
+  
+  # If you need to move your download site to a different URL, set this so your
+  # users automatically get updated to the new location. 
+  move-from {
+    base-url = old-site.com/downloads
+    copy-to = "//user@myserver.com/var/www/old-downloads"
+  }
 }
 ```
 
@@ -113,7 +120,7 @@ The resulting `metadata.properties` file will have a key that looks like this:
 release-note=New feature: We've integrated AI and blockchain to make your work really fizz!\nAlso - bug fixes.\n
 ```
 
-Notice that the newline characters are escaped and the indent/leading whitespace were stripped. 
+Notice that the newline characters are escaped and the indent/leading whitespace were stripped.
 
 ## Hosting providers
 
@@ -163,6 +170,7 @@ app {
     copy-to = "s3:my-bucket/path/to/site"
     
     s3 {
+      // Your bucket region.
       region = "us-east-1"
       access-key-id = ${env.AWS_ACCESS_KEY_ID}
       secret-access-key = ${env.AWS_SECRET_ACCESS_KEY}
@@ -205,3 +213,50 @@ The following checks are made:
 
 * That the Windows signing certificate matches the one used to upload packages previously. This is useful to catch the case where a certificate identity has changed e.g. due to a switch from OV to EV, change of company name and so on. Changing certificate identity without disrupting updates is not currently supported by Conveyor. If you need this feature please [let us know](mailto:contact@hydraulic.dev).  
 * That you aren't overwriting a pre-existing MSIX file. Older versions of Windows contain bugs that cause updates to fail until the next reboot if a package file is overwritten.
+
+
+## Relocating your download site
+
+Conveyor supports automatically moving your download site to a new location (currently for macOS and Windows only). When moving your site,
+the old site need to point to the new location so your users can be redirected when getting new updates. Conveyor can do the necessary changes
+for you if you specify the following keys:
+
+* **`app.site.move-from.base-url`**: The value of `app.site.base-url` for the old site.
+* **`app.site.move-from.copy-to`**: The value of `app.site.copy-to` for the old site, same value as per instructions above.
+* **`app.site.move-from.s3`**: The value of `app.site.s3` containing the Amazon S3 credentials for the old site, if it was served from AWS.
+* **`app.site.move-from.github`**: The value of `app.site.github` containing the GitHub credentials for the old site, if it was served from GitHub.
+
+For example, if you're moving your site from GitHub to AWS, the configuration should look something like this:
+
+```hocon
+app {
+  site {
+     // Your new site, backed by an Amazon S3 bucket. 
+    base-url = "https://my-download-site.com/path/to/site"
+    
+    // Path to your new site within your S3 bucket.
+    copy-to = "s3:my-bucket/path/to/site"
+    
+    s3 {      
+      region = "us-east-1"
+      access-key-id = ${env.AWS_ACCESS_KEY_ID}
+      secret-access-key = ${env.AWS_SECRET_ACCESS_KEY}
+    }
+    
+    move-from {
+      // Your old site on GitHub
+      base-url = "https://github.com/user/repo/releases/latest/download"
+      
+      github {        
+        oauth-token = ${env.GITHUB_TOKEN}
+        
+        // Optional: upload the new download page with links to the new site to the old location.
+        pages-branch = "gh-pages"        
+      }
+    }
+  }
+}
+```
+
+The `app.site.move-from` config key doesn't need to be permanent; after your users have moved and no app is checking the old site for updates,
+as you phase it out you can remove that config.
