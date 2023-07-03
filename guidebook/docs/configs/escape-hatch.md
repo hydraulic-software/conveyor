@@ -46,7 +46,7 @@ app.windows.manifests.msix {
   use-update-escape-hatch = true
   update-escape-hatch {
     exe = "ms-appx:///updatecheck.exe?CONVEYOR_INTERNAL_UPDATE_MODE=3"
-    run-if = package-family-changed
+    run-if = reinstall-required
   }
 }
 ```
@@ -77,6 +77,7 @@ For convenience, Conveyor also sets the following environment variables that you
 **app.windows.manifests.msix.update-escape-hatch.run-if** Defines the conditions on which to run the escape hatch. Currently supported values are:
 
 * `package-family-changed`: Run the escape hatch if the [package family name](https://learn.microsoft.com/en-us/windows/apps/desktop/modernize/package-identity-overview#package-family-name) of the installed app is different from the one from the latest update in the download site.
+* `reinstall-required`: Run the escape hatch if the [package family name](https://learn.microsoft.com/en-us/windows/apps/desktop/modernize/package-identity-overview#package-family-name) of the installed app is different from the one from the latest update in the download site, or if the download site changed.
 * `not-up-to-date`: Run the escape hatch if the current installed version is older than the latest update on the download site.
 * `always`: Run the escape hatch every time the app gets launched. This is for dire emergencies when you might need to run something even after installing a new version. Note that this setting is *sticky*, as the escape hatch will keep running until we make a release that removes this setting.
 * `never` (default): Doesn't run the escape hatch. Used when you don't currently need to repair installations, but want to have the escape hatch on so your users are prepared when it's needed.
