@@ -5,15 +5,12 @@ whatever is provided, however, be aware that changing names can break updates.
 
 ## All platforms
 
-Changing the `app.site.base-url` will break updates, because existing installs will still be looking at the old URL. There is currently
-no support for changing the update site, nor having more than one update site.
+Changing the `app.site.base-url` is now supported. You'll need to configure Conveyor to [update the old site to redirect existing installs to look at the new URL](configs/download-pages.md#relocating-your-download-site).
+Notice that upon changing the `app.site.base-url` your license key will be associated with the new URL, and you cannot go back.
 
 Changing the *`app.fsname`* key can break updates because this is used to identify the program to the operating system's package manager
 when there is one. If you aren't specifying an `app.fsname` explicitly, it will be derived from the `app.display-name` and `app.vendor` keys. 
 In some cases it is safe to change this name, but it must be done with care.
-
-!!! note "Upcoming features"
-    In upcoming releases Conveyor will introduce a mechanism to support moving between update sites.
 
 ## Windows
 
@@ -30,19 +27,17 @@ authorities refuse to issue certificates to old identities, so once your code si
 if the underlying legal identity has changed.
 
 Conveyor provides a new [escape hatch mechanism](configs/escape-hatch.md) that allows you to circumvent those issues by forcing
-a reinstallation of the app when there's a change in the package family name. That mechanism makes a best effort approach to back up local app data, so the app keeps its state after a reinstallation.
-Starting from Conveyor 10, that mechanism is enabled by default. Currently only changes to the verified identity in the signing certificate are supported,
-you should keep the previous package identity names.
+a reinstallation of the app when there's a change in the package family name or the location of the Appinstaller file. That mechanism
+makes a best effort approach to back up local app data, so the app keeps its state after a reinstallation. Starting from Conveyor 10, that 
+mechanism is enabled by default.
 
 When changing the `app.fsname` you can keep your previous package identity names by changing the following keys:
 
 * `app.windows.store.identity-name` (when doing in-store distribution)
 * `app.windows.manifests.msix.identity-name` (when doing out-of-store distribution)
 
-These keys default to the value of `app.fsname`, re-capitalized to match Windows platform conventions.
-
-!!! note "Upcoming features"
-    In upcoming releases the escape hatch mechanism will also support changes to the package identity name.
+These keys default to the value of `app.fsname`, re-capitalized to match Windows platform conventions. You might want to keep the package 
+identity name so users don't need to reinstall the app unnecessarily.
 
 ## macOS
 
