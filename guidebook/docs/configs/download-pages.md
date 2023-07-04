@@ -217,9 +217,10 @@ The following checks are made:
 
 ## Relocating your download site
 
-Conveyor supports automatically moving your download site to a new location (currently for macOS and Windows only). When moving your site,
-the old site need to point to the new location so your users can be redirected when getting new updates. Conveyor can do the necessary changes
-for you if you specify the following keys:
+Conveyor supports automatically moving your download site to a new location, by making the necessary changes so that update artifacts in your old
+site will point to the new location, redirecting users when they update your app. 
+
+To configure a site move, use the following keys:
 
 * **`app.site.move-from.base-url`**: The value of `app.site.base-url` for the old site.
 * **`app.site.move-from.copy-to`**: The value of `app.site.copy-to` for the old site, same value as per instructions above.
@@ -260,3 +261,12 @@ app {
 
 The `app.site.move-from` config key doesn't need to be permanent; after your users have moved and no app is checking the old site for updates,
 as you phase it out you can remove that config.
+
+The way it works is by making a transitory release into the old site, modifying specific artifacts for the transition:
+
+* On macOS, the `appcast-*.rss` files will point to the package in the new site.
+* On Linux, the Debian package is set up so the next installation will update the URI set in `/etc/apt/sources.list.d` to point to the new site.
+* On Windows, the `metadata.properties` file will contain the instructions for reinstalling the app pointing to the new location of the AppInstaller file.
+  This has to be used with Conveyor's [escape hatch mechanism](escape-hatch.md).
+* Finally, the `download.html` page and the icons will be updated to point everything to the new location, so even users coming to the old site
+  will be pointed to links into the new site.
