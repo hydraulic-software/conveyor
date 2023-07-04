@@ -18,7 +18,7 @@ These new keys were added:
 * app.site.ignore-connection-issues-for-hosts
 * app.site.show-conveyor-badge
 * app.windows.manifests.msix.append-publisher-id-to-appinstaller
-* app.windows.manifests.msix.reinstall-if-package-family-changes
+* app.windows.manifests.msix.reinstall-if-required
 * app.windows.manifests.msix.update-escape-hatch.exe
 * app.windows.manifests.msix.update-escape-hatch.run-if
 * app.windows.manifests.msix.use-update-escape-hatch
