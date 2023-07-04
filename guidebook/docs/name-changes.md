@@ -10,7 +10,10 @@ no support for changing the update site, nor having more than one update site.
 
 Changing the *`app.fsname`* key can break updates because this is used to identify the program to the operating system's package manager
 when there is one. If you aren't specifying an `app.fsname` explicitly, it will be derived from the `app.display-name` and `app.vendor` keys. 
-In some cases it is safe to change this name, but it must be done with care. 
+In some cases it is safe to change this name, but it must be done with care.
+
+!!! note "Upcoming features"
+    In upcoming releases Conveyor will introduce a mechanism to support moving between update sites.
 
 ## Windows
 
@@ -26,6 +29,11 @@ This is a Windows design issue: it identifies packages by using a hash of the ve
 authorities refuse to issue certificates to old identities, so once your code signing certificate expires your signing identity will change 
 if the underlying legal identity has changed.
 
+Conveyor provides a new [escape hatch mechanism](configs/escape-hatch.md) that allows you to circumvent those issues by forcing
+a reinstallation of the app when there's a change in the package family name. That mechanism makes a best effort approach to back up local app data, so the app keeps its state after a reinstallation.
+Starting from Conveyor 10, that mechanism is enabled by default. Currently only changes to the verified identity in the signing certificate are supported,
+you should keep the previous package identity names.
+
 When changing the `app.fsname` you can keep your previous package identity names by changing the following keys:
 
 * `app.windows.store.identity-name` (when doing in-store distribution)
@@ -34,11 +42,11 @@ When changing the `app.fsname` you can keep your previous package identity names
 These keys default to the value of `app.fsname`, re-capitalized to match Windows platform conventions.
 
 !!! note "Upcoming features"
-    We are developing a system to allow forced uninstalls/reinstalls which will launch in a future version of Conveyor. The user will see a progress bar whilst the reinstallation is in progress. Background updates will stop until the user goes through this process. 
+    In upcoming releases the escape hatch mechanism will also support changes to the package identity name.
 
 ## macOS
 
-Currently, changing the `app.display-name` key is not supported and may cause macOS update errors. This can be fixed; if you have an urgent need for this [please get in touch](mailto:contact@hydraulic.software).
+Changing the `app.display-name` key should work as expected, except the name of the app in the file system (the one users will see in Finder) doesn't change after an update. It can be renamed manually.
 
 The `app.rdns-name` key (reverse DNS) controls the bundle identifier. Combined with your signing "team ID" this is how macOS identifies an application. Changing the `rdns-name` will therefore make macOS perceive your app as totally new and it will forget any granted permissions.
 
