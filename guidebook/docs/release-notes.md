@@ -18,6 +18,7 @@
 * The `keys export` command now exports certificates when using self-signing.
 * Conveyor can now load PEM elliptic curve private keys that lack the public key part.
 * Fixed many bugs related to usernames with spaces in them (can happen on Windows).
+* Improved compatibility with YubiKey HSMs.
 * Many other small fixes.
 
 !!! note 
