@@ -148,15 +148,31 @@ and then define a file association object with `uti = com.example.config` to ref
 
 ## Entitlements
 
-Entitlements are a certain type of permission request that are baked into an application. They apply to both graphical and command line apps and may be required to enable certain types of operations on macOS. Apple provide [documentation on all available entitlements](https://developer.apple.com/documentation/bundleresources/entitlements).
+**`app.mac.entitlements-plist`** Entitlements are a certain type of permission request that are baked into an application. They apply to both graphical and command line apps and may be required to enable certain types of operations on macOS. Apple provide [documentation on all available entitlements](https://developer.apple.com/documentation/bundleresources/entitlements).
 
-The default entitlements request the ability to do just in time compilation but nothing else. To attach to your process with `lldb` or Xcode, you may also need to specify the `com.apple.security.get-task-allow` entitlement. However to use this, your app must be unsigned. macOS won't allow signed apps that have this entitlement to start up, as it would allow a workaround for code signing security. You can remove the code signature from an app using `codesign --remove-signature "My App.app"`.
+You can set them like this:
+
+```
+app {
+  mac {
+    entitlements-plist {
+      # Allow the app to create and control personal VPN configurations.
+      "com.apple.developer.networking.vpn.api" = [ allow-vpn ]
+    }
+  }
+}
+```
 
 !!! warning
-    When specifying entitlements make sure to double quote them to stop them being interpreted as config paths.
+    Make sure to quote entitlement names to stop them being interpreted as config paths.
 
-!!! tip
+You probably won't need to add entitlements when writing cross-platform apps. Conveyor automatically adds any entitlements needed by your chosen app runtime. In the unlikely event you need to ship a provisioning profile with your Mac app, it can be added using the `app.mac.bundle-extras` inputs list.
+
+??? tip "Viewing entitlements"
     To view the entitlements in a binary you can run (on a Mac) `codesign -d --entitlements :- AppName.app`
+
+??? information "Debugging"
+    To attach to your process with `lldb` or Xcode you need to specify the `com.apple.security.get-task-allow` entitlement. However to use this, your app must be unsigned. macOS won't allow signed apps that have this entitlement to start up, as it would allow a workaround for code signing security. You can remove the code signature from an app using `codesign --remove-signature "My App.app"`.
 
 ## File paths
 
