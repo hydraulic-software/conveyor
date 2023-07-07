@@ -270,7 +270,7 @@ To sign with [SSL.com eSigner](https://www.ssl.com/esigner/) specify:
 ```hocon
 app {
   windows {
-    signing-key = {
+    signing-key {
       ssl-esigner {
         username = your-username
         password = ${env.ESIGNER_PASSWORD}
@@ -282,10 +282,10 @@ app {
 } 
 ```
 
-You could also hard-code the password and totp-secret but the code above reads them from environment variables. That's usually a better
+You could also hard-code the secret values but the code above reads them from environment variables. That's usually a better
 choice when using continuous integration because most CI systems let you store secrets into the environment.
 
-The SSL.com eSigner service also stores certificates, so you don't need to specify those.
+The SSL.com eSigner service stores certificates, so you don't need to specify those.
 
 For testing, you can use the SSL.com sandbox by specifying `app.windows.signing-key.ssl-esigner.url = "https://cs-try.ssl.com"`.
 
@@ -297,18 +297,21 @@ To sign with [DigiCert ONE](http://one.digicert.com), you need to [obtain your c
 app.windows {
   // Example using variables from the environment, for safety and ease of use in CI.
   // You'll need to provide those enviromnent variables with the respective credentials. 
-  signing-key = {
-      digi-cert-one = {
-        api-key = ${env.DIGICERT_USERNAME}
-        auth-certificate = "path/to/client/authentication/certificate.p12"
+  signing-key {
+      digi-cert-one {
+        api-key = your-username
+        auth-certificate = path/to/client/authentication/certificate.p12
         password = ${env.DIGICERT_PASSWORD}        
       }
   }
-  signing-key-alias = ${env.DIGICERT_KEY_ALIAS}
+  signing-key-alias = your-key-alias
 }
 ```
 
-DigiCert ONE also provides access to your signing certificate, so you don't need to specify `app.windows.certificate` in your config.
+You could also hard-code the secret values but the code above reads them from environment variables. That's usually a better
+choice when using continuous integration because most CI systems let you store secrets into the environment.
+
+DigiCert ONE provides access to your signing certificate, so you don't need to specify `app.windows.certificate` in your config.
 
 ### AWS Key Management Service
 
@@ -317,21 +320,22 @@ To sign, you just need to specify:
 
 ```hocon
 app.windows {
-  // Example using variables from the environment, for safety and ease of use in CI.
-  // You'll need to provide those enviromnent variables with the respective credentials. 
-  signing-key = {
-      aws = {
+  signing-key {
+      aws {
         region = us-east-1  // The region where your AWS KMS key is configured.
-        access-key-id = ${AWS_KMS_ACCESS_KEY_ID}
+        access-key-id = your-access-key-id
         secret-access-key = ${env.AWS_KMS_SECRET_ACCESS_KEY}
         
         // Optional session token.
         session-token = ${env.AWS_KMS_SESSION_TOKEN}
       }
   }
-  signing-key-alias = ${env.AWS_KMS_KEY_ALIAS}
+  signing-key-alias = your-key-alias
   
   // The signing certificate needs to be specified separately.
   certificate = path/to/your/certificate.crt
 }
 ```
+
+You could also hard-code the secret values but the code above reads them from environment variables. That's usually a better
+choice when using continuous integration because most CI systems let you store secrets into the environment.
