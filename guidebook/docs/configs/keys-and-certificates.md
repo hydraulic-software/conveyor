@@ -265,24 +265,28 @@ Conveyor can sign Windows binaries using remote cloud services. We currently sup
 
 ### SSL.com eSigner
 
-To sign with [SSL.com eSigner](https://www.ssl.com/esigner/), you just need to specify:
+To sign with [SSL.com eSigner](https://www.ssl.com/esigner/) specify:
 
 ```hocon
-app.windows {
-  // Example using variables from the environment, for safety and ease of use in CI.
-  // You'll need to provide those enviromnent variables with the respective credentials. 
-  signing-key = {
-      ssl-esigner = {
-        username = ${env.ESIGNER_USERNAME}
+app {
+  windows {
+    signing-key = {
+      ssl-esigner {
+        username = your-username
         password = ${env.ESIGNER_PASSWORD}
         totp-secret = ${env.ESIGNER_TOTP_SECRET}
       }
+    }
+    signing-key-alias = your-key-alias
   }
-  signing-key-alias = ${env.ESIGNER_KEY_ALIAS}
 } 
 ```
 
+You could also hard-code the password and totp-secret but the code above reads them from environment variables. That's usually a better
+choice when using continuous integration because most CI systems let you store secrets into the environment.
+
 The SSL.com eSigner service also stores certificates, so you don't need to specify those.
+
 For testing, you can use the SSL.com sandbox by specifying `app.windows.signing-key.ssl-esigner.url = "https://cs-try.ssl.com"`.
 
 ### DigiCert ONE
@@ -331,4 +335,3 @@ app.windows {
   certificate = path/to/your/certificate.crt
 }
 ```
-
