@@ -64,6 +64,10 @@ GPG signatures are provided for Debian packages and apt repositories. The packag
 
 There is no signature or hash generated for the tarball because it's not necessary. The user will be downloading the tarball over HTTPS anyway, which already provides integrity protection.
 
-## 12. Can I change between certificate types/authorities?
+## 12. Can I change between certificate types/authorities? (Windows)
 
-Yes, but only if the new CA issues an identical X.500 subject name to your previous CA. Windows incorporates the identity name into the package identity. One case where the identity can change is when switching from non-EV to EV certificates. Another is if your organization changes its name or the location where it's headquartered. There is an [MSIX persistent identity](https://docs.microsoft.com/en-us/windows/msix/package/persistent-identity) feature supported in up to date versions of Windows which lets you transition from one signing identity to another, but Conveyor doesn't currently support this feature.
+Yes, but if the new CA doesn't issue an identical X.500 subject name to your previous CA this will trigger an [escape hatch migration](../configs/windows.md#escape-hatch-mechanism). Background updates will stop until the user next runs the app, and an uninstall/reinstall cycle will be required. The escape hatch must be switched on for this to work; it is enabled by default when `conveyor.compatibility-level` is >= 10. 
+
+## 13. Why does my app show up in Windows as "Self published" even when signing.
+
+You need to set the `app.vendor` key to whatever you want to appear in the user interface. Windows doesn't actually use the verified identity from your certificate anywhere in the UI, and currently Conveyor doesn't use the certificate as a source of default values either.
