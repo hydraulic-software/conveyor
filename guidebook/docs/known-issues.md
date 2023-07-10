@@ -10,43 +10,57 @@
     * ARM Linux.
     * ARM Windows.
 * Mac App Store support (Microsoft Store support is available).
-* Cloud HSM services.
-* JVM: support for reading Maven classpaths on non-UNIX platforms.
 * There is no `app.updates` mode that lets you preserve the ability to auto update but only trigger it from your app.
+* JVM: support for reading Maven classpaths on non-UNIX platforms.
 
 ## Windows specific issues
 
 Windows apps are packaged using MSIX, which changes some aspects of the runtime environment in order to improve security and robustness.
-You must pay attention to these aspects:
+Be aware that:
 
 * Your installation directory will be read only (this is also true on macOS and Linux).
-* Depending on Windows version, attempting to execute your app EXE directly using an absolute path from _outside_ your app process tree 
-  may fail with a permission error (e.g. from the Run dialog box). Instead, either:
-    * Invoke the EXE name that was placed on your `%PATH%` automatically at install time, which you can find under 
-      `%LOCALAPPDATA%\Microsoft\WindowsApps`. It will have the same name as your main app exe except lowercased and with `-` instead of 
-      space characters.  
-    * An alternative way to start your app is by opening the `shell:appsFolder\$AUMID` URL, where `$AUMID` (app user mode id) can be 
-      obtained by running `conveyor make app-user-model-id`. An example AUMID is `TestApp_49jahnq5qzr1m!TestApp`, e.g. you can start 
-      the app via the run dialog by entering `shell:appsFolder\TestApp_49jahnq5qzr1m!TestApp`.
-    * This doesn't affect your app starting its own EXE or other EXEs in the package, or EXEs outside your package.
 * Some names and identities can't be changed after launch without breaking the update process. [Learn more about name changes](name-changes.md).
-* The `AppData` directory is [virtualized](configs/windows.md#virtualization). This means:
-    * Files stored under `AppData` will be cleaned up on uninstall automatically. This is usually what you want, but it's best to be 
-      aware of that and not store data the user can't afford to lose there.
-    * Your app won't be able to see the `AppData` directories of other apps unless you adjust your configuration to de-virtualize those directories. 
-    * UNIX domain sockets may fail if you create them in a virtualized directory on some versions of Windows. Conveyor 8+ configures your 
-      package to devirtualize the Temp directory so sockets created there should work, but sockets created elsewhere may encounter errors. 
-      [Devirtualize](configs/windows.md#virtualization) a directory if you plan to create UNIX domain sockets there.
-* DLLs are no longer searched for in the `%PATH%`. This is a security and robustness improvement, but can break apps that assume DLLs can
-  be loaded from other apps installed by the user. If you want to load DLLs from other installed applications, you should locate that 
-  directory and then use `LoadLibraryEx` with the `LOAD_WITH_ALTERED_SEARCH_PATH` flag, passing in an absolute path to the desired DLL. 
-  lternatively you can use the [SetDllDirectory](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-setdlldirectorya) 
-  API to restore the previous search behavior for the current process. 
+
+### Invoking packaged executables
+
+Depending on Windows version, attempting to execute your app EXE directly using an absolute path from _outside_ your app process tree 
+may fail with a permission error (e.g. from the Run dialog box). Instead, either:
+
+  * Invoke the EXE name that was placed on your `%PATH%` automatically at install time, which you can find under 
+    `%LOCALAPPDATA%\Microsoft\WindowsApps`. It will have the same name as your main app exe except lowercased and with `-` instead of 
+    space characters.  
+  * An alternative way to start your app is by opening the `shell:appsFolder\$AUMID` URL, where `$AUMID` (app user mode id) can be 
+    obtained by running `conveyor make app-user-model-id`. An example AUMID is `TestApp_49jahnq5qzr1m!TestApp`, e.g. you can start 
+    the app via the run dialog by entering `shell:appsFolder\TestApp_49jahnq5qzr1m!TestApp`.
+
+This doesn't affect your app starting its own EXE or other EXEs in the package, or EXEs outside your package.
+
+### AppData directories
+
+The `AppData` directory is [virtualized](configs/windows.md#virtualization). This means:
+
+* Files stored under `AppData` will be cleaned up on uninstall automatically. This is usually what you want, but it's best to be 
+  aware of that and not store data the user can't afford to lose there.
+* Your app won't be able to see the `AppData` directories of other apps unless you adjust your configuration to de-virtualize those directories.
+  This should only matter if your app is intended to modify others.
+
+!!! warning "UNIX domain sockets"
+    UNIX domain sockets may fail if you create them in a virtualized directory on some versions of Windows. Conveyor 8+ configures your 
+    package to devirtualize the Temp directory so sockets created there should work, but sockets created elsewhere may encounter errors. 
+    [Devirtualize](configs/windows.md#virtualization) a directory if you plan to create UNIX domain sockets there.
+
+### DLL search path
+
+DLLs are no longer searched for in the `%PATH%`. Microsoft do this to improve security and robustness, but can break apps that assume DLLs can
+be loaded from other apps installed by the user. If you want to load DLLs from other installed applications, you should locate that 
+directory and then use `LoadLibraryEx` with the `LOAD_WITH_ALTERED_SEARCH_PATH` flag, passing in an absolute path to the desired DLL. 
+Alternatively you can use the [SetDllDirectory](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-setdlldirectorya) 
+API to restore the previous search behavior for the current process. 
 
 ## Linux specific issues
 
-* Setting `app.updates = none` won't remove the apt repository from the Debian package.
-* On older Ubuntu/Debian versions (e.g. 20 LTS), apt can't upgrade from repositories hosted on GitHub Releases. This is due to a bug in 
+* Setting `app.updates = none` won't remove the `apt` repository from the Debian package.
+* On older Ubuntu/Debian versions (e.g. 20 LTS), `apt` can't upgrade from repositories hosted on GitHub Releases. This is due to a bug in 
   `apt` and is fixed in later versions.
 
 ## macOS specific issues
