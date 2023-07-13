@@ -10,6 +10,9 @@ app.linux.prefix = /usr/local
 # Set the location where app files will be placed, overriding the prefix.
 app.linux.install-path = /opt/myapp
 
+# Place files elsewhere in the filing system.
+app.linux.root-inputs += extra.conf -> /etc/extra.conf
+
 # Change the menu categories, or any other key in the .desktop file.
 app.linux.desktop-file."Desktop Entry".Categories = "GTK;Gnome;Game"
 
@@ -65,6 +68,16 @@ These keys under `app.linux` control Linux specific packaging aspects.
     Anything _other_ than `/usr` will break various kinds of integrations due to Linux desktop environments and system software not reliably supporting other prefixes. Some things will work and others won't if you change this.
 
 **`install-path`** A directory where the input files will be placed. Defaults to `${app.linux.prefix}/lib/${app.long-fs-dir}` so (by default) the name is dependent on whether there's a vendor or not. If no vendor is specified it'll be something like `/usr/lib/fooapp`. Other defaults are all relative to this. The directory should be empty rather than a directory the user will already have.
+
+**`root-inputs`** An inputs list that allows files to be placed relative to `/` instead of the prefix or install path. Also available: `app.linux.{amd64,aarch64}.{glibc,muslc}.root-inputs`. When adding files to this list you should always set the destination location, otherwise you'll end up with files being added to the root directory. Example:
+
+```
+app {
+    linux {
+        root-inputs += packaging/firewall-rules.txt -> /etc/ufw/applications.d/${app.fsname}
+    }
+}
+```
 
 **`conf-dir`** Defaults to `conf`. Files in this subdirectory of the install directory will be marked as "conf files" in Debian packaging, meaning they'll be symlinked from `/etc/$long-fsname-dir` and  on upgrades if the user has edited these files the package manager will offer to do a merge. This is convenient because it means you can change the config file over time and upgrades will treat the files as if they are in a simple form of version control. When the user hasn't edited the part of the file that's changing, the difference will be smoothly applied. Note that if packaging a JVM or Electron app you will need to override this key because the input files are relocated to a subdirectory of the overall install. For JVM apps use `app.linux.conf-dir = lib/app/conf` and place your config files in the `conf` sub-directory (e.g. `app.inputs += something.txt -> conf/something.txt`). For Electron apps use `app.linux.conf-dir = resources/app/conf`. You can of course name the relevant subdirectory whatever you want. 
 
