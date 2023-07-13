@@ -9,6 +9,22 @@ is older than the one expected by the author of the config.
 
 Here is how behaviour changes at each level.
 
+## Level 11
+
+These new keys were added:
+
+* app.mac.max-previous-versions
+* app.site.move-from.base-url
+* app.site.move-from.copy-to
+* app.site.move-from.github.oauth-token
+* app.site.move-from.github.pages-branch
+* app.site.move-from.s3.region
+* app.site.move-from.s3.access-key-id
+* app.site.move-from.s3.secret-access-key
+* app.windows.exe-installer-basename
+
+Sparkle deltas are generated for up to 5 previous versions by default.
+
 ## Level 10
 
 These new keys were added:
