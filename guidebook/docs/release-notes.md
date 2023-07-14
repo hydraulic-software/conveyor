@@ -6,7 +6,7 @@
 * A new [escape hatch mechanism for Windows](configs/escape-hatch.md) allows for update of installs in cases where the usual update mechanism can't be used, for example, if your signing identity has changed or if you wish to migrate away from Conveyor.
 * Commercial projects can now remove the "Packaged with Conveyor" badge using the `app.site.show-conveyor-badge` key.
 * When you generate a project with a reverse DNS name of the form `io.github.your_username.your_repo_name`, the project is automatically set up for GitHub pushes and releases.
-* More control over Linux packages:
+* More control over [Linux packages](configs/linux.md):
   * An `app.linux.root-inputs` set of keys, which allow files to be placed outside the app install path or prefix. This is useful for adding extra integration points with the OS that Conveyor itself doesn't support.
   * `app.linux.debian.distribution.{name,mirrors}` keys which allow you to change which Debian/Ubuntu distribution is used to resolve shared library names to packages for dependency detection.
 
