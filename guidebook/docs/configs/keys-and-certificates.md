@@ -152,21 +152,45 @@ On macOS the package is signed but only Apple certificates are accepted by Gatek
 
 Apple requires all Developer ID signed apps to be uploaded to them for a form of ahead-of-time virus scanning, called notarization. This is different to the app store - approval is automatic with no humans in the loop and takes only a minute or two. 
 
-Conveyor needs to be provided with an Apple ID and credentials for the notarization service. Any Apple ID registered with the developer programme can get these. 
+Conveyor needs to be provided with credentials for the notarization service. Any Apple ID registered with the developer programme can get these. 
 
 To set it up add the following to your config (or better, your [defaults.conf](index.md#per-user-defaults)):
 
 ```
 app { 
   mac {
-  	notarization {
+    notarization {
+      app-store-connect-api-key {
+        issuer-id = 12345678-1234-1234-1234-123456789012
+        key-id = ABCDEF1234
+        private-key = path/to/private/key/AuthKey_ABCDEF1234.p8
+      }
+    }
+  }
+}
+```
+
+[Generate an App Store Connect API Key](https://developer.apple.com/documentation/appstoreconnectapi/creating_api_keys_for_app_store_connect_api) at https://appstoreconnect.apple.com/acess/api. 
+For _Access Role_, choose **Developer**. Other roles may or may not work for notarization.
+Take note of the _Issuer Id_ and _Key ID_, and download the private key file (it can be downloaded at most once).
+Keep it safe!
+
+![App Store Connect API Key example](app-store-connect-key.png)
+
+### Via app specific password
+Alternatively, you can use the older authentication system via app specific passwords:
+```hocon
+app { 
+  mac {
+    notarization {  	  
       team-id = 1234567890
-  	  app-specific-password = xxxx-xxxx-xxxx-xxxx
+      app-specific-password = xxxx-xxxx-xxxx-xxxx
       apple-id = "your@email.com"
     }
   }
 }
 ```
+
 
 Generate an app specific password from the security section of your [Apple ID account webpage](https://appleid.apple.com/account/manage/section/security). 
 The team ID can be found in the [Apple developer console](https://developer.apple.com/account/) under "Membership".
