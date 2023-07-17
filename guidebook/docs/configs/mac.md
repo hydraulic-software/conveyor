@@ -43,11 +43,9 @@ app.mac {
 
   # Credentials for the GateKeeper servers.
   notarization {
-    app-store-connect-api-key {
-        issuer-id = 12345678-1234-1234-1234-123456789012
-        key-id = ABCDEF1234
-        private-key = path/to/private/key/AuthKey_ABCDEF1234.p8
-      }
+    issuer-id = 12345678-1234-1234-1234-123456789012
+    key-id = ABCDEF1234
+    private-key = path/to/private/key/AuthKey_ABCDEF1234.p8
   }
   
   # Maximum number of previous versions of your app to keep track for generating Sparkle delta updates.
