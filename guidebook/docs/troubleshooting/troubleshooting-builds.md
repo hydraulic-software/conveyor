@@ -38,6 +38,20 @@ Conveyor has a large default configuration that is included before your own. Fol
 1. If you assign new values to lists you may overwrite any default values already there. Sometimes that's what you want, but usually your intent is to extend the defaults, not replace them. Good style is therefore to add to lists using `+=` or by writing `list = ${list} [ ... new items ... ] `. If you deviate from that and assign lists directly (`list = [a, b]`) then add a comment explaining why overriding the defaults is intended.
 2. Defining your own keys is of course fine, and can be useful for substituting into other values. But define them either at the top level or group them into a top level block, rather than placing them next to where they're being used. Conveyor might add new config settings in future and if you pick the same name you'll end up overriding it, even if today it works.
 
+## How does string interpolation work?
+
+HOCON lets you use one key as the source for another, like this:
+
+```
+b = bar
+a = ${b} c d "!!!"
+
+// equivalent to
+a = "bar c d !!!"
+```
+
+HOCON uses quotes to mean a string literal disabling any special syntax, so substitutions must always be _outside_ a quoted string. Writing `a = "foo-${bar}"` won't work, you'd have to write it as `a = foo-${bar}` or `a = "foo-"${bar}`.
+
 ## My passphrase is wrong
 
 Two possibilities:
