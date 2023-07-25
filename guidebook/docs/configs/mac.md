@@ -47,9 +47,6 @@ app.mac {
     app-specific-password = xxxx-xxxx-xxxx-xxxx
    	apple-id = "your@email.com"
   }
-  
-  # Maximum number of previous versions of your app to keep track for generating Sparkle delta updates.
-  max-previous-versions = 5
 }
 ```
 
@@ -83,7 +80,7 @@ the `Contents` directory.
 
 **`app.mac.sparkle-framework`** An input definition that points to a release of the [Sparkle 2 update framework](https://sparkle-project.org/). You can normally leave this at the default unless you want to use a custom fork of Sparkle for some reason.
 
-**`app.mac.max-previous-versions`** Maximum number of previous versions of your app to keep track for generating Sparkle delta updates.
+**`app.mac.deltas`** Maximum number of previous versions of your app to generate delta updates for. Note that delta updates aren't generated unless `conveyor.compatibility-level >= 11`. When the compatibility level is high enough, this key defaults to 5.
 
 **`app.mac.check-binary-versions`** If true (the default) then native binaries that declare a minimum required macOS version in their headers will have that be checked against the `LSMinimumSystemVersion` key in the `Info.plist` file. If you are trying to ship native binaries that require a newer macOS version than the declared minimum for your app bundle, Conveyor will stop with an error. Please note that this check does not recurse into JARs or other archives, so requires `app.jvm.extract-native-libraries` to be true to be effective for JVM apps. The declared version header can be viewed using the command `otool -l foobar.dylib | grep -A3 LC_BUILD_VERSION`.
 

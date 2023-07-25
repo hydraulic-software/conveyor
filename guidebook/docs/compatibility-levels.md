@@ -13,7 +13,7 @@ Here is how behaviour changes at each level.
 
 These new keys were added:
 
-* app.mac.max-previous-versions
+* app.mac.deltas
 * app.site.move-from.base-url
 * app.site.move-from.copy-to
 * app.site.move-from.github.oauth-token
