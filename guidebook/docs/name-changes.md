@@ -27,7 +27,7 @@ authorities refuse to issue certificates to old identities, so once your code si
 if the underlying legal identity has changed.
 
 Conveyor provides a new [escape hatch mechanism](configs/escape-hatch.md) that allows you to circumvent those issues by forcing
-a reinstallation of the app when there's a change in the package family name or the location of the Appinstaller file. That mechanism
+a reinstallation of the app when there's a change in the package family name or the location of the `.appinstaller` file. That mechanism
 makes a best effort approach to back up local app data, so the app keeps its state after a reinstallation. Starting from Conveyor 10, that 
 mechanism is enabled by default.
 
