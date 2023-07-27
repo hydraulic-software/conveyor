@@ -176,7 +176,10 @@ Keep it safe!
 ![App Store Connect API Key example](app-store-connect-key.png)
 
 ### Via app specific password
-Alternatively, you can use the older authentication system via app specific passwords:
+
+Alternatively, you can use the older authentication system via app specific passwords. This approach isn't recommended as it uses an 
+undocumented protocol:
+
 ```hocon
 app { 
   mac {
@@ -188,7 +191,6 @@ app {
   }
 }
 ```
-
 
 Generate an app specific password from the security section of your [Apple ID account webpage](https://appleid.apple.com/account/manage/section/security). 
 The team ID can be found in the [Apple developer console](https://developer.apple.com/account/) under "Membership".
@@ -204,9 +206,9 @@ Here's what a finished `defaults.conf` might look like:
 app.signing-key = "<24 words>/2021-05-27T17:45:47Z"
 
 app.mac.notarization {
-  app-specific-password = aaaa-bbbb-cccc-dddd
-  team-id = 6MD7Z8H86K
-  apple-id = "you@user.host"
+    issuer-id = 12345678-1234-1234-1234-123456789012
+    key-id = ABCDEF1234
+    private-key = AuthKey_ABCDEF1234.p8
 }
 
 app.mac.certificate = apple.cer
