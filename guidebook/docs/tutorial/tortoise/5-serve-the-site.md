@@ -11,7 +11,6 @@ The previous contents of the output directory will be replaced. You'll now find 
 The default generated `conveyor.conf` file tells each package to look for updates on `localhost:8899`. This is good enough for testing and Conveyor doesn't require a license for localhost projects, so we can just serve that directory. We recommend using `npx serve` or [Caddyserver](https://caddyserver.com/). **Do not use the Python built in web server** because it doesn't support HTTP Content-Range requests. If using Caddy you can just run `caddy file-server --browse --listen :8899` from inside the output directory.
 
 !!! warning
-    * There's no way to change the site URL after release because it's included in the packages. Choose wisely!
     * Make sure to include the `metadata.properties` file, as it's checked by the Windows installer EXE.
     * Don't re-build and re-upload a package with the same version as previous. Conveyor will check for this and show an error if you try.  
     * Don't edit the Windows `.appinstaller` file yourself. It is constructed in a special way to work around bugs in older versions of Windows, and editing the file by hand can break those mitigations. You should never have a need to edit this file as everything in it can be controlled using config.
