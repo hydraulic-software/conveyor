@@ -1,0 +1,201 @@
+<style>
+    .container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .sample-col {
+        width: 100%;
+    }
+    .sample-col h1 {
+        text-align: center;
+    }
+    pre.code-block {
+        border: 1px solid #ccc;
+        font-size: smaller;
+        padding: 20px;
+        overflow: auto;
+        white-space: pre-wrap;
+        background-color: #f5f5f5;
+    }
+    .slider-container {
+        display: flex;
+        justify-content: center;
+    }
+    .explanation {
+        margin: 2em auto;
+    }
+    .explanation > div {
+        display: none;
+    }
+    input[type="range"] {
+        width: 100%;
+    }
+</style>
+<div class="container">
+    <div class="sample-col" style="padding-right: 20px;">
+        <h1>JSON</h1>
+        <pre class="code-block" id="json-block"></pre>
+    </div>
+    <div class="sample-col" style="padding-left: 20px;">
+        <h1>HOCON</h1>
+        <pre class="code-block" id="hocon-block"></pre>
+    </div>
+</div>
+<div class="slider-container">
+    <datalist id="steps">
+        <option value="1"></option>
+        <option value="2"></option>
+        <option value="3"></option>
+        <option value="4"></option>
+        <option value="5"></option>
+    </datalist>
+    <input type="range" id="slider" min="1" value="1" list="steps">
+</div>
+<div class="explanation" id="explanation">
+    <div id="explanation-0">We start with a basic JSON structure that represents a toy config file (not for Conveyor, this is just a generic example). All JSON is valid HOCON so we start with them being identical.<br><br>Drag the slider to the right.</div>
+
+    <div id="explanation-1">We removed unnecessary quotes and colons, then replaced the remaining colons with equals signs (a purely aesthetic preference). Commas can be dropped from list elements if they're on separate lines.</div>
+
+    <div id="explanation-2">We've removed quotes around non-special value strings, such as hostnames. The array is now on one line for compactness. HOCON allows for a more concise syntax by omitting unnecessary quotes when strings don't include any of these characters: <pre>$"{}[]:=,+#`^?!@*&\</pre></div>
+
+    <div id="explanation-3"><p>Here we got rid of the root braces. Then we defined a common default server configuration using object inheritance.</p><p>HOCON defines how duplicate keys and values are merged together. <code>${var.path}</code> syntax does substitution, so by combining substitution with concatenation we can merge objects together creating a form of 'inheritance'.</p><p>Here <code>${defaultServer}</code> is used to inherit properties from a base template, allowing us to override specific properties for development and production servers.</p></div>
+
+    <div id="explanation-4">In this step, we're using the <code>`key.subkey=value`</code> syntax for a more concise notation. This shows how HOCON can allow for even more compact configuration files.</div>
+
+    <div id="explanation-5">Finally, we've broken the file into sub-files using the <code>include</code> statement. This allows for more modular and maintainable configurations. The `defaultServer` configuration is now placed in a separate file, and we're including it in the main configuration.</div>
+</div>
+
+<script>
+const jsonContent = `{
+  "devServer": {
+    "host": "localhost",
+    "port": 3000,
+    "useSSL": false
+  },
+  "prodServer": {
+    "host": "www.example.com",
+    "port": 443,
+    "useSSL": true
+  },
+  "servers": [
+    "devServer",
+    "prodServer"
+  ]
+}`;
+
+const hoconContent = [
+    jsonContent, // Step 1
+    `{
+  devServer {
+    host = "localhost"
+    port = 3000
+    useSSL = false
+  }
+  prodServer {
+    host = "www.example.com"
+    port = 443
+    useSSL = true
+  }
+  servers = [
+    devServer
+    prodServer
+  ]
+}`, // Step 2
+        `{
+  devServer {
+    host = localhost
+    port = 3000
+    useSSL = false
+  }
+  prodServer {
+    host = www.example.com
+    port = 443
+    useSSL = true
+  }
+  servers = [ devServer, prodServer ]
+}`, // Step 3
+        `defaultServer {
+  port = 80
+  useSSL = false
+}
+devServer = \${defaultServer} {
+  host = localhost
+  port = 3000
+}
+prodServer = \${defaultServer} {
+  host = www.example.com
+  port = 443
+  useSSL = true
+}
+servers = [ devServer, prodServer ]
+`, // Step 4
+        `defaultServer.port = 80
+defaultServer.useSSL = false
+devServer = \${defaultServer} {
+  host = localhost
+  port = 3000
+}
+prodServer = \${defaultServer} {
+  host = www.example.com
+  port = 443
+  useSSL = true
+}
+servers = [ devServer, prodServer ]
+`, // Step 5
+        `include "defaultServer.conf"
+
+devServer = \${defaultServer} {
+  host = localhost
+  port = 3000
+}
+prodServer = \${defaultServer} {
+  host = www.example.com
+  port = 443
+  useSSL = true
+}
+servers = [ devServer, prodServer ]
+`  // Step 6
+];
+
+
+const slider = document.getElementById('slider');
+slider.max = hoconContent.length; // Set max value of slider to match array length
+
+const jsonBlock = document.getElementById('json-block');
+const hoconBlock = document.getElementById('hocon-block');
+const explanationDiv = document.getElementById('explanation');
+
+// Function to show or hide divs based on the current index
+function showDivBasedOnIndex(index) {
+    for (let i = 0; i < explanationDiv.childElementCount; i++) {
+        const div = document.getElementById(`explanation-${i}`);
+        if (i === index) {
+            div.style.display = "block"; // Show the div with the current index
+        } else {
+            div.style.display = "none"; // Hide other divs
+        }
+    }
+}
+
+showDivBasedOnIndex(0);
+
+function updateContent() {
+    jsonBlock.innerText = jsonContent;
+    hoconBlock.innerText = hoconContent[slider.value - 1];
+    showDivBasedOnIndex(slider.value - 1);
+
+    // Tie the block heights together. There HAS to be an easier way to do this.
+    jsonBlock.setAttribute("style", "");
+    hoconBlock.setAttribute("style", "");
+    let leftBlock = parseFloat(getComputedStyle(jsonBlock).height);
+    let rightBlock = parseFloat(getComputedStyle(hoconBlock).height);
+    let height = Math.max(leftBlock, rightBlock);
+    jsonBlock.setAttribute("style", `height: ${height}px`);
+    hoconBlock.setAttribute("style", `height: ${height}px`)
+}
+
+slider.addEventListener('input', updateContent);
+
+updateContent(); // Initialize the content
+</script>

@@ -4,7 +4,7 @@ HOCON (`application/hocon`) is the Human Optimized Config Object Notation. It's 
 
 ## Conveyor extensions
 
-On top of the base HOCON spec Conveyor adds [additional features](hocon-extensions.md) like brace expansion in string lists, per-user default files, access to environment variables and the ability to [include the results of external programs](maven-gradle.md). This lets you make dynamic configs that are partly or completely computed on the fly.
+On top of the base HOCON spec Conveyor adds [additional features](hocon.md#conveyor-extensions) like brace expansion in string lists, per-user default files, access to environment variables and the ability to [include the results of external programs](maven-gradle.md). This lets you make dynamic configs that are partly or completely computed on the fly.
 
 ## Goals / Background
 

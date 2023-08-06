@@ -64,7 +64,7 @@ app {
 ```
 
 1. You can import JDKs by major version, major/minor version, and by naming a specific distribution.
-2. You can assign Conveyor keys from Maven properties by using [hashbang includes](../../configs/hocon-extensions.md#including-the-output-of-external-commands).
+2. You can assign Conveyor keys from Maven properties by using [hashbang includes](../../configs/hocon.md#including-the-output-of-external-commands).
    Note that `-SNAPSHOT` isn't valid in package versions.
 3. You may not need to set this if the display name of your project is trivially derivable from the fsname. The default here would be `My Program`.
 4. This is optional. It'll be prefixed to the display name and used as a directory name  in various places; skip it if you don't work for an organization.

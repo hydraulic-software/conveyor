@@ -2,7 +2,7 @@
 
 There are many possible settings in Conveyor configs, but almost all of them can be ignored if you follow certain conventions because they'll be derived from the others. Any default you don't like can be fixed by adding the key yourself.
 
-An app is defined using the HOCON configuration language. HOCON is a superset of JSON and thus all JSON is valid HOCON, but it comes with a variety of syntax features to make writing configuration files easier. Conveyor then adds [additional features](hocon-extensions.md) like brace expansion in string lists, per-user default files, access to environment variables and the ability to [include the results of external programs](maven-gradle.md). This lets you make dynamic configs that are partly or completely computed on the fly. You can read the [HOCON spec](hocon-spec.md) to learn how to write this small language and how to use the [Conveyor extensions](hocon-extensions.md).
+An app is defined using the HOCON configuration language. HOCON is a superset of JSON and thus all JSON is valid HOCON, but it comes with a variety of syntax features to make writing configuration files easier. Conveyor then adds [additional features](hocon.md#conveyor-extensions) like brace expansion in string lists, per-user default files, access to environment variables and the ability to [include the results of external programs](maven-gradle.md). This lets you make dynamic configs that are partly or completely computed on the fly. You can read the [HOCON](hocon.md) page to learn how to write this small language.
 
 To understand every setting that went into your app run the `conveyor json` command and examine the output. Because HOCON is a superset of JSON you can use this result in place of the original config, but we don't recommend that because you'll lose the smartly calculated defaults. Using raw JSON as a config file is normally only useful if you're generating it from a tool.
 
@@ -170,7 +170,7 @@ app.signing-key = "loud apology vital team rent champion better pluck cargo love
 
 A piece of config like this can be generated with the `conveyor keys generate` command (
 see [Keys and certificates](keys-and-certificates.md)). It will normally be placed in your `defaults.conf` file, but can be placed anywhere
-or imported from the environment (see the [HOCON extensions](hocon-extensions.md) page for details). On macOS, Conveyor will try to store
+or imported from the environment (see the [HOCON extensions](hocon.md#conveyor-extensions) page for details). On macOS, Conveyor will try to store
 the random string in the system default login keychain (see [Keys and certificates: Root key in Keyring](keys-and-certificates.md#macos-root-key-in-keyring)).
 The randomly chosen words aren't used as a private key directly. Instead, they're used to derive any other keys that aren't explicitly
 provided. The following keys can be derived from this root entropy (randomness) are:

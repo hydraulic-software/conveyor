@@ -51,7 +51,7 @@ There are three steps:
 1. Preparing the build system.
 1. Running Conveyor to generate packages or update sites.
 
-`conveyor.conf` defines your packages and is defined using a superset of JSON called [HOCON](../../configs/hocon-spec.md) with a few [Conveyor-specific extensions](../../configs/hocon-extensions.md). This makes it much more pleasant to express configuration whilst preserving the simple JSON data model. It also means you can import JSON into your config directly, including config generated dynamically by other programs.
+`conveyor.conf` defines your packages and is defined using a superset of JSON called [HOCON](../../configs/hocon.md). This makes it much more pleasant to express configuration whilst preserving the simple JSON data model. It also means you can import JSON into your config directly, including config generated dynamically by other programs.
 
 Don't worry about the details of `conveyor.conf` too much right now. Most projects don't need many settings.
 
@@ -240,7 +240,7 @@ Don't worry about the details of `conveyor.conf` too much right now. Most projec
        to get a URL where we can download the output of GitHub Actions, and use the `extract = 2` key to unwrap the tarball contained 
        within the zip. These steps are needed to work around limitations of GitHub Actions ([learn more](../../continuous-integration.md).
     1. We use the useful [yq utility](https://github.com/mikefarah/yq) to convert the `pubspec.yaml` file to JSON so it can be imported
-       into the config. This is done using [hashbang includes](../../configs/hocon-extensions.md#including-the-output-of-external-commands).
+       into the config. This is done using [hashbang includes](../../configs/hocon.md#including-the-output-of-external-commands).
     
     Conveyor overrides the entitlements on macOS, so you should set those in your `conveyor.conf`, not in the files Flutter generated for you.
     You should *not* enable the app sandbox for now, as it requires more work to be compatible with Sparkle updates in that case.

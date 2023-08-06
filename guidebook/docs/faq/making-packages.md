@@ -25,7 +25,7 @@ app {
 }
 ```
 
-and then just trigger Conveyor from your CI system. This is an example of [a hashbang include](../configs/hocon-extensions.md#including-the-output-of-external-commands).
+and then just trigger Conveyor from your CI system. This is an example of [a hashbang include](../configs/hocon.md#including-the-output-of-external-commands).
 
 !!! important "Revision numbers vs commit hashes"
     Note that revision must be a number. You can't set it to be a commit hash. This is because package managers don't generally allow non-integer versions, and for Windows and macOS this is a hard rule.

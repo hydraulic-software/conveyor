@@ -48,8 +48,10 @@ nav:
     - configs/download-pages.md
     - configs/os-integration.md
     - configs/keys-and-certificates.md
-    - Syntax: configs/hocon-spec.md
-    - Standard Library: stdlib/index.md
+    - Config Library: stdlib/index.md
+    - Syntax:
+        - Tutorial and extensions: configs/hocon.md
+        - Reference: configs/hocon-spec.md
     - Runtimes:
       - Native apps: configs/native-apps.md
       - Electron: configs/electron.md
