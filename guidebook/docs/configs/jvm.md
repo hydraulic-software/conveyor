@@ -80,18 +80,24 @@ app {
 
 ## Keys
 
-**`app.jvm`** An [input hierarchy](inputs.md) in the same manner as the top level `app` object. The inputs will be resolved (copied/downloaded/extracted) and examined for a `jmods` directory. If a `jmods` directory is found then the contents will be used to create a JVM that contains only the code your application needs, using the `jlink` tool. If you have jmods to add to the jlinked image (e.g. JavaFX), you should add them here alongside the JVM itself. If there is no `jmods` directory then the JDK is used as-is and jlinking isn't done. 
+### `app.jvm.gui` 
 
-**`app.jvm.gui`** The GUI launcher. See the [launchers section](#launchers).
+Settings for the program that will be accessible by clicking the app's icon. See the [launchers section](#launchers).
+ 
+### `app.jvm.cli` 
 
-**`app.jvm.cli`** CLI launchers. See the [launchers section](#launchers).
+Settings for supplementary command line apps, shipped alongside the GUI launcher. See the [launchers section](#launchers).
 
-**`app.jvm.constant-app-arguments`** A list of arguments that will always be passed to the app in addition to whatever the user specifies. Can be useful to plumb metadata from the app definition through to the app itself, like by telling it its own version number.
+### `app.jvm.constant-app-arguments` 
+
+A list of arguments that will always be passed to the app in addition to whatever the user specifies. Can be useful to plumb metadata from the app definition through to the app itself, like by telling it its own version number.
 
 !!! warning
     * Watch out for accidental mis-use of HOCON syntax when writing something like `constant-app-arguments = [ --one --two ]`. This creates a _single_ argument containing "--one --two" which is unlikely to be what you want. Instead, write `constant-app-arguments = [ --one, --two ]` or put each argument on a separate line. Conveyor will warn you if you seem to be doing this.
 
-**`app.jvm.system-properties`** A map of system properties. The default properties are:
+### `app.jvm.system-properties`
+
+A map of system properties. The default properties are:
 
 * `app.dir` - points at the install directory where input files are placed.
 * `app.displayName` - equal to the `${app.display-name}` key.
@@ -102,15 +108,68 @@ app {
 
 Some special tokens are supported. See [JVM options](#jvm-options) for details.  Some additional properties are also added, see [default config](#default-config) below.
 
-**`app.jvm.options`** See [JVM options](#jvm-options) 
+??? note "Machine specific system properties"
+    Although there are no dedicated machine-specific keys for system properties, there are for JVM options (see below). So if you want a sysprop that only applies on Windows, you could write `app.jvm.windows.options += "-Dmy.prop=value"`. The `system-properties` map is there primarily for convenience, so you can refactor out sets of properties into common configuration and then override individual properties using [HOCON's inheritance features](hocon.md).
 
-**`app.jvm.modules`** List of modules to take from the underlying JDK for the usage of classpath JARs. The modules and their transitive dependencies will be included, all others will be dropped. Defaults to `[ detect ]`. The special entry `detect`  is replaced with modules detected using the `jdeps` tool (see below). Note that this is *not* the place to list modular JARs in your app - it's only for modules to take from the JDK or any other supplied JMODs. Modular JARs should be added to base inputs like any other JARs.
+### app.jvm.options
 
-**`app.jvm.jlink-flags`** Extra flags passed to the `jlink` command. Can be used to invoke plugins and so on. See the output of `jlink --help` and `jlink --list-plugins` to see what's available. By default this adds `--ignore-signing-information` and specifies a jimage file ordering, which helps with startup time.
+JVM command line flags ("options") can be used to control heap size, the garbage collector and so on. Note that this mostly but not entirely the same as arguments to the `java` program. Keys for setting JVM options are arranged in a hierarchy with less specific keys being used as defaults for more specific keys. Each launcher can define:
 
-**`app.jvm.mac.plist`** HOCON structure converted to the `Info.plist` file used for the linked JVM on macOS. You can normally ignore this.
+* **`options`**
+* **`windows.options`**
+* **`windows.amd64.options`**
+* **`mac.options`**
+* **`mac.amd64.options`**
+* **`mac.aarch64.options`**
+* **`linux.options`**
+* **`linux.amd64.options`**
+* **`linux.amd64.glibc.options`**
 
-**`app.jvm.windows.override-appdata-env`** If set (defaults to true), Conveyor will override the values of the `APPDATA` and `LOCALAPPDATA` environment values as seen by the JVM to point to the corresponding private folders of your app's package. This is convenient for instance if you need to pass a full path to an app data file to a subprocess from outside your package, as otherwise that process wouldn't be able to locate the app's files due to Microsoft's MSIX [file system virtualization](windows.md#virtualization) mechanism. This system exists to support clean uninstalls, as otherwise Windows wouldn't know what files in `AppData` were created by which app.
+Each launcher always includes JVM options defined by the `app.jvm` object, i.e. you can also set options by configuring:
+
+* **`app.jvm.options`**
+* **`app.jvm.windows.options`**
+* **`app.jvm.windows.amd64.options`**
+* ... etc ...
+
+In this way you can set JVM flags for every entry point in your app whilst also specifying options that apply only to specific platforms and launchers.
+
+The options to set `app.jvm.system-properties` are added automatically. Options support two special tokens:
+
+* `&&` - this is replaced by the path to the directory where the program executable is found.
+* `<libpath>` - this is replaced by the path to where JNI libraries are placed. This can be useful for dealing with libraries that don't
+  call `System.loadLibrary` before attempting to extract JNI libs to the user's home directory, but do support overriding the behavior
+  with a system property.
+
+
+!!! important
+When a JVM app is signed for macOS or Windows the JVM attach mechanism is disabled using the `-XX:+DisableAttachMechanism` flag. That's
+because the attach mechanism allows any local user to overwrite the app's code in memory without needing to alter files on disk,
+thus defeating code signing. As a consequence debuggers and profilers won't be able to find a signed JVM app.
+
+    To re-enable the attach mechanism, add `"-XX:-DisableAttachMechanism"` to the `options` key for the launcher. This is not recommended
+    for production use, but can be useful for development.
+    
+    This rule doesn't apply on Linux because that platform doesn't use code signing in the same way. On macOS the OS forbids debugger 
+    attachment unless the app opts in to allowing this, thus apps cannot tamper with each other's memory even when running as the same user. 
+    On Windows anti-virus checks are done when code is loaded, and so programs that allow arbitrary code injection allow lateral movement 
+    by malware.
+
+### `app.jvm.modules`
+
+List of modules to take from the underlying JDK for the usage of classpath JARs. The modules and their transitive dependencies will be included, all others will be dropped. Defaults to `[ detect ]`. The special entry `detect`  is replaced with modules detected using the `jdeps` tool (see below). Note that this is *not* the place to list modular JARs in your app - it's only for modules to take from the JDK or any other supplied JMODs. Modular JARs should be added to base inputs like any other JARs.
+
+### `app.jvm.jlink-flags`
+
+Extra flags passed to the `jlink` command. Can be used to invoke plugins and so on. See the output of `jlink --help` and `jlink --list-plugins` to see what's available. By default this adds `--ignore-signing-information` and specifies a jimage file ordering, which helps with startup time.
+
+### `app.jvm.mac.plist`
+
+HOCON structure converted to the `Info.plist` file used for the linked JVM on macOS. You can normally ignore this.
+
+### `app.jvm.windows.override-appdata-env`
+
+If set (defaults to true), Conveyor will override the values of the `APPDATA` and `LOCALAPPDATA` environment values as seen by the JVM to point to the corresponding private folders of your app's package. This is convenient for instance if you need to pass a full path to an app data file to a subprocess from outside your package, as otherwise that process wouldn't be able to locate the app's files due to Microsoft's MSIX [file system virtualization](windows.md#virtualization) mechanism. This system exists to support clean uninstalls, as otherwise Windows wouldn't know what files in `AppData` were created by which app.
 
 For advanced cases where you need to access files from other apps stored in the user's `APPDATA` or `LOCALAPPDATA` folders bypassing virtualization, you might want to set this key to false.
 
@@ -121,9 +180,13 @@ As an added convenience, Conveyor also provides the following environment variab
 * `USER_APPDATA`: Always points to the user `%USERPROFILE%` version of `%APPDATA%`
 * `USER_LOCALAPPDATA`: Always points to the user `%USERPROFILE%` version of `%LOCALAPPDATA%`
 
-**`app.jvm.strip-debug-info`** If true (defaults to false) then JVM classfile debug attributes are stripped during repacking.
+### `app.jvm.strip-debug-info` 
 
-**`app.jvm.unwanted-jdk-files`** A list of file names that are erased from the application after jlinking and launcher creation is done. This is useful for cleaning up files that are usually only needed for development purposes. You can remove default items from the list by prefixing them with a `-` (minus). The list defaults to: 
+If true (defaults to false) then JVM classfile debug attributes are stripped during repacking.
+
+### `app.jvm.unwanted-jdk-files` 
+
+A list of file names that are erased from the application after jlinking and launcher creation is done. This is useful for cleaning up files that are usually only needed for development purposes. You can remove default items from the list by prefixing them with a `-` (minus). The list defaults to: 
 
 ```
 unwanted-jdk-files = [
@@ -288,50 +351,6 @@ For each launcher you can specify these keys:
 **`class-path`** A list of file names or globs that select a set of JAR files from the inputs. Defaults to `*.jar` which is usually good enough. Note that explicit JPMS modules don't have to be specified here, as they will be jlinked into the distribution JVM and thus are always available.
 
 **`console`** Controls whether the launcher uses console mode on Windows. See the [documentation for the console key](windows.md#console-key) for more details. If not specified, defaults to true for CLI launchers and false for the GUI launcher. You should normally never need to set this, but it may be helpful in some cases if you have CLI launchers that aren't meant to be invoked by the end user directly. Note that setting console = false will suppress the terminal window from popping up, but won't make the app appear in the start menu. You can only have one entry in the start menu.
-
-### JVM options
-
-JVM command line flags ("options") can be used to control heap size, the garbage collector and so on. Note that this mostly but not entirely the same as arguments to the `java` program. Keys for setting JVM options are arranged in a hierarchy with less specific keys being used as defaults for more specific keys. Each launcher can define:
-
-* **`options`**
-* **`windows.options`**
-* **`windows.amd64.options`**
-* **`mac.options`**
-* **`mac.amd64.options`**
-* **`mac.aarch64.options`**
-* **`linux.options`**
-* **`linux.amd64.options`**
-* **`linux.amd64.glibc.options`**
-
-Each launcher always includes JVM options defined by the `app.jvm` object, i.e. you can also set options by configuring:
-
-* **`app.jvm.options`**
-* **`app.jvm.windows.options`**
-* **`app.jvm.windows.amd64.options`**
-* ... etc ...
-
-In this way you can set JVM flags for every entry point in your app whilst also specifying options that apply only to specific platforms and launchers.
-
-The options to set `app.jvm.system-properties` are added automatically. Options support two special tokens:
-
-* `&&` - this is replaced by the path to the directory where the program executable is found.
-* `<libpath>` - this is replaced by the path to where JNI libraries are placed. This can be useful for dealing with libraries that don't
-  call `System.loadLibrary` before attempting to extract JNI libs to the user's home directory, but do support overriding the behavior
-  with a system property.
-
-
-!!! important
-    When a JVM app is signed for macOS or Windows the JVM attach mechanism is disabled using the `-XX:+DisableAttachMechanism` flag. That's 
-    because the attach mechanism allows any local user to overwrite the app's code in memory without needing to alter files on disk, 
-    thus defeating code signing. As a consequence debuggers and profilers won't be able to find a signed JVM app.
-
-    To re-enable the attach mechanism, add `"-XX:-DisableAttachMechanism"` to the `options` key for the launcher. This is not recommended
-    for production use, but can be useful for development.
-    
-    This rule doesn't apply on Linux because that platform doesn't use code signing in the same way. On macOS the OS forbids debugger 
-    attachment unless the app opts in to allowing this, thus apps cannot tamper with each other's memory even when running as the same user. 
-    On Windows anti-virus checks are done when code is loaded, and so programs that allow arbitrary code injection allow lateral movement 
-    by malware.
 
 
 ### Defining launchers

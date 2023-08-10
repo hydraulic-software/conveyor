@@ -1,8 +1,13 @@
 # Linux
 
+Conveyor can generate distribution-independent tarballs and Debian packages that are also usable on Ubuntu.
+
 ## Synopsis
 
 ```
+# Change the menu categories, or any other key in the .desktop file.
+app.linux.desktop-file."Desktop Entry".Categories = "GTK;Gnome;Game"
+
 # Set the prefix. App files will be placed in /usr/local/lib/${app.long-fsname-dir}
 # and a symlink to the launcher in /usr/local/bin
 app.linux.prefix = /usr/local
@@ -13,63 +18,26 @@ app.linux.install-path = /opt/myapp
 # Place files elsewhere in the filing system.
 app.linux.root-inputs += extra.conf -> /etc/extra.conf
 
-# Change the menu categories, or any other key in the .desktop file.
-app.linux.desktop-file."Desktop Entry".Categories = "GTK;Gnome;Game"
-
-# Add a default SystemD service file which runs the app as a non-root dynamic user.
-# The key "server" is an arbitrary name here - you can define as many unit files as
-# you like as long as they have unique file names.
-app.linux.services.server = {
-  include "/stdlib/linux/service.conf"
-}
-
-# Customize the name of the service and contents of the file:
-app.linux.services.server {
-  include "/stdlib/linux/service.conf"
-
-  file-name = whateverd.service
-  Service {
-    ExecStop = ${app.linux.install-path}/bin/my-server-script stop
-  }
-}
-
-# Add a service and append two command line arguments, one of which has a space in it.
-app.linux.services.server {
-  include "/stdlib/linux/service.conf"
-
-  Service {
-    ExecStart = ${app.linux.services.server.Service.ExecStart} --server --message "\"Hello World\""
-  }
-}
-
-# Generate sample nginx and Apache site configs.
-app.server.http.port = 12345
-
-# Disable generation of nginx config leaving only Apache.
-app.server.http.nginx = null
-
 # Add an extra Debian dependency.
 app.linux.debian.control.Depends = "postgresql (>= 12)"
-
-# Configure the target distribution.
-app.linux.debian.distribution {
-  name = "jammy"
-  mirrors = ["http://archive.ubuntu.com/ubuntu/"]  
-}
 ```
 
 ## Keys
 
-These keys under `app.linux` control Linux specific packaging aspects.
+### `app.linux.prefix`
 
-**`prefix`** The part of the directory hierarchy to install under. Defaults to `/usr`. 
+The part of the directory hierarchy to install under. Defaults to `/usr`. 
 
 !!! warning 
     Anything _other_ than `/usr` will break various kinds of integrations due to Linux desktop environments and system software not reliably supporting other prefixes. Some things will work and others won't if you change this.
 
-**`install-path`** A directory where the input files will be placed. Defaults to `${app.linux.prefix}/lib/${app.long-fs-dir}` so (by default) the name is dependent on whether there's a vendor or not. If no vendor is specified it'll be something like `/usr/lib/fooapp`. Other defaults are all relative to this. The directory should be empty rather than a directory the user will already have.
+### `app.linux.install-path`
 
-**`root-inputs`** An inputs list that allows files to be placed relative to `/` instead of the prefix or install path. Also available: `app.linux.{amd64,aarch64}.{glibc,muslc}.root-inputs`. When adding files to this list you should always set the destination location, otherwise you'll end up with files being added to the root directory. Example:
+A directory where the input files will be placed. Defaults to `${app.linux.prefix}/lib/${app.long-fs-dir}` so (by default) the name is dependent on whether there's a vendor or not. If no vendor is specified it'll be something like `/usr/lib/fooapp`. Other defaults are all relative to this. The directory should be empty rather than a directory the user will already have.
+
+### `app.linux.root-inputs`
+
+An inputs list that allows files to be placed relative to `/` instead of the prefix or install path. Also available: `app.linux.{amd64,aarch64}.{glibc,muslc}.root-inputs`. When adding files to this list you should always set the destination location, otherwise you'll end up with files being added to the root directory. Example:
 
 ```
 app {
@@ -79,7 +47,9 @@ app {
 }
 ```
 
-**`conf-dir`** Defaults to `conf`. Files in this subdirectory of the install directory will be marked as "conf files" in Debian packaging, meaning they'll be symlinked from `/etc/$long-fsname-dir` and  on upgrades if the user has edited these files the package manager will offer to do a merge. This is convenient because it means you can change the config file over time and upgrades will treat the files as if they are in a simple form of version control. When the user hasn't edited the part of the file that's changing, the difference will be smoothly applied. Note that if packaging a JVM or Electron app you will need to override this key because the input files are relocated to a subdirectory of the overall install. For JVM apps use `app.linux.conf-dir = lib/app/conf` and place your config files in the `conf` sub-directory (e.g. `app.inputs += something.txt -> conf/something.txt`). For Electron apps use `app.linux.conf-dir = resources/app/conf`. You can of course name the relevant subdirectory whatever you want. 
+### `app.linux.conf-dir`
+
+Defaults to `conf`. Files in this subdirectory of the install directory will be marked as "conf files" in Debian packaging, meaning they'll be symlinked from `/etc/$long-fsname-dir` and  on upgrades if the user has edited these files the package manager will offer to do a merge. This is convenient because it means you can change the config file over time and upgrades will treat the files as if they are in a simple form of version control. When the user hasn't edited the part of the file that's changing, the difference will be smoothly applied. Note that if packaging a JVM or Electron app you will need to override this key because the input files are relocated to a subdirectory of the overall install. For JVM apps use `app.linux.conf-dir = lib/app/conf` and place your config files in the `conf` sub-directory (e.g. `app.inputs += something.txt -> conf/something.txt`). For Electron apps use `app.linux.conf-dir = resources/app/conf`. You can of course name the relevant subdirectory whatever you want. 
 
 !!! note "Config directories"
     The config directory is implemented by symlinking `/etc/${app.long-fsname-dir} to the conf directory in your app files. If this directory already exists when a package is installed it will be left alone. Therefore, if your users may have already created files in this directory, the conf-dir mechanism won't be useful as the files expected to be there won't be added. The way this feature works may change in future.  
@@ -98,26 +68,42 @@ items to it. The default means that the launcher will be symlinked into `bin`.
 ??? note "Older compatibility levels"
     In configs with `conveyor.compatibility-level < 7` there are some additional symlinks added to paths in `/var`. This was meant for servers and is of little practical use in most apps so it was removed from the defaults starting from compatibility level 7.
 
-**`main-binary`** The path relative to the package contents which is treated as the primary entrypoint. This is used for the symlink placed in `/usr/bin` and the `.desktop` file. It defaults to `bin/${app.fsname}` but can be set to something else if your input layout doesn't follow this convention.
+### `app.linux.main-binary`
 
-**`debian.control`** Keys and values copied into the control file. The defaults here are normally fine but you can add others if you want
+The path relative to the package contents which is treated as the primary entrypoint. This is used for the symlink placed in `/usr/bin` and the `.desktop` file. It defaults to `bin/${app.fsname}` but can be set to something else if your input layout doesn't follow this convention.
+
+### `app.linux.debian.control`
+
+Keys and values copied into the control file. The defaults here are normally fine but you can add others if you want
 more precise control. See below for an example.
 
-**`debian.{postinst,postrm,preinst,prerm}`** Maintainer/package scripts invoked by the package management system when the package is installed, upgraded or uninstalled. The default values should normally be left alone. They take care of registering and starting systemd services, desktop files for icons and other metadata, and so on. They also print out advice to system administrators using the command line when HTTP server config files are installed.
+### `app.linux.debian.{postinst,postrm,preinst,prerm}`
+
+Maintainer/package scripts invoked by the package management system when the package is installed, upgraded or uninstalled. The default values should normally be left alone. They take care of registering and starting systemd services, desktop files for icons and other metadata, and so on. They also print out advice to system administrators using the command line when HTTP server config files are installed.
 
 If you want to run extra code as root at install time, you can append a fragment of shell script to the postinst string.
 
-**`appstream.{file-name,content}`** These keys control the content of the generated [AppStream XML file](https://www.freedesktop.org/software/appstream/docs/). This controls how your app appears in the Software Center/app store apps that some Linux desktop environments and distributions use (e.g. the GNOME Software / Snap Store tools utilize this metadata). You don't normally need to alter this.
+### `app.linux.appstream.{file-name,content}`
 
-**`services`** A list of SystemD service definitions (see below).
+hese keys control the content of the generated [AppStream XML file](https://www.freedesktop.org/software/appstream/docs/). This controls how your app appears in the Software Center/app store apps that some Linux desktop environments and distributions use (e.g. the GNOME Software / Snap Store tools utilize this metadata). You don't normally need to alter this.
 
-**`contact-email`** This is needed for package, repository and PGP metadata which all have some notion of a maintainer. Defaults to `${app.contact-email}`.
+### `app.linux.services`
 
-**`signing-key`** See [signing keys](index.md#signing).
+A list of SystemD service definitions (see below).
+
+### `app.linux.contact-email`
+
+This is needed for package, repository and PGP metadata which all have some notion of a maintainer. Defaults to `${app.contact-email}`.
+
+### `app.linux.signing-key`
+
+See [signing keys](index.md#signing).
 
 ## Desktop integration
 
-**`desktop-file`** An INI file object. The `file-name` subkey controls what the file is called (defaulting to `${app.long-fsname}.desktop`). Then the `"Desktop Entry"` subkey defines the contents of that section with keys and values being mapped as appropriate.
+### `app.linux.desktop-file`
+
+An INI file object. The `file-name` subkey controls what the file is called (defaulting to `${app.long-fsname}.desktop`). Then the `"Desktop Entry"` subkey defines the contents of that section with keys and values being mapped as appropriate.
 
 You should only rarely need to configure the .desktop file directly. The main entry you may need to change is `StartupWMClass` which may need to be altered if you aren't seeing your icon get associated with your app in the taskbar. To find out what it should be you can use the `lg` command from GNOME Shell "Run Command" dialog (press alt-f2), or `xprop WM_CLASS` if not using Wayland, and then select the window of your running app.
 
@@ -196,7 +182,9 @@ The config files themselves come from the `app.server.http.{nginx,apache}` keys.
 Conveyor generates Debian packages with dependency metadata by scanning any ELF binaries or shared libraries to find their library dependencies,
 and then scanning the Debian package index to find which packages contain those libraries.
 
-**`app.linux.debian.control.Depends`** A list of _additional_ dependencies to add to the automatically determined set. If you wish to remove
+### `app.linux.debian.control.Depends`
+
+A list of _additional_ dependencies to add to the automatically determined set. If you wish to remove
 an automatically determined dependency, you can add an entry that starts with a `-`. You can also give a single comma separated string for
 convenience. Examples:
 
@@ -208,10 +196,16 @@ app.linux.debian.control {
 
 The syntax is the same as a regular Debian control file.
 
-**`app.linux.ignore-dangling-dependencies`** If your package contains shared libraries that have dependencies which can't be found in the target distribution, a warning will be generated during the build. You can add the names of the needed shared libraries here (e.g. `[libfoo{,-extras}.so.2]`) to silence these warnings.
+### `app.linux.ignore-dangling-dependencies`
 
-**`app.linux.debian.distribution.name`** Short name of the distro to target, defaults to  `focal` for [*Focal Fossa*](https://releases.ubuntu.com/focal/), which was released in 2020 and is an LTS release supported until 2025. This controls how ELF library names are mapped to packages. You can make packages targeting other Debian-derived distributions by adjusting this and potentially the mirrors list.
+If your package contains shared libraries that have dependencies which can't be found in the target distribution, a warning will be generated during the build. You can add the names of the needed shared libraries here (e.g. `[libfoo{,-extras}.so.2]`) to silence these warnings.
 
-**`app.linux.debian.distribution.mirrors`** List of mirrors of the distro, defaults to `["http://archive.ubuntu.com/ubuntu/"]`.
+### `app.linux.debian.distribution.name`
+
+Short name of the distro to target, defaults to  `focal` for [*Focal Fossa*](https://releases.ubuntu.com/focal/), which was released in 2020 and is an LTS release supported until 2025. This controls how ELF library names are mapped to packages. You can make packages targeting other Debian-derived distributions by adjusting this and potentially the mirrors list.
+
+### `app.linux.debian.distribution.mirrors`
+
+List of mirrors of the distro, defaults to `["http://archive.ubuntu.com/ubuntu/"]`.
 
 Most of the time you won't need to change these. They matter more for apps that rely heavily on libraries expected to come with the distribution.

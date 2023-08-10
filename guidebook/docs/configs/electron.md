@@ -15,15 +15,15 @@ No changes to your JS are necessary to get working software updates with Conveyo
 A basic `conveyor.conf` looks like this:
 
 ```
-// You must import the electron stdlib config.
+// This line is required.
 include required("/stdlib/electron/electron.conf")
 
-// You may also import your package.json file. Defaults will be set from it when possible.
+// Set defaults from package-lock when possible.
 package-json {
-    include required("package.json") 
+    include required("package-lock.json") 
 }
 
-// Override the Electron version. This is otherwise taken from your package.json file. 
+// Override the Electron version. 
 app.electron.version = 19.0.1
 
 // Change where it's fetched from. The default is GitHub.
@@ -32,9 +32,50 @@ app.electron.download-base-url = github.com/electron/electron/releases/download/
 
 ## Keys
 
-**`app.electron.version`** If set then this config is for an Electron app, and this is the version of Electron to bundle. 
+### `app.electron.version`
 
-**`app.electron.download-base-url`** Where to find Electron builds to download. The URLs are composed like this: 
+The version of Electron to bundle. This must be set for any Electron app. If you don’t set this you may encounter an error message like
+“Windows App for Intel: No EXE files were found in the root of the Windows inputs” or something similar.
+
+The simplest option is to set this by hand to whatever Electron you are using.
+
+The next simplest option is to let it be taken from your `package-lock.json` file, if you have one. It will be set to the value of
+`package-json.packages.node_modules/electron.version` if you `include required("/stdlib/electron/electron.conf")` and also include your
+`package-lock.json` file under the `package-json` key, as seen above. 
+
+If you don't have a `package-lock.json` file that's OK, you can still read the Electron version from any other file. For example, you can specify an exact version instead of a range in `package.json` and then import that instead:
+
+    package-json {
+        include required("package.json")
+    }
+
+    app {
+        electron.version = ${package-json.devDependencies.electron}
+    }
+
+### Reading the Electron version from yarn config
+
+There are a couple of ways to do this.
+
+You can convert your `yarn.lock` to `package-lock.json` using [synp](https://github.com/imsnif/synp).
+
+Importing config from non-JSON files is easy because Conveyor can run programs and read their stdout as part of loading a config file, meaning you can compute config from scripts. This can be used to read the Electron version we're using from the `yarn.lock` file.
+
+Let's put this into the file `get-electron-version.sh` (you'd have to translate it to PowerShell if building on Windows)
+
+```shell
+#!/usr/bin/env bash
+yarn list --depth=0 --json -s --no-progress 2>/dev/null | jq -r '.data.trees[] | select(.name | startswith("electron@")) | .name | split("@")[1]'
+```
+
+Mark it executable (`chmod +x get-electron-version.sh`) and it should print out the locked version of Electron you're using. Now we can import that into our `conveyor.conf`:
+
+    include "#!=app.electron.version get-electron-version.sh"
+
+
+### `app.electron.download-base-url`
+
+Where to find Electron builds to download. The URLs are composed like this: 
 
 ```
 ${app.electron.download-base-url}/v${app.electron.version}/electron-v${app.electron.version}-$os-$cpu.zip
@@ -44,7 +85,7 @@ so they must follow the same layout as that used on GitHub. You can specify a `f
 
 ## App resources
 
-The stdlib `electron.conf` file will import the following files to your `resources/app` directory:
+The default config imported from `/stdlib/electron/electron.conf` will import the following files to your `resources/app` directory:
 
 - `*.json`
 - `*.js`
@@ -70,9 +111,12 @@ app {
 
 ## Adapting a project that used `npx create-electron-app`
 
-The easiest way to get started with Conveyor and Electron is to create a fresh project using `conveyor create electron com.example.my-app`, replacing the reverse DNS name with one that is unique to your project (e.g. `io.github.username.projectname`). [Learn more in the Electron tutorial](../tutorial/hare/electron.md).
+The easiest way to get started with Conveyor and Electron is to create a fresh project using `conveyor create electron com.example.my-app`,
+replacing the reverse DNS name with one that is unique to your project (e.g. `io.github.username.projectname`). [Learn more in the Electron
+tutorial](../tutorial/hare/electron.md).
 
-If you have a project that was already created using `npx create-electron-app` you'll need to adapt it for Conveyor. We'll be removing references to Electron Forge and Squirrel.
+If you have a project that was already created using `npx create-electron-app` you'll need to adapt it for Conveyor. We'll be removing
+references to Electron Forge and Squirrel.
 
 1. Run `npx create-electron-app`.
 2. `rm forge.config.js`, this file isn't needed anymore.
