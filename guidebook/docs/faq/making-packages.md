@@ -36,4 +36,4 @@ That's not supported. User interactivity during installation is un-idiomatic on 
 
 ## 5. How do I forcibly update my app whilst it's running?
 
-Please [see here](../configs/index.md#aggressive-updates). 
+Please [see here](../configs/update-modes.md#aggressive-updates). 

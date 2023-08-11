@@ -47,7 +47,7 @@ Conveyor generates a small (~500kb) installer EXE. You don't have to use this (y
 3. Users are familiar with installer EXEs.
 4. If the app is already installed and the user runs the installer again, it immediately launches the app. Users who aren't sure how to use the start menu can therefore get the right behavior without risking double installs, confusing UI etc.
 
-The EXE is also included into your package files. You can run it to do an update check, and it will be invoked as part of your app startup sequence if you've enabled [aggressive updates](configs/index.md#aggressive-updates) or the [escape hatch](configs/windows.md#escape-hatch-mechanism) feature.
+The EXE is also included into your package files. You can run it to do an update check, and it will be invoked as part of your app startup sequence if you've enabled [aggressive updates](configs/update-modes.md#aggressive-updates) or the [escape hatch](configs/windows.md#escape-hatch-mechanism) feature.
 
 ## macOS
 

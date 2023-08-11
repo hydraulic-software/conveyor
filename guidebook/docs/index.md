@@ -14,7 +14,7 @@ It's free for open source apps and has [simple per-project pricing](https://www.
 
 ## Features
 
-* [Self-updating packages](configs/index.md#update-modes) for every OS, built on any OS
+* [Self-updating packages](configs/update-modes.md) for every OS, built on any OS
     * Background updates or check-on-launch
 * App framework support:
     * [Electron](configs/electron.md)

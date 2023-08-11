@@ -76,7 +76,7 @@ conveyor "-Kapp.inputs=[a,b,c]"
 conveyor make
 ```
 
-Tasks labelled as "ambiguous" apply to more than one machine. You can run them by temporarily narrowing the machines your config supports by setting the `app.machines` key, e.g. by passing `-Kapp.machines=mac.amd64` on the command line.  The machines you can target are named using simple hierarchical identifiers that look like `mac.amd64` or `linux.aarch64.glibc`. You can pick the machines you wish to build for with the `app.machines` key. [Learn more](configs/index.md#machines).
+Tasks labelled as "ambiguous" apply to more than one machine. You can run them by temporarily narrowing the machines your config supports by setting the `app.machines` key, e.g. by passing `-Kapp.machines=mac.amd64` on the command line.  The machines you can target are named using simple hierarchical identifiers that look like `mac.amd64` or `linux.aarch64.glibc`. You can pick the machines you wish to build for with the `app.machines` key. [Learn more](configs/index.md#target-platforms).
 
 **Render the config to JSON:**
 

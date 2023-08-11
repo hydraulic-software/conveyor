@@ -22,6 +22,11 @@ will be redacted from this output so it's safe to share.
 
 [HOCON has a formal specification](hocon-spec.md) which describes its base features and rules in a more rigorous way.
 
+## Extending the defaults
+
+!!! tip "Lists"
+    It's good style to always append to lists rather than overwriting them. If you assign directly, importing other configs won't work as you'll overwrite the values they place in shared lists. In other words write `key += value` rather than `key = [ value ]`. The first form adds to whatever `key` currently holds, the second replaces it.
+
 ## Conveyor Extensions
 
 Conveyor adds the following features to base HOCON:

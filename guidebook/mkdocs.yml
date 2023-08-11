@@ -44,7 +44,9 @@ nav:
         - tutorial/tortoise/9-next-steps.md
   - Configuration:
     - configs/index.md
+    - configs/names.md
     - configs/inputs.md
+    - configs/update-modes.md
     - configs/download-pages.md
     - configs/os-integration.md
     - configs/keys-and-certificates.md

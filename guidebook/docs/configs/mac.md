@@ -70,7 +70,7 @@ Keys are converted to Apple's PList XML format, which provides application metad
 
 ### `app.mac.updates`
 
-When to update. See [update modes](index.md#update-modes).
+When to update. See [update modes](update-modes.md).
 
 ### `app.mac.deltas`
 
