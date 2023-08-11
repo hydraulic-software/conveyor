@@ -1,14 +1,15 @@
 # Electron
 
-!!! tip
-    Learn how we packaged [GitHub Desktop with Conveyor](https://hydraulic.dev/blog/8-packaging-electron-apps.html), a production-grade Electron app. Over 1,500 lines of code can be deleted, the resulting config is easy to read, and the app can be packaged and released from your laptop. We show how to combine it with GitHub Releases, Sites and Actions.
+## Overview
+
+No changes to your JS are necessary to get working software updates with Conveyor. [Curious why you'd use Conveyor over other tools?](../comparisons/electron-comparisons.md)
 
 !!! tip
     The [tutorial](../tutorial/new.md) shows you how to generate and package a simple Electron app.
 
-## Overview
+??? note "Advanced demo: GitHub Desktop"
+    Learn how we packaged [GitHub Desktop with Conveyor](https://hydraulic.dev/blog/8-packaging-electron-apps.html), a production-grade Electron app. Over 1,500 lines of code can be deleted, the resulting config is easy to read, and the app can be packaged and released from your laptop. We show how to combine it with GitHub Releases, Sites and Actions.
 
-No changes to your JS are necessary to get working software updates with Conveyor. [Curious why you'd use Conveyor over other tools?](../comparisons/electron-comparisons.md)
 
 ## Synopsis
 
