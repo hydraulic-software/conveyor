@@ -2,44 +2,13 @@
 
 ## Synopsis
 
-```properties
+```hocon
 # Mac specific stuff.
 app.mac { 
-  info-plist { 
+  info-plist {
+    # Require Monterey or higher.
     LSMinimumSystemVersion = 12.0
   }
-
-  # Request permissions.
-  entitlements-plist {
-    # Allow recording from the microphone
-    "com.apple.security.device.audio-input" = true
-  
-    # Allow native-level debugging with lldb
-    "com.apple.security.get-task-allow" = true
-  
-    # All others can be specified.
-  }
-  
-  # Add file associations.
-  file-associations += ".txt"
-
-  # Disable signing even if keys are available.
-  sign = false
-
-  # Override the default set of icon images pulled from the inputs
-  icons = "mac-icons-*.png"
-  
-  # Add files: for JVM or Electron apps these are app resources, for native 
-  # apps it's the same as bundle-extras.
-  inputs += fat-file
-  amd64.inputs += intel-mac-file
-  aarch64.inputs += apple-silicon-file
-
-  # Input definitions merged into the Contents/ directory. Useful for adding
-  # Mac specific stuff into JVM/Electron apps.
-  bundle-extras += extra-stuff/embedded.provisionprofile
-  amd64.bundle-extras += extra-stuff/amd64/Foo.framework -> Frameworks/Foo.framework
-  aarch64.bundle-extras += extra-stuff/aarch64/Foo.framework -> Frameworks/Foo.framework
 
   # Credentials for the GateKeeper servers.
   notarization {
@@ -47,10 +16,31 @@ app.mac {
     key-id = ABCDEF1234
     private-key = path/to/private/key/AuthKey_ABCDEF1234.p8
   }
+
+  # Request permissions.
+  entitlements-plist {
+    # Allow recording from the microphone
+    "com.apple.security.device.audio-input" = true
+  }
+  
+  # Add file associations.
+  file-associations += ".txt"
+
+  # Add files: for JVM or Electron apps these are app resources, for native 
+  # apps it's the same as bundle-extras.
+  inputs += fat-file
+  amd64.inputs += intel-mac-file
+  aarch64.inputs += apple-silicon-file
+
+  # Inputs merged into the Contents/ directory. Useful for adding
+  # Mac specific stuff into JVM/Electron apps.
+  bundle-extras += extra-stuff/embedded.provisionprofile
+  amd64.bundle-extras += extra-stuff/amd64/Foo.framework -> Frameworks/Foo.framework
+  aarch64.bundle-extras += extra-stuff/aarch64/Foo.framework -> Frameworks/Foo.framework
 }
 ```
 
-## Keys
+## App files
 
 ### `app.mac.inputs`
 
@@ -76,9 +66,15 @@ An [input list](inputs.md) containing square icons of different sizes. Defaults 
 
 Keys are converted to Apple's PList XML format, which provides application metadata on macOS. You normally don't need to alter this, but if you want to add entries to the `Info.plist` file you can do so here. [Consult Apple's reference for more information on what keys are available](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Introduction/Introduction.html).
 
+## Online updates
+
 ### `app.mac.updates`
 
-See [update modes](index.md#update-modes).
+When to update. See [update modes](index.md#update-modes).
+
+### `app.mac.deltas`
+
+Maximum number of previous versions of your app to generate delta updates for. Note that delta updates aren't generated unless `conveyor.compatibility-level >= 11`. When the compatibility level is high enough, this key defaults to 5.
 
 ### `app.mac.sparkle-options`
 
@@ -87,10 +83,6 @@ An object whose values are put in the `Info.plist` that controls Sparkle's behav
 ### `app.mac.sparkle-framework`
 
 An input definition that points to a release of the [Sparkle 2 update framework](https://sparkle-project.org/). You can normally leave this at the default unless you want to use a custom fork of Sparkle for some reason.
-
-### `app.mac.deltas`
-
-Maximum number of previous versions of your app to generate delta updates for. Note that delta updates aren't generated unless `conveyor.compatibility-level >= 11`. When the compatibility level is high enough, this key defaults to 5.
 
 ### `app.mac.check-binary-versions`
 

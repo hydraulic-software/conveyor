@@ -106,7 +106,8 @@ app.display-name = LittleCorp Example App
 app.icons = "myapp-icon-*.png"
 app.icons = "myapp-icon.svg"
 
-# Render a simple icon with a label, a background gradient and macOS compliant rounded corners.
+# Render a simple icon with a label, gradient 
+# and macOS compliant rounded corners.
 app.icons = {
   label = "AP"
   gradient = "blue;green"
