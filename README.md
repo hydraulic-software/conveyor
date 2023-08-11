@@ -18,6 +18,7 @@ This repo contains the parts of the product that are open source:
 
 * The user guide.
 * [The Gradle plugin](gradle-plugin/README.md).
+* [A GitHub Action](actions/build/README.md).
 
 and you can find the code + package config for the Eton Notes sample app in [a separate repository](https://github.com/hydraulic-software/eton-desktop).
 
