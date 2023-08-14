@@ -24,6 +24,6 @@ Conveyor also supports servers with full Linux `systemd` integration. Take a loo
 
 ## Get help
 
-Stuck? Try asking in our [Zulip chatroom](https://hydraulic.zulipchat.com/#narrow/stream/329916-general) or our [GitHub Discussions forum](https://github.com/hydraulic-software/conveyor/discussions).
+Stuck? Try asking in our [Discord chatroom](https://discord.gg/E87dFeuMFc) or our [GitHub Discussions forum](https://github.com/hydraulic-software/conveyor/discussions).
 
 <script>var tutorialSection = 10;</script>

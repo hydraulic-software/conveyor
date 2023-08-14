@@ -8,7 +8,7 @@ without requiring you to have those operating systems.
 
 **[ ➡️ Get started!](https://conveyor.hydraulic.dev)**
 
-**[ ➡️ Say hello via chat](https://hydraulic.zulipchat.com/#narrow/stream/329916-general)**
+**[ ➡️ Say hello via chat](https://discord.gg/E87dFeuMFc)**
 
 **[ ➡️ Say hello using GitHub Discussions](https://github.com/hydraulic-software/conveyor/discussions)**
 
@@ -57,4 +57,4 @@ If you'd like to:
 
 * Contribute improvements to the documentation or Gradle plugin, just open up a pull request.
 * Get help privately, [email us](mailto:contact@hydraulic.dev).
-* Ask questions, or get help publicly, use [GitHub discussions](https://github.com/hydraulic-software/conveyor/discussions) or [the chat room](https://hydraulic.zulipchat.com/#narrow/stream/329916-general).
+* Ask questions, or get help publicly, use [GitHub discussions](https://github.com/hydraulic-software/conveyor/discussions) or [the chat room](https://discord.gg/E87dFeuMFc).
