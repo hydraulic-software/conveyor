@@ -292,7 +292,7 @@ app {
         }
         
         // Optional, see above.
-        certificate = "self signed by "${app.windows.store.publisher}"
+        certificate = "self signed by "${app.windows.store.publisher}
     }
 }
 ```
