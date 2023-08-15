@@ -12,6 +12,8 @@ Now run `conveyor --help` to check it's ready to go and move on to the next sect
 !!! note "Automatic updates"
     Conveyor is packaged with itself, but automatic updates are switched off for Windows and macOS to give you full control. To update Conveyor, run it from the GUI and then click "Check for updates". On Debian you can control updates in the usual manner and for other distros, the tarball never updates itself so you'll need to re-download it.
 
+// FIXME: Add a section about using npm
+
 ## Downloading in build scripts
 
 You can download specific versions of Conveyor by simply putting the URLs you find on the download page into your build scripts. Please observe the following:

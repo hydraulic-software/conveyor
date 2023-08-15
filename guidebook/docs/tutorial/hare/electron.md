@@ -1,5 +1,7 @@
 # Electron
 
+// FIXME: Update these instructions to use npm install instead.
+
 {!tutorial/hare/start.md!}
 
 ## Create a sample project
