@@ -136,7 +136,11 @@ Package metadata that will appear in the Windows user interface. Taken from the 
 
 ### `app.windows.manifests.msix.extensions-xml`
 
-Raw XML that will be added into the `<Extensions></Extensions>` tag in the manifest. Useful for adding operating system integrations that Conveyor doesn't yet support out of the box.
+Raw XML that will be added into the Application-scoped `<Extensions/>` tag in the manifest. Useful for adding operating system integrations that Conveyor doesn't yet support out of the box.
+
+### `app.windows.manifests.msix.package-extensions-xml`
+
+Raw XML that will be added into the top level Package-scoped `<Extensions/>` tag in the manifest. Useful for adding operating system integrations that Conveyor doesn't yet support out of the box.
 
 ### `app.windows.manifests.msix.additional-properties-xml`
 
