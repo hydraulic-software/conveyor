@@ -1,6 +1,6 @@
 # Electron
 
-{!tutorial/hare/start.md!}
+{!tutorial/hare/start-npm.md!}
 
 ## Create a sample project
 
