@@ -42,7 +42,7 @@ app.mac {
 
 ## App files
 
-### `app.mac.inputs`
+### `app.mac{.amd64,.aarch64,}.inputs`
 
 An input hierarchy for Mac specific inputs. You can also add to `app.mac.amd64.inputs` and `app.mac.aarch64.inputs`.
 How these files are treated depends on the type of app. For JVM and Electron apps these files are added to the `Contents/Resources` 
@@ -50,7 +50,7 @@ directory in the bundle, unless they are native files, in which case they're add
 extract native code of the right architectures. For native apps these files are simply added to the bundle inside the `Contents`
 directory.
 
-### `app.mac.{amd64,aarch64,}bundle-extras`
+### `app.mac{.amd64,.aarch64,}.bundle-extras`
 
 Only relevant for JVM and Electron apps. A list of inputs that are added directly to 
 the `Contents` directory.
@@ -62,8 +62,9 @@ An [input list](inputs.md) containing square icons of different sizes. Defaults 
 ??? warning "macOS bug with icons at small sizes"
     Some versions of macOS / the Finder have a bug which will display white noise for small app icons if you don't provide those sizes. To avoid this, make sure to render 16x16 and 32x32 icons and supply them in your inputs. Future versions of Conveyor may work around this bug automatically.
 
-### `app.mac.info-plist`
+### `app.mac{.amd64,.aarch64,}.info-plist`
 
+Keys to be incorporated into the app's Info.plist file. You can also add to `app.mac.amd64.info-plist` and `app.mac.aarch64.info-plist` to specify different keys per CPU.
 Keys are converted to Apple's PList XML format, which provides application metadata on macOS. You normally don't need to alter this, but if you want to add entries to the `Info.plist` file you can do so here. [Consult Apple's reference for more information on what keys are available](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Introduction/Introduction.html).
 
 ## Online updates
