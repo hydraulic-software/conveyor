@@ -315,7 +315,37 @@ For testing, you can use the SSL.com sandbox by specifying `app.windows.signing-
 
 ### DigiCert ONE
 
-To sign with [DigiCert ONE](http://one.digicert.com), you need to [obtain your credentials](https://docs.digicert.com/en/digicert-keylocker/get-started/signer-guide.html#create-your-credentials-511897) and set them up in your `conveyor.conf` file:
+To sign with [DigiCert ONE](http://one.digicert.com), you need to [obtain your credentials](https://docs.digicert.com/en/digicert-keylocker/get-started/signer-guide.html#create-your-credentials-511897) and set them up in your `conveyor.conf` file.
+
+#### Obtaining your credentials with KeyLocker
+
+   1. **Create a DigiCert ONE account**
+
+      The first time when selecting KeyLocker you'll get an email to create a new account for DigiCert ONE. **Create the account as soon as possible** after receiving the email as the link expires after 3 days and there is no way to get another one without contacting support.
+
+   2. **Generate auth keys** 
+
+      First, you need to switch to the Admin Profile on the top right:
+
+      ![DigiCert ONE Admin Profile](digicert-one-admin-profile.png)
+
+      In the Access menu generate an authentication certificate (a `.p12` file which will be used to set up the value for `app.windows.signing-key.digi-cert-one.auth-certificate`, associated with a password which will be the value of `app.windows.signing-key.digi-cert-one.password`), as well as an API token (value for `app.windows.signing-key.digi-cert-one.api-key`)
+
+      ![DigiCert ONE Auth Certificate](digicert-one-auth-certificate.png)
+
+   3. **Switch to KeyLocker**
+
+      You'll find a menu switch hidden on the grid in the top right menu:
+      ![DigiCert ONE Managers Menu](digicert-one-managers-menu.png)
+
+   4. **Find the certificate alias**
+
+      You can skip the _Get Started_ tutorial and go straight to certificates. If the order status shows pending, you need to run synchronize orders next to the order ID.
+      
+      Copy the **keypair alias** `key_<number>`, replace `key_` with `cert_`, and set it as the value for `app.windows.signing-key-alias`. (Conveyor requires the *certificate* alias, but that is only visible from the DigiCert CLI tool):
+      ![DigiCert ONE Certificate Alias](digicert-one-certificate-alias.png)
+
+The configuration should look like the following:
 
 ```hocon
 app.windows {
@@ -323,12 +353,12 @@ app.windows {
   // You'll need to provide those enviromnent variables with the respective credentials. 
   signing-key {
       digi-cert-one {
-        api-key = your-username
+        api-key = your-api-key
         auth-certificate = path/to/client/authentication/certificate.p12
         password = ${env.DIGICERT_PASSWORD}        
       }
   }
-  signing-key-alias = your-key-alias
+  signing-key-alias = cert_number
 }
 ```
 
