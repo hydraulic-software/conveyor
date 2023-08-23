@@ -1,10 +1,6 @@
 # Update escape hatch
 
-!!! note
-    * The escape hatch feature is only available for Windows.
-    * This feature is **not** currently enabled by default. You must turn it on with config keys. It will be enabled by default in a future release.
-
-There are some situations where you might need to alter your user's installations using a channel that's not the usual MSIX update mechanism.
+There are some situations where you might need to alter your user's Windows installations using a channel that's not the usual MSIX update mechanism.
 For example:
 
 * You may wish to stop using Conveyor and transition to an alternative update mechanism. 
@@ -24,7 +20,7 @@ Windows identifies software using a [package family name](https://learn.microsof
 derived from your app's name and the subject name of the signing certificate you used. Changing these will cause Windows to become confused
 and conclude that your new version is actually an entirely different app.
 
-**app.windows.manifests.msix.reinstall-if-required** When this key is set to true (the default when your download site uses HTTPS), Conveyor will set things
+**`app.windows.manifests.msix.reinstall-if-required`** When this key is set to true (the default when your download site uses HTTPS), Conveyor will set things
 up so changes in your package family name automatically trigger uninstall and reinstall of the app. 
 The user won't be asked to do anything, but will see a progress bar appear and reinstallation proceed the next time they start the app after the escape hatch is used.
 
@@ -74,7 +70,7 @@ For convenience, Conveyor also sets the following environment variables that you
 * `CONVEYOR_APPDATA_ROAMING_FOLDER`: Location of the [ApplicationData.RoamingFolder](https://learn.microsoft.com/en-us/uwp/api/windows.storage.applicationdata.roamingfolder?view=winrt-22621)
 * `CONVEYOR_APPDATA_LOCAL_CACHE_FOLDER`: Location of the [ApplicationData.LocalCacheFolder](https://learn.microsoft.com/en-us/uwp/api/windows.storage.applicationdata.localcachefolder?view=winrt-22621)
 
-**app.windows.manifests.msix.update-escape-hatch.run-if** Defines the conditions on which to run the escape hatch. Currently supported values are:
+**`app.windows.manifests.msix.update-escape-hatch.run-if`** Defines the conditions on which to run the escape hatch. Currently supported values are:
 
 * `package-family-changed`: Run the escape hatch if the [package family name](https://learn.microsoft.com/en-us/windows/apps/desktop/modernize/package-identity-overview#package-family-name) of the installed app is different from the one from the latest update in the download site.
 * `reinstall-required`: Run the escape hatch if the [package family name](https://learn.microsoft.com/en-us/windows/apps/desktop/modernize/package-identity-overview#package-family-name) of the installed app is different from the one from the latest update in the download site, or if the download site changed.
@@ -82,6 +78,6 @@ For convenience, Conveyor also sets the following environment variables that you
 * `always`: Run the escape hatch every time the app gets launched. This is for dire emergencies when you might need to run something even after installing a new version. Note that this setting is *sticky*, as the escape hatch will keep running until we make a release that removes this setting.
 * `never` (default): Doesn't run the escape hatch. Used when you don't currently need to repair installations, but want to have the escape hatch on so your users are prepared when it's needed.
 
-**app.windows.manifests.msix.append-publisher-id-to-appinstaller** If set to true, the [publisher id](https://learn.microsoft.com/en-us/windows/apps/desktop/modernize/package-identity-overview#publisher-id) part of the package family name gets appended to the name of the `.appinstaller` file.
+**`app.windows.manifests.msix.append-publisher-id-to-appinstaller`** If set to true, the [publisher id](https://learn.microsoft.com/en-us/windows/apps/desktop/modernize/package-identity-overview#publisher-id) part of the package family name gets appended to the name of the `.appinstaller` file.
 This is needed if the package identity changes, because from the point of view of Windows that would be a completely different app, and only a single app can use the same `.appinstaller` URL for updates.
 Normally you don't need to set this manually, as Conveyor keeps track of changes in the package family name and will set it automatically.
