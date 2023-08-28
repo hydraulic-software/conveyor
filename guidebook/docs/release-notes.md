@@ -1,6 +1,18 @@
 # Release notes
 
-## New features
+## 11.1
+
+A big thanks to Florian Enner for his contribution of improved DigiCert KeyLocker documentation in this release!
+
+* Fix a rare error that could occur whilst uploading to Amazon S3.
+* Fix a rare error that could occur when using certificates from an encrypted p12 file.
+* Fix a regression related to improved log redaction.
+* Improve the handling of Digicert KeyLocker aliases.
+* Updated the JDK list.
+
+## 11
+
+### New features
 
 * **Delta updates for macOS.** Conveyor now generates delta patches to quickly upgrade older versions (the last five by default) to
   the latest version. This hugely increases update speed on this platform. Support for delta patching is already in your deployed apps,
