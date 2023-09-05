@@ -5,7 +5,8 @@
 * **Delta updates for macOS.** Conveyor now generates delta patches to quickly upgrade older versions (the last five by default) to
   the latest version. This hugely increases update speed on this platform. Support for delta patching is already in your deployed apps,
   so users will immediately get faster upgrades once you start using the new Conveyor version for building releases. Conveyor will use
-  the old releases in your disk cache if available, or download them from your distribution site if not.
+  the old releases in your disk cache if available, or download them from your distribution site if not. Set `conveyor.compatibility-level`
+  to 11 or higher to enable this feature.
 * **Relocating your update site.** You can now [change your site URL](configs/download-pages.md#relocating-your-download-site) after the app has been launched.
 * **Install via NPM.** You can now just `npm install -g @hydraulic/conveyor` to get Conveyor ready for building.
 * A new [**HOCON tutorial**](configs/hocon.md) to make it easier to learn the syntax of the config file.
