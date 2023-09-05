@@ -4,7 +4,7 @@
 
 This shows how a production-grade Electron app can be packaged using Conveyor, GitHub Actions and GitHub Releases.
 
-<img src="https://desktop.github.com/images/github-desktop-screenshot-mac.png" style="box-shadow: 0 10px 35px rgb(0 0 0 / 35%)"></img>
+<img src="../images/github-desktop.png" style="box-shadow: 0 10px 35px rgb(0 0 0 / 35%)"></img>
 
 [Download a Conveyor-ized GitHub Desktop](https://hydraulic-software.github.io/github-desktop/download.html){ .md-button .md-button--primary } [View source](https://github.com/hydraulic-software/github-desktop/){ .md-button }
 
