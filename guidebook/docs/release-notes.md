@@ -1,5 +1,17 @@
 # Release notes
 
+## 11.2
+
+This release contains minor bug fixes.
+
+* Fixed a regression that affected users of the (currently private, undocumented) control API. As part of this we improved testing of this
+  feature, which was one of the tasks needed to launch it.
+* Fixed classification of some errors caused by network flakyness as non-crashes.
+* Don't hang the app if the user clicks cancel during a download on macOS in aggressive updates mode.
+* Don't crash when using `conveyor generate` with rDNS names that contained non kebab-cased words.
+* Fixed a broken link in an error message.
+* Update the JDK list.
+
 ## 11.1
 
 A big thanks to Florian Enner for his contribution of improved DigiCert KeyLocker documentation in this release!
