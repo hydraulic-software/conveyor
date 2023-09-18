@@ -134,6 +134,10 @@ An ASCII name for the identification of the applications within the package, tha
 
 Package metadata that will appear in the Windows user interface. Taken from the top level app metadata by default but can be overridden.
 
+### `app.windows.manifests.msix.background-color`
+
+Background color of the app tile in Windows. Can be either an RGB hex color preceded by a `#` character (e.g., `#ABCD12`), or a [color name supported by Microsoft](https://learn.microsoft.com/en-us/uwp/schemas/appxpackage/uapmanifestschema/element-uap-visualelements#remarks). From [compatibility level](../compatibility-levels.md) 12, it defaults to `transparent`. Before that, it defaulted to `#ffffff`. 
+
 ### `app.windows.manifests.msix.extensions-xml`
 
 Raw XML that will be added into the Application-scoped `<Extensions/>` tag in the manifest. Useful for adding operating system integrations that Conveyor doesn't yet support out of the box.

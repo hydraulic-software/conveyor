@@ -9,6 +9,10 @@ is older than the one expected by the author of the config.
 
 Here is how behaviour changes at each level.
 
+## Level 12
+
+The default value for `app.windows.manifests.msix.background-color` is now `transparent`. Previously, the default was `#ffffff`.
+
 ## Level 11
 
 These new keys were added:
