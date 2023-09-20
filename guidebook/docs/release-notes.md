@@ -1,5 +1,16 @@
 # Release notes
 
+## 11.3
+
+This release contains minor bug fixes.
+
+* Remove the `.0` suffix from user visible version numbers in Mac delta updates and GitHub releases.
+* Improve robustness to transient errors from Apple's notarization servers.
+* Fix a bug that could cause install failures for self-signed apps on Windows in non-English locales.
+* Fix an issue that could cause `app.mac.deltas` to not be respected in some cases.
+* Mac JVM: Improve the error message shown when a library cannot be loaded due to team ID mismatches.
+* JVM: Add JDK configs for OpenJDK/Amazon Java 21.
+
 ## 11.2
 
 This release contains minor bug fixes.
