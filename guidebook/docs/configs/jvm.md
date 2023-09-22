@@ -118,6 +118,7 @@ JVM command line flags ("options") can be used to control heap size, the garbage
 * **`options`**
 * **`windows.options`**
 * **`windows.amd64.options`**
+* **`windows.aarch64.options`**
 * **`mac.options`**
 * **`mac.amd64.options`**
 * **`mac.aarch64.options`**

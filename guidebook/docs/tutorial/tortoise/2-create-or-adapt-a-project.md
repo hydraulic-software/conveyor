@@ -92,7 +92,7 @@ Don't worry about the details of `conveyor.conf` too much right now. Most projec
     1. The display name is the natural language name of the project as it appears to the user. It's initialized with a guess based on de-dashifying the `fsname` key.
     2. The `fsname` is the name of the project as it appears on disk, e.g. in file names.
     3. This is a directory on a web server where packages will look for update files.
-    4. You can restrict which platforms you support. See ["Machines"](../../configs/index.md#machines) for details.
+    4. You can restrict which platforms you support. See ["Target platforms"](../../configs/index.md#target-platforms) for details.
     5. The templates come with pre-made icons. You should replace these files with your own. Conveyor will take care of converting to native formats and embedding the icon into the Windows EXE file.
     6. The CMake build system produces an install directory that uses non-Mac UNIX conventions. Here, we adapt it to a Mac bundle layout. If your build system produces a `.app` bundle already you can just provide the path of the bundle directory. See Apple's document ["Placing content in a bundle"](https://developer.apple.com/documentation/bundleresources/placing_content_in_a_bundle).
 
