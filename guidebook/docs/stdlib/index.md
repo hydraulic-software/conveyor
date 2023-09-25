@@ -47,7 +47,6 @@ following files are available:
 - `mfc140u.dll`
 - `mfcm140.dll`
 - `mfcm140u.dll`
-- `msvc-redist-x64-14.38.32919.zip`
 - `msvcp140.dll`
 - `msvcp140_1.dll`
 - `msvcp140_2.dll`
