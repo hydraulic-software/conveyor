@@ -94,21 +94,26 @@ The default config imported from `/stdlib/electron/electron.conf` will import th
 - `*.html`
 - The `node_modules` directory.
 
-You can add more [inputs](inputs.md) or replace the default set like this:
+You may need to adjust or replace the inputs to suit your app. For example, if you use a bundler like Webpack you may want to import the
+output of that instead of the source files. See [inputs](inputs.md) for more information.
+
+## Using ASAR files
+
+Electron supports a type of archive called an ASAR. This is conceptually similar to a zip and can reduce the number of files you ship,
+at the cost of less efficient delta updates. Conveyor doesn't create ASAR files itself, but you can make one with `npx asar` and supply it
+as an input:
 
 ```
 app {
-    // Add more top level files.
-    inputs += "*.ts"
-    
-    // Add a  directory preserving the placement. 
-    // (otherwise, the contents are copied to the top level).
-    inputs += node_modules -> node_modules
-    
-    // Replace the inputs entirely.
-    inputs = [ "app.asar" ]
+    inputs = [
+        app.asar
+        app.asar.unpacked -> app.asar.unpacked
+    ]
 }
 ```
+
+The `.unpacked` directory is for files that can't be placed inside an ASAR, like native code. Please see the [Electron documentation on 
+ASAR files](https://electronjs.org/docs/latest/tutorial/asar-archives) for more details.
 
 ## Adapting a project that used `npx create-electron-app`
 
