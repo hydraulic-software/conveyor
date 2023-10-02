@@ -54,7 +54,7 @@ If you don't have a `package-lock.json` file that's OK, you can still read the E
         electron.version = ${package-json.devDependencies.electron}
     }
 
-### Reading the Electron version from yarn config
+#### Reading the Electron version from yarn config
 
 There are a couple of ways to do this.
 
@@ -83,6 +83,26 @@ ${app.electron.download-base-url}/v${app.electron.version}/electron-v${app.elect
 ```
 
 so they must follow the same layout as that used on GitHub. You can specify a `file:` URL here if necessary.
+
+### `app.electron.asar`
+
+If present, your app will be packaged as using [Electron's archive format](https://github.com/electron/asar). Can be set to one of:
+   * `true`: (the default), pack the app into `app.asar` using the default options.
+   * `false`: do not pack the app into `app.asar`. 
+   * an object containing the following fields:
+      * `ordering`: path to a text file for ordering the contents of the `app.asar` package.
+      * `unpack`: files matching this [minimatch glob expression](https://github.com/isaacs/minimatch#features) will be placed in a directory named `app.asar.unpacked`.
+      * `unpack-dir`: directories matching this [minimatch glob expression](https://github.com/isaacs/minimatch#features) will be placed in a directory named `app.asar.unpacked`.
+
+      Those as simply passed down as flags to the `asar` command.
+    
+If your inputs already include a pre-built `app.asar` file, this key will have no effect.
+
+### `app.electron.prune`
+
+If set to `true` (the default), doesn't include dev dependencies from `node_modules` into the packaged app.
+
+If your inputs already include a pre-built `app.asar` file, this key will have no effect.
 
 ## App resources
 
