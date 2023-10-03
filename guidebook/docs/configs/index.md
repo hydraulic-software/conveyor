@@ -100,6 +100,7 @@ will check for online updates, although you don't need to use the generated HTML
 **`app.machines`** A list of target machines for which packages should be built. At this time the following machines are supported:
 
 * `windows.amd64`
+* `windows.aarch64` (Windows on Arm64)
 * `mac.amd64` (Intel Macs)
 * `mac.aarch64` (Apple Silicon)
 * `linux.amd64.glibc`

@@ -32,6 +32,21 @@ msvc.input.remap = [
 If you don't specify `msvc.input.remap` then all the DLLs will be included. This should always be safe but can bloat your package. The
 following files are available:
 
+- `concrt140.dll`
+- `mfc140.dll`
+- `mfc140chs.dll`
+- `mfc140cht.dll`
+- `mfc140deu.dll`
+- `mfc140enu.dll`
+- `mfc140esn.dll`
+- `mfc140fra.dll`
+- `mfc140ita.dll`
+- `mfc140jpn.dll`
+- `mfc140kor.dll`
+- `mfc140rus.dll`
+- `mfc140u.dll`
+- `mfcm140.dll`
+- `mfcm140u.dll`
 - `msvcp140.dll`
 - `msvcp140_1.dll`
 - `msvcp140_2.dll`
@@ -42,20 +57,36 @@ following files are available:
 - `vcomp140.dll`
 - `vcruntime140.dll`
 - `vcruntime140_1.dll`
+- `vcruntime140_threads.dll`
 
 The `msvc.conf` stdlib file looks like this:
 
 ```
-msvc.version = 14.0.30704.0
-msvc.redist-url = "https://downloads.hydraulic.dev/msvc-redist/msvc-redist-"${msvc.version}".zip"
-msvc.input = { from = ${msvc.redist-url} }
-app.windows.amd64.inputs += ${msvc.input}
+msvc.version = 14.38.32919
+
+msvc.redist-url-base = downloads.hydraulic.dev/msvc-redist
+msvc.amd64.redist-url = ${msvc.redist-url-base}/msvc-redist-x64-${msvc.version}.zip
+msvc.aarch64.redist-url = ${msvc.redist-url-base}/msvc-redist-arm64-${msvc.version}.zip
+
+msvc.input = {}
+
+msvc.windows.amd64.inputs = ${msvc.input} {
+  from = ${msvc.amd64.redist-url}
+}
+
+msvc.windows.aarch64.inputs = ${msvc.input} {
+  from = ${msvc.aarch64.redist-url}
+}
+
+app.windows.amd64.inputs += ${msvc.windows.amd64.inputs}
+app.windows.aarch64.inputs += ${msvc.windows.aarch64.inputs}
+
 ```
 
 Normally Microsoft don't distribute these DLLs in zip form. We extract the DLLs from their VC++ runtime packages and host them for you,
 so you can include only what you need. Normally your app framework will tell you what DLLs are required but if you don't know or are writing
 a native app you can use [Dependency Walker](https://www.dependencywalker.com/) to find out. Our hosted redistributables include these
-DLLs at version `14.0.30704.0`.
+DLLs at version `14.38.32919.0`.
 
 !!! note
     - It may appear at first that you don't need these DLLs, because it's common for Windows apps to install them to `c:\windows\system32`.
