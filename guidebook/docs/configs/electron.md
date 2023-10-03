@@ -93,8 +93,9 @@ If present, your app will be packaged as using [Electron's archive format](https
       * `ordering`: path to a text file for ordering the contents of the `app.asar` package.
       * `unpack`: files matching this [minimatch glob expression](https://github.com/isaacs/minimatch#features) will be placed in a directory named `app.asar.unpacked`.
       * `unpack-dir`: directories matching this [minimatch glob expression](https://github.com/isaacs/minimatch#features) will be placed in a directory named `app.asar.unpacked`.
+      * `version`: which version of the `@electron/asar` package will be used, defaults to `3.2.7`
 
-      Those as simply passed down as flags to the `asar` command.
+      Those are simply passed down as flags to the `asar` command.
     
 If your inputs already include a pre-built `app.asar` file, this key will have no effect.
 
@@ -106,7 +107,8 @@ If your inputs already include a pre-built `app.asar` file, this key will have n
 
 ## App resources
 
-The default config imported from `/stdlib/electron/electron.conf` will import the following files to your `resources/app` directory:
+The default config imported from `/stdlib/electron/electron.conf` will import the following files to an ASAR file (see above) or 
+your `resources/app` directory:
 
 - `*.json`
 - `*.js`
@@ -116,24 +118,6 @@ The default config imported from `/stdlib/electron/electron.conf` will import th
 
 You may need to adjust or replace the inputs to suit your app. For example, if you use a bundler like Webpack you may want to import the
 output of that instead of the source files. See [inputs](inputs.md) for more information.
-
-## Using ASAR files
-
-Electron supports a type of archive called an ASAR. This is conceptually similar to a zip and can reduce the number of files you ship,
-at the cost of less efficient delta updates. Conveyor doesn't create ASAR files itself, but you can make one with `npx asar` and supply it
-as an input:
-
-```
-app {
-    inputs = [
-        app.asar
-        app.asar.unpacked -> app.asar.unpacked
-    ]
-}
-```
-
-The `.unpacked` directory is for files that can't be placed inside an ASAR, like native code. Please see the [Electron documentation on 
-ASAR files](https://electronjs.org/docs/latest/tutorial/asar-archives) for more details.
 
 ## Adapting a project that used `npx create-electron-app`
 
@@ -185,7 +169,6 @@ app {
 Be aware of the following caveats:
 
 * There's no API to control or monitor updates yet. Note that such an API doesn't necessarily make sense on some platforms e.g. Linux where the user's package manager will apply updates, or on Windows where the app can be updated silently in the background when it's not running.
-* Conveyor doesn't make ASAR files at the moment, so all files will be shipped unpacked. If your app consists of very large numbers of small files this may reduce performance. You could use a bundler, or [make an asar file yourself](https://github.com/electron/asar) and supply it as an input to work around this limitation.
 * You should remove any code that invokes Squirrel.
 
 ## stdlib config
