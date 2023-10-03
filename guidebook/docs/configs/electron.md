@@ -91,13 +91,17 @@ If present, your app will be packaged as using [Electron's archive format](https
    * `false`: do not pack the app into `app.asar`. 
    * an object containing the following fields:
       * `ordering`: path to a text file for ordering the contents of the `app.asar` package.
-      * `unpack`: files matching this [minimatch glob expression](https://github.com/isaacs/minimatch#features) will be placed in a directory named `app.asar.unpacked`.
-      * `unpack-dir`: directories matching this [minimatch glob expression](https://github.com/isaacs/minimatch#features) will be placed in a directory named `app.asar.unpacked`.
+      * `unpack`: a list of [minimatch glob expressions](https://github.com/isaacs/minimatch#features) for files that will be placed in a directory named `app.asar.unpacked` rather than archived.
+      * `unpack-dir`: directories matching these [minimatch glob expressions](https://github.com/isaacs/minimatch#features) will be placed in a directory named `app.asar.unpacked`.
       * `version`: which version of the `@electron/asar` package will be used, defaults to `3.2.7`
 
       Those are simply passed down as flags to the `asar` command.
     
 If your inputs already include a pre-built `app.asar` file, this key will have no effect.
+
+The default `unpack` setting is `[ "*.node" ]` which will unpack all native modules. This is necessary because native modules would otherwise
+have to be unpacked on the fly to a temporary directory by Electron, which is slow and can cause problems with virus scanners and code
+signing. If you change the value of `unpack` make sure to add to it, only overwrite it if you know what you're doing.
 
 ### `app.electron.prune`
 
