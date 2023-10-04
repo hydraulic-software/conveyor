@@ -22,12 +22,12 @@ It's free for open source apps and has [simple per-project pricing](https://www.
     * [Flutter](configs/flutter.md)
 * Automatic releasing to the Microsoft Store, web servers, S3 or [GitHub releases](configs/download-pages#publishing-through-github)
 * Simple but powerful code signing support:
-    * Handles keys of different formats
-    * Can sign/notarize or self-sign apps for every OS from any OS
-    * Microsoft Store apps don't need to be signed
-    * HSM support
+    * Can sign/notarize apps for every OS from any OS
+    * Support for cloud signing services and HSMs
     * Generates CSRs for easier purchasing from certificate authorities
     * Can store root keys in the macOS keychain for extra security
+    * Handles keys of different formats
+    * Self-signing and Microsoft Store support for reducing the cost of certificates
 * Icon generation, rendering and format conversion
 * Generates download sites
 * Generate starter projects for native C++, Electron, JavaFX (JVM) and Jetpack Compose Desktop (JVM)
