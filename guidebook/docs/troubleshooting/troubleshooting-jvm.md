@@ -142,3 +142,19 @@ Caused by: java.net.SocketException: Invalid argument: connect
 ```
 
 ... then you're hitting a bug in Windows. Conveyor 8 automatically works around it, so try upgrading to that version or higher.
+
+## Native crash when using JNA on macOS
+
+If your app uses JNA and crashes in native code with a stack trace ending in this:
+
+```
+Thread 0 Crashed::  Dispatch queue: com.apple.main-thread
+0   libsystem_kernel.dylib               0x190628764 __pthread_kill + 8
+1   libsystem_pthread.dylib             0x19065fc28 pthread_kill + 288
+2   libsystem_c.dylib                   0x19056dae8 abort + 180
+3   libsystem_c.dylib                   0x19056ce44 __assert_rtn + 272
+4   jna8074507030377149867.tmp           0x125b1404c 0x125afc000 + 98380
+5   jna8074507030377149867.tmp           0x125b02d60 Java_com_sun_jna_Native_open + 320
+```
+
+Then [this is a bug in JNA](https://github.com/java-native-access/jna/issues/1452) and you need to upgrade your version of JNA to 5.13.0 or higher. This crash may only seem to occur when your app is packaged, but it's not a Conveyor issue and can occur even without using it. If JNA is being used indirectly via a dependency, you can still force an upgrade by adding a direct dependency on it from your own app - Maven and Gradle will upgrade to make it a consistent version.
