@@ -13,10 +13,12 @@ nav:
     - Getting started: index.md
     - sample-apps.md
     - download-conveyor.md
-    - outputs.md
     - running.md
     - continuous-integration.md
     - performance.md
+    - Outputs:
+        - Output formats: outputs.md
+        - understanding-delta-updates.md
     - Comparison vs alternatives:
         - Electron: comparisons/electron-comparisons.md
         - JVM: comparisons/jvm-comparisons.md

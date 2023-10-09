@@ -75,4 +75,4 @@ This depends on what app framework you use, the type of the change you make to y
 * **Electron.** A single line change to the JS of the generated "hello world" scaffold app yields an approximately 31kb delta patch on macOS, and 115kb on Windows.
 * **JVM.** Delta updates for JVM apps are currently generally the size of each JAR file that changes. This is because it's conventional for both the name of a JAR file and the contents to change simultaneously (due to version numbers), which Conveyor currently sees as deleting an old file and adding a different file. This can easily be optimized to yield smaller deltas, please get in touch with us if you are/will be a commercial customer and would like to see size reductions here. 
 
-Please note that on Windows, the size of the delta update may expand significantly depending on somewhat arbitrary factors. Like with JVM app deltas there are some optimizations available to us here that can shrink delta updates significantly. Please get in touch if you have commercial interest in these optimizations.
+Please see [understanding delta updates](../understanding-delta-updates.md) for more info.
