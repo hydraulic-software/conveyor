@@ -67,3 +67,12 @@ MSIX files are fully supported by Windows network administration systems like Ac
 ## 12. How do I find my app's install folder on Windows?
 
 Windows doesn't store MSIX packages directly under `c:\Program Files` as you might expect, due to the containerization. Instead it's stored under `c:\Program Files\WindowsApps` in a folder name containing a hash of the certificate. The best way to view it and do many other tasks with MSIX is to grab the wonderful [MSIX Hero](https://msixhero.net/), pick your app from the list and then click open and then "Installation folder". This will open an Explorer in the right place. MSIX Hero also lets you run command shells and other tools inside the container.
+
+## 13. What sizes can I expect from delta updates?
+
+This depends on what app framework you use, the type of the change you make to your app and so on.
+
+* **Electron.** A single line change to the JS of the generated "hello world" scaffold app yields an approximately 31kb delta patch on macOS, and 115kb on Windows.
+* **JVM.** Delta updates for JVM apps are currently generally the size of each JAR file that changes. This is because it's conventional for both the name of a JAR file and the contents to change simultaneously (due to version numbers), which Conveyor currently sees as deleting an old file and adding a different file. This can easily be optimized to yield smaller deltas, please get in touch with us if you are/will be a commercial customer and would like to see size reductions here. 
+
+Please note that on Windows, the size of the delta update may expand significantly depending on somewhat arbitrary factors. Like with JVM app deltas there are some optimizations available to us here that can shrink delta updates significantly. Please get in touch if you have commercial interest in these optimizations.
