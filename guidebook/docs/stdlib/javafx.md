@@ -54,3 +54,9 @@ app {
 2️⃣ Set the version of JavaFX you want to use.
 
 3️⃣ Add the JavaFX modules you want to use. You will need at least `javafx.controls`. Be aware that `javafx.web` bundles a build of WebKit which will significantly increase your download size.
+
+You can control the URL from which the JMODs are downloaded by overriding `javafx.jmods-url`, like this:
+
+```hocon
+javafx.jmods-url = download2.gluonhq.com/openjfx/${javafx.version}/openjfx-${javafx.version}
+```
