@@ -157,26 +157,26 @@ At this point you can remove dependencies on Electron Forge, and also the migrat
   // ...
 
   "scripts": {
-    "start": "electron-forge start",
-    "start": "electron .",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "publish": "electron-forge publish"
-    "publish": "conveyor make copied-site"
+-   "start": "electron-forge start",
++   "start": "electron .",
+-   "package": "electron-forge package",
+-   "make": "electron-forge make",
+-   "publish": "electron-forge publish"
++   "publish": "conveyor make copied-site"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^6.4.2",
-    "@electron-forge/maker-deb": "^6.4.2",
-    "@electron-forge/maker-rpm": "^6.4.2",
-    "@electron-forge/maker-squirrel": "^6.4.2",
-    "@electron-forge/maker-zip": "^6.4.2",
-    "@electron-forge/plugin-auto-unpack-natives": "^6.4.2",
-    "@electron-forge/publisher-github": "^6.4.2",
+-   "@electron-forge/cli": "^6.4.2",
+-   "@electron-forge/maker-deb": "^6.4.2",
+-   "@electron-forge/maker-rpm": "^6.4.2",
+-   "@electron-forge/maker-squirrel": "^6.4.2",
+-   "@electron-forge/maker-zip": "^6.4.2",
+-   "@electron-forge/plugin-auto-unpack-natives": "^6.4.2",
+-   "@electron-forge/publisher-github": "^6.4.2",
     "@hydraulic/conveyor": "^11.4.0",
     "electron": "^26.2.2"    
   },
   "dependencies": {
-    "@hydraulic/migrate-to-conveyor": "^1.0.0"
+-    "@hydraulic/migrate-to-conveyor": "^1.0.0"
   }
   
   // ...
