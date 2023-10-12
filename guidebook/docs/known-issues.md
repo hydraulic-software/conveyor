@@ -7,8 +7,6 @@
       needs more polish before being ready to launch. Let us know if you'd like to try it out anyway.
     * Only DEB based Linux distros get native packages. For other distros Conveyor creates a tarball which doesn't auto update. 
       RPM / FlatPak support is on the roadmap.
-    * ARM Linux.
-    * ARM Windows.
 * Mac App Store support (Microsoft Store support is available).
 * There is no `app.updates` mode that lets you preserve the ability to auto update but only trigger it from your app.
 * JVM: support for reading Maven classpaths on non-UNIX platforms.

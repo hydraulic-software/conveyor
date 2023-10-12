@@ -104,8 +104,10 @@ will check for online updates, although you don't need to use the generated HTML
 * `mac.amd64` (Intel Macs)
 * `mac.aarch64` (Apple Silicon)
 * `linux.amd64.glibc`
+* `linux.aarch64.glibc` (Linux on Arm64)
 
 Additional supported targets may be added in future. You can also use shorthand like `mac` on its own to mean both CPU architectures.
+Windows on Arm64 and Linux on Arm64 are supported, but not included by default. To release your app for either, you must specify the `app.machines` key explicitly.
 
 ## Signing
 
