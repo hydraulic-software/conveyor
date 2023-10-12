@@ -16,6 +16,7 @@ nav:
     - running.md
     - continuous-integration.md
     - performance.md
+    - Migrating Electron apps: migrating-electron-apps.md
     - Outputs:
         - Output formats: outputs.md
         - understanding-delta-updates.md
