@@ -73,6 +73,8 @@ Mark it executable (`chmod +x get-electron-version.sh`) and it should print out 
 
     include "#!=app.electron.version get-electron-version.sh"
 
+!!! important
+    The script above requires `yarn` and [`jq`](https://jqlang.github.io/jq/) to be installed.
 
 ### `app.electron.download-base-url`
 

@@ -2,10 +2,8 @@
 
 This module provides a simple way to migrate your users from a Squirrel installation into a new package built with [Conveyor](https://www.hydraulic.dev).
 
-Conveyor is an easier and more powerful alternative to Electron Forge/Builder/Installer. It can build 
-self-updating packages for all desktop operating systems from any OS, can do background and forced-on-launch updates and has many other
-useful features.
-
+Conveyor is an easier and more powerful alternative to Electron Forge/Builder/Installer. It can build self-updating packages for all desktop
+operating systems from any OS, can do background and forced-on-launch updates and has many other useful features.
 
 **[ ➡️ Tutorial](https://conveyor.hydraulic.dev/latest/tutorial/hare/electron/)**
 

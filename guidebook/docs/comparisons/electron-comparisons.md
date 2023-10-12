@@ -5,24 +5,23 @@
 
 ## Unique features of Conveyor compared to Electron autoUpdater
 
-* Don't need different machines; release to everything from anything in one command.
-* Optional web-style (forced) update on launch.
-* No code changes needed.
-* Many Windows improvements:
-    * Users won't need to download Electron again if they have any existing Electron app from the MS Store or that was Conveyorized.
+* CI friendly, can package/sign/deploy for every OS from any machine including dev laptops or Linux CI workers. [Learn more about releasing from CI using cloud code signing](https://hydraulic.dev/blog/21-shipping-electron-apps-from-ci-using-hsm-certificates.html).
+* Updates can be Chrome-style (background, silent) or web-style (immediate on launch, synchronous).
+* No code changes to your app are needed.
+* Many improvements for Windows:
+    * Users won't need to download Electron again if they have any existing Electron app from the MS Store (or that was Conveyorized).
     * Network/admin friendly (doesn't install everything into user's home dirs).
-    * Easily use cloud signing services like SSL.com eSigner
     * Updates apps in the background even when they're not running.
-    * Can deploy straight to the Microsoft Store (saves money because they sign apps for you).
-    * Fast, declarative installs.
-* No special update servers. Static HTTP / S3 / GitHub Releases are fine.
-* Makes a download page for you.
+    * Can deploy straight to the Microsoft Store (saves money because MS sign apps for you, in this mode).
+    * Fast, declarative, interaction-free installs.
+* No special update servers needed. Static HTTP / S3 / GitHub Releases are fine.
+* Makes a download HTML page for you.
 
 ## Simple
 
-* One way to do things optimized for ease of use, not 50 half-baked formats. 
+* One way to do things that all works out of the box, not dozens of half-maintained plugins. 
 * Convenient declarative JSON superset that can include JSON files.
-* Lots of features to make signing easy and simple, including self signing, CSR generation for purchase and so on.
+* Lots of features to make signing easy and simple including self signing, cloud HSMs, CSR generation for purchase and so on.
 
 ## Alternative update engines
 
