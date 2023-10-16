@@ -10,12 +10,10 @@ It needs to be run from a Linux runner (e.g. `ubuntu-latest`).
 ## Usage
 
 ```yaml
-- uses: hydraulic-software/conveyor/actions/build@v9.2
+# IMPORTANT: Look up the latest Conveyor version and use it here!
+# https://conveyor.hydraulic.dev/latest/
+- uses: hydraulic-software/conveyor/actions/build@v11.4
   with:
-    # Which conveyor command to execute. For example, 'make copied-site'.
-    # Default: 'make site'
-    command: ''
-    
     # The root signing key for your application, corresponding to config key 'app.signing-key'.
     # This is required to properly sign your app. We recommend storing your signing key in
     # your GitHub repository secrets as in the example below.
@@ -28,7 +26,11 @@ It needs to be run from a Linux runner (e.g. `ubuntu-latest`).
     
     # Additional flags to pass to Conveyor.
     extra_flags: ''
-    
+
+    # Which conveyor command to execute. For example, 'make copied-site'.
+    # Default: 'make site'
+    command: ''
+
     # Optional cache key used to store the Conveyor installation and task cache.
     # Default: 'conveyor'
     cache_key: ''
@@ -37,8 +39,7 @@ It needs to be run from a Linux runner (e.g. `ubuntu-latest`).
     # Default: '.conveyor'
     cache_path: ''
     
-    # Version of Conveyor to run.
-    # Default: 7.1
+    # Version of Conveyor to run. Defaults to the same version as the Action itself.
     conveyor_version: ''
 ```
 
@@ -99,7 +100,7 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
           
       - name: Run Conveyor     
-        uses: hydraulic-software/conveyor/actions/build@v9.2
+        uses: hydraulic-software/conveyor/actions/build@v11.4
         with:
           command: make copied-site
           signing_key: ${{ secrets.SIGNING_KEY }}          
@@ -140,5 +141,5 @@ app {
   mac.aarch64.inputs += artifacts/build-macos-aarch64.tar  
 }
 
-conveyor.compatibility-level = 7
+conveyor.compatibility-level = 11
 ```
