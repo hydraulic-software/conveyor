@@ -14,22 +14,30 @@ It's free for open source apps and has [simple per-project pricing](https://www.
 
 ## Features
 
-* [Self-updating packages](configs/update-modes.md) for every OS, built on any OS
-    * Background updates or check-on-launch
-* App framework support:
-    * [Electron](configs/electron.md)
-    * [JVM](configs/jvm.md)
-    * [Flutter](configs/flutter.md)
-* Automatic releasing to the Microsoft Store, web servers, S3 or [GitHub releases](configs/download-pages#publishing-through-github)
-* Simple but powerful code signing support:
+* **[Sophisticated software updates](configs/update-modes.md)**
+    * [Platform native package types and update systems](outputs.md), without any lockin.
+    * Chrome-style silent background updates
+    * Web-style synchronous update on launch
+    * Advanced [delta updates](understanding-delta-updates.md).
+    * No code changes necessary.
+* **App framework integration:**
+    * [Electron](configs/electron.md): [simpler than Forge/Builder/Squirrel](comparisons/electron-comparisons.md), generates ASAR files, can read `package.json` files. 
+    * [JVM](configs/jvm.md): bundles a `jlink` optimized JVM, custom native launchers, many optimizations and usability improvements for desktop apps.  
+    * [Flutter](configs/flutter.md): easily ship apps that share code with mobile.
+* **Excellent support for CI/CD:**
+    * Package and deploy directly for _every platform you support_ from any Linux build agent, without needing Mac/Windows workers. 
+    * Automatic releasing to the Microsoft Store, web servers, S3 or [GitHub releases](configs/download-pages#publishing-through-github)
+    * A [GitHub Action](continuous-integration.md#using-github-actions)
+    * Support for [cloud signing services and HSMs](configs/keys-and-certificates.md#cloud-remote-signing-windows-only), eliminating the need for USB Windows signing keys.
+* **Easy and powerful code signing:**
     * Can sign/notarize apps for every OS from any OS
-    * Support for cloud signing services and HSMs
     * Generates CSRs for easier purchasing from certificate authorities
     * Can store root keys in the macOS keychain for extra security
     * Handles keys of different formats
     * Self-signing and Microsoft Store support for reducing the cost of certificates
-* Icon generation, rendering and format conversion
-* Generates download sites
-* Generate starter projects for native C++, Electron, JavaFX (JVM) and Jetpack Compose Desktop (JVM)
-* Pierce the abstraction! Over 120 different settings let you take control of every OS specific detail
-* No lockin thanks to using standard package formats and open source frameworks
+* **Icon generation**, rendering and format conversion
+* **Generates a download page for you**
+    * Auto-detects the user's OS and CPU architecture
+    * "Big Green Button" download UX.
+* **Scaffold projects** for native C++, Electron, JavaFX (JVM) and Jetpack Compose Desktop (JVM)
+* Pierce the abstraction! Over 120 different settings let you take control of every OS specific detail, or ignore them to accept the smart defaults.

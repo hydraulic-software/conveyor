@@ -16,40 +16,39 @@ without requiring you to have those operating systems.
 
 This repo contains the parts of the product that are open source:
 
-* The user guide.
+* [The user guide](https://conveyor.hydraulic.dev/latest/).
 * [The Gradle plugin](gradle-plugin/README.md).
 * [A GitHub Action](actions/build/README.md).
 
 and you can find the code + package config for the Eton Notes sample app in [a separate repository](https://github.com/hydraulic-software/eton-desktop).
 
-## Features
-
-* **Create packages for every OS on any OS.** Conveyor implements everything itself so doesn't rely on platform native tooling.
-    * Build Windows applications that use the built-in [Windows 10 MSIX/AppInstaller system](https://conveyor.hydraulic.dev/latest/outputs/).
-        * Windows keeps them up to date in the background automatically.
-        * Updates use delta downloads and data is shared between apps, even from different vendors.
-        * Has everything IT departments need to easily deploy to managed networks.
-    * Build Mac applications that use the popular [Sparkle 2 update framework](https://sparkle-project.org/).
-        * Sparkle is automatically used, without needing any code changes in your apps.
-    * Build apt repositories for Debian/Ubuntu, tarballs for other distros. Integrates with systemd for servers and cron jobs.
-* **Generate a static download site.**
-    * Detects the user's operating system and CPU architecture.
-    * [Release via GitHub releases](https://conveyor.hydraulic.dev/latest/configs/download-pages/#publishing-through-github).
-* **Brainless code signing.**
-    * Sign your apps with Apple/Windows certificates for a better download UX, or ignore it and get self-signed packages with a `curl | bash` style install.
-    * You can sign/notarize apps on any OS.
-    * You can backup your single root key by writing it down as words on paper.
-* **Pre-made template projects.**
-    * CMake + OpenGL to demonstrate building and packaging C++ native apps that use third party dependencies.
-    * Jetpack Compose Desktop and JavaFX for cross-platform GUI apps.
-* **[Deep integration for JVM applications](https://conveyor.hydraulic.dev/latest/configs/jvm/).**
-    * Uses JLink and jdeps to minimize the JDK size.
-    * Import configuration from Maven and Gradle build systems.
-    * Pre-canned template apps. Publish your first app in five minutes.
-* **Pierce the abstraction!** Cross platform tooling doesn't mean giving up platform-specific features. Over 120 different settings let you precisely configure your packages, including your:
-    * Mac `Info.plist` files.
-    * Windows XML app manifests.
-    * Linux `.desktop` files and package install/uninstall scripts.
+* **[Sophisticated software updates](https://conveyor.hydraulic.dev/latest/configs/update-modes.md)**
+    * [Platform native package types and update systems](https://conveyor.hydraulic.dev/latest/outputs.md), without any lockin.
+    * Chrome-style silent background updates
+    * Web-style synchronous update on launch
+    * Advanced [delta updates](https://conveyor.hydraulic.dev/latest/understanding-delta-updates.md).
+    * No code changes necessary.
+* **App framework integration:**
+    * [Electron](https://conveyor.hydraulic.dev/latest/configs/electron.md): [simpler than Forge/Builder/Squirrel](https://conveyor.hydraulic.dev/latest/comparisons/electron-comparisons.md), generates ASAR files, can read `package.json` files.
+    * [JVM](https://conveyor.hydraulic.dev/latest/configs/jvm.md): bundles a `jlink` optimized JVM, custom native launchers, many optimizations and usability improvements for desktop apps.
+    * [Flutter](https://conveyor.hydraulic.dev/latest/configs/flutter.md): easily ship apps that share code with mobile.
+* **Excellent support for CI/CD:**
+    * Package and deploy directly for _every platform you support_ from any Linux build agent, without needing Mac/Windows workers.
+    * Automatic releasing to the Microsoft Store, web servers, S3 or [GitHub releases](https://conveyor.hydraulic.dev/latest/configs/download-pages#publishing-through-github)
+    * A [GitHub Action](https://conveyor.hydraulic.dev/latest/continuous-integration.md#using-github-actions)
+    * Support for [cloud signing services and HSMs](https://conveyor.hydraulic.dev/latest/configs/keys-and-certificates.md#cloud-remote-signing-windows-only), eliminating the need for USB Windows signing keys.
+* **Easy and powerful code signing:**
+    * Can sign/notarize apps for every OS from any OS
+    * Generates CSRs for easier purchasing from certificate authorities
+    * Can store root keys in the macOS keychain for extra security
+    * Handles keys of different formats
+    * Self-signing and Microsoft Store support for reducing the cost of certificates
+* **Icon generation**, rendering and format conversion
+* **Generates a download page for you**
+    * Auto-detects the user's OS and CPU architecture
+    * "Big Green Button" download UX.
+* **Scaffold projects** for native C++, Electron, JavaFX (JVM) and Jetpack Compose Desktop (JVM)
+* Pierce the abstraction! Over 120 different settings let you take control of every OS specific detail, or ignore them to accept the smart defaults.
 
 ## Helping out
 
