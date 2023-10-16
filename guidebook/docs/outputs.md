@@ -4,7 +4,11 @@ Conveyor generates packages for Windows, macOS and Debian/Ubuntu based Linux dis
 
 ## Contents of the generated site
 
-When you generate a repository site you will get the following files:
+!!! tip "metadata.properties"
+    You must upload this file along with the rest of the output files to your download site URL, otherwise neither updates nor delta
+    generation will work correctly.
+
+When you generate a repository site you will get many files. **All of them must be uploaded** except for the `download.html` and icon files, which are optional. 
 
 * For Windows:
     * An MSIX package and `.appinstaller` XML file. The `.appinstaller` file is what's checked to find updates, and it contains its own URL so you can open it from any location (i.e. a download), and it will still work.
@@ -18,7 +22,7 @@ When you generate a repository site you will get the following files:
     * A `.deb` package for Debian/Ubuntu derived distributions. The site directory is also an apt repository, and the `.deb` will install sources files that use it.
     * A plain tarball (which doesn't auto update).
 * A `download.html` file that auto-detects the user's operating system and CPU when possible.
-* A `metadata.properties` file that contains keys extracted from your config. This is here so your code can easily read the latest version by simply parsing key=value lines of text.
+* A `metadata.properties` file that contains key=value pairs. This file is used for various different purposes in Conveyor and must be uploaded. If it's missing then some features won't work properly.
 * If you are self-signing, you'll also have:
     * A `.crt` file containing your Windows self-signed certificate.
     * A `launch.mac` file containing a shell script that will download the Mac app with `curl`, unpack it to `/Applications` or `~/Applications` and then start it up.
@@ -27,7 +31,7 @@ When you generate a repository site you will get the following files:
 
 ## Windows
 
-Conveyor uses Windows' built-in packaging technology, [MSIX](https://docs.microsoft.com/en-us/windows/msix/). Like the older MSI format, support for it is built in to Windows, but MSIX is a complete redesign with a different format, approach and capabilities. All Windows 10/11 systems support it and Microsoft have also backported it to Windows 7.[^1] MSIX files are enhanced ZIP files with several features that make it a good fit for modern desktop app distribution:
+Conveyor uses Windows' built-in packaging technology, [MSIX](https://docs.microsoft.com/en-us/windows/msix/). A small installer EXE drives the Windows Deployment Engine APIs to install or update the package. Support for MSIX is built in to Windows. All Windows 10/11 systems support it and Microsoft have also backported it to Windows 7.[^1] MSIX files are enhanced ZIP files with several features that make it a good fit for modern desktop app distribution:
 
 * **[Delta downloads.](understanding-delta-updates.md)** MSIX breaks apps into 64kb chunks and Windows only downloads those it hasn't already got. This works for *new installs* and *across unrelated vendors and apps*, meaning if the user has already downloaded some app using a popular runtime, your app using the same runtime will install near-instantly as only the unique program data will need to be fetched. Files on disk are also de-duplicated when possible by using hard links. This works because the "installer" the user downloads is in reality a small XML file that points to the real underlying file, which is itself indexed by hash.
 * **Automatic upgrades**. Windows keeps MSIX apps up to date in the background, even if they aren't running. You can also force Windows to check for an update on every launch, if you need your app to stay tightly synchronized with a remote server.
@@ -35,18 +39,21 @@ Conveyor uses Windows' built-in packaging technology, [MSIX](https://docs.micros
 * **Slick enterprise IT integration.** Historically on Windows every app has rolled its own installer and update system, but IT teams need a unified system they can easily manage. To get it they must engage in a slow and painful "repackaging" process. That's bad for everyone, and leads to desktop apps having a reputation for being painful to deploy inside large enterprises. Because it's managed by Windows, MSIX gives IT teams [everything they need](https://docs.microsoft.com/en-us/windows/msix/desktop/managing-your-msix-deployment-overview) to manage app rollouts, rollbacks and access control, all fully integrated with Active Directory, InTune and Azure.
 * **Support for CLI apps.** CLI apps are automatically added to the system search path, including in running terminal sessions. You can invoke programs from the command line the moment they're installed.
 
-If you'd like to learn more about MSIX, check out [the Microsoft website for it](https://docs.microsoft.com/en-us/windows/msix). You can script the Windows package manager using PowerShell (e.g. with [the Appx cmdlets](https://docs.microsoft.com/en-us/powershell/module/appx/?view=windowsserver2022-ps)).
+If you'd like to learn more about MSIX, check out [the Microsoft website for it](https://docs.microsoft.com/en-us/windows/msix). You can script the Windows package manager using PowerShell (e.g. with [the Appx cmdlets](https://docs.microsoft.com/en-us/powershell/module/appx/?view=windowsserver2022-ps)). You can also just unzip the MSIX to look inside.
 
 For people who don't want to or can't use MSIX for some reason, Conveyor also creates a plain `.zip` version of the app. This version won't auto update and is especially useful for IT departments that have a custom software distribution system, who would otherwise need to repackage the MSIX.
 
 ### Installer EXE
 
-Conveyor generates a small (~500kb) installer EXE. You don't have to use this (you can direct your users to the `.appinstaller` file which Windows has a built in app for), but it's strongly recommended that you do. The installer drives the installation or upgrade process using the Windows package manager/download APIs directly, yielding these benefits:
+Conveyor generates a small (~500kb) installer EXE. You don't have to use this as your users can open the `.appinstaller` or `.msix` files directly, but it's strongly recommended that you do and Conveyor is unsupported when using direct installation. 
+
+The installer drives the installation or upgrade process using the Windows package manager/download APIs directly, yielding these benefits:
 
 1. Fewer clicks. The installer begins the process immediately and launches your app as soon as it's ready. This makes it more convenient for your users.
 2. Bug workarounds. The "App Installer" app that Microsoft ships for installing MSIX files unfortunately isn't always reliable, especially in Windows 10. The Conveyor installer works around bugs in Windows to ensure a reliable install.
 3. Users are familiar with installer EXEs.
-4. If the app is already installed and the user runs the installer again, it immediately launches the app. Users who aren't sure how to use the start menu can therefore get the right behavior without risking double installs, confusing UI etc.
+4. If the app is already installed and the user runs the installer again, it immediately launches the app. Users who accidentally always start the app from their download folder are thus protected from accidental reinstalls/double installs, etc.
+5. It can handle the case where you [change your signing identity](configs/windows.md#escape-hatch-mechanism). The native MSIX support for this is lacking in several aspects.
 
 The EXE is also included into your package files. You can run it to do an update check, and it will be invoked as part of your app startup sequence if you've enabled [aggressive updates](configs/update-modes.md#aggressive-updates) or the [escape hatch](configs/windows.md#escape-hatch-mechanism) feature.
 
