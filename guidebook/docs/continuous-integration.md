@@ -1,9 +1,9 @@
 # Continuous integration
 
-## Configuring CI for Conveyor
+!!! tip "Looking for GitHub Actions?"
+    Conveyor has an [Action ready for you to use](#using-github-actions), and [a blog post about how to use it](https://hydraulic.dev/blog/12-github-action.html).
 
-!!! important "Caching Conveyor downloads"
-    Please be careful that your CI/build system doesn't download Conveyor over and over again. If you can't pre-install it on your workers for some reason, make sure the download is cached locally. IP addresses that seem to be re-downloading Conveyor on every build may be throttled or blocked.
+## Configuring CI for Conveyor
 
 Conveyor works well with CI platforms like TeamCity, GitHub Actions etc. When building in CI you should supply your signing credentials in a different way than using the `defaults.conf` file. A simple approach is to create a separate file next to your main `conveyor.conf` file that looks like this:
 
@@ -29,6 +29,9 @@ Call it something like `ci.conveyor.conf`. Copy your `.cer`/`.pem` files to be n
 An alternative approach is to set a passphrase, then put the encrypted `app.signing-key` value into your main app config that gets checked into version control. You can then put the passphrase into an environment variable and specify it on the command line with `--passphrase=env:PASSPHRASE`.
 
 To get Conveyor onto your build agents either download the Linux tarball or pre-install it on your agents. You can get a link for the current version from the [download page](https://downloads.hydraulic.dev/conveyor/download.html), which will look like this: `https://downloads.hydraulic.dev/conveyor/conveyor-${CONVEYOR_VERSION}-linux-amd64.tar.gz`.
+
+!!! important "Caching Conveyor downloads"
+    Please be careful that your CI/build system doesn't download Conveyor over and over again. If you can't pre-install it on your workers for some reason, make sure the download is cached locally. IP addresses that seem to be re-downloading Conveyor on every build may be throttled or blocked.
 
 ## macOS keychain access
 
