@@ -4,7 +4,7 @@
 
 Conveyor makes distributing desktop apps as easy as shipping a web app. It's a tool not a service, it generates and signs [self-upgrading packages for Windows, macOS and Linux using each platform's native package formats](outputs.md) without requiring you to have those operating systems, and it looks like this:
 
-<video width="100%" poster="https://conveyor.hydraulic.dev/assets/promo.jpg" controls><source src="https://conveyor.hydraulic.dev/assets/promo.mp4" type="video/mp4"></video>
+<iframe width="100%" height="600" src="https://www.youtube.com/embed/oYznJERB3mM?si=8BOC7z0BUejavqWF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 It's free for open source apps and has [simple per-project pricing](https://www.hydraulic.dev/pricing.html) for commercial apps.
 
