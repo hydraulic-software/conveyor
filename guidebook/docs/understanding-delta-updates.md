@@ -31,10 +31,10 @@ You don't need to take any action to get delta updates with Conveyor. Windows ca
 packages delta patch files will be generated for you automatically and deposited as part of the site files. You can control [how many
 previous versions will have delta patches generated](configs/mac.md#appmacdeltas); it defaults to five.
 
-!!! tip metadata.properties
+!!! tip "metadata.properties"
     You must upload this file along with the rest of the output files to your download site URL, otherwise neither updates nor delta
     generation will work correctly.
-
+    
 ## Measuring delta update size
 
 You can see how big delta updates are on macOS by looking at the size of the `*.delta` files generated in the output directory.
