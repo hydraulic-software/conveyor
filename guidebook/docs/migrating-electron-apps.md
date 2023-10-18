@@ -36,7 +36,7 @@ And your `package.json` file will have references to Electron Forge:
     "@electron-forge/maker-zip": "^6.4.2",
     "@electron-forge/plugin-auto-unpack-natives": "^6.4.2",
     "@electron-forge/publisher-github": "^6.4.2",
-    "electron": "^26.2.2"
+    "electron": "^26.4.0"
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
@@ -80,7 +80,7 @@ Remove the dependencies on those packages from your `package.json`:
     "@electron-forge/maker-zip": "^6.4.2",
     "@electron-forge/plugin-auto-unpack-natives": "^6.4.2",
     "@electron-forge/publisher-github": "^6.4.2",
-    "electron": "^26.2.2"
+    "electron": "^26.4.0"
   },
   "dependencies": {
 -    "electron-squirrel-startup": "^1.0.0",
@@ -245,7 +245,7 @@ aggressive mode.
     -   "@electron-forge/publisher-github": "^6.4.2",    
         "@hydraulic/conveyor": "^11.4.0",
     -   "@hydraulic/override-zip": "^1.0.0",
-        "electron": "^26.2.2"    
+        "electron": "^26.4.0"    
       },
       "dependencies": {
       }
@@ -286,7 +286,7 @@ aggressive mode.
     -   "@electron-forge/plugin-auto-unpack-natives": "^6.4.2",
     -   "@electron-forge/publisher-github": "^6.4.2",
         "@hydraulic/conveyor": "^11.4.0",
-        "electron": "^26.2.2"    
+        "electron": "^26.4.0"    
       },
       "dependencies": {
     -    "@hydraulic/migrate-to-conveyor": "^1.0.0"
