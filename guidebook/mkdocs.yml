@@ -150,6 +150,7 @@ markdown_extensions:
   - pymdownx.tabbed:
       alternate_style: true
   - pymdownx.tilde
+  - tables
 
 extra_css:
   - stylesheets/guidebook.css
