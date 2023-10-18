@@ -44,6 +44,8 @@ module.exports = function(opts) {
     debug('Running from npm phase "%s", ignoring the migration.', process.env.npm_lifecycle_event);
     return false;
   }
+  // This module is only meant for the migration from Squirrel on Windows, and has no effect on macOS.
+  // To migrate from Squirrel on macOS, see https://conveyor.hydraulic.dev/latest/migrating-electron-apps/
   if (process.platform != 'win32') {
     debug('Not running on Windows.');
     return false;

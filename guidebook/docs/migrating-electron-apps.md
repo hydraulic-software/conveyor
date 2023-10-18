@@ -176,6 +176,9 @@ but you can start to point new users there:
       }
     ```
 
+    This plugin will simply replace the `.zip` files produced by [@electron-forge/maker-zip](https://www.npmjs.com/package/@electron-forge/maker-zip) with the zips
+    provided via the zipPaths config. This will make Squirrel install the Conveyor packaged app on the next update.
+
 === ":fontawesome-brands-windows: Windows"
 
     We provide an open source utility package to assist in the migration. Install this package as a dependency of your app:
@@ -201,7 +204,7 @@ but you can start to point new users there:
 
     This version of the app will be just a bridging version, so you could also remove the rest of the code of your app to make it smaller.
     Also notice that it's safe to use the `@hydraulic/migrate-to-conveyor` even in the Conveyor packaged code, so if necessary both distributions 
-    can share the code, for convenience.
+    can share the code, for convenience. It also has no effect on macOS apps, so even macOS distributions can share the code.
 
 Publish a Squirrel version of the app using Forge:
 
