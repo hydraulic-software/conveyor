@@ -16,6 +16,7 @@ nav:
     - running.md
     - continuous-integration.md
     - performance.md
+    - Migrating Electron apps: migrating-electron-apps.md
     - Outputs:
         - Output formats: outputs.md
         - understanding-delta-updates.md
@@ -149,6 +150,7 @@ markdown_extensions:
   - pymdownx.tabbed:
       alternate_style: true
   - pymdownx.tilde
+  - tables
 
 extra_css:
   - stylesheets/guidebook.css
