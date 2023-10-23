@@ -12,6 +12,12 @@ app.windows {
 
   # What online update style to use.
   updates = background
+  
+  # Options related to the Windows installer.
+  installer {
+    # Which theme should be used for the installer UI.
+    theme = dark
+  }
 
   # Whether to sign the EXE/DLL files or not (true/false).
   sign = ${app.sign}
@@ -63,6 +69,12 @@ Normally this header is set by the compiler. Conveyor can set it for you to the 
 When a package contains console mode EXEs your MSIX package will register itself as a command line app. The moment installation completes it becomes accessible in all running terminal sessions.
 
 What if your app is both a CLI *and* a GUI app simultaneously? You can certainly still accept command line switches, even for GUI mode apps. It's only console output and input that's affected by this flag. If you need both then you will need to prepare separate EXEs for your app, one for each mode, and provide them as Windows-specific inputs. The GUI mode exe should have the same name as the generated launcher would: `${app.display-name}.exe`. The CLI mode exe can be named whatever you want.
+
+## Installer options
+
+### `app.windows.installer.theme`
+
+Which theme to be used for the Windows installer. Currently Conveyor supports themes `light` and `dark`. If this is left unset, the Installer will automatically select `light` or `dark` according to the Windows theme currently in use.
 
 ## Manifests
 
