@@ -90,6 +90,10 @@ It can be useful to have different icons for each OS to match the platform nativ
 
 By default, icons will be generated with a label based on the contents of `app.display-name` with a random gradient background.
 
+## Theme
+
+**`app.theme`** Allows you to select the theme of the download site and the Windows installer in a single switch. Currently supported themes are `light` and `dark`. If left unset, the user system's theme will be used by default.
+
 ## Download site settings
 
 The `site` section controls the generation of the download site. Currently you must have a download site because it's where the packages

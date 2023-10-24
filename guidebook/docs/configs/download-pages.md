@@ -85,6 +85,11 @@ for open source projects, since those are required to advertise the fact that th
 
 Commercial projects that have acquired a Conveyor license can remove the badge by setting key `app.site.show-conveyor-badge` to `false`.
 
+## Theme
+
+The `app.site.theme` key allows you to select which theme to be used for the download site. Currently Conveyor supports themes `light` and `dark`. If this is left unset, the theme will be set dynamically according to the user system's theme.
+By default, this will follow the value of `app.theme`.
+
 ## Exporting to metadata.properties
 
 When you generate a download/update site with `conveyor make site` one of the generated files is called `metadata.properties`. It's a text file containing key=value pairs and by default will look like this:

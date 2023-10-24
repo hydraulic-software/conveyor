@@ -75,6 +75,7 @@ What if your app is both a CLI *and* a GUI app simultaneously? You can certainly
 ### `app.windows.installer.theme`
 
 Which theme to be used for the Windows installer. Currently Conveyor supports themes `light` and `dark`. If this is left unset, the Installer will automatically select `light` or `dark` according to the Windows theme currently in use.
+By default, this will follow the value of `app.theme`.
 
 ## Manifests
 
