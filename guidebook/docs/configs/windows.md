@@ -44,7 +44,7 @@ See [signing keys](index.md#signing).
 
 ### `app.windows.override-icon` 
 
-Boolean. If an icon is already present in the EXE resources, controls whether to replace it with the icon produced by Conveyor. Useful when working with frameworks that use their own logo as the default EXE icon.
+Boolean, default is true. If true and an icon is already present in the EXE resources, it will be replaced with the icon produced by Conveyor. Useful when working with frameworks that use their own logo as the default EXE icon.
 
 ### `app.windows.exe-installer-basename`
 
