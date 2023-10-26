@@ -15,4 +15,4 @@ Windows 11 works fine.
 When packaging JVM apps the following requirements also apply:
 
 * **macOS:** macOS 10.14+ (Mojave)
-* **Linux:** glibc 2.14+ (released 2011)
+* **Linux:** glibc 2.17+ (released 2012)
