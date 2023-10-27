@@ -216,7 +216,7 @@ And that's it! The next time users accept an update the Conveyor installer will 
 Squirrel version will be uninstalled in the background. The experience is similar to what Conveyor users observe when receiving an update in
 aggressive mode.
 
-### Step 3: Clean up
+## Step 3: Clean up
 
 === ":fontawesome-brands-apple: macOS"
 
