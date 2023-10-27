@@ -220,10 +220,11 @@ app.windows.manifests.msix.virtualization {
 }
 ```
 
-Setting this key will not only generate the correct fragment of the MSIX manifest, it will also implicitly enable the `unvirtualizedResources` restricted capability, which is necessary in this case.
+!!! important "Microsoft Store"
+    Setting this key will not only generate the correct fragment of the MSIX manifest, it will also implicitly enable the `unvirtualizedResources` restricted capability, which is necessary in this case. If you submit such an app to the Microsoft Store they will request a justification for why you need it.
 
 !!! note "UNIX domain sockets"
-    Some versions of Windows have a kernel bug that breaks UNIX domain sockets when they are stored in a virtualized directory. This particularly affects Java 19+ because it uses a UNIX domain socket as part of establishing outbound TCP connections. When your app uses a JVM and `conveyor.compatibility-level >= 8` the `excluded-directories` key will have `LocalAppData/Temp` added to it, thus excluding the temp dir from virtualization.  
+    Some versions of Windows have a kernel bug that breaks UNIX domain sockets when they are stored in a virtualized directory. A reasonable workaround is to add to the `excluded-directories` key `LocalAppData/Temp`, thus excluding the temp dir from virtualization. Between compatibility levels 8 and 11 Conveyor did this automatically to ensure JVM apps could work correctly. Starting from Conveyor 12 a different workaround is used and this exclusion is no longer needed.  
 
 !!! note "Old Windows 10 versions"
     Windows 10 builds before 21H1 will have filesystem virtualization disabled entirely when there are any excluded directories, as the ability to control virtualization on a per-directory level was only introduced in that version.
@@ -323,7 +324,6 @@ app {
 
 - [ ] Go to **App Overview** and click **Start Submission**. In the **Packages** section, upload the MSIX file generated in the previous step. Fill out the other details as required (screenshot, privacy policy etc).
 - [ ] When asked why you need `runFullTrust`, say: "This is a native Win32 app and thus cannot run in the UWP sandbox".
-- [ ] If asked why you need `unvirtualizedResources`, say "This is required to work around a Windows bug affecting UNIX domain sockets that can cause Java apps to crash".
 
 Once your initial submission gets approved, Conveyor can manage the updates for you. You'll need to authorize Conveyor to send submissions on your behalf:
 
