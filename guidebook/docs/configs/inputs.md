@@ -130,7 +130,17 @@ are seekable.
 **`content`** A string that will be placed in the given destination file. It's de-indented for you, so you can place the content at the
 right offset to look good in the config. On UNIX if it starts with a shebang line it will be marked executable automatically. The
 HOCON `"""` multi-line string literal syntax is useful here but remember that if you want to include HOCON substitutions, you have to do
-that _outside_ the string, so you'll need to write something like `"""${my-var}"""`.
+that _outside_ the string, so you'll need to write something like this:
+
+```
+my-var = "Substitution example"
+app.inputs += {
+  to = "example.txt"  
+  content = """     
+     Content: ["""${my-var}"""]
+  """
+}
+```
 
 **`to`** The location in the staging area where the input should be placed or extracted to. By default this is the root.
 
