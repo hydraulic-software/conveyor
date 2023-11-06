@@ -13,6 +13,18 @@ Here is how behaviour changes at each level.
 
 The default value for `app.windows.manifests.msix.background-color` is now `transparent`. Previously, the default was `#ffffff`.
 
+From level 12 onwards, the Temp directory is no longer devirtualized on Windows. This avoids problems with Microsoft Store permission
+reviews. Instead, for JVM apps the temp directory is pointed into the user's home directory, to work around bugs in the Windows kernel
+that would otherwise break TCP connections.
+
+These new keys were added:
+
+* app.electron.asar
+* app.electron.prune
+* app.windows.installer.theme
+* app.site.theme
+* app.theme
+
 ## Level 11
 
 These new keys were added:
