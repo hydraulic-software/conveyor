@@ -12,6 +12,14 @@ Let's learn HOCON by tidying up a simple JSON document.
 You can run `conveyor json` to see the JSON equivalent of your config, including the default configuration that's been merged in. Secrets
 will be redacted from this output so it's safe to share.
 
+## Tips
+
+There are a few common mistakes that people sometimes make when writing HOCON:
+
+1. **String concatenation.** Although there is a `+=` operator, there's no `+` operator. Strings are concatenated directly. To add a word to the end of a variable therefore you can write `${foo} bar`, or with quoting `${foo}" bar"`, but not `${foo} + " bar"` as you might expect from other languages.
+2. **Object merge vs replacement.** Writing `a = { b = "c" }` is different to `a { b = "c" }`. The former _replaces_ the value of `a` with a new object consisting of a single key. The latter _extends_ the value of `a` by merging with it, thus preserving any keys in the pre-existing `a` object.
+3. **Interpolation does not take effect inside quoted strings.** You can't write this: `a = "foo bar ${key} baz"` as that will interpret `${key}` literally. You have to close the quoting, interpolate, then re-open the quoting: `a = "foo bar "${key}" baz"`. 
+
 ## Editor plugins
 
 * [JetBrains IDEs](https://plugins.jetbrains.com/plugin/10481-hocon)
