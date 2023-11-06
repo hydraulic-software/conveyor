@@ -168,7 +168,7 @@ app {
 }
 ```
 
-[Generate an App Store Connect API Key](https://developer.apple.com/documentation/appstoreconnectapi/creating_api_keys_for_app_store_connect_api) at https://appstoreconnect.apple.com/acess/api. 
+[Generate an App Store Connect API Key](https://developer.apple.com/documentation/appstoreconnectapi/creating_api_keys_for_app_store_connect_api) at https://appstoreconnect.apple.com/access/api. 
 For _Access Role_, choose **Developer**. Other roles may or may not work for notarization.
 Take note of the _Issuer Id_ and _Key ID_, and download the private key file (it can be downloaded at most once).
 Keep it safe!
