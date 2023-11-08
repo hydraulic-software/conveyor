@@ -11,7 +11,7 @@ The download page is optional and can just be ignored if you don't want it. It h
 * Provides copy/pasteable terminal commands to install the app on Linux.
 * Shows your app logo.
 
-[See an example](https://downloads.hydraulic.dev/eton-sample/download.html)
+[See an example](https://hydraulic-software.github.io/eton-desktop/download.html)
 
 ![Download page screenshot](download-page-screenshot.png)
 
