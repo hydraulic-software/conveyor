@@ -100,7 +100,7 @@ If present, your app will be packaged as using [Electron's archive format](https
    
 If your inputs already include a pre-built `app.asar` file, this key will have no effect.
 
-The default `unpack` setting is `[ "*.node" ]` which will unpack all native modules. This is necessary because native modules would otherwise
+The default `unpack` setting is `[ "**/*.node" ]` which will unpack all native modules. This is necessary because native modules would otherwise
 have to be unpacked on the fly to a temporary directory by Electron, which is slow and can cause problems with virus scanners and code
 signing. If you change the value of `unpack` make sure to add to it, only overwrite it if you know what you're doing.
 
