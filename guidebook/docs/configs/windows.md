@@ -38,7 +38,7 @@ URL of a cryptographic timestamping server (often called a timestamping authorit
 
 Boolean, controls whether to sign the Windows EXE/DLL/package files or not. If false then you can't produce an MSIX file. Defaults to the value of `${app.sign}` (which is true).
 
-### `app.windows.signing-key`, `app.windows.certificate`
+### `app.windows.signing-key`, `app.windows.certificate`, `app.windows.verify-certificate-chain`
 
 See [signing keys](index.md#signing).
 

@@ -168,6 +168,15 @@ that case a self-signed certificate is deterministically derived from the root k
     The words used to encode the signing key come from a predefined dictionary, so you can't choose your own sentences here. This encoding makes
     the key easier to write down with a pen and paper, which can be a low tech but reliable way to back it up.
 
+### `app.windows.verify-certificate-chain`
+
+Whether Conveyor should verify the Windows certificate chain by building a path between your certificate and a Windows trusted root certificate.
+This check is turned on by default because if your certificate chain isn't valid your users won't be able to install your app, but it can be turned off
+for advanced uses where certificates aren't issued by Windows recognized CAs. We recommend only turning this off if you know what you're doing.
+
+If your certificate fails this verification, you might need to add intermediate certificates to the certificate file/store provided to Conveyor.
+The intermediates are usually available directly from the CA that issued your certificate.
+
 ## Character encodings
 
 By default, your application will be configured to use UTF-8 universally on all platforms, regardless of what character encoding the user's host system is set to. On Windows the custom JVM launcher Conveyor uses will configure the terminal appropriately so Unicode works (when the encoding is set to UTF-8).
