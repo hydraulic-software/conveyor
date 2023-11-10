@@ -13,6 +13,7 @@
 * **Passphrase protection.** You can encrypt your private keys. [See below](#passphrases).
 * **Hardware security modules.** You can use private keys protected by physical tokens, remote HSMs and cloud key storage. [See below](#hardware-security-modules).
 * **CSR generation**. Conveyor can help you acquire certificates by generating the CSR files you upload to certificate authorities.
+* **Safety checks**. Conveyor will do plenty of sanity checking on your certificates to catch common mistakes. It downloads intermediate certificates automatically if you're missing them. 
 
 ## Keys in Conveyor
 
