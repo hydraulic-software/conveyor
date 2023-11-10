@@ -179,6 +179,9 @@ app {
       region = "us-east-1"
       access-key-id = ${env.AWS_ACCESS_KEY_ID}
       secret-access-key = ${env.AWS_SECRET_ACCESS_KEY}
+      
+      // Optional: override endpoint if using S3 from a different provider:
+      endpoint = "s3.us-west-002.backblazeb2.com"      
     }
   }
 }
@@ -187,6 +190,7 @@ app {
 1. Set key `app.site.copy-to` to `s3:$bucket/$path`. If your `app.site.base-url` has a host ending with `.s3.amazonaws.com`, you don't need to set the value of `app.site.copy-to`, as Conveyor can infer the correct value. 
 2. Set `app.site.s3.region` to the appropriate region for your S3 bucket.
 3. Set `app.site.s3.access-key-id` and `app.site.s3.secret-access-key` with the details of your [AWS programmatic access key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey).
+4. (Optional) If you're using an S3 provider that isn't AWS, set `app.site.s3.endpoint` to their endpoint.
 
 Now running `conveyor make copied-site` will build and upload the app to your S3 bucket.
 
