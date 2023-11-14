@@ -1,5 +1,21 @@
 # Release notes
 
+## 12.1 (14th November 2023)
+
+This release contains bug fixes.
+
+* Electron: Set the default ASAR unpack value to be `**/*.node` so native libs found in locations other than the top level input directory are unpacked. 
+* Redact credentials from the logs if set in the `app.site.move-from` config section.
+* Windows: fix the URL displayed to the user when there's an error downloading `metadata.properties`
+* Windows: Make sure the main window is active in case of failure, so there's a visible taskbar item and the error message dialog box doesn't get lost beneath other windows. 
+* Windows: Allow spaces and other non-standard characters in the Windows installer file name. 
+* Mac: Fix branding of Apple silicon Macs on the download page.
+* Electron: Fix a crash when the Electron version specified in a config is invalid.
+* JVM: Change the output of the `processed-jars` task to be more understandable. The output of this task isn't documented, but may become so in future.
+* JVM: Ensure the temp directory is created on app launch if missing, as it now points into the user's home directory instead of the system
+  temporary directory (this is a workaround for bugs in Windows).
+* Improve our documentation about HOCON.
+
 ## 12.0 (2nd November 2023)
 
 ### New features
