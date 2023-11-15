@@ -394,3 +394,26 @@ app.windows {
 
 You could also hard-code the secret values but the code above reads them from environment variables. That's usually a better
 choice when using continuous integration because most CI systems let you store secrets into the environment.
+
+### Azure Key Vault
+
+To sign with [Azure Key Vault](https://azure.microsoft.com/en-us/products/key-vault) specify:
+
+```hocon
+app {
+  windows {
+    signing-key {
+      azure-key-vault {
+        vault-name = your-vault-name
+        api-access-token = ${env.AZURE_API_ACCESS_TOKEN}
+      }
+    }
+    signing-key-alias = your-key-alias
+  }
+} 
+```
+
+You could also hard-code the secret values but the code above reads them from environment variables. That's usually a better
+choice when using continuous integration because most CI systems let you store secrets into the environment.
+
+The Azure Key Vault service stores certificates, so you don't need to specify those.
