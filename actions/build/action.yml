@@ -62,7 +62,15 @@ runs:
           exit 1
         fi
 
+    - name: Check cache
+      id: check_cache
+      shell: bash
+      run: |
+        [ -d "${{ inputs.cache_path }}" ] && FOUND=true || FOUND=false
+        echo "found=$FOUND" >> "$GITHUB_OUTPUT"    
+
     - name: Load cache
+      if: ${{ steps.check_cache.outputs.found != 'true' }}
       uses: actions/cache@v3
       with:
         key: ${{ inputs.cache_key }}-${{github.run_id }}
