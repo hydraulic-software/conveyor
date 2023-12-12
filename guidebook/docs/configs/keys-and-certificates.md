@@ -368,7 +368,17 @@ choice when using continuous integration because most CI systems let you store s
 
 DigiCert ONE provides access to your signing certificate, so you don't need to specify `app.windows.certificate` in your config.
 
-### AWS Key Management Service
+### Cloud KMS
+
+Whilst HSMs provided by your certificate authority are convenient it can be cheaper to use a cloud HSM from services like
+AWS or Azure. You can use any HSM service provider that supplies a PKCS#11 driver. You'll need to convince a certificate authority 
+that the key was generated inside a cloud HSM via a process called "attestation". Not every CA supports every cloud, but for example 
+SSL.com offers [automated attestation for AWS, Azure and Google Cloud hosted HSMs](https://www.ssl.com/hsm-attestation/).
+
+If you wish to use some other cloud or an on-prem HSM, you'll have to work with your certificate authority to get them a level of proof
+they are satisfied with.
+
+#### AWS Key Management Service
 
 [AWS Key Management Service (KMS)](https://aws.amazon.com/kms/) stores only the private key, the certificate must be provided separately.
 To sign, you just need to specify:
@@ -395,7 +405,7 @@ app.windows {
 You could also hard-code the secret values but the code above reads them from environment variables. That's usually a better
 choice when using continuous integration because most CI systems let you store secrets into the environment.
 
-### Azure Key Vault
+#### Azure Key Vault 
 
 To sign with [Azure Key Vault](https://azure.microsoft.com/en-us/products/key-vault) specify:
 
@@ -413,7 +423,57 @@ app {
 } 
 ```
 
-You could also hard-code the secret values but the code above reads them from environment variables. That's usually a better
-choice when using continuous integration because most CI systems let you store secrets into the environment.
-
 The Azure Key Vault service stores certificates, so you don't need to specify those.
+
+You could also hard-code the secret values but the code above reads them from environment variables. That's usually a better choice when
+using continuous integration because most CI systems let you store secrets into the environment.
+
+#### Google Cloud Platform
+
+!!! important
+    You must be using Conveyor 13 or newer for GCP KMS to work. Older versions will appear to work but the results won't be accepted by Windows.
+
+To sign with the GCP Key Management Service:
+
+1. Create a key by following their instructions. Ensure you have the right permissions set on the key: there's no default role with all 
+   the permissions so you may have to make a custom one.
+2. Get a code signing certificate for that key from a CA by doing an attestation (see above). You should get it in PEM (ASCII/base64) encoded form.
+3. Install the gcloud CLI on the machine where Conveyor will be running and authenticate, to ensure that Google Cloud services work. 
+   Authentication in the GCP driver is implicit, so you don't give any credentials to Conveyor.
+4. [Download their PKCS#11 driver](https://cloud.google.com/kms/docs/reference/pkcs11-library).
+5. In your config set the path to the driver (e.g. by adding `app.windows.signing-key = "/path/to/libkmsp11.so"`)
+6. Create a YAML file [that defines a token block](https://github.com/GoogleCloudPlatform/kms-integrations/blob/master/kmsp11/docs/user_guide.md#configuration)
+   that contains `keyring` and additionally the contents of the ASCII (PEM) encoded certificate in the `certs` key. 
+   The resulting file can be named anything and should look like this:
+   ```
+   ---
+   tokens:
+   - key_ring: "projects/example-project/locations/us-central1/keyRings/example-keyring"
+     certs:
+       - |
+         -----BEGIN CERTIFICATE-----
+         MIIBfDCCASOgAwIBAgIUR8kwFjcoNdDY+s2/c/fydMxysugwCgYIKoZIzj0EAwIw
+         FDESMBAGA1UEAwwJb3NzbC10ZXN0MB4XDTIzMDkxNDE2MzUwMFoXDTMzMDkxMTE2
+         MzUwMFowFDESMBAGA1UEAwwJb3NzbC10ZXN0MFkwEwYHKoZIzj0CAQYIKoZIzj0D
+         AQcDQgAEh83KrXS6bznV3G0yysO3ZHAY6pnSqGpLuTshLfAcS0bHYb5nH8q9noDY
+         Of6vJobGk5J1wnMwoXt9xm75WVXsXaNTMFEwHQYDVR0OBBYEFKsgEQ9wY4WCMcVn
+         SRuDn3Kl4+u1MB8GA1UdIwQYMBaAFKsgEQ9wY4WCMcVnSRuDn3Kl4+u1MA8GA1Ud
+         EwEB/wQFMAMBAf8wCgYIKoZIzj0EAwIDRwAwRAIgEwebwA6Njw1nW/gzIT6cNHAs
+         d4XyCB+01OfSk1Hp3TkCIEYxCEMn4oAyAJozzVyApY/Yu1/sM0Ospmh8i3P/thJK
+         -----END CERTIFICATE-----
+   ```
+7. You can point the driver at this YAML config by setting the `KMS_PKCS11_CONFIG` environment variable before running Conveyor, or you
+   can use the config file, like this:
+   ```
+   app.windows.signing-key.file {
+      path = "/path/to/libkmsp11.so"
+      driver-config.nssArgs = "/path/to/driver/config.yaml"
+   }
+   ```
+
+Signing should now use your Google-hosted key. 
+
+#### Other HSMs
+
+Please consult your HSM provider's documentation or support to learn where to get the necessary driver, then take a look at the [HSM
+section](#hardware-security-modules) to learn how to configure it.
