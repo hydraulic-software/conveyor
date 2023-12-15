@@ -435,8 +435,8 @@ using continuous integration because most CI systems let you store secrets into 
 
 To sign with the GCP Key Management Service:
 
-1. Create a key by following their instructions. Ensure you have the right permissions set on the key: there's no default role with all 
-   the permissions so you may have to make a custom one.
+1. Create a key by following either their instructions, or this [helpful blog post](https://icedev.pl/posts/setting-up-ev-code-signing-google-hsm-fips-140-2/). 
+   Ensure you have the right permissions set on the key: there's no default role with all the permissions so you may have to make a custom one.
 2. Get a code signing certificate for that key from a CA by doing an attestation (see above). You should get it in PEM (ASCII/base64) encoded form.
 3. Install the gcloud CLI on the machine where Conveyor will be running and authenticate, to ensure that Google Cloud services work. 
    Authentication in the GCP driver is implicit, so you don't give any credentials to Conveyor.
