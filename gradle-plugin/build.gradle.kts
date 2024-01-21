@@ -1,7 +1,7 @@
 plugins {
     `java-gradle-plugin`
     `maven-publish`
-    id("com.gradle.plugin-publish") version "0.18.0"
+    id("com.gradle.plugin-publish") version "1.2.1"
     kotlin("jvm") version "1.9.20"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     // Better test output.
@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "dev.hydraulic"
-version = "1.7"
+version = "1.8"
 
 repositories {
     mavenCentral()
@@ -21,6 +21,7 @@ repositories {
 
 tasks {
     shadowJar {
+        dependsOn(jar)
         archiveClassifier.set("")
         mergeServiceFiles()
         dependencies {
@@ -62,26 +63,24 @@ tasks.named<Test>("test") {
 
 kotlin {
     jvmToolchain {
-        (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(11))
+        languageVersion.set(JavaLanguageVersion.of(11))
     }
 }
 
 gradlePlugin {
+    website.set("https://www.hydraulic.dev")
+    vcsUrl.set("https://github.com/hydraulic-software/conveyor")
+
     plugins {
         create("conveyorPlugin") {
             id = "dev.hydraulic.conveyor"
             displayName = "Conveyor Gradle Plugin"
             description = "Generates snippets of configuration for the Conveyor packaging tool."
             implementationClass = "hydraulic.conveyor.gradle.ConveyorGradlePlugin"
+            tags = listOf("conveyor", "packaging", "hydraulic", "deb", "mac", "dmg", "msi", "msix")
         }
     }
-    pluginBundle {
-        website = "https://www.hydraulic.dev"
-        vcsUrl = "https://github.com/hydraulic-software/conveyor"
-        tags = listOf("conveyor", "packaging", "hydraulic", "deb", "mac", "dmg", "msi", "msix")
-    }
 }
-
 
 publishing {
     repositories {
