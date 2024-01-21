@@ -1,8 +1,8 @@
 plugins {
     `java-gradle-plugin`
     `maven-publish`
-    id("com.gradle.plugin-publish") version "1.0.0"
-    kotlin("jvm") version "1.6.10"
+    id("com.gradle.plugin-publish") version "0.18.0"
+    kotlin("jvm") version "1.9.20"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     // Better test output.
     id("com.adarshr.test-logger") version "3.0.0"
@@ -75,13 +75,13 @@ gradlePlugin {
             implementationClass = "hydraulic.conveyor.gradle.ConveyorGradlePlugin"
         }
     }
+    pluginBundle {
+        website = "https://www.hydraulic.dev"
+        vcsUrl = "https://github.com/hydraulic-software/conveyor"
+        tags = listOf("conveyor", "packaging", "hydraulic", "deb", "mac", "dmg", "msi", "msix")
+    }
 }
 
-pluginBundle {
-    website = "https://www.hydraulic.dev"
-    vcsUrl = "https://github.com/hydraulic-software/conveyor"
-    tags = listOf("conveyor", "packaging", "hydraulic", "deb", "mac", "dmg", "msi", "msix")
-}
 
 publishing {
     repositories {
