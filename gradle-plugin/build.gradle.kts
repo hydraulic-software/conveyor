@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "dev.hydraulic"
-version = "1.6"
+version = "1.7"
 
 repositories {
     mavenCentral()
@@ -36,7 +36,7 @@ dependencies {
     compileOnly("org.jetbrains.compose:compose-gradle-plugin:1.2.0") {
         because("Supporting Jetpack Compose Desktop apps.")
     }
-    compileOnly("org.openjfx:javafx-plugin:0.0.11") {
+    compileOnly("org.openjfx:javafx-plugin:0.0.14") {
         because("Supporting projects that use the OpenJFX Gradle plugin.")
     }
     testImplementation(gradleTestKit())
