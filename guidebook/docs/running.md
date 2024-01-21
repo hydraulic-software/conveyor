@@ -45,6 +45,12 @@ To learn more see the [tutorial](tutorial/new.md).
 conveyor run
 ```
 
+**Do the same but faster:**
+
+```bash
+conveyor -Kapp.sign=false run
+```
+
 **Put that app directory into `output`**
 
 ```bash
