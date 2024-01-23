@@ -16,12 +16,14 @@ This is a minor bugfix and performance release.
 ### Windows
 
 * Fixes for self-signed apps, in which some errant Windows 10 systems behave in a different way to others that caused installs to fail.
+* Bugfix: don't try to sign an EXE/DLL file if it's actually a batch script (this is valid on Windows and sometimes used as a hack by apps).
 
 ### JVM
 
 * Updated known JDK versions.
 * Speed up the "Scanning JARs" build step through more caching.
 * Updated the template apps to the latest versions of things.
+* Bugfix: don't sort JVM options, order sometimes matters.
 * GraalVM CE is now supported:
     * Gradle plugin 1.8 is recompiled for Gradle 8 and understands GraalVM CE in the toolchain specification.
     * `graalvm` (Oracle) and `graalvm-community` (CE) are now in the JDK stdlib.
