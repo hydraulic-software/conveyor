@@ -4,7 +4,7 @@
 service, it generates [self-upgrading packages for Windows, macOS and Linux using each platform's native package formats](https://conveyor.hydraulic.dev/latest/outputs.md)
 without requiring you to have those operating systems.
 
-**[ ➡️ Try installing an app that uses it](https://downloads.hydraulic.dev/eton-sample/download.html)**
+**[ ➡️ Try installing an app that uses it](https://conveyor.hydraulic.dev/13.0/sample-apps/)**
 
 **[ ➡️ Get started!](https://conveyor.hydraulic.dev)**
 
