@@ -24,6 +24,43 @@ No. Conveyor generates [standard package formats](../outputs.md) and on macOS it
 will just have to set up your own packaging scripts and do the integration work yourself. In other words you'll have spend the time you
 saved by using Conveyor, but nothing will break.
 
+
+## I am an IT admin. How can I control the update schedule of an app that uses Conveyor?
+
+This depends on the platform.
+
+=== ":simple-windows: Windows"
+
+    MSIX is Microsoft's official packaging and deployment system, so it has excellent controls built in to
+    Windows. Admins can use standard enterprise IT management tools like InTune to add packages to groups using the `.appinstaller` file, or
+    push out specific MSIX versions centrally. 
+
+    Although the installer EXE is useful to work around bugs, especially on old versions of Windows, it isn't obligatory and enterprise
+    deployments will generally prefer to bypass it as long as their fleet is fully patched. Alternatively the MSIX file will not update, if
+    installed directly bypassing the installer and the `.appinstaller` file. PowerShell can be used to automate this. Please refer to the
+    Windows documentation for how to do this.
+
+=== ":simple-apple: macOS"
+
+    The Sparkle framework will by default ask the user if they want to apply automatic updates or not, and whether to ask them again in future.
+    Admins can use this command on machines to disable update checking for newly installed apps (it will disable the question users are asked):
+
+    ```
+    defaults write -g SUEnableAutomaticChecks -bool NO
+    ```
+
+    If you only want to disable updates for a specific app, then you can use the command:
+
+    ```
+    app="/Applications/Your App.app"
+    defaults write $( plutil -extract CFBundleIdentifier raw $app/Contents/Info.plist ) SUEnableAutomaticChecks -bool NO
+    ```
+
+=== ":simple-linux: Linux"
+
+    The tarball version can be placed anywhere and will not update. If you are using a Debian derived distribution
+    and installing the deb, you can use `sudo apt-mark hold your-package` to stop `apt` upgrading the package until you release the hold.
+
 ## What justifies your claim that Conveyor is simple?
 
 1. No signup process. This is a classic dev tool - no contact forms or account creation, just [download and run](../download-conveyor.md). You can use it for free with open source projects by simply setting the `app.vcs-url` key in your config.
