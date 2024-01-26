@@ -4,6 +4,17 @@ Porting an app that's already deployed using Electron Forge can be done in a few
 app that uses the Squirrel update engine to Conveyor. The user will experience a brief pause on startup once the migration begins in which
 the Conveyorized version will be downloaded/installed, and the previous version uninstalled.
 
+## Preparation
+
+You should already have tested your app when packaged with Conveyor. Try creating packages and installing them on each OS you support, to
+ensure your app works correctly. Make sure to pay attention to [operating system integration](configs/os-integration.md), which works
+differently in Conveyor.
+
+If you're looking for an example of how to do this conversion, [check out our tutorial on porting Github Desktop](https://www.hydraulic.dev/blog/8-packaging-electron-apps.html).
+
+The rest of this document assumes you have a fully working Conveyorized version of your app and now wish to migrate an existing installed
+user base from Squirrel.
+
 ## Starting point
 
 Your current app using Squirrel should have code similar to the following:
