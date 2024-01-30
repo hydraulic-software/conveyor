@@ -202,6 +202,7 @@ abstract class ConveyorConfigTask : DefaultTask() {
                     conveyorVendor = when (vendor) {
                         MICROSOFT -> "microsoft"
                         ADOPTIUM -> "eclipse"
+                        GRAAL_VM -> "graalvm"
                         else -> conveyorVendor
                     }
                 } catch (e: NoSuchFieldError) {

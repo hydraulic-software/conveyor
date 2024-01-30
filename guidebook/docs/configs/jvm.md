@@ -22,7 +22,7 @@ Conveyor has integrated support for apps that run on the JVM (for any supported 
 
 ```properties
 # Add the latest Java 17 JDK distributed by OpenJDK.
-import required("/stdlib/jdk/17/openjdk.conf")
+include required("/stdlib/jdk/17/openjdk.conf")
 
 # Or define a custom JDK locally.
 basedir = my-jdk-dir/myjdk-17.0

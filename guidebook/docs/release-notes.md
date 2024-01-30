@@ -1,5 +1,33 @@
 # Release notes
 
+## Conveyor 13.1
+
+This is a minor bugfix and performance release.
+
+* Avoid crashes in a few broken config edge cases.
+* Stop with an error if the config doesn't seem to be encoded with UTF-8.
+
+### Mac
+
+* Retry notarization if Apple return 500 Internal Server Error, which they do sometimes.
+* Check that the entry point is actually a Mach-O binary.
+* Stop with an error if you attempt to ship an app larger than 2GB, as currently Conveyor is unable to sign such a large program.
+
+### Windows
+
+* Fixes for self-signed apps, in which some errant Windows 10 systems behave in a different way to others that caused installs to fail.
+* Bugfix: don't try to sign an EXE/DLL file if it's actually a batch script (this is valid on Windows and sometimes used as a hack by apps).
+
+### JVM
+
+* Updated known JDK versions.
+* Speed up the "Scanning JARs" build step through more caching.
+* Updated the template apps to the latest versions of things.
+* Bugfix: don't sort JVM options, order sometimes matters.
+* GraalVM CE is now supported:
+    * Gradle plugin 1.8 is recompiled for Gradle 8 and understands GraalVM CE in the toolchain specification.
+    * `graalvm` (Oracle) and `graalvm-community` (CE) are now in the JDK stdlib.
+
 ## Conveyor 13.0 (Dec 19th 2023)
 
 ### New features
