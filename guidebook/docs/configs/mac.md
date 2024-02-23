@@ -93,7 +93,52 @@ If true (the default) then native binaries that declare a minimum required macOS
 
 ### `app.mac.sign`
 
-Controls whether signing is done after bundling. Defaults to the value of `app.sign`. You should normally leave this set to true unless you want to speed up the build temporarily. It can be true even if you don't have a Developer ID certificate because the app will be self-signed.
+Controls whether signing is done after bundling. Defaults to the value of `app.sign`.
+The value could be one of `true` (meaning regular signing done by Conveyor is enabled), `false` (disabling signing altogether), or an object to allow
+specifying custom scripts for signing your app, like the following:
+
+```hocon
+app {
+  mac {
+    sign = {
+      scripts = {
+        // Custom script for signing the bundle.
+        app = 'my-bundle-signing-script.sh $BUNDLE $ENTITLEMENTS'
+        
+        // Custom script for signing the individual Mach-O binary files.
+        binary = 'my-binary-signing-script.sh $FILE $ENTITLEMENTS $IDENTIFIER'
+      }
+    }
+  }
+}
+```
+
+#### `app.mac.sign.scripts.app`
+
+Defines a custom script to be used for signing your macOS app bundle. It will be a command line run from the working directory where Conveyor is executed.
+The following replacements are made when running the command:
+
+   * `$BUNDLE`: will get replaced with the full path to the bundle directory that must be signed by the provided script.
+   * `$ENTITLEMENTS`: will get replaced with the full path to an Apple Property List file containing the macOS entitlements selected for your app.
+
+The script should sign the bundle located at the `$BUNDLE` directory **in-place**. Correctly signing a bundle can be tricky, please refer to [Apple's documentation on how to properly sign items in the bundle](https://developer.apple.com/forums/thread/701514).
+
+!!! important "Caching"
+    For speeding up deployment, the signed bundle produced by the given custom script is *cached* by Conveyor. The cache key will contain the configured command line, but changes to any script files called from it *will not be detected*. If you change your signing script file without making changes to the Conveyor config and re-run the "make" command, the previously cached version of the signed app may be reused and the modified script might not run.
+
+#### `app.mac.sign.scripts.binary`
+
+Defines a custom script to be used for signing individual macOS Mach-O binary files present inside JAR files. It will be a command line run from the working directory where Conveyor is executed.
+The following replacements are made when running the command:
+
+* `$FILE`: will get replaced with the full path to a Mach-O binary file that must be signed by the provided script.
+* `$ENTITLEMENTS`: will get replaced with the full path to an Apple Property List file containing the macOS entitlements selected for your app.
+* `$IDENTIFIER`: will get replaced with a string with the suggested binary identifier to use for this file.
+
+The script should sign the file located at the `$FILE` path **in-place**. It will be called once for each Mach-O binary located inside your JAR files. 
+
+This script is *only* called if you also specify an `app` script, to avoid mixing up of credentials when signing different parts of the app. If you're already handling in-jar files from your `app` script, this script isn't needed.
+
 
 ### `app.mac.signing-key`, `app.mac.certificate`
 
