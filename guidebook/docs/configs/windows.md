@@ -36,7 +36,49 @@ URL of a cryptographic timestamping server (often called a timestamping authorit
 
 ### `app.windows.sign`
 
-Boolean, controls whether to sign the Windows EXE/DLL/package files or not. If false then you can't produce an MSIX file. Defaults to the value of `${app.sign}` (which is true).
+Controls whether to sign the Windows EXE/DLL/package files. Defaults to the value of `${app.sign}` (which is true).
+The value could be one of `true` (meaning regular signing done by Conveyor is enabled), `false` (disabling signing altogether, and disables production of an MSIX file), or an object to allow
+specifying custom scripts for signing your MSIX package, like the following:
+
+```hocon
+app {
+  mac {
+    sign = {
+      scripts = {
+        // Custom script for signing the MSIX package.
+        msix = 'my-msix-signing-script.sh $MSIX'
+        
+        // Custom script for signing the individual binary files.
+        binary = 'my-binary-signing-script.sh $FILE'
+      }
+    }
+  }
+}
+```
+
+#### `app.windows.sign.scripts.msix`
+
+Defines a custom script to be used for signing your Windows MSIX package. It will be a command line run from the working directory where Conveyor is executed.
+The following replacements are made when running the command:
+
+* `$MSIX`: will get replaced with the full path to the MSIX file that must be signed by the provided script.
+
+The script should sign the file located at the given `$MSIX` path **in-place**.
+
+!!! important "Caching"
+    For speeding up deployment, the signed MSIX produced by the given custom script is *cached* by Conveyor. The cache key will contain the configured command line, but changes to any script files called from it *will not be detected*. If you change your signing script file without making changes to the Conveyor config and re-run the "make" command, the previously cached version of the signed MSIX may be reused and the modified script might not run.
+
+#### `app.windows.sign.scripts.binary`
+
+Defines a custom script to be used for signing individual Windows binary files (DLLs, EXE, etc.) present in the app. It will be a command line run from the working directory where Conveyor is executed.
+The following replacements are made when running the command:
+
+* `$FILE`: will get replaced with the full path to a Windows binary file that must be signed by the provided script.
+
+The script should sign the file located at the `$FILE` path **in-place**. It will be called once for each Windows binary located in your app, both inside and outside JARs.
+
+This script is *only* called if you also specify an `msix` script, to avoid mixing up of credentials when signing different parts of the app. If you're already handling individual binary files from your `msix` script, this script isn't needed.
+
 
 ### `app.windows.signing-key`, `app.windows.certificate`, `app.windows.verify-certificate-chain`
 
