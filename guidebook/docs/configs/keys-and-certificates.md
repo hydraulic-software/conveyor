@@ -201,6 +201,47 @@ The team ID can be found in the [Apple developer console](https://developer.appl
 !!! tip
     You can use move your app specific password outside of a per-project config by using an `include` statement, or by writing `${env.SOME_ENV_VAR}` to use an environment variable.
 
+### Via custom notarization script
+
+If you prefer, you can also use a separate script to perform notarization for you. This can be useful in larger companies where notarization is handled by a specialized team.
+
+```hocon
+app { 
+  mac {
+    notarization {  	  
+      script = "my-notarization-script.sh $ZIP"
+    }
+  }
+}
+```
+
+During execution, the `$ZIP` placeholder will be replaced with the full path to a ZIP file to send for notarization.
+After notarization, Conveyor will attempt to retrieve the notarization ticket from Apple's servers to staple the app. For that reason,
+make sure the script only returns after the notarization process has completed.
+
+### Configuring stapling behavior
+
+By default, after notarization Conveyor will immediately attempt to staple the notarization ticket, and fail if it can't be retrieved from the Apple servers.
+You can set a time limit to the amount of time Conveyor waits for the notarization ticket by setting `app.mac.notarization-timeout-minutes` to the maximum number of minutes to wait for the notarization process.
+Also, you can tell Conveyor to ignore the stapling step if the ticket isn't available at the end of that timeout by setting `app.mac.best-effort-stapling` to `true`.
+
+For example:
+
+```hocon
+app {
+  mac {
+    // Wait a maximum of 2 hours for notarization.
+    notarization-timeout-minutes = 120
+    
+    // If after 2 hours the notarization ticket isn't available, just publish the app without stapling.
+    best-effort-stapling = true
+  }
+}
+```
+
+!!! important "Caching"
+    For speeding up deployment, the notarized app is *cached* by Conveyor. If the stapling was set to best effort and skipped, the cached version of the app won't be stapled with the notarization ticket. To retry stapling in that case you'll need to run Conveyor with flag `--rerun=notarized-mac-app`.
+
 ## Example
 
 Here's what a finished `defaults.conf` might look like:
