@@ -220,6 +220,17 @@ unwanted-jdk-files = [
 ]
 ```
 
+### `app.jvm.additional-ca-certs`
+
+A map assigning aliases to additional certificate files that should be imported into the JDK's `cacerts` file.
+This is useful if you want your app to connect to TLS servers that aren't using regular web PKI certificates.
+
+```hocon
+app.jvm.additional-ca-certs = {
+  my-alias = ./path-to-certificate.cer 
+}
+```
+
 ## Importing files
 
 ### Importing a JDK
