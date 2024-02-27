@@ -224,17 +224,17 @@ staple the app. For that reason, make sure the script only returns after the not
 By default, after notarization Conveyor will immediately attempt to "staple" the result of notarization, meaning bundle it into your app.
 This is required to ensure that a newly installed app can start up even if the user's Mac is offline. Conveyor will fail if the notarization
 ticket can't be retrieved from the Apple servers. You can set a time limit to the amount of time Conveyor waits for the ticket
-by setting `app.mac.notarization-timeout-minutes` to the maximum number of minutes to wait for the notarization process. Also, you can tell
-Conveyor to ignore the stapling step if the ticket isn't available at the end of that timeout by setting `app.mac.best-effort-stapling` to
+by setting `app.mac.notarization.timeout-seconds` to the maximum number of seconds to wait for the notarization process. Also, you can tell
+Conveyor to ignore the stapling step if the ticket isn't available at the end of that timeout by setting `app.mac.notarization.best-effort-stapling` to
 `true`.
 
 For example:
 
 ```hocon
 app {
-  mac {
+  mac.notarization {
     // Wait a maximum of 2 hours for notarization.
-    notarization-timeout-minutes = 120
+    timeout-seconds = 7200
     
     // If after 2 hours the notarization ticket isn't available, just publish the app without stapling.
     best-effort-stapling = true
