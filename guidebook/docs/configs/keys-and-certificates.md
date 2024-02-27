@@ -215,15 +215,18 @@ app {
 }
 ```
 
-During execution, the `$ZIP` placeholder will be replaced with the full path to a ZIP file to send for notarization.
-After notarization, Conveyor will attempt to retrieve the notarization ticket from Apple's servers to staple the app. For that reason,
-make sure the script only returns after the notarization process has completed.
+During execution, the `$ZIP` placeholder will be replaced with the full path to a ZIP file to send for notarization. You don't need quoting
+because Conveyor will do that for you. After notarization, Conveyor will attempt to retrieve the notarization ticket from Apple's servers to
+staple the app. For that reason, make sure the script only returns after the notarization process has completed.
 
 ### Configuring stapling behavior
 
-By default, after notarization Conveyor will immediately attempt to staple the notarization ticket, and fail if it can't be retrieved from the Apple servers.
-You can set a time limit to the amount of time Conveyor waits for the notarization ticket by setting `app.mac.notarization-timeout-minutes` to the maximum number of minutes to wait for the notarization process.
-Also, you can tell Conveyor to ignore the stapling step if the ticket isn't available at the end of that timeout by setting `app.mac.best-effort-stapling` to `true`.
+By default, after notarization Conveyor will immediately attempt to "staple" the result of notarization, meaning bundle it into your app.
+This is required to ensure that a newly installed app can start up even if the user's Mac is offline. Conveyor will fail if the notarization
+ticket can't be retrieved from the Apple servers. You can set a time limit to the amount of time Conveyor waits for the ticket
+by setting `app.mac.notarization-timeout-minutes` to the maximum number of minutes to wait for the notarization process. Also, you can tell
+Conveyor to ignore the stapling step if the ticket isn't available at the end of that timeout by setting `app.mac.best-effort-stapling` to
+`true`.
 
 For example:
 

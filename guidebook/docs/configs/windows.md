@@ -46,10 +46,10 @@ app {
     sign = {
       scripts = {
         // Custom script for signing the MSIX package.
-        msix = 'my-msix-signing-script.sh $MSIX'
+        msix = "my-msix-signing-script.bat $MSIX"
         
         // Custom script for signing the individual binary files.
-        binary = 'my-binary-signing-script.sh $FILE'
+        binary = "my-binary-signing-script.bat $FILE"
       }
     }
   }
@@ -61,7 +61,7 @@ app {
 Defines a custom script to be used for signing your Windows MSIX package. It will be a command line run from the working directory where Conveyor is executed.
 The following replacements are made when running the command:
 
-* `$MSIX`: will get replaced with the full path to the MSIX file that must be signed by the provided script.
+* `$MSIX`: will get replaced with the full path to the MSIX file that must be signed by the provided script. You don't need quoting as Conveyor will do that for you.
 
 The script should sign the file located at the given `$MSIX` path **in-place**.
 
@@ -70,8 +70,8 @@ The script should sign the file located at the given `$MSIX` path **in-place**.
 
 #### `app.windows.sign.scripts.binary`
 
-Defines a custom script to be used for signing individual Windows binary files (DLLs, EXE, etc.) present in the app. It will be a command line run from the working directory where Conveyor is executed.
-The following replacements are made when running the command:
+Defines a custom script to be used for signing individual Windows binary files (DLLs, EXE, etc.) present in the app. It will be a command
+line run from the working directory where Conveyor is executed. The following replacements are made when running the command:
 
 * `$FILE`: will get replaced with the full path to a Windows binary file that must be signed by the provided script.
 
