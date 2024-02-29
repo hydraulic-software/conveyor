@@ -36,9 +36,9 @@ URL of a cryptographic timestamping server (often called a timestamping authorit
 
 ### `app.windows.sign`
 
-Controls whether to sign the Windows EXE/DLL/package files. Defaults to the value of `${app.sign}` (which is true).
-The value could be one of `true` (meaning regular signing done by Conveyor is enabled), `false` (disabling signing altogether, and disables production of an MSIX file), or an object to allow
-specifying custom scripts for signing your MSIX package, like the following:
+Controls whether to sign the Windows EXE/DLL/package files. Defaults to the value of `${app.sign}` (which is true). The value could be one
+of `true` (meaning regular signing done by Conveyor is enabled), `false` (disabling signing altogether, and disables production of an MSIX
+file), or an object to allow specifying custom scripts for signing your MSIX package, like the following:
 
 ```hocon
 app {
@@ -58,15 +58,18 @@ app {
 
 #### `app.windows.sign.scripts.msix`
 
-Defines a custom script to be used for signing your Windows MSIX package. It will be a command line run from the working directory where Conveyor is executed.
+Defines a custom program to be used for signing your Windows MSIX package. It will be a command line run from the working directory where Conveyor is executed.
 The following replacements are made when running the command:
 
 * `$MSIX`: will get replaced with the full path to the MSIX file that must be signed by the provided script. You don't need quoting as Conveyor will do that for you.
 
-The script should sign the file located at the given `$MSIX` path **in-place**.
+The program should sign the file located at the given `$MSIX` path **in-place**. It can be any arbitrary command, and doesn't specifically have to be a script.
 
-!!! important "Caching"
-    For speeding up deployment, the signed MSIX produced by the given custom script is *cached* by Conveyor. The cache key will contain the configured command line, but changes to any script files called from it *will not be detected*. If you change your signing script file without making changes to the Conveyor config and re-run the "make" command, the previously cached version of the signed MSIX may be reused and the modified script might not run.
+!!! important "Caching" 
+    For speed reasons Conveyor will cache the signed MSIX produced by the given custom script. The cache key contains both the configured
+    command line and a fingerprint (hash) of the script itself. If you change the script or the command line, the signing operation will be rerun.
+    However if you change a *dependency* of your script then that won't be detected, as only the command itself is fingerprinted. In that
+    case you will need to modify the command too e.g. by altering a version number in a header comment.
 
 #### `app.windows.sign.scripts.binary`
 

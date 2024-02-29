@@ -124,7 +124,10 @@ The following replacements are made when running the command:
 The script should sign the bundle located at the `$BUNDLE` directory **in-place**. Correctly signing a bundle can be tricky, please refer to [Apple's documentation on how to properly sign items in the bundle](https://developer.apple.com/forums/thread/701514).
 
 !!! important "Caching"
-    For speeding up deployment, the signed bundle produced by the given custom script is *cached* by Conveyor. The cache key will contain the configured command line, but changes to any script files called from it *will not be detected*. If you change your signing script file without making changes to the Conveyor config and re-run the "make" command, the previously cached version of the signed app may be reused and the modified script might not run.
+    For speed reasons Conveyor will cache the signed MSIX produced by the given custom script. The cache key contains both the configured
+    command line and a fingerprint (hash) of the script itself. If you change the script or the command line, the signing operation will be rerun.
+    However if you change a *dependency* of your script then that won't be detected, as only the command itself is fingerprinted. In that
+    case you will need to modify the command too e.g. by altering a version number in a header comment.
 
 #### `app.mac.sign.scripts.binary`
 
@@ -141,6 +144,13 @@ It will be a command line run from the working directory where Conveyor is execu
 The script should sign the file located at the `$FILE` path **in-place**. It will be called once for each Mach-O binary located inside your JAR files. 
 
 This script is *only* called if you also specify an `app` script, to avoid mixing up of credentials when signing different parts of the app.
+
+!!! important "Caching"
+    For speed reasons Conveyor will cache the signed MSIX produced by the given custom script. The cache key contains both the configured
+    command line and a fingerprint (hash) of the script itself. If you change the script or the command line, the signing operation will be rerun.
+    However if you change a *dependency* of your script then that won't be detected, as only the command itself is fingerprinted. In that
+    case you will need to modify the command too e.g. by altering a version number in a header comment.
+    
 
 ### `app.mac.signing-key`, `app.mac.certificate`
 
