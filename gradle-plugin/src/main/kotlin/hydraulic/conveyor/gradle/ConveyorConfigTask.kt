@@ -122,8 +122,10 @@ abstract class ConveyorConfigTask : DefaultTask() {
         val jarTask = project.tasks.findByName("desktopJar") ?: project.tasks.findByName("jvmJar") ?: project.tasks.getByName("jar")
         appendLine("app.inputs += " + quote(jarTask.outputs.files.singleFile.toString()))
 
-        val runtimeClasspath =
-            project.configurations.findByName("runtimeClasspath") ?: project.configurations.getByName("jvmRuntimeClasspath")
+        val runtimeClasspath = 
+            project.configurations.findByName("runtimeClasspath") ?:
+            project.configurations.getByName("desktopRuntimeClasspath") ?:
+            project.configurations.getByName("jvmRuntimeClasspath")
 
         // We need to resolve the runtimeClasspath before copying out the dependencies because the at the start of the resolution process
         // the set of dependencies can be changed via [Configuration.defaultDependencies] or [Configuration.withDependencies].
