@@ -17,6 +17,17 @@ Open source apps that use it should advertise the fact that they're packaged wit
 generated download page makes this easy, because it contains a "Packaged with Conveyor" badge. If you don't use that HTML then you'll need
 to provide your own link in e.g. your download page, website, README file etc.
 
+## How do I purchase it?
+
+Just download and use it. When you set your `app.site.base-url` config key to point to a non-localhost update server, you'll be asked to set
+a billing email address in your config. After doing that and running a `make` command a license key will be generated and written into your
+config file under `conveyor.license-key`. You will then be prompted to follow a Stripe purchase flow. Once you complete the purchase the
+license key will be activated, and you'll also be issued with two more via email that can be used for other apps or beta/canary channels, as
+you see fit.
+
+!!! important
+    If you need a non-credit card based purchase flow e.g. an invoice paired with a purchase order, please [email us and ask for one](mailto:contact@hydraulic.dev).
+
 ## Am I locked in?
 
 No. Conveyor generates [standard package formats](../outputs.md) and on macOS it uses an open source update framework called
