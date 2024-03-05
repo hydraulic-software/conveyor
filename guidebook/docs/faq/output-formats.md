@@ -2,7 +2,10 @@
 
 ## 1. App stores
 
-Conveyor supports automatically uploading new releases to the Microsoft Store. [Vote for Mac App Store support here](https://github.com/hydraulic-software/conveyor/issues/9).
+Conveyor supports releasing to the Microsoft Store. When you go this route, Microsoft will sign your app for you at much lower cost than
+buying certificates.
+
+Releasing to the Mac App Store isn't supported. [Vote for Mac App Store support here](https://github.com/hydraulic-software/conveyor/issues/9).
 
 ## 2. DMGs?
 

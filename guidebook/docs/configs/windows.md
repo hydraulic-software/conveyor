@@ -249,10 +249,10 @@ The following replacements are made when running the command:
 The program should sign the file located at the given `$MSIX` path **in-place**. It can be any arbitrary command, and doesn't specifically have to be a script.
 
 !!! important "Caching"
-For speed reasons Conveyor will cache the signed MSIX produced by the given custom script. The cache key contains both the configured
-command line and a fingerprint (hash) of the script itself. If you change the script or the command line, the signing operation will be rerun.
-However if you change a *dependency* of your script then that won't be detected, as only the command itself is fingerprinted. In that
-case you will need to modify the command too e.g. by altering a version number in a header comment.
+    For speed reasons Conveyor will cache the signed MSIX produced by the given custom script. The cache key contains both the configured
+    command line and a fingerprint (hash) of the script itself. If you change the script or the command line, the signing operation will be rerun.
+    However if you change a *dependency* of your script then that won't be detected, as only the command itself is fingerprinted. In that
+    case you will need to modify the command too e.g. by altering a version number in a header comment.
 
 #### `app.windows.sign.scripts.binary`
 
@@ -277,7 +277,6 @@ See [signing keys](index.md#signing).
 
 Conveyor provides a mechanism to download and run arbitrary code at startup. This enables you to handle various scenarios that the base
 Windows package manager cannot. [Learn more about the escape hatch](escape-hatch.md). 
-
 
 ## Visual C++ redistributables
 
