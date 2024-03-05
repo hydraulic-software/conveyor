@@ -113,8 +113,8 @@ Paths should always use the UNIX path separator (`/`) and are interpreted relati
 
 The string syntax is shorthand for the object syntax, they can always be treated identically. Objects may consist of these keys:
 
-**`from`** A string interpreted as either a file/directory if it exists relative to the config file, or a URL if the file isn't found
-missing. An https prefix is optional. The string is brace expanded and may contain glob characters when it refers to a path on the file
+**`from`** A string interpreted as either a file/directory if it exists relative to the config file, or a URL if the file isn't found . 
+An https prefix is optional. The string is brace expanded and may contain glob characters when it refers to a path on the file
 system, thus a single specified input may be expanded to multiple actual inputs that share the same `to` field.
 
 You can also specify a path inside a zip using this syntax:
@@ -124,8 +124,15 @@ app.inputs += "zip:example.zip!/content.txt"
 app.inputs += "zip:https://example.com/path/to/file.zip!/path/in/zip/content.txt"
 ```
 
-In the second case the `content.txt` file will be downloaded _without_ downloading the rest of the zip. This is possible because zip files
-are seekable.
+In the second case the `content.txt` file will be downloaded _without_ downloading the rest of the zip.
+
+
+**`to`** The directory in the staging area where the input should be placed or extracted to. By default, this is the root. 
+
+!!! important
+    Files will be copied *into* `to`, so `from = "foo/bar"` and `to = "baz"` where `bar` is a directory, will result in the files in `bar`
+    being copied into `baz`. If `bar` is a file then `baz` will be a file. This is different from the behaviour of `cp` and `tar` which
+    would create a directory `baz` and copy `bar` into it.
 
 **`content`** A string that will be placed in the given destination file. It's de-indented for you, so you can place the content at the
 right offset to look good in the config. On UNIX if it starts with a shebang line it will be marked executable automatically. The
@@ -141,8 +148,6 @@ app.inputs += {
   """
 }
 ```
-
-**`to`** The location in the staging area where the input should be placed or extracted to. By default this is the root.
 
 **`remap`** A list or multi-line string of remap rules. See below for details. If not specified the default is `[ ** ]` which means "copy
 everything to the same location" in the staging area.
