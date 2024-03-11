@@ -165,23 +165,24 @@ Remap rules allow you to selectively drop, rename or move files as they are bein
 input, and also when extracting a zip or tarball.
 
 When an input has a list of remap rules every file being copied or extracted is tested against each item in the list in order. A rule
-defines a set of files that match and optionally, a location in the destination to place them. At least one rule must match for the file to
-be included, which means if you specify your own remap list then it will by default match nothing. Each rule is written as:
+defines a set of files that match and optionally, a location in the destination to place them. If a rule pattern ends with a slash, it is
+interpreted as matching everything under that directory (as `/**`). At least one rule must match for the file to be included, which means
+if you specify your own remap list then it will by default match nothing. Each rule is written as:
 
 `[-]path/to/files/** [-> some/location]`
 
 If no location is given, it's the same as the location of the matched file. Files can be excluded by prefixing a more specific rule with `-`.
 
-**Precedence.** The rule that applies is the most specific, defined as the rule for which the pattern part matches the least. The *pattern* is the file path part of the rule, and the match is the part from the first glob. For example given `foo/bar/**` tested against `foo/bar/baz.txt` the pattern matched part is `baz.txt`. As a consequence, `**` is the least specific rule (because it matches everything) and can be overridden by any other. In case of ties, the last rule in the list is used.
+**Precedence.** The rule that applies is the most specific, defined as the rule for which the non-glob part of the file name is the longest. For example, given `foo/bar/` tested against `foo/bar/baz.txt` the rule is interpreted as equivalent to `foo/**` and the glob matched part is therefore `baz.txt`. As a consequence, `**` is the least specific rule (because it matches everything) and can be overridden by any other. In case of ties, the last rule in the list is used. 
 
-A tricky case is when you have a rule which starts with a glob. Because the pattern matched part is defined as the part of the string following the first pattern, the rules:
+A tricky case is when you have a rule which starts with a glob. Because the glob-matched part is defined as the part of the string following the first appearance of a glob, the rules:
 
 ```
 -*/foo/*.bar
 **
 ```
 
-will simply include everything i.e. the first rule will be ignored, because both rules are considered to pattern match the whole path of every file giving them equal precedence. Because in a tie the last rule wins you can invert the ordering to fix it:
+will simply include everything i.e. the first rule will be ignored, because both rules are considered to glob-match the whole path of every file giving them equal precedence. Because in a tie the last rule wins you can invert the ordering to fix it:
 
 ```
 **
@@ -189,9 +190,6 @@ will simply include everything i.e. the first rule will be ignored, because both
 ```
 
 The files ending in `.bar` in the `foo` directory will now be correctly excluded.
-
-!!! important
-    Remap rules **are not prefixes:** they are tested against _files_, not directories. Therefore specifying a directory as a source won't work, you _must_ use globs to do that. For example `lib` won't copy anything out of the lib directory, but `lib/**` will. For the same reason, a rule such as `-foo/` to drop a directory won't work, but `-foo/**` will.
 
 **Root directories.** When extracting a zip that has exactly one root directory entry the remap rules are applied to the files *within* that directory, but when extracting a tarball the fact that there's a single root is only known at the end of the extraction process, so the rules then are applied to the root of the tarball, thus a single root directory must be taken into account in the remap rules.
 
