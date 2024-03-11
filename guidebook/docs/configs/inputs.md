@@ -170,8 +170,7 @@ be included, which means if you specify your own remap list then it will by defa
 
 `[-]path/to/files/** [-> some/location]`
 
-If no location is given, it's the same as the location of the matched file. Files can be excluded by prefixing a more specific rule with `-`
-.
+If no location is given, it's the same as the location of the matched file. Files can be excluded by prefixing a more specific rule with `-`.
 
 **Precedence.** The rule that applies is the most specific, defined as the rule for which the pattern part matches the least. The *pattern* is the file path part of the rule, and the match is the part from the first glob. For example given `foo/bar/**` tested against `foo/bar/baz.txt` the pattern matched part is `baz.txt`. As a consequence, `**` is the least specific rule (because it matches everything) and can be overridden by any other. In case of ties, the last rule in the list is used.
 
@@ -192,7 +191,7 @@ will simply include everything i.e. the first rule will be ignored, because both
 The files ending in `.bar` in the `foo` directory will now be correctly excluded.
 
 !!! important
-    Remap rules are tested against _files_ not directories. Therefore, specifying a directory as a source won't work, you _must_ use globs to do that, i.e. `lib` won't copy anything out of the lib directory, but `lib/**` will.
+    Remap rules **are not prefixes:** they are tested against _files_, not directories. Therefore specifying a directory as a source won't work, you _must_ use globs to do that. For example `lib` won't copy anything out of the lib directory, but `lib/**` will. For the same reason, a rule such as `-foo/` to drop a directory won't work, but `-foo/**` will.
 
 **Root directories.** When extracting a zip that has exactly one root directory entry the remap rules are applied to the files *within* that directory, but when extracting a tarball the fact that there's a single root is only known at the end of the extraction process, so the rules then are applied to the root of the tarball, thus a single root directory must be taken into account in the remap rules.
 
