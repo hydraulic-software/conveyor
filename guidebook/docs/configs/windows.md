@@ -225,9 +225,9 @@ file), or an object to allow specifying custom scripts for signing your MSIX pac
 
 ```hocon
 app {
-  mac {
-    sign = {
-      scripts = {
+  windows {
+    sign {
+      scripts {
         // Custom script for signing the MSIX package.
         msix = "my-msix-signing-script.bat $MSIX"
         
