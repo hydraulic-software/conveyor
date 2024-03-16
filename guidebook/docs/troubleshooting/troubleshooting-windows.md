@@ -43,11 +43,24 @@ be run from the default PowerShell that comes with Windows. This issue is planne
 
 Some CAs configure their HSMs to require frequent passphrase changes. If you're using a hardware device to hold your signing key and get a message about "PIN expiry" then you need to follow the instructions found in the [HSM section](../configs/keys-and-certificates.md#hardware-security-modules) of the docs to change your HSM passphrase and then also your software passphrase. They must be kept aligned.
 
-## Error 0x80D05011
+## Error codes from the Windows installer
 
-Old versions of Windows have a caching bug that will cause install/update failure if you change the size of a file in your download/update site. Conveyor puts version numbers into file names and ensures the size of the `.appinstaller` file is constant, but if you change your package without changing the version number you may encounter install failures. Conveyor will error out if you try this, but you can override that error and if you do this problem may occur. 
+Windows can return a variety of error codes when installing the MSIX package. Conveyor tries to ensure a reasonable error message is shown, but sometimes the text returned by Windows is generic and unhelpful. If you have users encountering an error you don't understand, there are several things that might help:
 
-The workaround is to always ensure you change your version number for any new upload, even whilst testing. Alternatively you can reboot Windows to clear the buggy cache. 
+1. Download the [Windows Error Code Lookup Tool](https://learn.microsoft.com/en-us/windows/win32/debug/system-error-code-lookup-tool) and use it to figure out what the error might mean.
+2. Make sure the user can run Windows Update successfully.
+3. Ensure the user is on a stable and reasonably low latency network connection, and that their date/time is set correctly. In particular if the user is testing in a Windows VM, it may be that the time has got out of sync and this can cause SSL errors.
+4. Check the Windows Event Viewer for more detailed error messages. You can find the Event Viewer by searching for it in the Start menu. Look in the "Applications and Services Logs" -> "Microsoft" -> "Windows" -> "AppxPackagingOM" or "AppxDeployment-Server" logs.
+5. Try getting the user to run `bitsadmin /LIST /ALLUSERS /VERBOSE` in an administrator terminal. This may help narrow down the problem.
+6. Ask the user to download and run [DebugView](https://learn.microsoft.com/en-us/sysinternals/downloads/debugview) and then run the installer. They should see some messages appear in the debug window, which can then be copy/pasted back to you.
+6. Try to avoid serving from high latency servers. If using GitHub Releases or cloud object storage, consider using a CDN to cache the release assets. Windows can be sensitive to high latency connections.
+
+### Error 0x80D05011
+
+Old versions of Windows have a caching bug that will cause install/update failure if you change the size of a file in your download/update site. Conveyor puts version numbers into file names and ensures the size of the `.appinstaller` file is constant, but if you change your package without changing the version number you may encounter install failures. Conveyor will error out if you try this, but you can override that error and if you do this problem may occur.
+
+The workaround is to always ensure you change your version number for any new upload, even whilst testing. Alternatively you can reboot Windows to clear the buggy cache.
+
 
 ## Error opening sockets on JVM apps
 
