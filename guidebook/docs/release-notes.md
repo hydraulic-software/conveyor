@@ -10,6 +10,7 @@ This release adds some features useful for large enterprises.
 ### Usability improvements
 
 * Remap specs now interpret a rule ending in `/` as a glob `/**` meaning "all files under this directory".
+* You can now set a timeout for the macOS notarization process using the `app.mac.notarization.timeout-seconds` key, and allow the build to proceed even if stapling fails. This is useful for expensive CI systems where you don't want to wait for the notarization process to complete, and are willing to tolerate a slow first-start experience for your users (or inability to launch if the first start is offline).
 * If you refer to an unset environment variable the error message now reminds you to use the `export` keyword.
 * Conveyor now catches attempts to sign Mac apps using a Mac Installer certificate (meant for .pkg files), rather than a standard Developer ID certificate.
 * Changing the site URL for a commercial license now requires an explicit command. The previous approach was a little too frictionless and sometimes users changed the app associated with a license key by accident.

@@ -8,6 +8,28 @@ Additionally, using new config keys requires increasing your compatibility level
 is older than the one expected by the author of the config.
 
 Here is how behaviour changes at each level.
+                                   
+## Level 14
+
+These new keys were added:
+
+ * `app.mac.sign.scripts`
+ * `app.windows.sign.scripts`
+ * `app.jvm.additional-ca-certs`
+ * `app.mac.notarization.best-effort-stapling` 
+ * `app.mac.notarization.script` 
+ * `app.mac.notarization.timeout-seconds` 
+ * `app.windows.sign.scripts.msix` 
+ * `app.windows.sign.scripts.binary`
+ 
+## Level 13
+
+These new keys were added:
+
+ * `app.windows.signing-key.azure-key-vault.vault-name`
+ * `app.windows.signing-key.azure-key-vault.api-access-token`
+ * `app.site.s3.endpoint`
+ * `app.site.move-from.s3.endpoint`
 
 ## Level 12
 
@@ -19,25 +41,25 @@ that would otherwise break TCP connections.
 
 These new keys were added:
 
-* app.electron.asar
-* app.electron.prune
-* app.windows.installer.theme
-* app.site.theme
-* app.theme
+* `app.electron.asar`
+* `app.electron.prune`
+* `app.windows.installer.theme`
+* `app.site.theme`
+* `app.theme`
 
 ## Level 11
 
 These new keys were added:
 
-* app.mac.deltas
-* app.site.move-from.base-url
-* app.site.move-from.copy-to
-* app.site.move-from.github.oauth-token
-* app.site.move-from.github.pages-branch
-* app.site.move-from.s3.region
-* app.site.move-from.s3.access-key-id
-* app.site.move-from.s3.secret-access-key
-* app.windows.exe-installer-basename
+* `app.mac.deltas`
+* `app.site.move-from.base-url`
+* `app.site.move-from.copy-to`
+* `app.site.move-from.github.oauth-token`
+* `app.site.move-from.github.pages-branch`
+* `app.site.move-from.s3.region`
+* `app.site.move-from.s3.access-key-id`
+* `app.site.move-from.s3.secret-access-key`
+* `app.windows.exe-installer-basename`
 
 Sparkle deltas are generated for up to 5 previous versions by default.
 
@@ -45,15 +67,15 @@ Sparkle deltas are generated for up to 5 previous versions by default.
 
 These new keys were added:
 
-* app.linux.debian.distribution.mirrors
-* app.linux.debian.distribution.name
-* app.site.ignore-connection-issues-for-hosts
-* app.site.show-conveyor-badge
-* app.windows.manifests.msix.append-publisher-id-to-appinstaller
-* app.windows.manifests.msix.reinstall-if-required
-* app.windows.manifests.msix.update-escape-hatch.exe
-* app.windows.manifests.msix.update-escape-hatch.run-if
-* app.windows.manifests.msix.use-update-escape-hatch
+* `app.linux.debian.distribution.mirrors`
+* `app.linux.debian.distribution.name`
+* `app.site.ignore-connection-issues-for-hosts`
+* `app.site.show-conveyor-badge`
+* `app.windows.manifests.msix.append-publisher-id-to-appinstaller`
+* `app.windows.manifests.msix.reinstall-if-required`
+* `app.windows.manifests.msix.update-escape-hatch.exe`
+* `app.windows.manifests.msix.update-escape-hatch.run-if`
+* `app.windows.manifests.msix.use-update-escape-hatch`
 
 The [escape hatch mechanism](configs/windows.md#escape-hatch-mechanism) is enabled by default starting from compatibility level 10.
 It may be enabled for all compatibility levels in a later release.
@@ -64,12 +86,12 @@ The distribution package index used for computing dependencies for Linux DEB pac
 
 These new keys were added:
 
-* app.compression-level
-* app.mac.check-binary-versions
-* app.windows.manifests.msix.application-id
-* app.windows.store.publisher
-* app.windows.store.publisher-display-name
-* app.windows.store.identity-name
+* `app.compression-level`
+* `app.mac.check-binary-versions`
+* `app.windows.manifests.msix.application-id`
+* `app.windows.store.publisher`
+* `app.windows.store.publisher-display-name`
+* `app.windows.store.identity-name`
 
 Optional inputs are now supported.
 
@@ -77,14 +99,14 @@ Optional inputs are now supported.
 
 These new keys were added:
 
-* app.site.github.oauth-token
-* app.site.github.pages-branch
-* app.site.s3.bucket
-* app.site.s3.access-key-id
-* app.site.s3.secret-access-key
-* app.windows.manifests.msix.additional-properties-xml
-* app.jvm.windows.override-appdata-env
-* app.windows.manifests.msix.virtualization.excluded-directories
+* `app.site.github.oauth-token`
+* `app.site.github.pages-branch`
+* `app.site.s3.bucket`
+* `app.site.s3.access-key-id`
+* `app.site.s3.secret-access-key`
+* `app.windows.manifests.msix.additional-properties-xml`
+* `app.jvm.windows.override-appdata-env`
+* `app.windows.manifests.msix.virtualization.excluded-directories`
 
 At level 8 or higher the `LocalAppData\Temp` directory is de-virtualized automatically for JVM apps. This is to work around a Windows bug.
 
@@ -139,9 +161,9 @@ app {
 
 The following keys were added:
 
-* app.site.consistency-checks
-* app.windows.manifests.msix.dependencies
-* app.windows.override-icon
+* `app.site.consistency-checks`
+* `app.windows.manifests.msix.dependencies`
+* `app.windows.override-icon`
 
 At level 7 or above:
 
@@ -153,24 +175,24 @@ At level 7 or above:
 
 The following keys were added:
 
-* app.site.flat
+* `app.site.flat`
 
 ## Level 5
 
 The following keys were added:
 
-* app.url-schemes
-* app.site.copy-to
-* app.mac.bundle-extras
-* app.mac.bundle-extras.amd64
-* app.mac.bundle-extras.aarch64
-* app.updates
+* `app.url-schemes`
+* `app.site.copy-to`
+* `app.mac.bundle-extras`
+* `app.mac.bundle-extras.amd64`
+* `app.mac.bundle-extras.aarch64`
+* `app.updates`
 
 ## Level 4
 
 The following keys were added:
 
-* app.site.extra-header-html
+* `app.site.extra-header-html`
 
 At level 4 or above, EXEs in JVM generic app inputs are moved to the JVM directory, out of the `app` directory.
 
@@ -178,11 +200,11 @@ At level 4 or above, EXEs in JVM generic app inputs are moved to the JVM directo
 
 The following keys were added:
 
-* app.windows.start-on-login
+* `app.windows.start-on-login`
 
 ## Level 2
 
 Keys were added to control JVM options per machine, and additionally:
 
-* app.jvm.unwanted-jdk-files
-* app.jvm.extract-native-libraries
+* `app.jvm.unwanted-jdk-files`
+* `app.jvm.extract-native-libraries`
