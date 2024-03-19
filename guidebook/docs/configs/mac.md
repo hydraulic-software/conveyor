@@ -128,7 +128,9 @@ else
 fi
 ```
 
-This script doesn't do anything Conveyor wouldn't do by default, but it's a good starting point for a more complex script that might upload the bundle to a signing server, sign it there, and then download it again. 
+This script doesn't do anything Conveyor wouldn't do by default, but it's a good starting point for a more complex script that might upload the bundle to a signing server, sign it there, and then download it again.
+
+[You can also configure a custom script for notarization](keys-and-certificates.md#via-custom-notarization-script).
 
 #### `app.mac.sign.scripts.app`
 
