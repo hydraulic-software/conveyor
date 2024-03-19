@@ -93,9 +93,9 @@ If true (the default) then native binaries that declare a minimum required macOS
 
 ### `app.mac.sign`
 
-Controls whether signing is done after bundling. Defaults to the value of `app.sign`.
-The value could be one of `true` (meaning regular signing done by Conveyor is enabled), `false` (disabling signing altogether), or an object to allow
-specifying custom scripts for signing your app, like the following:
+Controls whether signing is done after bundling. Defaults to the value of `app.sign`. The value could be one of `true` (meaning regular signing done by Conveyor is enabled), `false` (disabling signing altogether), or an object to allow specifying custom scripts for signing your app. 
+
+Here's an example of how to use a custom signing script:
 
 ```hocon
 app {
@@ -103,15 +103,32 @@ app {
     sign {
       scripts {
         // Custom script for signing the bundle.
-        app = "my-bundle-signing-script.sh $BUNDLE $ENTITLEMENTS"
+        app = "./my-signing-script.sh bundle $ENTITLEMENTS $BUNDLE"
         
-        // Custom script for signing the individual Mach-O binary files.
-        binary = "my-binary-signing-script.sh $FILE $ENTITLEMENTS $IDENTIFIER"
+        // Custom script for signing the individual Mach-O binary files - OPTIONAL.
+        binary = "./my-signing-script.sh file $ENTITLEMENTS $FILE $IDENTIFIER"
       }
     }
   }
 }
 ```
+
+And here's what your script could look like if it were to use the standard Apple codesign tool:
+
+```bash
+#!/usr/bin/env bash
+
+echo "signing: $@"
+name="Your Name Here"
+
+if [[ "$1" == "bundle" ]]; then
+	codesign --sign "$name" --deep --force --verbose --entitlements "$2" "$3"
+else
+	codesign --sign "$name" --force --verbose --entitlements "$1" -i "$3" "$2"
+fi
+```
+
+This script doesn't do anything Conveyor wouldn't do by default, but it's a good starting point for a more complex script that might upload the bundle to a signing server, sign it there, and then download it again. 
 
 #### `app.mac.sign.scripts.app`
 
