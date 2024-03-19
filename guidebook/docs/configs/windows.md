@@ -239,6 +239,14 @@ app {
 }
 ```
 
+As an example, here's what a script that uses the standard Microsoft `signtool` might look like:
+
+```batch
+@signtool sign /fd sha256 /a /f mycert.pfx /p mypassword %1
+```
+
+Of course, just using this script doesn't give you anything over what Conveyor already provides. It's just an example to get you started.
+
 #### `app.windows.sign.scripts.msix`
 
 Defines a custom program to be used for signing your Windows MSIX package. It will be a command line run from the working directory where Conveyor is executed.
