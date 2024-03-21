@@ -83,7 +83,70 @@ An object whose values are put in the `Info.plist` that controls Sparkle's behav
 
 ### `app.mac.sparkle-framework`
 
-An input definition that points to a release of the [Sparkle 2 update framework](https://sparkle-project.org/). You can normally leave this at the default unless you want to use a custom fork of Sparkle for some reason.
+A single [input definition object](inputs.md) that points to a release of the [Sparkle 2 update framework](https://sparkle-project.org/). You can normally leave this at the default unless you want to use a custom fork of Sparkle for some reason. Note that some Conveyor features, like aggressive updates, aren't supported by upstream Sparkle and thus the default value of this key points to a Conveyor-specific fork. Changing this key to use an upstream release will therefore need careful testing and this key is intended for advanced users only. The default value looks like this:
+
+```
+# An input definition for where to get the Sparkle framework.
+sparkle-framework {
+  from = downloads.hydraulic.dev/sparkle/Sparkle-2.5.1-hydraulic.tar.xz
+  remap = [
+    "Sparkle.framework/**"
+    "-Sparkle.framework/Headers"
+    "-Sparkle.framework/PrivateHeaders"
+    "-Sparkle.framework/Modules"
+    "-Sparkle.framework/Versions/B/Headers/**"
+    "-Sparkle.framework/Versions/B/PrivateHeaders/**"
+    "-Sparkle.framework/Versions/B/Modules/**"
+    "-Sparkle.framework/Versions/B/_CodeSignature/**"
+    "-Sparkle.framework/Versions/B/Updater.app/_CodeSignature/**"
+    "-Sparkle.framework/Versions/B/XPCServices/org.sparkle-project.Downloader.xpc/Contents/_CodeSignature/**"
+    "-Sparkle.framework/Versions/B/XPCServices/org.sparkle-project.InstallerLauncher.xpc/Contents/_CodeSignature/**"
+    "-**"
+  ]
+  to = "Frameworks"
+}
+```
+
+It's often easier to customize Sparkle by overwriting files rather than replacign the whole framework. This technique can be useful for customizing the default strings and translations. Here's how:
+
+1. Use `make mac-app` to get an extracted and bundled copy of the Sparkle framework, which you can find in the `Contents/Frameworks` directory of your app bundle. 
+2. You can then modify the strings in the `Sparkle.framework/Resources` directory and add an entry to the `app.mac.sparkle-framework` key to point to your modified version. Sparkle uses the macOS translation framework, so the files are key/value mappings. These are stored in binary, so let's take a look using `plutil` (this procedure requires macOS, see below if you don't have it):
+   ```bash
+   $ plutil -p Sparkle.framework/Versions/B/Resources/Base.lproj/Sparkle.strings | less
+   ```
+3. In the base project keys and values are the same; this is so the strings in the Sparkle source code are in English instead of arbitrary identifiers. Let's imagine we wish to change the message "An important update to %@ is ready to install". We need to replace it in the base project (this won't update the string in the translations, you can use ChatGPT to redo those and then use the same procedure):
+
+    ```bash
+    $ cp output/MyApp.app/Contents/Frameworks/Sparkle.framework/Versions/B/Resources/Base.lproj/Sparkle.strings Sparkle.strings
+    $ plutil -convert xml1 Sparkle.strings
+    
+    # Now edit the file in your favorite text editor, or from the CLI:
+    $ plutil -replace "An important update to %@ is ready to install" -string "An important update to %@ is ready to install, please click OK to install it now" Sparkle.strings
+   
+    $ plutil -convert binary1 Sparkle.strings
+    ```
+    
+4. Now we have our modified `Sparkle.strings` file we can overwrite the default one in the Sparkle framework. We can then add an entry to the `app.mac.sparkle-framework` key to point to our modified version. Here's how to do it:
+
+    ```hocon
+    app.mac.bundle-extras += {
+      from = "path/to/modified/Sparkle.strings"
+      to = "Frameworks/Sparkle.framework/Versions/B/Resources/Base.lproj/Sparkle.strings"
+    }
+    ```
+
+If you don't have access to `plutil`, the same task can be achieved using Python's `biplist` library, and there are also third-party tools available for Windows and Linux that can handle PList files.
+
+```python
+import biplist
+
+try:
+    plist = biplist.readPlist('path/to/your/file.plist')  # Load the binary plist file
+    plist['YourKey'] = 'NewValue'  # Modify or add values
+    biplist.writePlist(plist, 'path/to/your/file.plist')  # Write back as binary plist
+except (biplist.InvalidPlistException, biplist.NotBinaryPlistException) as e:
+    print("Error processing plist file:", e)
+```
 
 ### `app.mac.check-binary-versions`
 
