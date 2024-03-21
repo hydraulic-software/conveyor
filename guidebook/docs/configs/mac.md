@@ -107,7 +107,7 @@ sparkle-framework {
 }
 ```
 
-It's often easier to customize Sparkle by overwriting files rather than replacign the whole framework. This technique can be useful for customizing the default strings and translations. Here's how:
+It's often easier to customize Sparkle by overwriting files rather than replacing the whole framework. This technique can be useful for customizing the default strings and translations. Here's how:
 
 1. Use `make mac-app` to get an extracted and bundled copy of the Sparkle framework, which you can find in the `Contents/Frameworks` directory of your app bundle. 
 2. You can then modify the strings in the `Sparkle.framework/Resources` directory and add an entry to the `app.mac.sparkle-framework` key to point to your modified version. Sparkle uses the macOS translation framework, so the files are key/value mappings. These are stored in binary, so let's take a look using `plutil` (this procedure requires macOS, see below if you don't have it):
@@ -191,7 +191,7 @@ else
 fi
 ```
 
-This script doesn't do anything Conveyor wouldn't do by default, but it's a good starting point for a more complex script that might upload the bundle to a signing server, sign it there, and then download it again.
+This script does the same thing Conveyor normally would but in a non-portable way. Still, it's a good starting point for a more complex script that might upload the bundle to a signing server, sign it there, and then download it again.
 
 [You can also configure a custom script for notarization](keys-and-certificates.md#via-custom-notarization-script).
 
@@ -208,7 +208,7 @@ The script should sign the bundle located at the `$BUNDLE` directory **in-place*
 !!! important "Caching"
     For speed reasons Conveyor will cache the signed MSIX produced by the given custom script. The cache key contains both the configured
     command line and a fingerprint (hash) of the script itself. If you change the script or the command line, the signing operation will be rerun.
-    However if you change a *dependency* of your script then that won't be detected, as only the command itself is fingerprinted. In that
+    However, if you change a *dependency* of your script then that won't be detected, as only the command itself is fingerprinted. In that
     case you will need to modify the command too e.g. by altering a version number in a header comment.
 
 #### `app.mac.sign.scripts.binary`
@@ -230,7 +230,7 @@ This script is *only* called if you also specify an `app` script, to avoid mixin
 !!! important "Caching"
     For speed reasons Conveyor will cache the signed MSIX produced by the given custom script. The cache key contains both the configured
     command line and a fingerprint (hash) of the script itself. If you change the script or the command line, the signing operation will be rerun.
-    However if you change a *dependency* of your script then that won't be detected, as only the command itself is fingerprinted. In that
+    However, if you change a *dependency* of your script then that won't be detected, as only the command itself is fingerprinted. In that
     case you will need to modify the command too e.g. by altering a version number in a header comment.
     
 
@@ -272,7 +272,7 @@ You probably won't need to add entitlements when writing cross-platform apps. Co
     To view the entitlements in a binary you can run (on a Mac) `codesign -d --entitlements :- AppName.app`
 
 ??? information "Debugging"
-    To attach to your process with `lldb` or Xcode you need to specify the `com.apple.security.get-task-allow` entitlement. However to use this, your app must be unsigned. macOS won't allow signed apps that have this entitlement to start up, as it would allow a workaround for code signing security. You can remove the code signature from an app using `codesign --remove-signature "My App.app"`.
+    To attach to your process with `lldb` or Xcode you need to specify the `com.apple.security.get-task-allow` entitlement. However, to use this, your app must be unsigned. macOS won't allow signed apps that have this entitlement to start up, as it would allow a workaround for code signing security. You can remove the code signature from an app using `codesign --remove-signature "My App.app"`.
 
 
 ## File associations
