@@ -25,6 +25,11 @@ config file under `conveyor.license-key`. You will then be prompted to follow a 
 license key will be activated, and you'll also be issued with two more via email that can be used for other apps or beta/canary channels, as
 you see fit.
 
+Conveyor manages licensing by associating your keys with update site URLs, which acts as the unique identity of a project. Because it's 
+easy to make mistakes or people sometimes want to use staging servers, we allow you to switch a license key to a new update site, but not
+go back to a previous one. In this way you retain flexibility if you don't know your final update site URL up front, but it's not possible
+to use one key for two projects simultaneously (as it would require switching back and forth).
+
 !!! important
     If you need a non-credit card based purchase flow e.g. an invoice paired with a purchase order, please [email us and ask for one](mailto:contact@hydraulic.dev).
 
@@ -34,7 +39,6 @@ No. Conveyor generates [standard package formats](../outputs.md) and on macOS it
 [Sparkle](https://www.sparkle-framework.org/). All these can be produced with native toolchains. If you want to stop using Conveyor, you
 will just have to set up your own packaging scripts and do the integration work yourself. In other words you'll have spend the time you
 saved by using Conveyor, but nothing will break.
-
 
 ## I am an IT admin. How can I control the update schedule of an app that uses Conveyor?
 
