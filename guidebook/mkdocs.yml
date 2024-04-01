@@ -48,6 +48,7 @@ nav:
   - Configuration:
     - configs/index.md
     - configs/names.md
+    - configs/icons.md
     - configs/inputs.md
     - configs/update-modes.md
     - configs/download-pages.md

@@ -53,43 +53,6 @@ This will generate packages for Windows, Mac Intel and Mac ARM from the contents
 
 All configuration Conveyor pays attention to goes under the `app` hierarchy, but you can place keys outside this area to hold your own variables.
 
-## Icons
-
-```
-app.icons = "myapp-icon-*.png"
-app.icons = "myapp-icon.svg"
-
-# Render a simple icon with a label, gradient 
-# and macOS compliant rounded corners.
-app.icons = {
-  label = "AP"
-  gradient = "blue;green"
-}
-```
-
-**`app.icons`, `app.{windows,mac,linux,site}.icons`** An icon definition that can be either:
-
-* An [input definition](inputs.md) that should import either square images or an SVG file.
-  You can provide any number of square image files, as Conveyor will rescale the images to provide appropriate image
-  sizes for all platforms. You can directly provide the appropriate sizes (see below) to avoid artifacts from resampling.
-  Besides `.svg`, currently supported image file types are: `.bmp`, `.gif`, `.png`, `.tif` and `.tiff`. Only images that support
-  transparency are allowed.
-* An icon generation definition, consisting of the following fields:
-    * **`label`** An optional short string containing one or two characters which will be rendered as the icon. If not provided, a
-      label is derived from the `app.display-name` key.
-    * **`gradient`** An optional string containing one or
-      two [CSS style colors](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)
-      separated by a semicolon (;). If not provided, a random gradient color is provided using the `label` as a seed.
-
-  Generated icons have rounded corners on all systems except Windows, where they instead fill the entire icon to comply with the platform style.
-
-The icons are processed and converted into square images of sizes 16, 32, 64, 128, 256, 512 and 1024, as well as 44 and 150 for
-Windows. You can provide images with those sizes directly if you prefer to handle rescaling directly. Otherwise, it's a good idea to
-provide at least a few different resolutions so scaling of the icon between sizes is smoother.
-It can be useful to have different icons for each OS to match the platform native styles.
-
-By default, icons will be generated with a label based on the contents of `app.display-name` with a random gradient background.
-
 ## Theme
 
 **`app.theme`** Allows you to select the theme of the download site and the Windows installer in a single switch. Currently supported themes are `light` and `dark`. If left unset, the user system's theme will be used by default.
