@@ -26,7 +26,7 @@ It's free for open source apps and has [simple per-project pricing](https://www.
     * [Flutter](configs/flutter.md): easily ship apps that share code with mobile.
 * **Excellent support for CI/CD:**
     * Package and deploy directly for _every platform you support_ from any Linux build agent, without needing Mac/Windows workers. 
-    * Automatic releasing to the Microsoft Store, web servers, S3 or [GitHub releases](configs/download-pages#publishing-through-github)
+    * Automatic releasing to the Microsoft Store, web servers, S3 or [GitHub releases](configs/download-pages.md#publishing-through-github)
     * A [GitHub Action](continuous-integration.md#using-github-actions)
     * Support for [cloud signing services and HSMs](configs/keys-and-certificates.md#cloud-remote-signing-windows-only), eliminating the need for USB Windows signing keys.
 * **Easy and powerful code signing:**
