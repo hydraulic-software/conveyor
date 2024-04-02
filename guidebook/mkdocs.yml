@@ -153,6 +153,11 @@ markdown_extensions:
   - pymdownx.tilde
   - tables
 
+plugins:
+  - search
+  - social
+  - tags
+
 extra_css:
   - stylesheets/guidebook.css
 
