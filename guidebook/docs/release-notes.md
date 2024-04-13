@@ -1,5 +1,13 @@
 # Release notes
 
+## Conveyor 14.1 (April 13 2024)
+
+This is a bugfix release:
+
+* Windows: Fix a bug that could occur if your input files contained two files with the same file extension but mismatched upper/lower case.
+* Linux: Fix a bug with file and URL associations. If you use these and ship to Linux, an upgrade is recommended.
+* Linux: Change the copy/pasteable script to use a way of getting the CPU arch that works on a minimal Ubuntu install.
+
 ## Conveyor 14 (March 19 2024)
 
 This release adds some features useful for large enterprises. 
