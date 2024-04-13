@@ -1,7 +1,7 @@
 {
   "name": "@hydraulic/migrate-to-conveyor",
   "description": "Migrate your Squirrel app to Conveyor.",
-  "version": "14.0.0",
+  "version": "14.1.0",
   "author": "Hydraulic Software <contact@hydraulic.dev>",
   "keywords": [
     "packaging",
