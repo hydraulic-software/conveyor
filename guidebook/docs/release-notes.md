@@ -1,5 +1,9 @@
 # Release notes
 
+## Conveyor 14.1 (April 13 2024)
+
+This release fixes a bug with Linux file and URL associations. If you use these and ship to Linux, an upgrade is recommended.
+
 ## Conveyor 14 (March 19 2024)
 
 This release adds some features useful for large enterprises. 
