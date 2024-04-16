@@ -12,6 +12,7 @@ import org.gradle.jvm.toolchain.JvmVendorSpec.*
 import org.jetbrains.compose.ComposeExtension
 import org.jetbrains.compose.desktop.DesktopExtension
 import org.openjfx.gradle.JavaFXOptions
+import java.io.File
 
 /**
  * A base class for tasks that work with generated Conveyor configuration.
@@ -153,13 +154,16 @@ abstract class ConveyorConfigTask : DefaultTask() {
         // classpath.
         // If there are any expanded configs, we can't really use the common classpath, because it might need the platform specific
         // dependencies to properly resolve versions.
-        val commonFiles = if (expandedConfigs.isNotEmpty()) expandedConfigs.values.map { it.files }
-            .reduce { a, b -> a.intersect(b) } else commonClasspath.files
+        val commonFiles: Set<File> = if (expandedConfigs.isNotEmpty())
+            expandedConfigs.values.map { it.files }.reduce { a, b -> a.intersect(b) }
+        else
+            commonClasspath.files
 
         if (commonFiles.isNotEmpty()) {
             appendLine("app.inputs = ${'$'}{app.inputs} [")
-            for (entry in commonFiles.sorted())
+            for (entry in commonFiles.sorted()) {
                 appendLine("    " + quote(entry.toString()))
+            }
             appendLine("]")
         }
 
@@ -169,8 +173,9 @@ abstract class ConveyorConfigTask : DefaultTask() {
             if (files.isEmpty()) continue
             appendLine()
             appendLine("app.$platform.inputs = ${'$'}{app.$platform.inputs} [")
-            for (entry in files.sorted())
+            for (entry in files.sorted()) {
                 appendLine("    " + quote(entry.toString()))
+            }
             appendLine("]")
         }
     }
