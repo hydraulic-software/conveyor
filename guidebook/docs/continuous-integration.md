@@ -5,7 +5,11 @@
 
 ## Configuring CI for Conveyor
 
-Conveyor works well with CI platforms like TeamCity, GitHub Actions etc. When building in CI you should supply your signing credentials in a different way than using the `defaults.conf` file. A simple approach is to create a separate file next to your main `conveyor.conf` file that looks like this:
+Conveyor works well with CI platforms like TeamCity, GitHub Actions etc. Pay attention to the following.
+
+## Credentials
+
+When building in CI you should supply your signing credentials in a different way than using the `defaults.conf` file. A simple approach is to create a separate file next to your main `conveyor.conf` file that looks like this:
 
 ```
 include required("conveyor.conf")
@@ -28,14 +32,35 @@ Call it something like `ci.conveyor.conf`. Copy your `.cer`/`.pem` files to be n
 
 An alternative approach is to set a passphrase, then put the encrypted `app.signing-key` value into your main app config that gets checked into version control. You can then put the passphrase into an environment variable and specify it on the command line with `--passphrase=env:PASSPHRASE`.
 
-To get Conveyor onto your build agents either download the Linux tarball or pre-install it on your agents. You can get a link for the current version from the [download page](https://downloads.hydraulic.dev/conveyor/download.html), which will look like this: `https://downloads.hydraulic.dev/conveyor/conveyor-${CONVEYOR_VERSION}-linux-amd64.tar.gz`.
+## Caching Conveyor downloads
+
+To get Conveyor onto your build workers, either download the Linux tarball or pre-install it on your agents. You can get a link for the current version from the [download page](https://downloads.hydraulic.dev/conveyor/download.html), which will look like this: `https://downloads.hydraulic.dev/conveyor/conveyor-${CONVEYOR_VERSION}-linux-amd64.tar.gz`.
 
 !!! important "Caching Conveyor downloads"
     Please be careful that your CI/build system doesn't download Conveyor over and over again. If you can't pre-install it on your workers for some reason, make sure the download is cached locally. IP addresses that seem to be re-downloading Conveyor on every build may be throttled or blocked.
 
+## Worker system requirements
+
+Conveyor is quite resource intensive. You should ensure your workers have:
+
+* At least 11GB of free disk space _after_ installing Conveyor itself. That's because the [disk cache](running.md#the-cache) is sized at 10GB by default and Conveyor will try to keep at least 1GB of free space available, so this size ensures it won't delete cache entries unnecessarily. You can adjust the cache size from the command line.
+* At least 32GB of free RAM.
+* A fast filing system (ideally, not Windows)
+* Plenty of CPU.
+* Internet access.
+
+You can reduce the resource requirements by passing `--parallelism=2` (or lower) as a flag, to lower the number of tasks run simultaneously. This will slow down the build but make it fit into smaller workers.
+
+## Disk cache
+
+It is _strongly recommended_ that you preserve the contents of Conveyor's [disk cache](running.md#the-cache) directory between builds, ideally by leaving the files on disk and running builds on the same worker. When not possible, backing up and restoring the cache is second best approach (the GitHub Action is configured to do this by default). Preserving the cache has three advantages:
+
+1. It speeds up releasing the next version significantly, by avoiding the need to redownload large files (e.g. previous versions of your app for delta computation).
+2. It will reduce the number of signatures you consume, if you're using cloud signing services.
+
 ## macOS keychain access
 
-Mac CI machines can be expensive but if you have one then the macOS keychain is a good way to keep your root key secure. When the key is stored there the OS will only supply it to Conveyor and no other app, not even a subprocess. Additionally, the OS will prevent Conveyor's memory space from being accessed via debug APIs.
+If you have the ability to build on a Mac then it's worth thinking about doing it, because the macOS keychain is a good way to keep your root key secure. When the key is stored there the OS will only supply it to Conveyor and no other app. Additionally, the OS will prevent Conveyor from being patched or overwritten on disk by other software.
 
 Normally the keychain is unlocked by physically logging in to the machine. You can unlock it for a remote session (e.g. via ssh) by using the `security unlock-keychain` command before running Conveyor.
 
