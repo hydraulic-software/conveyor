@@ -1,5 +1,12 @@
 # Release notes
 
+## Conveyor 14.2
+
+* Improves the cache hit ratio for Windows signed files, which should help preserve expensive signature operations when using DigiCert cloud signing.
+* Gradle plugin: now is compatible with the configuration cache, making it much faster.
+* Gradle plugin: modules with conflicting names are now renamed inside the package.
+* Upgraded dependency versions in the Compose and JavaFX apps.
+
 ## Conveyor 14.1 (April 13 2024)
 
 This release fixes a bug with Linux file and URL associations. If you use these and ship to Linux, an upgrade is recommended.
