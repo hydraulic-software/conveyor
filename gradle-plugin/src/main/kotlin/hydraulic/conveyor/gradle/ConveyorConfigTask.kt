@@ -2,13 +2,13 @@ package hydraulic.conveyor.gradle
 
 import dev.hydraulic.types.machines.Machine
 import org.gradle.api.DefaultTask
-import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.artifacts.Configuration
-import org.gradle.api.file.Directory
-import org.gradle.api.model.ObjectFactory
+import org.gradle.api.artifacts.DependencySet
 import org.gradle.api.plugins.JavaApplication
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
@@ -17,17 +17,17 @@ import org.jetbrains.compose.ComposeExtension
 import org.jetbrains.compose.desktop.DesktopExtension
 import org.openjfx.gradle.JavaFXOptions
 import java.io.File
+import java.util.*
 
 /**
  * A base class for tasks that work with generated Conveyor configuration.
  */
 @Suppress("LeakingThis")
-abstract class ConveyorConfigTask(of: ObjectFactory) : DefaultTask() {
-    @Input
-    var machineConfigs: Map<Machine, Configuration> = HashMap()
-
+abstract class ConveyorConfigTask(
+    machineConfigs: Map<String, Configuration>
+) : DefaultTask() {
     @get:Input
-    val buildDirectory: Property<Directory> = of.directoryProperty()
+    abstract val buildDirectory: Property<String>
 
     @get:Input
     abstract val projectName: Property<String>
@@ -88,11 +88,24 @@ abstract class ConveyorConfigTask(of: ObjectFactory) : DefaultTask() {
     @get:Optional
     abstract val composeAppResourcesRootDir: Property<File>
 
+    @get:Input
+    abstract val appJar: Property<File>
+
+
+    @get:Input
+    abstract val runtimeClasspath: ListProperty<String>
+
+    @get:Input
+    abstract val commonFiles: ListProperty<String>
+
+    @get:Input
+    abstract val expandedConfigs: MapProperty<String, SortedSet<String>>
+
     // Can't use type JavaFXOptions here because Gradle can't decorate the class.
     private val javafx: Boolean
 
     init {
-        buildDirectory.convention(project.layout.buildDirectory.get())
+        buildDirectory.convention(project.layout.buildDirectory.get().toString())
         projectName.convention(project.name)
         projectVersion.convention(project.version)
         projectGroup.convention(project.group)
@@ -138,6 +151,50 @@ abstract class ConveyorConfigTask(of: ObjectFactory) : DefaultTask() {
                 ""
             }
             throw Exception("Could not read Jetpack Compose configuration, likely plugin version incompatibility? $extra".trim(), e)
+        }
+
+        // Initialize appJar property
+        val jarTask: Task = project.tasks.findByName("desktopJar") ?: project.tasks.findByName("jvmJar") ?: project.tasks.getByName("jar")
+        appJar.set(jarTask.outputs.files.singleFile)
+
+        // Initialize runtimeClasspath property
+        val runtimeClasspathConfiguration =
+            (project.configurations.findByName("runtimeClasspath") ?: project.configurations.getByName("desktopRuntimeClasspath")
+            ?: project.configurations.getByName("jvmRuntimeClasspath"))
+        // We need to resolve the runtimeClasspath before copying out the dependencies because the at the start of the resolution process
+        // the set of dependencies can be changed via [Configuration.defaultDependencies] or [Configuration.withDependencies].
+        // Also, we can't store a Configuration as a task input property because it doesn't serialize into the configuration cache.
+        runtimeClasspath.addAll(project.files(runtimeClasspathConfiguration.resolve()).map { it.absolutePath })
+
+        val currentMachineConfig = machineConfigs[Machine.current().toString()]!!
+
+        // Exclude current machine specific config from the runtime classpath, to retain only the dependencies that should go
+        // to all platforms.
+        val currentMachineDependencies: DependencySet = currentMachineConfig.dependencies
+        val commonClasspath = runtimeClasspathConfiguration.copyRecursive {
+            // We need to filter the runtimeClasspath here, before making the recursive copy, otherwise the dependencies from the current
+            // machine config won't match.
+            it !in currentMachineDependencies && (!javafx || it.group != "org.openjfx")
+        }
+
+        // Make machine configs extend the common classpath so the dependencies are resolved correctly.
+        val expandedConfigsMap: SortedMap<String, Configuration> = machineConfigs.mapNotNull { (machine, config) ->
+            if (config.isEmpty) null else {
+                machine to config.copy().extendsFrom(commonClasspath).copyRecursive()
+            }
+        }.toMap().toSortedMap()
+
+        // If there are any expanded configs, use the intersection as the common files. Otherwise, just use all files from the common
+        // classpath. If there are any expanded configs, we can't really use the common classpath, because it might need the platform
+        // specific dependencies to properly resolve versions.
+        val commonFilesAsFiles: Set<File> = if (expandedConfigsMap.isNotEmpty())
+            expandedConfigsMap.values.map { it.files }.reduce { a, b -> a.intersect(b) }
+        else
+            commonClasspath.files
+        commonFiles.addAll(commonFilesAsFiles.map { it.absolutePath })
+
+        for ((platform: String, config: Configuration) in expandedConfigsMap) {
+            expandedConfigs.put(platform, config.files.map { it.absolutePath }.toSortedSet())
         }
     }
 
@@ -194,7 +251,6 @@ abstract class ConveyorConfigTask(of: ObjectFactory) : DefaultTask() {
         // - Icons?
     }
 
-
     private fun StringBuilder.importFromJavaFXPlugin() {
         try {
             if (javafx) {
@@ -215,65 +271,26 @@ abstract class ConveyorConfigTask(of: ObjectFactory) : DefaultTask() {
         }
     }
 
-    private fun StringBuilder.importFromDependencyConfigurations(project: Project) {
+    private fun StringBuilder.importFromDependencyConfigurations() {
         appendLine()
         appendLine("// Inputs from dependency configurations and the JAR task.")
+        appendLine("app.inputs += " + quote(appJar.get().toString()))
 
-        // Emit app JAR input. desktopJar (and previously, jvmJar) tasks are used by Compose Multiplatform projects
-        // As of Feb 2024, desktopJar is the default task name generated by the kmp.jetbrains.com wizard
-        val jarTask = project.tasks.findByName("desktopJar") ?: project.tasks.findByName("jvmJar") ?: project.tasks.getByName("jar")
-        appendLine("app.inputs += " + quote(jarTask.outputs.files.singleFile.toString()))
-
-        val runtimeClasspath =
-            project.configurations.findByName("runtimeClasspath") ?: project.configurations.getByName("desktopRuntimeClasspath")
-            ?: project.configurations.getByName("jvmRuntimeClasspath")
-
-        // We need to resolve the runtimeClasspath before copying out the dependencies because the at the start of the resolution process
-        // the set of dependencies can be changed via [Configuration.defaultDependencies] or [Configuration.withDependencies].
-        runtimeClasspath.resolve()
-
-        val currentMachineConfig = machineConfigs[Machine.current()]!!
-
-        // Exclude current machine specific config from the runtime classpath, to retain only the dependencies that should go
-        // to all platforms.
-        val currentMachineDependencies = currentMachineConfig.dependencies
-        val commonClasspath = runtimeClasspath.copyRecursive {
-            // We need to filter the runtimeClasspath here, before making the recursive copy, otherwise the dependencies from the current
-            // machine config won't match.
-            it !in currentMachineDependencies && (!javafx || it.group != "org.openjfx")
-        }
-
-        // Make machine configs extend the common classpath so the dependencies are resolved correctly.
-        val expandedConfigs = machineConfigs.mapNotNull { (machine, config) ->
-            if (config.isEmpty) null else {
-                machine to config.copy().extendsFrom(commonClasspath).copyRecursive()
-            }
-        }.toMap().toSortedMap()
-
-        // If there are any expanded configs, use the intersection as the common files. Otherwise, just use all files from the common
-        // classpath.
-        // If there are any expanded configs, we can't really use the common classpath, because it might need the platform specific
-        // dependencies to properly resolve versions.
-        val commonFiles: Set<File> = if (expandedConfigs.isNotEmpty())
-            expandedConfigs.values.map { it.files }.reduce { a, b -> a.intersect(b) }
-        else
-            commonClasspath.files
-
-        if (commonFiles.isNotEmpty()) {
+        if (commonFiles.get().isNotEmpty()) {
             appendLine("app.inputs = ${'$'}{app.inputs} [")
-            for (entry in commonFiles.sorted()) {
+            for (entry in commonFiles.get().sorted()) {
                 appendLine("    " + quote(entry.toString()))
             }
             appendLine("]")
         }
 
         // Emit platform specific artifacts into the right config sections.
-        for ((platform, config) in expandedConfigs) {
-            val files = config.files - commonFiles
+        for ((platform, config: SortedSet<String>) in expandedConfigs.get()) {
+            val files: Set<Any> = config - commonFiles.get().toSortedSet()
             if (files.isEmpty()) continue
             appendLine()
             appendLine("app.$platform.inputs = ${'$'}{app.$platform.inputs} [")
-            for (entry in files.sorted()) {
+            for (entry in files) {
                 appendLine("    " + quote(entry.toString()))
             }
             appendLine("]")
@@ -353,7 +370,7 @@ abstract class ConveyorConfigTask(of: ObjectFactory) : DefaultTask() {
             importFromJavaFXPlugin()
             importFromJavaPlugin()
             importFromComposePlugin()
-//            importFromDependencyConfigurations(project)
+            importFromDependencyConfigurations()
         }
     }
 }

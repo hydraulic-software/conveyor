@@ -13,7 +13,7 @@ import java.util.*
  */
 @Suppress("unused")
 class ConveyorGradlePlugin : Plugin<Project> {
-    private val machineConfigs = HashMap<Machine, Configuration>()
+    private val machineConfigs = HashMap<String, Configuration>()
     private val currentMachine = Machine.current()
 
     private fun String.capitalize(): String = this.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
@@ -23,15 +23,16 @@ class ConveyorGradlePlugin : Plugin<Project> {
         // The Kotlin Multiplatform plugin puts dependencies in a different configuration than the normal Java plugin.
         val impl: Configuration? =
             configsMap["implementation"] ?: configsMap["jvmMainImplementation"] ?: configsMap["commonMainImplementation"]
-        return machineConfigs.getOrPut(machine) {
+        return machineConfigs.getOrPut(machine.toString()) {
             var configName = "${machine.os.identifier}${machine.cpu.identifier.capitalize()}"
             if (machine is LinuxMachine && machine.cLibrary != CLibraries.GLIBC)
                 configName += machine.cLibrary.identifier.capitalize()
             project.configurations.create(configName).also {
-                if (machine == currentMachine)
-                // Make implementation extend from the current machine config, so that those dependencies get included to the runtime when
-                // executing './gradlew run'.
+                if (machine == currentMachine) {
+                    // Make implementation extend from the current machine config, so that those dependencies get included to the runtime when
+                    // executing './gradlew run'.
                     impl?.extendsFrom(it)
+                }
             }
         }
     }
@@ -45,12 +46,7 @@ class ConveyorGradlePlugin : Plugin<Project> {
         )) machineConfig(project, m)
 
         // Register the two tasks.
-        project.tasks.register("writeConveyorConfig", WriteConveyorConfigTask::class.java) {
-            it.destination.set(project.layout.projectDirectory.file("generated.conveyor.conf"))
-            it.machineConfigs = machineConfigs
-        }
-        project.tasks.register("printConveyorConfig", PrintConveyorConfigTask::class.java) {
-            it.machineConfigs = machineConfigs
-        }
+        project.tasks.register("writeConveyorConfig", WriteConveyorConfigTask::class.java, machineConfigs)
+        project.tasks.register("printConveyorConfig", PrintConveyorConfigTask::class.java, machineConfigs)
     }
 }
