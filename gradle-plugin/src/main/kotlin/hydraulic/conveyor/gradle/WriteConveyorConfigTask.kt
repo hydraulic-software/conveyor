@@ -1,13 +1,16 @@
 package hydraulic.conveyor.gradle
 
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.model.ObjectFactory
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
+import javax.inject.Inject
 
 /**
  * Writes the generated Conveyor config to disk.
  */
-abstract class WriteConveyorConfigTask : ConveyorConfigTask() {
+abstract class WriteConveyorConfigTask @Inject constructor(of: ObjectFactory) : ConveyorConfigTask(of) {
     @get:OutputFile
     abstract val destination: RegularFileProperty
 
@@ -19,8 +22,11 @@ abstract class WriteConveyorConfigTask : ConveyorConfigTask() {
         outputs.upToDateWhen { false }
     }
 
+    @Input
+    val generatedConfig: String = generate()
+
     @TaskAction
     fun writeOut() {
-        destination.get().asFile.writeText(generate())
+        destination.get().asFile.writeText(generatedConfig)
     }
 }

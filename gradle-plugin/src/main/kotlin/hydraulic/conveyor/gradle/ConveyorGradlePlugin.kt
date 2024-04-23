@@ -19,7 +19,7 @@ class ConveyorGradlePlugin : Plugin<Project> {
     private fun String.capitalize(): String = this.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
 
     private fun machineConfig(project: Project, machine: Machine): Configuration {
-        val configsMap = project.configurations.asMap
+        val configsMap: SortedMap<String, Configuration> = project.configurations.asMap
         // The Kotlin Multiplatform plugin puts dependencies in a different configuration than the normal Java plugin.
         val impl: Configuration? =
             configsMap["implementation"] ?: configsMap["jvmMainImplementation"] ?: configsMap["commonMainImplementation"]
@@ -46,8 +46,8 @@ class ConveyorGradlePlugin : Plugin<Project> {
 
         // Register the two tasks.
         project.tasks.register("writeConveyorConfig", WriteConveyorConfigTask::class.java) {
-            it.machineConfigs = machineConfigs
             it.destination.set(project.layout.projectDirectory.file("generated.conveyor.conf"))
+            it.machineConfigs = machineConfigs
         }
         project.tasks.register("printConveyorConfig", PrintConveyorConfigTask::class.java) {
             it.machineConfigs = machineConfigs
