@@ -91,15 +91,14 @@ abstract class ConveyorConfigTask(
     @get:Input
     abstract val appJar: Property<File>
 
-
     @get:Input
     abstract val runtimeClasspath: ListProperty<String>
 
     @get:Input
-    abstract val commonFiles: ListProperty<String>
+    abstract val commonFiles: ListProperty<File>
 
     @get:Input
-    abstract val expandedConfigs: MapProperty<String, SortedSet<String>>
+    abstract val expandedConfigs: MapProperty<String, SortedSet<File>>
 
     // Can't use type JavaFXOptions here because Gradle can't decorate the class.
     private val javafx: Boolean
@@ -191,10 +190,10 @@ abstract class ConveyorConfigTask(
             expandedConfigsMap.values.map { it.files }.reduce { a, b -> a.intersect(b) }
         else
             commonClasspath.files
-        commonFiles.addAll(commonFilesAsFiles.map { it.absolutePath })
+        commonFiles.addAll(commonFilesAsFiles)
 
         for ((platform: String, config: Configuration) in expandedConfigsMap) {
-            expandedConfigs.put(platform, config.files.map { it.absolutePath }.toSortedSet())
+            expandedConfigs.put(platform, config.files.toSortedSet())
         }
     }
 
@@ -272,26 +271,49 @@ abstract class ConveyorConfigTask(
     }
 
     private fun StringBuilder.importFromDependencyConfigurations() {
+        val fileNames = HashSet<String>()
+
         appendLine()
         appendLine("// Inputs from dependency configurations and the JAR task.")
-        appendLine("app.inputs += " + quote(appJar.get().toString()))
+        val appJarFile = appJar.get()
+        fileNames.add(appJarFile.name)
+        appendLine("app.inputs += " + quote(appJarFile.toString()))
+
+        fun emitInputLine(entry: File) {
+            append("    " + quote(entry.toString()))
+            if (fileNames.add(entry.name)) {
+                appendLine()
+            } else {
+                // There's a file name conflict. Rename the file to deduplicate.
+                var counter = 2
+                while (true) {
+                    val newName = "${entry.nameWithoutExtension}-${counter}.${entry.extension}"
+                    if (fileNames.add(newName)) {
+                        appendLine(" -> ${quote(newName)}")
+                        break
+                    } else {
+                        counter++
+                    }
+                }
+            }
+        }
 
         if (commonFiles.get().isNotEmpty()) {
             appendLine("app.inputs = ${'$'}{app.inputs} [")
-            for (entry in commonFiles.get().sorted()) {
-                appendLine("    " + quote(entry.toString()))
+            for (entry: File in commonFiles.get().sorted()) {
+                emitInputLine(entry)
             }
             appendLine("]")
         }
 
         // Emit platform specific artifacts into the right config sections.
-        for ((platform, config: SortedSet<String>) in expandedConfigs.get()) {
-            val files: Set<Any> = config - commonFiles.get().toSortedSet()
+        for ((platform, config: SortedSet<File>) in expandedConfigs.get()) {
+            val files: Set<File> = config - commonFiles.get().toSortedSet()
             if (files.isEmpty()) continue
             appendLine()
             appendLine("app.$platform.inputs = ${'$'}{app.$platform.inputs} [")
-            for (entry in files) {
-                appendLine("    " + quote(entry.toString()))
+            for (entry: File in files) {
+                emitInputLine(entry)
             }
             appendLine("]")
         }
