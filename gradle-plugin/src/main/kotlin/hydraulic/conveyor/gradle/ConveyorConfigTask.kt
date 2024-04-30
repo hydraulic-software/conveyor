@@ -157,9 +157,12 @@ abstract class ConveyorConfigTask(
         appJar.set(jarTask.outputs.files.singleFile)
 
         // Initialize runtimeClasspath property
-        val runtimeClasspathConfiguration =
-            (project.configurations.findByName("runtimeClasspath") ?: project.configurations.getByName("desktopRuntimeClasspath")
-            ?: project.configurations.getByName("jvmRuntimeClasspath"))
+        val configNames = setOf("runtimeClasspath", "desktopRuntimeClasspath", "jvmRuntimeClasspath")
+        val runtimeClasspathConfiguration = try {
+            configNames.firstNotNullOf { project.configurations.findByName(it) }
+        } catch (e: NoSuchElementException) {
+            throw Exception("Could not locate the classpath configuration, tried $configNames")
+        }
         // We need to resolve the runtimeClasspath before copying out the dependencies because the at the start of the resolution process
         // the set of dependencies can be changed via [Configuration.defaultDependencies] or [Configuration.withDependencies].
         // Also, we can't store a Configuration as a task input property because it doesn't serialize into the configuration cache.
