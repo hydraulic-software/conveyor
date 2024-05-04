@@ -3,6 +3,7 @@
 ## Conveyor 14.2
 
 * Improves the cache hit ratio for Windows signed files, which should help preserve expensive signature operations when using DigiCert cloud signing.
+* Mac: Frameworks are now relocated to avoid symlinks when possible. This should improve compatibility with third party zip utilities that don't implement the zip spec correctly.
 * Gradle plugin: now is compatible with the configuration cache, making it much faster.
 * Gradle plugin: modules with conflicting names are now renamed inside the package.
 * Gradle plugin: fix a bug that could cause a failure to find the right configuration name in the latest Compose Gradle project setups ([#108](https://github.com/hydraulic-software/conveyor/issues/108))
