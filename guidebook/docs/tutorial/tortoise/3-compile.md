@@ -4,7 +4,7 @@
     You'll need to re-invoke your build system any time you change the app's code. At this time Conveyor won't do it for you.
 
 === "JVM"
-    * [ ] If packaging a template project, run `./gradlew jar` to download the Gradle build tool and compile the app to a portable JAR. Otherwise, invoke your build system of choice.
+    * [ ] If packaging a template project, run `./gradlew jvmJar` or `./gradlew jar` to download the Gradle build tool and compile the app to a portable JAR. Otherwise, invoke your build system of choice.
 
 === "Electron"
 

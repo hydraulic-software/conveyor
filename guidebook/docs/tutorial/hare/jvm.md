@@ -13,7 +13,7 @@ Choose your path:
     ```shell
     conveyor generate compose com.example.my-project
     cd my-project
-    ./gradlew jar
+    ./gradlew jvmJar
     ```
     
 === ":fontawesome-brands-java: JavaFX"
@@ -44,7 +44,7 @@ Choose your path:
 In another terminal tab:
 
 * [x] Edit `build.gradle[.kts]` and change the version field to `2.0`.
-* [x] Run `./gradlew jar` to rebuild the app.
+* [x] Run `./gradlew jar` or `./gradlew jvmJar` to rebuild the app.
 * [x] Run `conveyor make site` to regenerate the download site.
 
 {!tutorial/hare/apply-update-instructions.md!}
