@@ -6,10 +6,11 @@ This is a bugfix and maintenance release.
 
 * Electron: fix a bug in how `asar` is invoked that could create problems when using multiple unpack rules.
 * Electron: don't invoke `npm` if the relevant ASAR features are disabled. This can be useful when not using `npm` based build systems.
-* 
+* Mac: Update to latest Sparkle version, which resolves a security issue (low severity as exploitation requires control of your update site).
+* Mac: Improve the popup message shown when the user hasn't moved the app from their Downloads folder. Translate it into more languages. 
 * Mac: Improve the error message shown if a key file used for Apple notary authentication exists but is empty.
 * Make some kinds of downloads retry a few times if they fail, to add robustness against temporary server-side flakes.
-
+* Work around a bug in GitHub Actions caching that could cause a crash during the build. 
 
 ## Conveyor 14.2 (May 14 2024)
 
