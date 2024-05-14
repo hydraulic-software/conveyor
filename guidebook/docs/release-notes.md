@@ -1,6 +1,6 @@
 # Release notes
 
-## Conveyor 14.2
+## Conveyor 14.2 (May 14 2024)
 
 * Windows: Improves the cache hit ratio for signed binaries, which should help preserve expensive signature operations when using DigiCert cloud signing.
 * Mac: Frameworks are now relocated to avoid symlinks when possible. This should improve compatibility with third party zip utilities that don't implement the zip spec correctly. A warning is printed if symlinks are found from your own inputs.
