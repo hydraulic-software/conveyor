@@ -40,7 +40,7 @@ inputs:
     description: Version of Conveyor to run.
     type: string
     required: false
-    default: '14.1'
+    default: '14.2'
 
 runs:
   using: composite
