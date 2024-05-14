@@ -18,7 +18,7 @@ location that you used before, overwriting any files that were present.
     
     * [ ] Open the source code of the app and change the message that's displayed when you click the button.
     * [ ] Now change the line in  `build.gradle[.kts]`  that reads `version = "1.0"` to `version = "1.1"`.
-    * [ ] Re-run `./gradlew jar`.
+    * [ ] Re-run `./gradlew jvmJar` or `./gradlew jar`.
     * [ ] Re-run `conveyor make site`.
 
 === "Electron"

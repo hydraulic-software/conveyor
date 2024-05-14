@@ -1,5 +1,18 @@
 # Release notes
 
+## Conveyor 14.2
+
+* Windows: Improves the cache hit ratio for signed binaries, which should help preserve expensive signature operations when using DigiCert cloud signing.
+* Mac: Frameworks are now relocated to avoid symlinks when possible. This should improve compatibility with third party zip utilities that don't implement the zip spec correctly. A warning is printed if symlinks are found from your own inputs.
+* Mac: Resolved an issue that could cause icons to lack sharpness on some display types.
+* Linux: `app.updates = NONE` now works correctly for Debian packages too.
+* JVM: Gradle plugin: now is compatible with the configuration cache, making it much faster.
+* JVM: Gradle plugin: modules with conflicting names are now renamed inside the package.
+* JVM: Gradle plugin: fix a bug that could cause a failure to find the right configuration name in the latest Compose Gradle project setups ([#108](https://github.com/hydraulic-software/conveyor/issues/108))
+* JVM: Upgraded dependency versions in the Compose and JavaFX apps template apps.
+* JVM: Upgraded the JDK definitions in the standard library.
+* Electron: Upgraded template app to Electron 30.
+
 ## Conveyor 14.1 (April 13 2024)
 
 This is a bugfix release:
