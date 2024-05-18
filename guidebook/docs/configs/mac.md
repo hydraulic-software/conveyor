@@ -68,6 +68,17 @@ An [input list](inputs.md) containing square icons of different sizes. Defaults 
 Keys to be incorporated into the app's Info.plist file. You can also add to `app.mac.amd64.info-plist` and `app.mac.aarch64.info-plist` to specify different keys per CPU.
 Keys are converted to Apple's PList XML format, which provides application metadata on macOS. You normally don't need to alter this, but if you want to add entries to the `Info.plist` file you can do so here. [Consult Apple's reference for more information on what keys are available](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Introduction/Introduction.html).
 
+### `app.mac.skip-framework-symlink-removal`
+
+A list of framework names, including the `.framework` extension. Conveyor tries to simplify the layout of Framework directories to eliminate the need for symlinks. This is to increase compatibility with users who use old/broken zip utilities that don't handle symlinks correctly. This doesn't always work. Frameworks that must have the symlinks be present can be exempted from the process by adding them to this key. The default is:
+
+```hocon
+skip-framework-symlink-removal = [
+  FlutterMacOS.framework
+  Sparkle.framework
+]
+```
+
 ## Online updates
 
 ### `app.mac.updates`
