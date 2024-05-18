@@ -97,10 +97,6 @@ app.inputs += {
 
 # OS / CPU / libc specific inputs, see below for full list of paths you can use.
 app.linux.aarch64.glibc.inputs += linux-arm-natives.tar.gz -> lib
-
-# Add a JDK and it will be jlinked and used as the application runtime.
-# You must use the OS/CPU/libc specific inputs for this as a JVM is inherently platform specific.
-app.jdk.linux.amd64.inputs += example.com/jdk-linux-17.tar.gz
 ```
 
 **`app.inputs`** An array of input definitions (see below). Each input is copied or extracted into the working directory one after the other, with later inputs overwriting files from previous inputs. You can add a new input to the end of the array by using the `+=` HOCON operator. You can append an object, but when you append a string specification it is parsed and treated as shorthand for an object with `from` and `to` fields, in which the `from` field is the URL/path of the input. Brace expansion is applied to the string form to create multiple inputs.
