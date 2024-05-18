@@ -52,6 +52,14 @@ When a package contains console mode EXEs your MSIX package will register itself
 
 What if your app is both a CLI *and* a GUI app simultaneously? You can certainly still accept command line switches, even for GUI mode apps. It's only console output and input that's affected by this flag. If you need both then you will need to prepare separate EXEs for your app, one for each mode, and provide them as Windows-specific inputs. The GUI mode exe should have the same name as the generated launcher would: `${app.display-name}.exe`. The CLI mode exe can be named whatever you want.
 
+### `app.windows.{,amd64.,aarch64.}package-extras`
+
+Lists of [input definitions](inputs.md). Allows adding extra files to the root of the package and thus app install directory. This is only useful for Electron and JVM apps, where the root input files are placed inside a sub-directory that keeps them separate from the runtime.
+
+CPU-neutral data files can be added to `app.windows.package-extras`, CPU specific files should go in `app.windows.amd64.package-extras` or `app.windows.aarch64.package-extras`.
+
+You will rarely need this, if ever. EXEs and other code files are moved to the right places for you even when added to the root inputs.
+
 ## Installer options
 
 ### `app.windows.installer.theme`

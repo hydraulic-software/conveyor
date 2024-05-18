@@ -52,8 +52,9 @@ directory.
 
 ### `app.mac{.amd64,.aarch64,}.bundle-extras`
 
-Only relevant for JVM and Electron apps. A list of inputs that are added directly to 
-the `Contents` directory.
+Lists of [input definitions](inputs.md). Allows adding extra files directly to the `Contents` directory.. This is only useful for Electron and JVM apps, where the root input files are placed inside a sub-directory that keeps them separate from the runtime.
+
+CPU-neutral data files can be added to `app.mac.bundle-extras`, CPU specific files should go in `app.mac.amd64.bundle-extras` or `app.mac.aarch64.bundle-extras`.
 
 ### `app.mac.icons`
 
