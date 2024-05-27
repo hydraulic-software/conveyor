@@ -140,6 +140,9 @@ for advanced uses where certificates aren't issued by Windows recognized CAs. We
 If your certificate fails this verification, you might need to add intermediate certificates to the certificate file/store provided to Conveyor.
 The intermediates are usually available directly from the CA that issued your certificate.
 
+!!! warning
+    Don't set this to false when self-signing, as it's not necessary and will cause errors.  
+
 ## Character encodings
 
 By default, your application will be configured to use UTF-8 universally on all platforms, regardless of what character encoding the user's host system is set to. On Windows the custom JVM launcher Conveyor uses will configure the terminal appropriately so Unicode works (when the encoding is set to UTF-8).
