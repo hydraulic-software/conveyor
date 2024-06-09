@@ -1,6 +1,19 @@
 # Release notes
 
+## Conveyor 14.3 (June 11th 2024)
+
+This is a bugfix and maintenance release.
+
+* Electron: fix a bug in how `asar` is invoked that could create problems when using multiple unpack rules.
+* Electron: don't invoke `npm` if the relevant ASAR features are disabled. This can be useful when not using `npm` based build systems.
+* 
+* Mac: Improve the error message shown if a key file used for Apple notary authentication exists but is empty.
+* Make some kinds of downloads retry a few times if they fail, to add robustness against temporary server-side flakes.
+
+
 ## Conveyor 14.2 (May 14 2024)
+
+This is a bugfix and maintenance release.
 
 * Windows: Improves the cache hit ratio for signed binaries, which should help preserve expensive signature operations when using DigiCert cloud signing.
 * Mac: Frameworks are now relocated to avoid symlinks when possible. This should improve compatibility with third party zip utilities that don't implement the zip spec correctly. A warning is printed if symlinks are found from your own inputs.
@@ -15,7 +28,7 @@
 
 ## Conveyor 14.1 (April 13 2024)
 
-This is a bugfix release:
+This is a bugfix and maintenance release.
 
 * Windows: Fix a bug that could occur if your input files contained two files with the same file extension but mismatched upper/lower case.
 * Linux: Fix a bug with file and URL associations. If you use these and ship to Linux, an upgrade is recommended.
