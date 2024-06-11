@@ -10,7 +10,8 @@ This is a bugfix and maintenance release.
 * Mac: Improve the popup message shown when the user hasn't moved the app from their Downloads folder. Translate it into more languages. 
 * Mac: Improve the error message shown if a key file used for Apple notary authentication exists but is empty.
 * Make some kinds of downloads retry a few times if they fail, to add robustness against temporary server-side flakes.
-* Work around a bug in GitHub Actions caching that could cause a crash during the build. 
+* Work around a bug in GitHub Actions caching that could cause a crash during the build.
+* Fix a crash that could occur when configuring the Google Cloud Key Management Service.
 
 ## Conveyor 14.2 (May 14 2024)
 
