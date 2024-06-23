@@ -13,10 +13,12 @@ nav:
     - Getting started: index.md
     - sample-apps.md
     - download-conveyor.md
-    - running.md
-    - continuous-integration.md
-    - performance.md
-    - Migrating Electron apps: migrating-electron-apps.md
+    - Using Conveyor:
+      - running.md
+      - continuous-integration.md
+      - performance.md
+      - configuring-cdns.md
+      - Migrating Electron apps: migrating-electron-apps.md
     - Outputs:
         - Output formats: outputs.md
         - understanding-delta-updates.md

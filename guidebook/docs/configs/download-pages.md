@@ -3,6 +3,9 @@
 The `site` task will generate the online update repository along with a static download page. The `copied-site` task will additionally
 copy the results to another directory, which can be on a remote system accessible via SFTP. 
 
+!!! important 
+    See [Configuring CDNs](../configuring-cdns.md) for important information about how to serve the generated files. 
+
 The download page is optional and can just be ignored if you don't want it. It has these features:
 
 * Detects the user's operating system. Allows the user to switch between operating systems.
@@ -220,9 +223,8 @@ values are `error` and `warn`.
 
 The following checks are made:
 
-* That the Windows signing certificate matches the one used to upload packages previously. This is useful to catch the case where a certificate identity has changed e.g. due to a switch from OV to EV, change of company name and so on. Changing certificate identity without disrupting updates is not currently supported by Conveyor. If you need this feature please [let us know](mailto:contact@hydraulic.dev).  
+* That the Windows signing certificate matches the one used to upload packages previously. This is useful to catch the case where a certificate identity has changed e.g. due to a switch from OV to EV, change of company name and so on.  
 * That you aren't overwriting a pre-existing MSIX file. Older versions of Windows contain bugs that cause updates to fail until the next reboot if a package file is overwritten.
-
 
 ## Relocating your download site
 
