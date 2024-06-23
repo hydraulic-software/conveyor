@@ -13,7 +13,7 @@
 ## Windows specific issues
 
 * Conveyor builds are much slower on Windows than on UNIX. This is due to the low performance of the Windows kernel filesystem. See [Build Performance](performance.md) for tips to speed up your builds.
-* Old versions of Windows 10 that have broken software updates may not be tracking Microsoft's root store programme. If you experience certificate validity errors on machines running Windows 10 ensure your supplied certificates include the cross-signed root and set `app.windows.verify-certificate-chain = false` to stop Conveyor replacing it with the "right" chain according to Microsoft. This problem will be fixed automatically in future releases.
+* Old versions of Windows 10 that have broken software updates may not be tracking Microsoft's root store programme. This can cause problems when using Sectigo certificates. If you experience certificate validity errors on machines running Windows 10 which aren't updating properly, ensure your supplied certificates include the cross-signed Sectigo root and set `app.windows.verify-certificate-chain = false` to stop Conveyor replacing it with the "right" chain according to Microsoft. This problem will be fixed automatically in future releases.
 * Conveyor supports both Windows 10 and 11 but assumes users are applying software updates. We don't support arbitrarily old versions of Windows 10, as machines that aren't updating often contain severe bugs or have malware problems which make testing them hard.
 
 Windows apps are packaged using MSIX, which changes some aspects of the runtime environment in order to improve security and robustness.
