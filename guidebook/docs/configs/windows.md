@@ -28,7 +28,19 @@ app.windows {
 
 ### `app.windows.updates`
 
-See [update modes](update-modes.md).
+This key defaults to the value of `app.updates`. For details on that key see [update modes](update-modes.md).
+
+You can also provide custom settings in order to customize the update check frequency, like this:
+
+```
+app.windows.updates = {
+    launch-check-frequency = 1   // hours
+    block-start = false
+    automatic-updates = true
+}
+```
+
+Unfortunately, you can't set the check frequency to be faster than every hour. This is a limitation of the Windows Update engine. By default Windows checks every eight hours.
 
 ### `app.windows.override-icon` 
 
