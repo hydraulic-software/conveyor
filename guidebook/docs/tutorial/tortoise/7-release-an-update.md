@@ -37,7 +37,7 @@ Each operating system has its own approach to how and when updates are applied.
     Updates are checked:
 
     * If the user re-opens the `.appinstaller` XML file. This is the easiest way to test updates. You don't have to re-download it because the `.appinstaller` file contains its own URL and the "App Installer" app will re-download a fresh copy from the download site when it's opened.
-    * Every 8 hours in the background by the OS, regardless of whether the app is being used or not.
+    * Every 8 hours in the background by the OS, regardless of whether the app is being used or not (this is configurable).
     * Optionally, on every app launch with a frequency you can specify. These update checks can be configured to block startup, ensuring that the user is always up to date. [Learn more here](../../configs/windows.md).
 
 === "macOS" 
@@ -67,7 +67,7 @@ Each operating system has its own approach to how and when updates are applied.
 ??? tip "Windows package management"
     MSIX files are conceptually similar to Linux packages and they share many of the same features. An MSIX package is simply a signed zip with some additional metadata in XML files that define how the package should be integrated with the OS (e.g. start menu entries, adding programs to the %PATH% etc).
 
-    MSIX and the features it offers are [described in the "Outputs" section](../../outputs.md). You can control MSIX packages from the command line using PowerShell, for example with the [Add-AppxPackage](https://docs.microsoft.com/en-us/powershell/module/appx/add-appxpackage?view=windowsserver2022-ps) cmdlet.
+    MSIX and the features it offers are [described in the "Outputs" section](../../package-formats.md). You can control MSIX packages from the command line using PowerShell, for example with the [Add-AppxPackage](https://docs.microsoft.com/en-us/powershell/module/appx/add-appxpackage?view=windowsserver2022-ps) cmdlet.
     
     A useful tool is [MSIX Hero](https://msixhero.net/), which is a sophisticated GUI tool for the package manager. It allows you to explore the contents of packages, force update checks, run apps inside the MSIX container and more.
 

@@ -2,7 +2,7 @@
 
 [ :material-arrow-down-circle: Download](https://downloads.hydraulic.dev/conveyor/download.html){ .md-button .md-button--primary } [ :material-arrow-right-box: Start tutorial](tutorial/new.md){ .md-button .md-button--primary }
 
-Conveyor makes distributing desktop apps as easy as shipping a web app. It's a tool not a service, it generates and signs [self-upgrading packages for Windows, macOS and Linux using each platform's native package formats](outputs.md) without requiring you to have those operating systems, and it looks like this:
+Conveyor makes distributing desktop apps as easy as shipping a web app. It's a tool not a service, it generates and signs [self-upgrading packages for Windows, macOS and Linux using each platform's native package formats](package-formats.md) without requiring you to have those operating systems, and it looks like this:
 
 <iframe width="100%" height="600" src="https://www.youtube.com/embed/oYznJERB3mM?si=8BOC7z0BUejavqWF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
@@ -15,10 +15,10 @@ It's free for open source apps and has [simple per-project pricing](https://www.
 ## Features
 
 * **[Sophisticated software updates](configs/update-modes.md)**
-    * [Platform native package types and update systems](outputs.md), without any lockin.
+    * [Platform native package types and update systems](package-formats.md), without any lockin.
     * Chrome-style silent background updates
     * Web-style synchronous update on launch
-    * Advanced [delta updates](understanding-delta-updates.md).
+    * Advanced [delta updates](understanding-updates.md#delta-updates).
     * No code changes necessary.
 * **App framework integration:**
     * [Electron](configs/electron.md): [simpler than Forge/Builder/Squirrel](comparisons/electron-comparisons.md), generates ASAR files, can read `package.json` files. 

@@ -9,7 +9,7 @@ Releasing to the Mac App Store isn't supported. [Vote for Mac App Store support 
 
 ## 2. DMGs?
 
-No plans because [zips work better](../outputs.md#macos). The downside is you don't get to theme the 'install experience'. If you need
+No plans because [zips work better](../package-formats.md#macos). The downside is you don't get to theme the 'install experience'. If you need
 DMGs for some reason we've overlooked, please [let us know](mailto:contact@hydraulic.dev).
 
 ## 3. Mac PKGs?
@@ -78,4 +78,4 @@ This depends on what app framework you use, the type of the change you make to y
 * **Electron.** A single line change to the JS of the generated "hello world" scaffold app yields an approximately 31kb delta patch on macOS, and 115kb on Windows.
 * **JVM.** Delta updates for JVM apps are currently generally the size of each JAR file that changes. This is because it's conventional for both the name of a JAR file and the contents to change simultaneously (due to version numbers), which Conveyor currently sees as deleting an old file and adding a different file. This can easily be optimized to yield smaller deltas, please get in touch with us if you are/will be a commercial customer and would like to see size reductions here. 
 
-Please see [understanding delta updates](../understanding-delta-updates.md) for more info.
+Please see [understanding delta updates](../understanding-updates.md#delta-updates) for more info.

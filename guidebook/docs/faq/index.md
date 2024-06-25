@@ -35,7 +35,7 @@ to use one key for two projects simultaneously (as it would require switching ba
 
 ## Am I locked in?
 
-No. Conveyor generates [standard package formats](../outputs.md) and on macOS it uses an open source update framework called
+No. Conveyor generates [standard package formats](../package-formats.md) and on macOS it uses an open source update framework called
 [Sparkle](https://www.sparkle-framework.org/). All these can be produced with native toolchains. If you want to stop using Conveyor, you
 will just have to set up your own packaging scripts and do the integration work yourself. In other words you'll have spend the time you
 saved by using Conveyor, but nothing will break.
@@ -80,7 +80,7 @@ This depends on the platform.
 
 1. No signup process. This is a classic dev tool - no contact forms or account creation, just [download and run](../download-conveyor.md). You can use it for free with open source projects by simply setting the `app.vcs-url` key in your config.
 1. You can run it from your dev laptop, a preferred CI machine or wherever else because Conveyor can build packages for any OS from every OS.
-1. It generates [everything you need](../outputs.md) in one go: full download site complete with packages, update metadata, a download page and bootstrap scripts.
+1. It generates [everything you need](../package-formats.md) in one go: full download site complete with packages, update metadata, a download page and bootstrap scripts.
 1. Online updates work out of the box. Unlike with many other tools, with this one no code changes are required, not even if you use the mode that does an update check on every launch.
 1. It handles [signing and Apple notarization](../configs/keys-and-certificates.md) for you. It can even help you buy certificates, by generating a CSR for you.
 1. The [config syntax](../configs/hocon-spec.md) is clean and lightweight whilst still letting you flexibly compose config together, use substitutions and more. It's a JSON superset so lots of tooling works with it too. 

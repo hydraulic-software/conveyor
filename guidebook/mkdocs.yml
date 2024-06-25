@@ -19,9 +19,9 @@ nav:
       - performance.md
       - configuring-cdns.md
       - Migrating Electron apps: migrating-electron-apps.md
-    - Outputs:
-        - Output formats: outputs.md
-        - understanding-delta-updates.md
+    - Results:
+        - Package formats: package-formats.md
+        - understanding-updates.md
     - Comparison vs alternatives:
         - Electron: comparisons/electron-comparisons.md
         - JVM: comparisons/jvm-comparisons.md

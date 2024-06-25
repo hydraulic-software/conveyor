@@ -5,7 +5,7 @@
 * It creates packages/installers that can't update themselves.
 * It can only build packages for the platform it's being run on, so you'll need a multi-platform CI cluster to make packages for every platform even though the JVM is cross platform. Conveyor can build packages for all supported platforms from your developer laptop regardless of OS. That makes it a lot more convenient to knock out quick, low effort, low maintenance apps.
 * It doesn't attempt to simplify code signing in any way. Conveyor can derive all the signing keys you need from a single small piece of root entropy you can write down with a pen and paper, can create certificate signing requests for you and has deep support for self-signing.
-* It generates .MSI or installer EXEs on Windows. MSI is a deprecated format that Microsoft no longer develop, and installer EXEs cause headaches for IT departments. Conveyor generates MSIX packages with a small optional EXE that invokes the Windows package management API to trigger the install. This offers [a variety of benefits](../outputs.md) and Microsoft regularly adds new features to this format.
+* It generates .MSI or installer EXEs on Windows. MSI is a deprecated format that Microsoft no longer develop, and installer EXEs cause headaches for IT departments. Conveyor generates MSIX packages with a small optional EXE that invokes the Windows package management API to trigger the install. This offers [a variety of benefits](../package-formats.md) and Microsoft regularly adds new features to this format.
 * It is free, open source and comes with the JDK. Conveyor is free only for open source apps.
 * `jpackage` is, as the name implies, only for Java apps. Conveyor works for any kind of app including Electron and native.
 

@@ -11,7 +11,7 @@
 * CI friendly, can package/sign/deploy for every OS from any machine including dev laptops or Linux CI workers. [Learn more about releasing from CI using cloud code signing](https://hydraulic.dev/blog/21-shipping-electron-apps-from-ci-using-hsm-certificates.html).
 * Updates can be Chrome-style (background, silent) or web-style (immediate on launch, synchronous).
 * No code changes to your app are needed.
-* Excellent support for delta updates [with *no* additional work required](../understanding-delta-updates.md).
+* Excellent support for delta updates [with *no* additional work required](../understanding-updates.md#delta-updates).
 * Many improvements for Windows:
     * Users won't need to download Electron again if they have any existing Electron app from the MS Store (or that was Conveyorized).
     * Network/admin friendly (doesn't install everything into user's home dirs).
