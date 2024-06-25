@@ -42,6 +42,26 @@ If you use background updates, testing is a little harder and will depend on pla
     On Debian/Ubuntu, run `apt-get update; apt-get upgrade` and verify your program has been updated. If you're using the systemd support
     verify that your service was restarted automatically.
 
+## How to know if an update has been staged
+
+In background mode an update is downloaded, verified and unpacked in the background. The new version will take effect on app restart. Currently, figuring out if the new version is downloaded is a bit awkward. A future version of Conveyor will offer an API that exposes this in a more natural manner. For now, you can do it like this:
+
+=== ":simple-windows: Windows"
+
+    1. Poll the `metadata.properties` file on the update site URL to find out when a new version is available, and/or receive a message from your server.
+    2. Parse out these keys: `windows.package-family-name` and `app.windows.manifests.version-quad`. Call them N and V
+    3. Split N by underscore to get N1 and N2.
+    4. Recombine into a string like this: `c:\Program Files\WindowsApps\${N1}_${V}_x64__${N2}`
+    5. Poll to see when this directory has appeared.
+
+=== ":simple-apple: macOS"
+
+    Poll or register a file watch in `~/Library/Caches/${app.rdns-name}/org.sparkle-project.Sparkle/Installation`, where `${app.rdns-name}` comes from your config file. You can also find your bundle ID/RDNS name by looking in your app's `Info.plist` (it is a reverse DNS name). If an update has been staged it'll be found in this directory.
+
+=== ":simple-linux: Linux"
+
+    Ship a file with your app that contains the version number, and register a file watch on disk for it. If the user's package manager updates the app the file will be overwritten. You should probably update ASAP if you spot this happening, because the files in the package are now of the new version and your old code may not expect that.
+
 ## Delta updates
 
 When Conveyorized apps update themselves on Windows and macOS, they don't download the full app from scratch. The user will 
