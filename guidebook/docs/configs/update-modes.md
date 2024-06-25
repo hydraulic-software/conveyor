@@ -19,7 +19,7 @@ When `app.updates = none` support for auto updates is removed, except on Linux w
 Which mode to use depends heavily on how often your users will start the app and how important it is for updates to be applied quickly. If your app is a client for a server that speaks a complex protocol and you don't want to preserve protocol backwards compatibility, aggressive mode is appropriate. If your app is self-contained or the protocols it speaks evolve in a compatible way, background mode gives a better user experience as the user won't be interrupted by the update process.
 
 !!! tip "Silent upgrades on macOS"
-If you don't want your users to ever see an update prompt you can set `app.mac.sparkle-options.SUAutomaticallyUpdate = true`. However, if your users don't run your app for long enough for updates to download and apply then they may fall behind and be unaware of it. Use this mode with caution.
+    If you don't want your users to ever see an update prompt you can set `app.mac.sparkle-options.SUAutomaticallyUpdate = true`. However, if your users don't run your app for long enough for updates to download and apply then they may fall behind and be unaware of it. Use this mode with caution.
 
 ## Aggressive updates
 
