@@ -3,6 +3,7 @@ const path = require('path');
 const { execFile } = require('child_process');
 const https = require('https');
 const { app } = require('electron');
+const packageJson = require('./package.json');
 
 class Version {
     constructor(version, revision = 0) {
@@ -73,8 +74,8 @@ class OnlineUpdater {
     }
 
     getCurrentVersion() {
-        const ver = process.env.APP_VERSION;
-        const revision = parseInt(process.env.APP_REVISION) || 0;
+        const ver = packageJson.version;
+        const revision = packageJson.revision || 0;
         return ver ? new Version(ver, revision) : null;
     }
 
