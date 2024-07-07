@@ -85,7 +85,7 @@ class OnlineUpdater {
         }
 
         if (this.isWindows) {
-            const updateExePath = this.getUpdateExePath();
+            const updateExePath = this._getUpdateExePath();
             execFile(updateExePath, ['--update-check'], (error) => {
                 if (error) {
                     console.error('Error triggering update check:', error);
@@ -107,7 +107,7 @@ class OnlineUpdater {
                 let data = '';
                 res.on('data', (chunk) => data += chunk);
                 res.on('end', () => {
-                    const props = this.parseProperties(data);
+                    const props = this._parseProperties(data);
                     if (!props['app.version']) {
                         reject(new Error('Cannot find app.version key in download site metadata.properties'));
                     } else {
@@ -122,7 +122,7 @@ class OnlineUpdater {
 
     canTriggerUpdateCheckUI() {
         if (this.isWindows) {
-            const updateExePath = this.getUpdateExePath();
+            const updateExePath = this._getUpdateExePath();
             return fs.existsSync(updateExePath) ? 'AVAILABLE' : 'UNSUPPORTED_PACKAGE_TYPE';
         } else if (this.isLinux) {
             return 'UNIMPLEMENTED';
@@ -134,11 +134,11 @@ class OnlineUpdater {
         }
     }
 
-    getUpdateExePath() {
+    _getUpdateExePath() {
         return path.join(this.appDir, '..', 'updatecheck.exe');
     }
 
-    parseProperties(data) {
+    _parseProperties(data) {
         return data.split('\n').reduce((acc, line) => {
             line = line.trim();
             if (line && !line.startsWith('#')) {
