@@ -69,7 +69,7 @@ class OnlineUpdater {
         this.isMac = process.platform === 'darwin';
         this.repoUrl = process.env.APP_REPOSITORY_URL;
         this.fsname = process.env.APP_FSNAME;
-        this.appDir = process.env.APP_DIR;
+        this.appDir = path.dirname(app.getPath('exe'));
     }
 
     getCurrentVersion() {
@@ -135,7 +135,7 @@ class OnlineUpdater {
     }
 
     #getUpdateExePath() {
-        return path.join(this.appDir, '..', 'updatecheck.exe');
+        return path.join(this.appDir, 'updatecheck.exe');
     }
 
     #parseProperties(data) {
