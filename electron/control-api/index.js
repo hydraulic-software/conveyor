@@ -11,8 +11,8 @@ class Version {
     }
 
     compareTo(other) {
-        const v1 = new ComparableVersion(this.version);
-        const v2 = new ComparableVersion(other.version);
+        const v1 = new Version.ComparableVersion(this.version);
+        const v2 = new Version.ComparableVersion(other.version);
         const comparison = v1.compareTo(v2);
         if (comparison === 0) {
             return Math.sign(this.revision - other.revision);
@@ -22,6 +22,43 @@ class Version {
 
     toString() {
         return `Version{ver='${this.version}', revision=${this.revision}}`;
+    }
+
+    static ComparableVersion = class {
+        constructor(version) {
+            this.value = version;
+            this.items = this.parseVersion(version);
+        }
+
+        parseVersion(version) {
+            return version.toLowerCase().split(/[-.]/).map(item => {
+                if (/^\d+$/.test(item)) {
+                    return parseInt(item, 10);
+                }
+                return item;
+            });
+        }
+
+        compareTo(other) {
+            const len = Math.max(this.items.length, other.items.length);
+            for (let i = 0; i < len; i++) {
+                const a = this.items[i];
+                const b = other.items[i];
+                if (a === undefined) return -1;
+                if (b === undefined) return 1;
+                if (typeof a !== typeof b) {
+                    return typeof a === 'number' ? -1 : 1;
+                }
+                if (a !== b) {
+                    return a < b ? -1 : 1;
+                }
+            }
+            return 0;
+        }
+
+        toString() {
+            return this.value;
+        }
     }
 }
 
@@ -110,47 +147,7 @@ class OnlineUpdater {
     }
 }
 
-class ComparableVersion {
-    constructor(version) {
-        this.value = version;
-        this.items = this.parseVersion(version);
-    }
-
-    parseVersion(version) {
-        // This is a simplified version of the parsing logic.
-        // For a full implementation, you'd need to port the entire Java class.
-        return version.toLowerCase().split(/[-.]/).map(item => {
-            if (/^\d+$/.test(item)) {
-                return parseInt(item, 10);
-            }
-            return item;
-        });
-    }
-
-    compareTo(other) {
-        const len = Math.max(this.items.length, other.items.length);
-        for (let i = 0; i < len; i++) {
-            const a = this.items[i];
-            const b = other.items[i];
-            if (a === undefined) return -1;
-            if (b === undefined) return 1;
-            if (typeof a !== typeof b) {
-                return typeof a === 'number' ? -1 : 1;
-            }
-            if (a !== b) {
-                return a < b ? -1 : 1;
-            }
-        }
-        return 0;
-    }
-
-    toString() {
-        return this.value;
-    }
-}
-
 module.exports = {
     OnlineUpdater,
-    Version,
-    ComparableVersion
+    Version
 };
