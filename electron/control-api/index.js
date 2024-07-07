@@ -3,8 +3,6 @@ const path = require('path');
 const { execFile } = require('child_process');
 const https = require('https');
 const { app } = require('electron');
-const packageJson = require('./package.json');
-
 class Version {
     constructor(version, revision = 0) {
         this.version = version;
@@ -74,9 +72,10 @@ class OnlineUpdater {
     }
 
     getCurrentVersion() {
-        const ver = packageJson.version;
-        const revision = packageJson.revision || 0;
-        return ver ? new Version(ver, revision) : null;
+        const ver = app.getVersion();
+        // Note: We don't have a way to get the revision from app.getVersion()
+        // If revision is needed, we might need to store it separately or derive it another way
+        return new Version(ver, 0);
     }
 
     triggerUpdateCheckUI() {
