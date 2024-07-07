@@ -1,6 +1,16 @@
 # Control API (JVM)
 
-The Control API provides access to the software update engine controlling your packaged application. This guide will walk you through the main features and usage of the `SoftwareUpdateController` interface.
+The Control API provides access to the software update engine controlling your packaged application. This guide will walk you through the main features and usage of the `SoftwareUpdateController` interface. It will allow you to:
+
+* Find out the current version of the app.
+* Find out the latest version published at your update site URL.
+* Trigger an update.
+
+The exact behavior differs by OS:
+
+* :simple-windows: **Windows**. Triggering an update will _restart your application_, so make sure to only use this if you know there's an update available and if the user is ready for a restart.
+* :simple-apple: **macOS**. Triggering an update will show the Sparkle update dialog offering the user to install and restart.
+* :simple-linux: **Linux**. Not supported.
 
 ## Getting Started
 
