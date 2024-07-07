@@ -3,6 +3,7 @@
   "description": "Get version info and trigger update checks.",
   "version": "1.0.0",
   "author": "Hydraulic Software <contact@hydraulic.dev>",
+  "main": "index.js",
   "keywords": [
     "packaging",
     "deployment",
