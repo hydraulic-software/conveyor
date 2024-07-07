@@ -1,8 +1,8 @@
-const os = require('os');
-const fs = require('fs');
+const fs = require('fs').promises;
 const path = require('path');
 const { execFile } = require('child_process');
 const https = require('https');
+const { app } = require('electron');
 
 class Version {
     constructor(version, revision = 0) {
