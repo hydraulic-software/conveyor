@@ -1,0 +1,40 @@
+{
+  "name": "@hydraulic/conveyor-control",
+  "description": "Get version info and trigger update checks.",
+  "version": "1.0.0",
+  "author": "Hydraulic Software <contact@hydraulic.dev>",
+  "keywords": [
+    "packaging",
+    "deployment",
+    "electron",
+    "macos",
+    "windows",
+    "desktop",
+    "conveyor"
+  ],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/hydraulic-software/conveyor/issues"
+  },
+  "homepage": "https://conveyor.hydraulic.dev",
+  "dependencies": {
+    "debug": "^4.3.4",
+    "electron-is-dev": "^2.0.0",
+    "electron-squirrel-startup": "^1.0.0"
+  },
+  "dependency-check": {
+    "ignore": [
+      "app",
+      "electron"
+    ]
+  },
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ],
+  "cpu": [
+    "x64",
+    "arm64"
+  ]
+}
