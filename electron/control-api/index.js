@@ -20,7 +20,7 @@ class Version {
     }
 
     toString() {
-        return `Version{ver='${this.version}', revision=${this.revision}}`;
+        return `${this.version}${this.revision > 0 ? '.' + this.revision : ''}`;
     }
 
     static ComparableVersion = class {
@@ -30,24 +30,14 @@ class Version {
         }
 
         parseVersion(version) {
-            return version.toLowerCase().split(/[-.]/).map(item => {
-                if (/^\d+$/.test(item)) {
-                    return parseInt(item, 10);
-                }
-                return item;
-            });
+            return version.split('.').map(item => parseInt(item, 10) || 0);
         }
 
         compareTo(other) {
             const len = Math.max(this.items.length, other.items.length);
             for (let i = 0; i < len; i++) {
-                const a = this.items[i];
-                const b = other.items[i];
-                if (a === undefined) return -1;
-                if (b === undefined) return 1;
-                if (typeof a !== typeof b) {
-                    return typeof a === 'number' ? -1 : 1;
-                }
+                const a = this.items[i] || 0;
+                const b = other.items[i] || 0;
                 if (a !== b) {
                     return a < b ? -1 : 1;
                 }
@@ -73,9 +63,9 @@ class OnlineUpdater {
 
     getCurrentVersion() {
         const ver = app.getVersion();
-        // Note: We don't have a way to get the revision from app.getVersion()
-        // If revision is needed, we might need to store it separately or derive it another way
-        return new Version(ver, 0);
+        const parts = ver.split('.');
+        const revision = parts.length >= 4 ? parseInt(parts[3], 10) : 0;
+        return new Version(parts.slice(0, 3).join('.'), revision);
     }
 
     triggerUpdateCheckUI() {
