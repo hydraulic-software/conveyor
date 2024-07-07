@@ -140,8 +140,11 @@ class OnlineUpdater {
 
     parseProperties(data) {
         return data.split('\n').reduce((acc, line) => {
-            const [key, value] = line.split('=').map(s => s.trim());
-            if (key && value) acc[key] = value;
+            line = line.trim();
+            if (line && !line.startsWith('#')) {
+                const [key, value] = line.split('=').map(s => s.trim());
+                if (key && value) acc[key] = value;
+            }
             return acc;
         }, {});
     }
