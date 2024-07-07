@@ -22,6 +22,8 @@ nav:
     - Results:
         - Package formats: package-formats.md
         - understanding-updates.md
+    - Update control API:
+        - JVM API: control-api-jvm.md
     - Comparison vs alternatives:
         - Electron: comparisons/electron-comparisons.md
         - JVM: comparisons/jvm-comparisons.md

@@ -1,6 +1,6 @@
 # Control API JVM
 
-The Control API for JVM provides access to the software update engine controlling your packaged application. This guide will walk you through the main features and usage of the `SoftwareUpdateController` interface.
+The Control API provides access to the software update engine controlling your packaged application. This guide will walk you through the main features and usage of the `SoftwareUpdateController` interface.
 
 ## Getting Started
 
@@ -25,7 +25,15 @@ try {
 }
 ```
 
-This method makes an HTTP request, so it should be called on a background thread.
+This method makes an HTTP request, so it should be called on a background thread. You can get the current version of your application like this:
+
+```java
+SoftwareUpdateController.Version currentVersion = controller.getCurrentVersion();
+if (currentVersion != null) {
+    String versionString = currentVersion.getVersion();
+    int revision = currentVersion.getRevision();
+}
+```
 
 ## Triggering Updates
 
@@ -38,18 +46,6 @@ if (controller.canTriggerUpdateCheckUI() == SoftwareUpdateController.Availabilit
 ```
 
 Make sure to save all user data before calling this method, as it may cause the process to shut down.
-
-## Version Information
-
-You can get the current version of your application:
-
-```java
-SoftwareUpdateController.Version currentVersion = controller.getCurrentVersion();
-if (currentVersion != null) {
-    String versionString = currentVersion.getVersion();
-    int revision = currentVersion.getRevision();
-}
-```
 
 ## Availability of Update Checks
 
