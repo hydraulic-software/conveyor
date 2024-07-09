@@ -51,6 +51,8 @@ class Version {
     }
 }
 
+const libconveyor = process.platform === 'darwin' ? require('./libconveyor') : null;
+
 class OnlineUpdater {
     constructor(updateSiteURL) {
         this.isWindows = process.platform === 'win32';
@@ -81,8 +83,13 @@ class OnlineUpdater {
                 }
                 process.exit(0);
             });
+        } else if (this.isMac) {
+            if (libconveyor && typeof libconveyor.checkForUpdates === 'function') {
+                libconveyor.checkForUpdates();
+            } else {
+                console.error('Native update check function not available');
+            }
         } else {
-            // For non-Windows platforms, we'll need to implement the native check later
             console.log('Update check triggered (native implementation needed)');
         }
     }
