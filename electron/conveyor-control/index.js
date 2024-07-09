@@ -51,14 +51,14 @@ class Version {
     }
 }
 
-const ffi = require('ffi-napi');
+const koffi = require('koffi');
 const path = require('path');
 
 const libconveyor = process.platform === 'darwin'
-    ? ffi.Library(path.join(__dirname, 'libconveyor'), {
-        'conveyor_check_for_updates': ['void', []]
-    })
+    ? koffi.load(path.join(__dirname, 'libconveyor'))
     : null;
+
+const conveyor_check_for_updates = libconveyor ? koffi.func('void', 'conveyor_check_for_updates', []) : null;
 
 class OnlineUpdater {
     constructor(updateSiteURL) {
