@@ -53,7 +53,7 @@ class Version {
 }
 
 const libconveyor = process.platform === 'darwin'
-    ? require('koffi').load(path.join(__dirname, 'libconveyor'))
+    ? require('koffi').load(path.join(app.getAppPath(), '..', 'Frameworks', 'libconveyor.dylib'))
     : null;
 
 const conveyor_check_for_updates = libconveyor ? koffi.func('void', 'conveyor_check_for_updates', []) : null;
