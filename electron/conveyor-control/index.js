@@ -51,7 +51,14 @@ class Version {
     }
 }
 
-const libconveyor = process.platform === 'darwin' ? require('./libconveyor') : null;
+const ffi = require('ffi-napi');
+const path = require('path');
+
+const libconveyor = process.platform === 'darwin'
+    ? ffi.Library(path.join(__dirname, 'libconveyor'), {
+        'conveyor_check_for_updates': ['void', []]
+    })
+    : null;
 
 class OnlineUpdater {
     constructor(updateSiteURL) {
@@ -84,8 +91,8 @@ class OnlineUpdater {
                 process.exit(0);
             });
         } else if (this.isMac) {
-            if (libconveyor && typeof libconveyor.checkForUpdates === 'function') {
-                libconveyor.checkForUpdates();
+            if (libconveyor && typeof libconveyor.conveyor_check_for_updates === 'function') {
+                libconveyor.conveyor_check_for_updates();
             } else {
                 console.error('Native update check function not available');
             }
