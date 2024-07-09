@@ -52,11 +52,13 @@ class Version {
     }
 }
 
-const libconveyor = process.platform === 'darwin'
-    ? require('koffi').load(path.join(app.getAppPath(), '..', 'Frameworks', 'libconveyor.dylib'))
+const isMacOS = process.platform === 'darwin';
+const koffi = isMacOS ? require('koffi') : null;
+const libconveyor = koffi
+    ? koffi.load(path.join(app.getAppPath(), '..', '..', 'Frameworks', 'libconveyor.dylib'))
     : null;
 
-const conveyor_check_for_updates = libconveyor ? koffi.func('void', 'conveyor_check_for_updates', []) : null;
+const conveyor_check_for_updates = libconveyor ? libconveyor.func('void conveyor_check_for_updates()') : null;
 
 class OnlineUpdater {
     constructor(updateSiteURL) {
@@ -89,10 +91,10 @@ class OnlineUpdater {
                 process.exit(0);
             });
         } else if (this.isMac) {
-            if (libconveyor && typeof libconveyor.conveyor_check_for_updates === 'function') {
-                libconveyor.conveyor_check_for_updates();
+            if (conveyor_check_for_updates) {
+                conveyor_check_for_updates();
             } else {
-                console.error('Native update check function not available');
+                console.log('Native update check function not available');
             }
         } else {
             console.log('Update check triggered (native implementation needed)');
