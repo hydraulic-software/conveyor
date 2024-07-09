@@ -24,6 +24,7 @@ nav:
         - understanding-updates.md
     - Update control API:
         - JVM API: control-api-jvm.md
+        - Electron API: control-api-electron.md
     - Comparison vs alternatives:
         - Electron: comparisons/electron-comparisons.md
         - JVM: comparisons/jvm-comparisons.md
