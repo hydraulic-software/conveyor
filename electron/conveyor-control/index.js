@@ -1,4 +1,4 @@
-const fs = require('fs').promises;
+const fs = require('fs');
 const path = require('path');
 const { execFile } = require('child_process');
 const https = require('https');
@@ -52,12 +52,11 @@ class Version {
 }
 
 class OnlineUpdater {
-    constructor() {
+    constructor(updateSiteURL) {
         this.isWindows = process.platform === 'win32';
         this.isLinux = process.platform === 'linux';
         this.isMac = process.platform === 'darwin';
-        this.repoUrl = process.env.APP_REPOSITORY_URL;
-        this.fsname = process.env.APP_FSNAME;
+        this.updateSiteURL = updateSiteURL
         this.appDir = path.dirname(app.getPath('exe'));
     }
 
@@ -90,7 +89,7 @@ class OnlineUpdater {
 
     getCurrentVersionFromRepository() {
         return new Promise((resolve, reject) => {
-            const url = new URL(this.repoUrl);
+            const url = new URL(this.updateSiteURL);
             url.pathname = path.join(url.pathname, 'metadata.properties');
 
             https.get(url, (res) => {
