@@ -3,6 +3,7 @@ const path = require('path');
 const { execFile } = require('child_process');
 const https = require('https');
 const { app } = require('electron');
+
 class Version {
     constructor(version, revision = 0) {
         this.version = version;
@@ -51,11 +52,8 @@ class Version {
     }
 }
 
-const koffi = require('koffi');
-const path = require('path');
-
 const libconveyor = process.platform === 'darwin'
-    ? koffi.load(path.join(__dirname, 'libconveyor'))
+    ? require('koffi').load(path.join(__dirname, 'libconveyor'))
     : null;
 
 const conveyor_check_for_updates = libconveyor ? koffi.func('void', 'conveyor_check_for_updates', []) : null;
