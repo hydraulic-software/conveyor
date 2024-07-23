@@ -12,32 +12,43 @@ Zips or tarball inputs will be extracted by default.
 
 Inputs can be specified at different places in the config, but the most important is the top level `app` input hierarchy. The final location of files here depends on the type of app:
 
-* For native apps, inputs make up the raw package contents:
-    * The contents of the program installation directory on Windows.
-    * The contents of the `Contents` directory inside the bundle on macOS.
-    * The contents of the `/usr/lib/$vendor/$fsname` directory on Linux.
-* For JVM apps inputs should contain your app JARs, any other data files. They will be placed in:
-    * The `app` sub-directory of your install directory on Windows.
-    * The `Resources` directory of your app bundle on macOS.
-    * The `/usr/lib/$vendor/$fsname/lib/app` directory on Linux.
 * For Electron apps, inputs should contain your app JS/HTML/CSS/package.json files. They will be placed in the standard locations:
     * The `resources\app` directory inside your install directory on Windows.
     * The `Contents/Resources/app` directory inside the bundle on macOS.
     * The `/usr/lib/$vendor/$fsname` directory on Linux.
+* For JVM apps inputs should contain your app JARs, any other data files. They will be placed in:
+    * The `app` sub-directory of your install directory on Windows.
+    * The `Contents/Resources` directory inside the bundle on macOS.
+    * The `/usr/lib/$vendor/$fsname/lib/app` directory on Linux.
+* For native apps, inputs make up the raw package contents:
+    * The contents of the program installation directory on Windows.
+    * The contents of the `Contents` directory inside the bundle on macOS.
+    * The contents of the `/usr/lib/$vendor/$fsname` directory on Linux.
 
-For JVM apps any native libraries added in the app inputs (or found in the JARs) will be moved next to the other shared libraries of the JVM (requires compatibility level >= 4).
+For JVM apps any native libraries added in the app inputs (or found in the JARs) will be moved next to the other shared libraries of the JVM.
+
+The default app directory is normally what you want, but you can also place files elsewhere in the package. See:
+
+* [`app.mac.bundle-extras`](mac.md#appmacamd64aarch64bundle-extras)
+* [`app.windows.package-extras`](windows.md#appwindowsamd64aarch64package-extras)
+* [`app.linux.root-inputs`](linux.md#applinuxroot-inputs)
 
 ## Synopsis
 
 ```properties
 # Add a file or directory for every platform. They will be placed into 
-# the working directory at the same location. Globs are supported.
+# the app directory of your package (see above). Globs are supported.
+# Relative paths are NOT preserved.
 app.inputs += path/to/a/file
 app.inputs += path/to/a/directory
 app.inputs += /opt/foo/bar/*.sh
 
 # You can change where the file is placed.
 app.inputs += a/file -> other-dir/file
+
+# If you need a directory to be in the same relative location in the 
+# package, do it like this:
+app.inputs += dist -> dist
 
 # That's shorthand for this longer form:
 app.inputs += { 
@@ -100,6 +111,8 @@ app.linux.aarch64.glibc.inputs += linux-arm-natives.tar.gz -> lib
 ```
 
 **`app.inputs`** An array of input definitions (see below). Each input is copied or extracted into the working directory one after the other, with later inputs overwriting files from previous inputs. You can add a new input to the end of the array by using the `+=` HOCON operator. You can append an object, but when you append a string specification it is parsed and treated as shorthand for an object with `from` and `to` fields, in which the `from` field is the URL/path of the input. Brace expansion is applied to the string form to create multiple inputs.
+
+The default destination is always the app directory (see above). To place files in subdirectories of the app directory use `->` syntax to specify the desired location. This example takes files in a directory called `dist` next to the `conveyor.conf` file and puts them in the `dist` subdirectory of the app directory: `app.inputs += dist -> dist`. 
 
 Certain keys are derived from the name of the first input if not specified, which works well if you use the convention that the first input contains the core software of the app (i.e. not a dependency).
 
