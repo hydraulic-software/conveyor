@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { execFile } = require('child_process');
 const https = require('https');
+const http = require('http');
 const { app } = require('electron');
 
 class Version {
@@ -106,7 +107,9 @@ class OnlineUpdater {
             const url = new URL(this.updateSiteURL);
             url.pathname = path.join(url.pathname, 'metadata.properties');
 
-            https.get(url, (res) => {
+            const protocol = url.protocol === 'https:' ? https : http;
+
+            protocol.get(url, (res) => {
                 let data = '';
                 res.on('data', (chunk) => data += chunk);
                 res.on('end', () => {
