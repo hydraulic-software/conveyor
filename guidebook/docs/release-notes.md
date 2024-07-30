@@ -6,9 +6,10 @@ This is a feature release.
 
 ### :material-api: Update control API
 
-Conveyor 15 adds a control API for [Electron](control-api-electron.md) and [JVM](control-api-jvm.md) apps. This new API is exposed to
-your app and lets you check if there are new versions available at the update site as well as manually trigger the update process. It can
-be used to implement alternative update policies.
+Conveyor 15 adds an API that your app can use to interact with online updates. It's available for [Electron](control-api-electron.md),
+[JVM](control-api-jvm.md) and [native](control-api-native.md) apps. It lets you check if there are new versions available at the update site
+as well as trigger an update/restart cycle, and so can be used to implement alternative update policies that aren't supported out of the
+box.
 
 The [`app.updates`](configs/update-modes.md) key now supports `MANUAL` as well as `NONE`. The latter lets you disable update support 
 entirely, yielding a smaller package in some cases. It's appropriate when you don't want Conveyor to handle updates for you. `MANUAL`
