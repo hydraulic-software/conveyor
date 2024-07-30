@@ -61,7 +61,14 @@ const libconveyor = koffi
 
 const conveyor_check_for_updates = libconveyor ? libconveyor.func('void conveyor_check_for_updates()') : null;
 
+/**
+ * Object that lets you interact with Conveyor. Not all platforms are supported; call `canTriggerUpdateCheckUI` first.
+ */
 class OnlineUpdater {
+    /**
+     * Create an OnlineUpdater.
+     * @param {string} updateSiteURL - The base URL of the update site (same as `app.site.base-url` in your Conveyor config).
+     */
     constructor(updateSiteURL) {
         this.isWindows = process.platform === 'win32';
         this.isLinux = process.platform === 'linux';
@@ -70,6 +77,10 @@ class OnlineUpdater {
         this.appDir = path.dirname(app.getPath('exe'));
     }
 
+    /**
+     * Get the current version of the application by reading the `metadata.properties` file in your update site.
+     * @returns {Version} The current version.
+     */
     getCurrentVersion() {
         const ver = app.getVersion();
         const parts = ver.split('.');
@@ -77,6 +88,13 @@ class OnlineUpdater {
         return new Version(parts.slice(0, 3).join('.'), revision);
     }
 
+    /**
+     * Triggers the update process. If there is an update available it will be applied automatically (on Windows) or prompt the user
+     * (on macOS), and the app will be restarted if the update is applied. You should ensure you're in a position to restart without the
+     * user losing data before calling this.
+     *
+     * @throws {Error} If update checks are unavailable.
+     */
     triggerUpdateCheckUI() {
         const availability = this.canTriggerUpdateCheckUI();
         if (availability !== 'AVAILABLE') {
@@ -102,6 +120,10 @@ class OnlineUpdater {
         }
     }
 
+    /**
+     * Get the current version from the repository.
+     * @returns {Promise<Version>} A promise that resolves with the current version from the repository.
+     */
     getCurrentVersionFromRepository() {
         return new Promise((resolve, reject) => {
             const url = new URL(this.updateSiteURL);
@@ -126,6 +148,12 @@ class OnlineUpdater {
         });
     }
 
+    /**
+     * Check if the update check UI can be triggered.
+     * @returns {string} 'AVAILABLE' if the update check UI can be triggered, 
+     *                   'UNSUPPORTED_PACKAGE_TYPE' if the package type is not supported,
+     *                   'UNIMPLEMENTED' if not implemented for the current platform.
+     */
     canTriggerUpdateCheckUI() {
         if (this.isWindows) {
             const updateExePath = this.#getUpdateExePath();
