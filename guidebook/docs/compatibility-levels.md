@@ -8,7 +8,16 @@ Additionally, using new config keys requires increasing your compatibility level
 is older than the one expected by the author of the config.
 
 Here is how behaviour changes at each level.
-                                   
+          
+## Level 15
+
+These new keys were added:
+
+ * `app.mac.skip-framework-symlink-removal`
+ * `app.windows.package-extras`
+ * `app.windows.package-extras.amd64`
+ * `app.windows.package-extras.aarch64`
+                         
 ## Level 14
 
 These new keys were added:
