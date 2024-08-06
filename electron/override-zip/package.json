@@ -1,7 +1,7 @@
 {
   "name": "@hydraulic/override-zip",
   "description": "Override your Squirrel macOS Zip with a different zip.",
-  "version": "12.0.0",
+  "version": "15.0.0",
   "author": "Hydraulic Software <contact@hydraulic.dev>",
   "keywords": [
     "packaging",
