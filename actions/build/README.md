@@ -12,7 +12,7 @@ It needs to be run from a Linux runner (e.g. `ubuntu-latest`).
 ```yaml
 # IMPORTANT: Look up the latest Conveyor version and use it here!
 # https://conveyor.hydraulic.dev/latest/
-- uses: hydraulic-software/conveyor/actions/build@v12.0
+- uses: hydraulic-software/conveyor/actions/build@v15.0
   with:
     # The root signing key for your application, corresponding to config key 'app.signing-key'.
     # This is required to properly sign your app. We recommend storing your signing key in
@@ -100,7 +100,7 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
           
       - name: Run Conveyor     
-        uses: hydraulic-software/conveyor/actions/build@v12.0
+        uses: hydraulic-software/conveyor/actions/build@v15.0
         with:
           command: make copied-site
           signing_key: ${{ secrets.SIGNING_KEY }}          
