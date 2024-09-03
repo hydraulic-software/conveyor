@@ -346,6 +346,7 @@ abstract class ConveyorConfigTask(
                     "MICROSOFT" -> "microsoft"
                     "ADOPTIUM" -> "eclipse"
                     "GRAAL_VM" -> "graalvm"
+                    "JETBRAINS" -> "jetbrains"
                     else -> null
                 }
                 if (conveyorVendor != null) {
