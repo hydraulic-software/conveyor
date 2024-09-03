@@ -4,7 +4,8 @@
 
 This is a bugfix and maintenance release.
 
-* :simple-windows: Fixed an issue that could cause `ERROR_ACCESS_DENIED` to be returned by the Win32 CreateProcess API when invoking non-primary EXEs in some install types. This can occur when using the NodeJS exec API and is a bug in Windows that is now worked around for all EXEs that are included in your package input files. The necessary changes to the EXE files won't be made to EXEs inside archives. Make sure that any EXEs you plan to invoke are unpacked into your install directory. 
+* :simple-windows: Fixed an issue that could cause `ERROR_ACCESS_DENIED` to be returned by the Win32 CreateProcess API when invoking non-primary EXEs in some install types. This can occur when using the NodeJS exec API and is a bug in Windows that is now worked around for all EXEs that are included in your package input files. The necessary changes to the EXE files won't be made to EXEs inside archives. Make sure that any EXEs you plan to invoke are unpacked into your install directory.
+* :simple-electron: On macOS Conveyor now uses the standard build instead of the Mac App Store build. This avoids bugs that only exist in the App Store build at a small cost in download size.
 
 ## Conveyor 15 (August 6th 2024)
 

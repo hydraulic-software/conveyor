@@ -1,5 +1,10 @@
 # Windows
 
+The settings for Windows rarely need to be altered. During debugging though, [`app.windows.console`](#appwindowsconsole) can be useful to let you see what's printed to stdout/stderr. Your app may also benefit from [`app.windows.start-on-login`](#appwindowsstart-on-login), which is useful for Kiosk apps.
+
+!!! note
+    For maximum compatibility with Windows 10 any helper EXEs you ship should have a name unique to your app. Failure to observe this rule may cause your main app binary to get `ERROR_ACCESS_DENIED` when starting helper EXEs if the user has another app installed with a helper EXE of the same name. This is a bug in Windows 10 and doesn't apply to Windows 11.  
+
 ## Synopsis
 
 ```properties
@@ -7,20 +12,11 @@ app.windows {
   # Windows specific inputs.
   inputs = [ ... ]
 
-  # Controls whether a terminal window appears on startup.
-  console = false
+  # Make a terminal window appear on startup.
+  console = true
 
-  # What online update style to use.
-  updates = background
-  
-  # Options related to the Windows installer.
-  installer {
-    # Which theme should be used for the installer UI.
-    theme = dark
-  }
-
-  # Whether to sign the EXE/DLL files or not (true/false).
-  sign = ${app.sign}
+  # Which theme should be used for the installer UI.
+  installer.theme = dark
 }
 ```
 
