@@ -23,13 +23,13 @@ Config placed in those paths will be merged into every build file. There's nothi
 
 Conveyor has a command that creates GUI projects with Conveyor configuration:
 
-````sh
+```sh
 # Generate an Electron, C++, Jetpack Compose or JavaFX app.
 conveyor generate {electron,cmake,compose,javafx} \
                           --output-dir=path/to/my-project \
                           --display-name="My Amazing Project" \
                           com.example.my-project
-````
+```
 
 To learn more see the [tutorial](tutorial/new.md).
 
@@ -137,7 +137,32 @@ Conveyor makes heavy use of caching. Tasks work in individual cached directories
 
 You can change this location using the `--cache-dir` flag and the maximum number of gigabytes it's allowed to consume using `--cache-limit`. It's safe to delete this directory whenever you like, or any of the individual sub-directories. Entries are stored under a hashed key, and an English description in Markdown of what's in each entry can be found in the `key` file within it, so it's easy to explore if you're curious. You can also find what cache keys are being used by viewing the logs.
 
-If you hit a caching bug you can forcibly re-run tasks. You shouldn't need this unless you encounter a caching bug, but here it is anyway:
+To view the contents of the cache, you can use the `print-cache-entries` command:
+
+```bash
+conveyor print-cache-entries
+```
+
+This command displays a table with information about each cache entry, including the hashed key, the first line of the actual key, size, build time, entry cost, and age. You can customize the output with the following options:
+
+- `--top` or `-t`: Limit the output to the top N entries (e.g., `--top 10`)
+- `--sort-by` or `-s`: Sort the entries by a specific column (key, size, buildTime, entryCost, or age)
+
+For example, to view the top 5 entries sorted by size:
+
+```bash
+conveyor print-cache-entries --top 5 --sort-by size
+```
+
+The "Entry Cost" column is an arbitrary value reflecting a combination of age, size and how long it took to create the entry. It's used to bias the cache towards erasing entries that take up a lot of space but which were quick to create and weren't accessed for a long time. You can also view the contents of specific cache entries by providing their hashed keys:
+
+```bash
+conveyor print-cache-entries <hashed_key1> <hashed_key2>
+```
+
+This will display the full content of the specified cache entries in markdown format.
+
+If you hit a caching bug you can forcibly re-run tasks. If you find you need this command, please let us know as there are no known correctness issues with the cache implementation:
 
 ```bash
 conveyor make linux-app --rerun
