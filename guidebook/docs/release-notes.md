@@ -2,13 +2,18 @@
 
 ## Conveyor 15.1
 
-This is a bugfix and maintenance release.
+This is a bugfix and maintenance release. It also focuses on reducing the cost of using the cloud signing services offered by certificate authorities.
 
 * :simple-windows: Fixed an issue that could cause `ERROR_ACCESS_DENIED` to be returned by the Win32 CreateProcess API when invoking non-primary EXEs in some install types. This can occur when using the NodeJS exec API and is a bug in Windows that is now worked around for all EXEs that are included in your package input files. The necessary changes to the EXE files won't be made to EXEs inside archives. Make sure that any EXEs you plan to invoke are unpacked into your install directory.
-* :simple-windows: When signing binaries using cloud signing services from DigiCert or SSL.com the cache now holds on to signed binaries much more aggressively, to reflect the fact that these CAs charge high prices per-signature. 
 * :simple-electron: macOS Electron apps now uses the standard Electron build instead of the Mac App Store build. This avoids bugs that only exist in the App Store build at a small cost in download size.
 
-There's a new command for understanding the contents of the disk cache, [`conveyor print-cache-entries`](running.md#the-cache). It shows you the hash key, first line of the full cache key, size, how long an entry took to compute, when it was last accessed and the carrying cost (higher = more likely to be evicted). You can also use this command to print out the full cache key for any given entry, which may help understand the system better. The output is sorted in descending order of eviction priority.
+### :simple-windows: Cost optimization
+
+Cloud signing services from DigiCert or SSL.com can charge extremely high prices for each digital signature they serve (e.g. up to a dollar per signature). This release of Conveyor adds optimizations to reduce the cost:
+
+1. Input files that are pre-signed will be used as-is. You can therefore reduce costs by running `conveyor make windows-app`, letting it sign your EXE/DLL files, then copying them out of the `output` directory over your input files. Now those files won't be signed again. Note that this only applies to files signed by your configured signing identity, so virus scanners and other tools will still see a consistent set of signatures.
+2. The cache now holds on to signed Windows binaries much more aggressively when using CA provided cloud services. As long as you don't clear your disk cache there should be fewer signature operations consumed by this release.
+3. There's a new command for understanding the contents of the disk cache, [`conveyor print-cache-entries`](running.md#the-cache). It shows you the hash key, first line of the full cache key, size, how long an entry took to compute, when it was last accessed and the carrying cost (higher = more likely to be evicted). You can also use this command to print out the full cache key for any given entry, which may help understand the system better. The output is sorted in descending order of eviction priority.
 
 ## Conveyor 15 (August 6th 2024)
 
