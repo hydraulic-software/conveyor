@@ -54,12 +54,9 @@ class Version {
 }
 
 const isMacOS = process.platform === 'darwin';
-const koffi = isMacOS ? require('koffi') : null;
-const libconveyor = koffi
-    ? koffi.load(path.join(app.getAppPath(), '..', '..', 'Frameworks', 'libconveyor.dylib'))
-    : null;
-
-const conveyor_check_for_updates = libconveyor ? libconveyor.func('void conveyor_check_for_updates()') : null;
+let koffi = null;
+let libconveyor = null;
+let conveyor_check_for_updates = null;
 
 /**
  * Object that lets you interact with Conveyor. Not all platforms are supported; call `canTriggerUpdateCheckUI` first.
@@ -110,7 +107,7 @@ class OnlineUpdater {
                 process.exit(0);
             });
         } else if (this.isMac) {
-            if (conveyor_check_for_updates) {
+            if (this.canTriggerUpdateCheckUI() === 'AVAILABLE' && conveyor_check_for_updates) {
                 conveyor_check_for_updates();
             } else {
                 console.log('Native update check function not available');
@@ -162,7 +159,30 @@ class OnlineUpdater {
             return 'UNIMPLEMENTED';
         } else if (this.isMac) {
             const sparkleFrameworkPath = path.join(this.appDir, '..', 'Frameworks', 'Sparkle.framework');
-            return fs.existsSync(sparkleFrameworkPath) ? 'AVAILABLE' : 'UNSUPPORTED_PACKAGE_TYPE';
+            if (!fs.existsSync(sparkleFrameworkPath)) {
+                return 'UNSUPPORTED_PACKAGE_TYPE';
+            }
+            
+            if (!koffi) {
+                try {
+                    koffi = require('koffi');
+                } catch (error) {
+                    console.error('Failed to load koffi:', error);
+                    return 'UNSUPPORTED_PACKAGE_TYPE';
+                }
+            }
+
+            if (!libconveyor) {
+                try {
+                    libconveyor = koffi.load(path.join(app.getAppPath(), '..', '..', 'Frameworks', 'libconveyor.dylib'));
+                    conveyor_check_for_updates = libconveyor.func('void conveyor_check_for_updates()');
+                } catch (error) {
+                    console.error('Failed to load libconveyor:', error);
+                    return 'UNSUPPORTED_PACKAGE_TYPE';
+                }
+            }
+
+            return 'AVAILABLE';
         } else {
             return 'UNIMPLEMENTED';
         }
