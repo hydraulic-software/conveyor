@@ -197,6 +197,9 @@ app {
 
 Now running `conveyor make copied-site` will build and upload the app to your S3 bucket.
 
+!!! important "Bucket permissions"
+    Your bucket should either be public, or (better) be behind a public CDN. Installed clients require public, unauthenticated access to your site URL and Conveyor does not embed your S3 keys into installations as they could be easily extracted and would thus no longer be secret. 
+
 !!! warning "S3 URLs"
     Windows updates will fail when using the default static serving endpoint (e.g. `https://bucketname.s3-website-us-east-1.amazonaws.com/`). Use the object URL that ends in `.s3.amazonaws.com` instead (e.g. `https://bucketname.s3.amazonaws.com/`). 
 
