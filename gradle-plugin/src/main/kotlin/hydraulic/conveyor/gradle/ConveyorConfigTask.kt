@@ -13,6 +13,8 @@ import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
 import org.gradle.jvm.toolchain.JavaLanguageVersion
+import org.gradle.jvm.toolchain.JvmVendorSpec
+import org.gradle.jvm.toolchain.internal.DefaultJvmVendorSpec
 import org.jetbrains.compose.ComposeExtension
 import org.jetbrains.compose.desktop.DesktopExtension
 import org.openjfx.gradle.JavaFXOptions
@@ -125,7 +127,21 @@ abstract class ConveyorConfigTask(
         val javaExtension = project.extensions.findByName("java") as? JavaPluginExtension
         if (javaExtension != null) {
             jvmLanguageVersion.set(javaExtension.toolchain.languageVersion.orNull)
-            jvmVendorValue.set(javaExtension.toolchain.vendor.get().toString())
+
+            // We have to go to and from strings because JvmVendorSpec isn't serializable. Go to Gradle "indicator strings" here.
+            @Suppress("UnstableApiUsage")
+            val v = when (val vendor: JvmVendorSpec = javaExtension.toolchain.vendor.get()) {
+                JvmVendorSpec.AMAZON -> "amazon"
+                JvmVendorSpec.AZUL -> "azul systems"
+                JvmVendorSpec.ORACLE -> "oracle"
+                JvmVendorSpec.MICROSOFT -> "microsoft"
+                JvmVendorSpec.ADOPTIUM -> "adoptium"
+                JvmVendorSpec.GRAAL_VM -> "graalvm community"
+                JvmVendorSpec.JETBRAINS -> "jetbrains"
+                DefaultJvmVendorSpec.any() -> "openjdk"
+                else -> vendor.toString()
+            }
+            jvmVendorValue.set(v)
         }
 
         rootProjectDir.set(project.rootProject.rootDir)
@@ -335,29 +351,29 @@ abstract class ConveyorConfigTask(
 
         if (jvmLanguageVersion.isPresent) {
             val jvmVersion: JavaLanguageVersion? = jvmLanguageVersion.orNull
-            val vendor: String = jvmVendorValue.getOrElse("ADOPTIUM")
             if (jvmVersion == null) {
                 appendLine("// Java toolchain doesn't specify a version. Not importing a JDK.")
             } else {
-                val conveyorVendor = if (vendor == "any") "openjdk" else when (vendor) {
-                    "AMAZON" -> "amazon"
-                    "AZUL" -> "azul"
-                    "ORACLE" -> "openjdk"
-                    "MICROSOFT" -> "microsoft"
-                    "ADOPTIUM" -> "eclipse"
-                    "GRAAL_VM" -> "graalvm"
-                    "JETBRAINS" -> "jetbrains"
+                val vendorValue = jvmVendorValue.getOrElse("adoptium")
+                val conveyorVendor = when (vendorValue) {
+                    "amazon" -> "amazon"
+                    "azul systems" -> "azul"
+                    "adoptium" -> "eclipse"
+                    "openjdk" -> "openjdk"
+                    "microsoft" -> "microsoft"
+                    "graalvm community" -> "graalvm"
+                    "jetbrains" -> "jetbrains"
                     else -> null
                 }
                 if (conveyorVendor != null) {
                     appendLine("// Config from the Java plugin.")
                     appendLine("include required(\"/stdlib/jdk/$jvmVersion/$conveyorVendor.conf\")")
                 } else {
-                    appendLine("// Gradle build requests a JVM from $vendor but this vendor isn't known to Conveyor at this time.")
+                    appendLine("// Gradle build requests a JVM from $vendorValue but this vendor isn't known to Conveyor at this time.")
                     appendLine("// You can still use it, you'll just have to add JDK inputs that define where to download or find it.")
                     appendLine("//")
                     appendLine("// Please see https://conveyor.hydraulic.dev/latest/configs/jvm/#importing-a-jvmjdk for assistance.")
-                    appendLine("internal.conveyor.warnings += \"unknown-jdk-vendor:$vendor\"")
+                    appendLine("internal.conveyor.warnings += \"unknown-jdk-vendor:$vendorValue\"")
                 }
             }
         }
