@@ -58,6 +58,18 @@ run builds on a dedicated Linux VM or bare metal machine. If you can't, consider
 
 macOS is fairly well optimized and has acceptable performance.
 
+## Adjust notarization delay (macOS)
+
+Notarization is typically the slowest part of a build. You can make Conveyor skip some of the wait for notarization.
+
+Mac apps require a server-side malware scan by Apple before they can run, which usually takes a few minutes. Conveyor waits until this is
+done so that it can report success/failure, and so it can "staple" the results to the app. Stapling is an optional step that adds proof of
+notarization into the program. This is means the app's first launch is successful even if the user has gone offline. An un-stapled app will
+experience a short delay on first run whilst macOS contacts Apple servers to check notarization was a success.
+
+Stapling is a good idea and improves the user experience, but it's optional. On CI systems that charge you by the second you might wish
+to [skip or time limit this step](configs/keys-and-certificates.md#configuring-stapling-behavior).
+
 ## Use fast SSDs
 
 !!! tip
