@@ -7,6 +7,7 @@ This is a bugfix and maintenance release that adds one new feature.
 * You can now set `app.site.github.draft = true` to create draft releases when releasing via GitHub.
 * Improve the error message printed when SSH authentication fails due to having an encrypted key without supplied passphrase.
 * Fix a regression in the error message printed when an HSM PIN expires. ([GitHub Issue #129](https://github.com/hydraulic-software/conveyor/issues/129))
+* Fix the download page to not show scrollbars when they aren't necessary.
 * :simple-windows: Fix a crash that could occur when a custom MSIX manifest fragment fails to validate.
 * :simple-windows: Fix a crash that could occur when the inputs contain a file with an EXE extension that isn't a valid EXE.
 * :simple-windows: Increase the upload timeout for Windows Store publishing to two hours.
