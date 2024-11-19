@@ -24,7 +24,8 @@ declare module '@hydraulic/conveyor-control' {
     }
 
     /**
-     * Object that lets you interact with Conveyor. Not all platforms are supported; call `canTriggerUpdateCheckUI` first.
+     * Object that lets you interact with Conveyor. 
+     * Not all platforms are supported; call `canTriggerUpdateCheckUI` first.
      */
     export class OnlineUpdater {
         isWindows: boolean;
@@ -40,14 +41,17 @@ declare module '@hydraulic/conveyor-control' {
         constructor(updateSiteURL: string);
 
         /**
-         * Get the current version of the application by reading the `metadata.properties` file in your update site.
+         * Get the current version of the application by reading 
+         * the `metadata.properties` file in your update site.
          * @returns {Version} The current version.
          */
         getCurrentVersion(): Version;
 
         /**
-         * Triggers the update process. If there is an update available it will be applied automatically (on Windows) or prompt the user
-         * (on macOS), and the app will be restarted if the update is applied. You should ensure you're in a position to restart without the
+         * Triggers the update process. If there is an update available 
+         * it will be applied automatically (on Windows) or prompt the user
+         * (on macOS), and the app will be restarted if the update is applied. 
+         * You should ensure you're in a position to restart without the
          * user losing data before calling this.
          *
          * @throws {Error} If update checks are unavailable.
