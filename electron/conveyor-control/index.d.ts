@@ -36,7 +36,8 @@ declare module '@hydraulic/conveyor-control' {
 
         /**
          * Create an OnlineUpdater.
-         * @param {string} updateSiteURL - The base URL of the update site (same as `app.site.base-url` in your Conveyor config).
+         * @param {string} updateSiteURL - The base URL of the update 
+         * site (same as `app.site.base-url` in your Conveyor config).
          */
         constructor(updateSiteURL: string);
 
@@ -60,7 +61,8 @@ declare module '@hydraulic/conveyor-control' {
 
         /**
          * Get the current version from the repository.
-         * @returns {Promise<Version>} A promise that resolves with the current version from the repository.
+         * @returns {Promise<Version>} A promise that resolves with the 
+         * current version from the repository.
          */
         getCurrentVersionFromRepository(): Promise<Version>;
 
