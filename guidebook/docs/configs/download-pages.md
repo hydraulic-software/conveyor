@@ -145,9 +145,6 @@ app {
       
       // Optional: upload the download site to a branch. 
       pages-branch = "gh-pages"
-      
-      // Optional: do releases as a draft, meaning updates won't take effect immediately.
-      draft = true
     }
   }
 }

@@ -160,6 +160,7 @@ class OnlineUpdater {
         } else if (this.isMac) {
             const sparkleFrameworkPath = path.join(this.appDir, '..', 'Frameworks', 'Sparkle.framework');
             if (!fs.existsSync(sparkleFrameworkPath)) {
+                console.error('Failed to locate Sparkle framework at path:', sparkleFrameworkPath);
                 return 'UNSUPPORTED_PACKAGE_TYPE';
             }
             
