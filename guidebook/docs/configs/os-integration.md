@@ -122,6 +122,9 @@ The code in the middle of the AUMID is a hash of your signing certificate, so yo
     will change when it comes to release time_ (assuming you're properly code signing, of course). Remember to compute the AUMID for the
     real signing certificate before release!
 
+Electron and JVM apps can also access their AUMID at runtime. Electron apps can find it in the `appUserModelID` key of `package.json` in
+the Windows version after packaging, and JVM apps can find it in the `app.windows.userModelID` system property (again, only on Windows).
+
 ## Custom integrations
 
 Conveyor isn't an installer generator; it builds packages that declare how to integrate apps with the OS using static metadata. Each
