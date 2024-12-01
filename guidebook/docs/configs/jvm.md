@@ -104,14 +104,15 @@ A map of system properties. The default properties are:
 * `app.version` - equal to the `${app.version}` key.
 * `app.revision` - equal to the `${app.revision}` key.
 * `app.vendor` - equal to the `${app.vendor}` key.
-* `app.repositoryUrl` - equal to the `${app.site.base-url}` key. 
+* `app.repositoryUrl` - equal to the `${app.site.base-url}` key.
+* `app.windows.userModelID` - set on Windows only, this is the [app user model ID](os-integration.md#windows-appusermodelid-aumid), which can be needed for some kinds of operating system integration. 
 
 Some special tokens are supported. See [JVM options](#appjvmoptions) for details.  Some additional properties are also added, see [default config](#default-config) below.
 
 ??? note "Machine specific system properties"
     Although there are no dedicated machine-specific keys for system properties, there are for JVM options (see below). So if you want a sysprop that only applies on Windows, you could write `app.jvm.windows.options += "-Dmy.prop=value"`. The `system-properties` map is there primarily for convenience, so you can refactor out sets of properties into common configuration and then override individual properties using [HOCON's inheritance features](hocon.md).
 
-### app.jvm.options
+### `app.jvm.options`
 
 JVM command line flags ("options") can be used to control heap size, the garbage collector and so on. Note that this mostly but not entirely the same as arguments to the `java` program. Keys for setting JVM options are arranged in a hierarchy with less specific keys being used as defaults for more specific keys. Each launcher can define:
 
