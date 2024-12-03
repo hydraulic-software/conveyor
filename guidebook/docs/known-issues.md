@@ -8,12 +8,12 @@
     * Only DEB based Linux distros get native packages. For other distros Conveyor creates a tarball which doesn't auto update. 
       RPM / FlatPak support is on the roadmap.
 * Mac App Store support (Microsoft Store support is available).
-* There is no `app.updates` mode that lets you preserve the ability to auto update but only trigger it from your app.
+* Support for the new Microsoft Azure Trusted Signing service.
+* Support for selecting the region used in DigiCert KeyLocker.
 
 ## Windows specific issues
 
 * Conveyor builds are much slower on Windows than on UNIX. This is due to the low performance of the Windows kernel filesystem. See [Build Performance](performance.md) for tips to speed up your builds.
-* Old versions of Windows 10 that have broken software updates may not be tracking Microsoft's root store programme. This can cause problems when using Sectigo certificates. If you experience certificate validity errors on machines running Windows 10 which aren't updating properly, ensure your supplied certificates include the cross-signed Sectigo root and set `app.windows.verify-certificate-chain = false` to stop Conveyor replacing it with the "right" chain according to Microsoft. This problem will be fixed automatically in future releases.
 * Conveyor supports both Windows 10 and 11 but assumes users are applying software updates. We don't support arbitrarily old versions of Windows 10, as machines that aren't updating often contain severe bugs or have malware problems which make testing them hard.
 
 Windows apps are packaged using MSIX, which changes some aspects of the runtime environment in order to improve security and robustness.
@@ -27,20 +27,6 @@ Your installation directory will be read only (this is also true on macOS and Li
 
 Changing the package name or signing identity after launch will cause updates to stop working until the user next runs the app. [Learn more about name changes](name-changes.md).
 
-### Invoking packaged executables
-
-Depending on Windows version, attempting to execute your app EXE directly using an absolute path from _outside_ your app process tree 
-may fail with a permission error (e.g. from the Run dialog box). Instead, either:
-
-  * Invoke the EXE name that was placed on your `%PATH%` automatically at install time, which you can find under 
-    `%LOCALAPPDATA%\Microsoft\WindowsApps`. It will have the same name as your main app exe except lowercased and with `-` instead of 
-    space characters.  
-  * An alternative way to start your app is by opening the `shell:appsFolder\$AUMID` URL, where `$AUMID` (app user mode id) can be 
-    obtained by running `conveyor make app-user-model-id`. An example AUMID is `TestApp_49jahnq5qzr1m!TestApp`, e.g. you can start 
-    the app via the run dialog by entering `shell:appsFolder\TestApp_49jahnq5qzr1m!TestApp`.
-
-This doesn't affect your app starting its own EXE or other EXEs in the package, or EXEs outside your package.
-
 ### AppData directories
 
 The `AppData` directory is [virtualized](configs/windows.md#virtualization). This means:
@@ -49,11 +35,6 @@ The `AppData` directory is [virtualized](configs/windows.md#virtualization). Thi
   aware of that and not store data the user can't afford to lose there.
 * Your app won't be able to see the `AppData` directories of other apps unless you adjust your configuration to de-virtualize those directories.
   This should only matter if your app is intended to modify others.
-
-!!! warning "UNIX domain sockets"
-    UNIX domain sockets may fail if you create them in a virtualized directory on some versions of Windows. Conveyor 8+ configures your 
-    package to devirtualize the Temp directory so sockets created there should work, but sockets created elsewhere may encounter errors. 
-    [Devirtualize](configs/windows.md#virtualization) a directory if you plan to create UNIX domain sockets there.
 
 ### DLL search path
 
@@ -75,11 +56,6 @@ API to restore the previous search behavior for the current process.
 * Your app will only update when running. Unlike on Windows and Linux (Debian/Ubuntu), the operating system won't automatically upgrade the
   app in the background. This is a limitation of the Sparkle framework Conveyor uses.
 * Your app won't update until the user moves it out of their Downloads folder. This is due to a macOS security mechanism called "app translocation" and affects all Mac apps, it's not Conveyor specific. The user will be informed of this on startup and we modified the Sparkle update framework to present a clearer message to the user explaining what to do (we've also translated it into many different languages).
-
-## Electron specific issues
-
-* If you set the background of your window to be transparent, on macOS it may turn red instead. This is a bug in the Electron "Mac App Store" builds that Conveyor uses, and it affects Electron apps packaged with `electron-builder` and Electron Forge as well.
-* The default inputs list doesn't exclude `node_modules/**/.bin/*` as it should. These directories may capture symlinks that shouldn't be there. You can exclude them yourself using [remap rules](configs/inputs.md#remap-rules). Future versions of Conveyor will exclude this automatically.
 
 ## Java specific issues
 
