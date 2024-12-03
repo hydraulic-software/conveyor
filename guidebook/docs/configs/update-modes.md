@@ -1,10 +1,11 @@
 # Update modes
 
-Conveyor supports three different approaches to software updates:
+Conveyor supports four different approaches to software updates:
 
 1. `app.updates = background` (the default)
 2. `app.updates = aggressive`
 3. `app.updates = none`
+4. `app.updates = manual`
 
 In aggressive mode an update check will be performed synchronously on each app start. If a new version is available then the update process will start and the update downloaded and applied, without any user interaction being required.
 
@@ -15,6 +16,8 @@ In background mode the behaviour differs by OS:
 * :simple-linux: No difference, forced updates are not supported.
 
 When `app.updates = none` support for auto updates is removed, except on Linux where apt repositories will continue to be installed (this is a [known issue](../known-issues.md)). Note that this doesn't simply turn off polling: on macOS Sparkle won't be shipped, and there isn't any way to trigger an update.
+
+When `app.update = manual` support for updating is included on Windows and macOS but regular background checks are disabled. The only way an app will update is if the updates API is used. Note that on Linux manual updates has no effect, as the updates will still be managed by the system package manager in any case (updates are not automatic there).
 
 Which mode to use depends heavily on how often your users will start the app and how important it is for updates to be applied quickly. If your app is a client for a server that speaks a complex protocol and you don't want to preserve protocol backwards compatibility, aggressive mode is appropriate. If your app is self-contained or the protocols it speaks evolve in a compatible way, background mode gives a better user experience as the user won't be interrupted by the update process.
 

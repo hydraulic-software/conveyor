@@ -13,6 +13,7 @@ This release fixes these bugs:
 * Improve the error message printed when SSH authentication fails due to having an encrypted key without supplied passphrase.
 * Fix a regression in the error message printed when an HSM PIN expires. ([GitHub Issue #129](https://github.com/hydraulic-software/conveyor/issues/129))
 * Fix the download page to not show scrollbars when they aren't necessary.
+* :simple-windows: Fix a bug that could occur when using `app.updates = none` to entirely remove updates support. 
 * :simple-windows: Fix a crash that could occur when a custom MSIX manifest fragment fails to validate.
 * :simple-windows: Fix a crash that could occur when the inputs contain a file with an EXE extension that isn't a valid EXE.
 * :simple-windows: Fix a crash that could occur for certain EXE names used as helpers.
