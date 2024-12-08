@@ -7,7 +7,9 @@ This is primarily a bugfix and maintenance release. However, it adds these new f
 * Thanks to Bonny Rivers, the Electron control API now has TypeScript annotations.
 * You can now set `app.site.github.draft = true` to create draft releases when releasing via GitHub.
 * The Windows [App User Model ID](configs/os-integration.md#windows-appusermodelid-aumid) is now exposed at runtime in JVM and Electron apps.
-* You can now use piping in hashbang includes.
+* You can now use shell pipes (`foo | bar`) in hashbang includes.
+
+It also changes the default Linux distribution targeted by the generated apt repositories to Ubuntu 24 LTS (Noble).
 
 This release fixes these bugs:
 
@@ -21,7 +23,7 @@ This release fixes these bugs:
 * Fix a crash that could occur when a custom MSIX manifest fragment fails to validate.
 * Fix a crash that could occur when the inputs contain a file with an EXE extension that isn't a valid EXE.
 * Fix a crash that could occur for certain EXE names used as helpers.
-* Fix a crash that could occur for pre-signed EXE/DLL files that don't place their certificate table after the signature. Such files won't have their pre-existing signaure preserved.   
+* Fix a crash that could occur for pre-signed EXE/DLL files that don't place their certificate table after the signature. Such files won't have their pre-existing signature preserved.   
 * Increase the upload timeout for Windows Store publishing to two hours.
 
 ## :simple-apple: macOS
