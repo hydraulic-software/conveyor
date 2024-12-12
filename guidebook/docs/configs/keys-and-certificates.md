@@ -302,42 +302,28 @@ app.windows.signing-key.file = {
 
 Changing your passphrase updates the value of the `app.signing-key` key in [your `defaults.conf` file](index.md#per-user-defaults). If you're copying your key elsewhere - like into a continuous integration system - then you'll need to re-copy it any time your passphrase is changed.
 
-## Hardware security modules
+## Hardware security modules (Windows only)
 
-Conveyor can use keys stored in hardware security modules. This is useful because Extended Validation certificates can buy you some initial reputation with Windows SmartScreen, but they must be held in an HSM/token.  Using a token is simple!
+Conveyor can use keys stored in hardware security modules. This is useful because Extended Validation certificates can buy you some initial reputation with Windows SmartScreen, but they must be held in an HSM/token.  
 
-### SafeNet HSM
+Using a token is simple! If you have a **SafeNet eToken** or a **Yubikey** then just install the driver and set `app.windows.signing-key = hsm` in your config. This is shorthand for filling out the `app.windows.signing-key.file` object automatically. 
 
-Install the SafeNet eToken drivers for the platform you'll use to run Conveyor, and then set `app.windows.signing-key = safenet`.
-
-If signing from macOS on Apple Silicon make sure you use SafeNet 10.8 R1 or later, as otherwise you won't get ARM drivers.
-
-### YubiKeys
-
-[Install the Yubico manager GUI and PIV tool](https://www.yubico.com/support/download/smart-card-drivers-tools/) and then set:
-
-```
-app.windows.signing-key = /usr/local/lib/libykcs11.dylib
-```
-
-On Windows you'll need to add the `Yubico PIV Tool\bin` directory to your path - the instructions page tells you what to do.
-
-### Other HSMs
+If you use a different vendor set the driver path yourself:
 
 1. Install the drivers for your host platform (it doesn't have to be Windows).
 2. Find the path to the PKCS#11 driver library. HSM user guides will often give you this path under instructions for setting up Firefox or Thunderbird.
 3. Set the path as the value of `app.windows.signing-key.file.path`.
-4. Set the HSM passphrase as the value of `app.windows.signing-key.file.password`. For security reasons, you might want to use an environment value and refer to it by setting the value to something like `${env.PASSWORD_ENV_VAR}`. 
 
-And that's it. You don't need to set the `app.windows.certificate` key if you're using an HSM, because the certificate will be read from the device.
+And that's it. You don't need to set `app.windows.certificate` if you're using an HSM because the certificate will be read from the device.
 
 !!! note "Initial activation"
     Your certificate authority will probably have mailed you a USB device. Normally before it can be used you have to activate it (report to the CA that it's been received) in order to receive the initial passphrase.  
 
 !!! note "Default passphrase"
     If you don't specify `app.windows.signing-key.file.password`, the Conveyor passphrase will be used by default. You can use `conveyor keys passphrase` to ensure your Conveyor passphrase is the same as the HSM passphrase.
+    For security reasons, you might want to use an environment value, like this: `app.windows.signing-key.file.password = ${env.HSM_PASSPHRASE}`.
 
-!!! note "HSM passphrase expiry"
+!!! note "Passphrase expiry"
     Some CAs issue HSMs that require you to change your password every 30 days or so. When this happens Conveyor will give you an error message, saying that your PIN has expired. To change it you will need to use the management app that comes with your HSM. After changing your HSM passphrase or PIN to something new, remember to update the password in your config.
 
 !!! note "HSMs with multiple keys"
