@@ -9,15 +9,24 @@ Packaging a native app involves:
 
 ## Building compatible binaries
 
+### Windows
+
 For Windows no special steps are required.
 
-For Linux the binary should be linked with an rpath of `$ORIGIN/../lib` to ensure the binary looks in the right place for any included shared libraries. This involves passing flags to `ld` during the linking stage and ensures that the tarball is relocatable, and that your build system doesn't need to know how Conveyor lays out packages.
+### Linux
 
-For macOS the rpath must also be set to `@executable_path/../Frameworks` and additionally, spare space in the binary headers is required. This enables Conveyor to inject its own dylib which will hook into the startup code path and initialize Sparkle updates for GUI apps that link against Cocoa (if your app doesn't link against the Mac GUI framework, no updates will occur). To enable this the following flag should be passed to Apple's linker: `-headerpad 0xFF`.
+For Linux the binary should be linked with an rpath of `$ORIGIN/../lib` to ensure the binary looks in the right place for any included
+shared libraries. This involves passing flags to `ld` during the linking stage and ensures that the tarball is relocatable, and that your
+build system doesn't need to know how Conveyor lays out packages.
 
-### Using CMake
+### macOS
 
-A snippet like the following will ensure the right linker flags are used on each platform:
+For macOS the rpath must also be set to `@executable_path/../Frameworks` and additionally, spare space in the binary headers is required.
+This enables Conveyor to inject its own dylib which will hook into the startup code path and initialize Sparkle updates for GUI apps that
+link against Cocoa (if your app doesn't link against the Mac GUI framework, no updates will occur). To enable this the following flag should
+be passed to Apple's linker: `-headerpad 0xFF`.
+
+If using cmake, a snippet like the following will ensure the right linker flags are used on each platform:
 
 ```cmake
 # Ensure libraries can be found.
@@ -31,9 +40,19 @@ elseif (UNIX)
 endif()
 ```
 
-### Fat Mac binaries
+If using cargo a snippet like this in `cargo.rs` should work:
 
-Whether to ship fat binaries is up to you, but Conveyor currently always produces separate downloads for ARM and AMD64. On Chrome the generated download page can detect the user's CPU but for Safari users this isn't possible due to Apple policy.
+```rust
+if cfg!(target_os = "macos") {
+     println!("cargo:rustc-link-arg=-Wl,-rpath,@executable_path/../Frameworks");
+     println!("cargo:rustc-link-arg=-Wl,-headerpad,0xFF");
+}
+```
+
+## Fat Mac binaries
+
+Whether to ship fat binaries is up to you, but Conveyor currently always produces separate downloads for ARM and AMD64. On Chrome the
+generated download page can detect the user's CPU but for Safari users this isn't possible due to Apple policy.
 
 Future versions of Conveyor may support a single full-fat download and update stream.
 
