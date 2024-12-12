@@ -1,6 +1,6 @@
 # Release notes
 
-## Conveyor 16
+## Conveyor 16 (9th December 2024)
 
 This is primarily a bugfix and maintenance release. However, it adds these new features:
 
