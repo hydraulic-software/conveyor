@@ -304,9 +304,25 @@ Changing your passphrase updates the value of the `app.signing-key` key in [your
 
 ## Hardware security modules
 
-Conveyor can use keys stored in hardware security modules. This is useful because Extended Validation certificates can buy you some initial reputation with Windows SmartScreen, but they must be held in an HSM/token.
+Conveyor can use keys stored in hardware security modules. This is useful because Extended Validation certificates can buy you some initial reputation with Windows SmartScreen, but they must be held in an HSM/token.  Using a token is simple!
 
-Using a token is simple:
+### SafeNet HSM
+
+Install the SafeNet eToken drivers for the platform you'll use to run Conveyor, and then set `app.windows.signing-key = safenet`.
+
+If signing from macOS on Apple Silicon make sure you use SafeNet 10.8 R1 or later, as otherwise you won't get ARM drivers.
+
+### YubiKeys
+
+[Install the Yubico manager GUI and PIV tool](https://www.yubico.com/support/download/smart-card-drivers-tools/) and then set:
+
+```
+app.windows.signing-key = /usr/local/lib/libykcs11.dylib
+```
+
+On Windows you'll need to add the `Yubico PIV Tool\bin` directory to your path - the instructions page tells you what to do.
+
+### Other HSMs
 
 1. Install the drivers for your host platform (it doesn't have to be Windows).
 2. Find the path to the PKCS#11 driver library. HSM user guides will often give you this path under instructions for setting up Firefox or Thunderbird.
@@ -327,24 +343,6 @@ And that's it. You don't need to set the `app.windows.certificate` key if you're
 !!! note "HSMs with multiple keys"
     In some cases your CA may provision you with an HSM that contains more than one private key. If this happens Conveyor will stop and request that you specify the 'alias' of the key you want to use, which you'll need to assign to the `app.signing-key-alias` config key. If you aren't sure which alias is correct you may need to contact your certificate authority, or failing that, contact [Hydraulic support](mailto:contact@hydraulic.dev).
 
-### SafeNet HSM
-
-Here's an example for how to use a SafeNet HS. Install the SafeNet software and then add to your config: 
-
-* **Windows**: `app.windows.signing-key = "C:\Windows\System32\eTPKCS11.dll"`
-* **macOS**: `app.windows.signing-key = /Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib`
-
-If signing from macOS on Apple Silicon make sure you use SafeNet 10.8 R1 or later, as otherwise you won't get ARM drivers.
-
-### YubiKeys
-
-Also an example for macOS. If we do a web search for `site:yubico.com yubikey pkcs 11` then we find [this page](https://developers.yubico.com/yubico-piv-tool/YKCS11/) which gives us the paths we need. So, [install the Yubico manager GUI and PIV tool](https://www.yubico.com/support/download/smart-card-drivers-tools/) and then set:
-
-```
-app.windows.signing-key = /usr/local/lib/libykcs11.dylib
-```
-
-On Windows you'll need to add the `Yubico PIV Tool\bin` directory to your path - the instructions page tells you what to do.
 
 ## Cloud remote signing (Windows only)
 
