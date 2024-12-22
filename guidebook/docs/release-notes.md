@@ -8,8 +8,12 @@
 
 ## :simple-apple: macOS
 
+* You can now ship apps only for ARM.
+* 
 
 ## :simple-electron: Electron
 
 
 ## :fontawesome-brands-java: JVM
+
+* The JDK stdlib imports have been improved to cover operating systems and CPU architectures that were added retroactively to old releases by upstream providers.
