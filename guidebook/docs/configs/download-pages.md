@@ -184,7 +184,10 @@ app {
       secret-access-key = ${env.AWS_SECRET_ACCESS_KEY}
       
       // Optional: override endpoint if using S3 from a different provider:
-      endpoint = "s3.us-west-002.backblazeb2.com"      
+      endpoint = "s3.us-west-002.backblazeb2.com"
+      
+      // Optional, 3 is the default.
+      retries = 3      
     }
   }
 }
