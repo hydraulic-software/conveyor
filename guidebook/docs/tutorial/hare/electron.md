@@ -9,7 +9,6 @@
 ```shell
 conveyor generate electron com.example.my-project
 cd my-project
-npm install
 ```
 
 {!tutorial/hare/github-tip.md!}

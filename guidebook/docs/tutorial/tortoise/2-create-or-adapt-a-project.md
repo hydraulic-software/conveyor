@@ -18,8 +18,6 @@ This is the quickest way to try Conveyor without getting distracted by details o
 
     * [ ] `conveyor generate electron com.example.my-project`
     * [ ] `cd my-project`
-    * [ ] `npm install`
-    * [ ] `conveyor make site`
 
 === "Native"
 
@@ -34,8 +32,6 @@ This is the quickest way to try Conveyor without getting distracted by details o
     * [ ] Install a JDK 17 or higher from any vendor e.g. [Amazon Corretto](https://aws.amazon.com/corretto) is a good choice.
     * [ ] `conveyor generate compose com.example.my-project` <br>or<br> `conveyor generate javafx com.example.my-project`
     * [ ] `cd my-project`
-    * [ ] `./gradlew jvmJar` or `./gradlew jar`  - this step will download Gradle if you don't already have it.
-    * [ ] `conveyor make site`
 
 === "Flutter"
 
