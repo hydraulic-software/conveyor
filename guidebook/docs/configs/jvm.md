@@ -186,6 +186,10 @@ As an added convenience, Conveyor also provides the following environment variab
 
 If true (defaults to false) then JVM classfile debug attributes are stripped during repacking.
 
+### `app.jvm.strip-jar-version-numbers`
+
+If true (defaults to true from compatibility level 17), JAR files are renamed to strip version numbers. This can improve build speed and the efficiency of delta updates.
+
 ### `app.jvm.unwanted-jdk-files` 
 
 A list of file names that are erased from the application after jlinking and launcher creation is done. This is useful for cleaning up files that are usually only needed for development purposes. You can remove default items from the list by prefixing them with a `-` (minus). The list defaults to: 
@@ -257,7 +261,7 @@ app {
 
 The top level `app.inputs` hierarchy (see [Inputs](inputs.md)) will be placed in the `app` subdirectory inside the package and install directories. It may contain:
 
-* JAR files.
+* JAR files, with their version numbers removed.
 * Shared libraries. Moved to the same directory as all other shared libraries for the JVM are in. You can use this to add JNI libs without needing to put them into a self-extracting JAR.
 * On Windows, EXE files are moved to the `bin` subdirectory (`conveyor.compatibility-level >= 7`) and exposed on the user's PATH.
 * Executables for other platforms are left in the `app` subdirectory.
