@@ -129,13 +129,13 @@ The `task-dependencies` command takes a task command-line name and prints all th
 
 ## The cache
 
-Conveyor makes heavy use of caching. Tasks work in individual cached directories and the results are copied to the output directory at the end. The disk cache can be found here:
+Conveyor makes heavy use of caching to enable fast iteration, both locally and in CI. Tasks work in individual cached directories and the results are copied to the output directory at the end. The disk cache can be found here:
 
 * **Windows:**  `%LOCALAPPDATA%\Hydraulic\Conveyor\Cache`
 * **macOS:** `~/Library/Caches/Hydraulic/Conveyor`
 * **Linux:** `~/.cache/hydraulic/conveyor/cache`
 
-You can change this location using the `--cache-dir` flag and the maximum number of gigabytes it's allowed to consume using `--cache-limit`. It's safe to delete this directory whenever you like, or any of the individual sub-directories. Entries are stored under a hashed key, and an English description in Markdown of what's in each entry can be found in the `key` file within it, so it's easy to explore if you're curious. You can also find what cache keys are being used by viewing the logs.
+You can change this location using the `--cache-dir` flag and the maximum number of gigabytes it's allowed to consume using `--cache-limit`. It's safe to delete this directory whenever you like, or any of the individual subdirectories. Entries are stored under a hashed key, and an English description in Markdown of what's in each entry can be found in the `key` file within it, so it's easy to explore if you're curious. You can also find what cache keys are being used by viewing the logs.
 
 To view the contents of the cache, you can use the `print-cache-entries` command:
 
@@ -169,6 +169,8 @@ conveyor make linux-app --rerun
 ```
 
 There's no way to clear the cache from the CLI. You can just delete the cache directory yourself if you want to free up the space it uses.
+
+If you want to understand why some tasks are missing in the cache, set `LOG_CACHE_MISS_DIFFS=true` in the environment, run a build and then run `conveyor --show-log` to view the results.
 
 ## Viewing logs
 
