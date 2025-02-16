@@ -43,6 +43,9 @@ To learn more see the [tutorial](tutorial/new.md).
 
 ```bash
 conveyor run
+
+# Run without progress output
+conveyor --silent run
 ```
 
 **Do the same but faster:**
