@@ -1,12 +1,14 @@
 # Release notes
 
-## Conveyor 17 (11th Feb 2025)
+## Conveyor 17 (16th Feb 2025)
 
 * Conveyor now prompts you to upgrade your `conveyor.compatibility-level` key when your project has fallen behind. [Compatibility levels](compatibility-levels.md) help Conveyor introduce backwards-incompatible improvements when you explicitly opt-in to them, as well as  ensuring old Conveyor versions don't try to work with a config intended for a newer version.
 * There's a new `app.site.s3.retries` key to let you configure [the retry with exponential backoff](configs/download-pages.md#publishing-through-amazon-s3) Conveyor uses for S3 uploads.
 * Conveyor now automatically builds a newly created template project. To disable this you can pass the `--no-build` flag.
 * A bug has been fixed relating to chains of symlinks inside packages.
-* The disk cache has been improved: it now uses hysteresis when lowering disk usage due to going oversize, and the logs can now include a textual diff of cache keys to aid in understanding why there was a cache miss (set `LOG_CACHE_MISS_DIFFS=true` in the environment and then use `--show-log` to view the results). 
+* The disk cache has been improved: it now uses hysteresis when lowering disk usage due to going oversize, and the logs can now include a textual diff of cache keys to aid in understanding why there was a cache miss (set `LOG_CACHE_MISS_DIFFS=true` in the environment and then use `--show-log` to view the results).
+* There is now a `--silent` flag that suppresses progress tracking output.
+* Uploads to Amazon S3 can now take [credentials from the environment using the default SDK behavior](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/credentials-chain.html#credentials-default) instead of requiring credentials to be supplied via Conveyor's configuration. This enables scenarios like using OIDC for Amazon authentication, or any other scheme that requires temporary credentials.
 
 ### :simple-windows: Windows
 
@@ -35,6 +37,7 @@
 
 * The `app.isPackaged` API now works correctly, along with app APIs for reading the app's own version metadata (vs reading it from `package.json`).
 * Improved the diagnostics when a `.bin` directory is found in an Electron app tree.
+* Conveyor now optimizes download size and disk usage by dropping native libraries (`.node` files) that target the wrong OS or CPU architecture for the package being built. 
 
 ### :fontawesome-brands-java: JVM
 
