@@ -166,7 +166,9 @@ Under the hood, releasing to GitHub Releases is controlled by setting key `app.s
 !!! note
     Your users will upgrade to whatever the `/releases/latest` URL points to. Therefore, you shouldn't do beta releases or other forms of pre-release this way. Stick those files somewhere else or use draft releases, etc.
 
-### Publishing through Amazon S3
+### Publishing through object storage
+
+Conveyor can upload to any Amazon S3 compatible object storage system.
 
 [Read our guide on configuring S3 and CloudFront for download sites](https://hydraulic.dev/blog/16-aws-static-website.html){ .md-button .md-button--primary }
 
@@ -180,8 +182,10 @@ app {
     s3 {
       // Your bucket region.
       region = "us-east-1"
-      access-key-id = ${env.AWS_ACCESS_KEY_ID}
-      secret-access-key = ${env.AWS_SECRET_ACCESS_KEY}
+
+      // Optional: access credentials.      
+      access-key-id = ...
+      secret-access-key = ...
       
       // Optional: override endpoint if using S3 from a different provider:
       endpoint = "s3.us-west-002.backblazeb2.com"
@@ -195,7 +199,7 @@ app {
 
 1. Set key `app.site.copy-to` to `s3:$bucket/$path`. If your `app.site.base-url` has a host ending with `.s3.amazonaws.com`, you don't need to set the value of `app.site.copy-to`, as Conveyor can infer the correct value. 
 2. Set `app.site.s3.region` to the appropriate region for your S3 bucket.
-3. Set `app.site.s3.access-key-id` and `app.site.s3.secret-access-key` with the details of your [AWS programmatic access key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey).
+3. (Optional) Set `app.site.s3.access-key-id` and `app.site.s3.secret-access-key` with the details of your [AWS programmatic access key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey). If you don't provide credentials, they will be [read from your environment as described here](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/credentials-chain.html#credentials-default).
 4. (Optional) If you're using an S3 provider that isn't AWS, set `app.site.s3.endpoint` to their endpoint.
 
 Now running `conveyor make copied-site` will build and upload the app to your S3 bucket.
