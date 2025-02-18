@@ -9,6 +9,10 @@ is older than the one expected by the author of the config.
 
 Here is how behaviour changes at each level.
           
+## Level 17
+
+The `app.site.s3.retries` key was added.
+
 ## Level 16
 
 The default target distribution for Debian/Ubuntu packages has been bumped to Ubuntu 24 (Noble). Users on older distributions may need to
