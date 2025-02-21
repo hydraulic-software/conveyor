@@ -34,7 +34,7 @@ the `app.file-associations` key, like this:
 app.file-associations = [ .foo ]
 ```
 
-You can even define different file associations for different platforms by using the keys `app.mac.file-assocations`, `app.linux.file-assocations` and `app.windows.file-assocations`. By default, the value of all of those keys is the same as `app.file-associations`.
+You can even define different file associations for different platforms by using the keys `app.mac.file-associations`, `app.linux.file-associations` and `app.windows.file-associations`. By default, the value of all of those keys is the same as `app.file-associations`.
 
 !!! important
     This only registers your app for that file extension. You still have to receive and handle open requests from the
