@@ -37,14 +37,14 @@ To add the plugin:
 === "Kotlin"
     ```kotlin title="build.gradle.kts"
     plugins {
-        id("dev.hydraulic.conveyor") version "1.5"
+        id("dev.hydraulic.conveyor") version "1.12"
     }
     ```
 
 === "Groovy"
     ```groovy title="build.gradle"
     plugins {
-        id 'dev.hydraulic.conveyor' version '1.5'
+        id 'dev.hydraulic.conveyor' version '1.12'
     }
     ```
 
@@ -188,7 +188,7 @@ SWT is a small JVM UI toolkit that maps directly to the operating system's nativ
 plugins {
 	`java-library`
     application
-    id("dev.hydraulic.conveyor") version "1.4"
+    id("dev.hydraulic.conveyor") version "1.12"
 }
 
 repositories {
