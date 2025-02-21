@@ -63,34 +63,31 @@ The hashbang include you saw earlier will run Gradle each time you invoke Convey
 
 Sometimes you need different versions of a library depending on which OS you use. A good example is when packaging Jetpack Compose apps (see below for an example). The Conveyor plugin provides a simple solution for this in the form of per-machine configurations. The one that matches the host OS is always used, and the others are emitted as config for Conveyor so it can build packages for other operating systems. The available configurations are named `linuxAmd64`, `macAmd64`, `macAarch64` and `windowsAmd64`.
 
-## Adapting a Compose Desktop app
+## Adapting a Compose Multiplatform app
 
 !!! tip
-    You can [get the source to an example Compose Desktop based note taking application](https://github.com/hydraulic-software/eton-desktop).
+    Use the built-in template apps as a guide by running `conveyor generate compose my-sample-project` and looking at how it's set up.
 
-You should use Compose 1.2 or higher. Older versions can be packaged but you'll need to [import a JDK](../../configs/jvm.md#importing-a-jdk) yourself. 
+A default, non-Conveyorized Kotlin Compose Multiplatform app can be generated using the [KMP wizard](https://kmp.jetbrains.com/). You should use Compose 1.2 or higher.
 
-* [ ] Add `withJava()` and also ensure you're using the right version of the Kotlin standard library in your project dependencies.
-* [ ] Add machine-specific dependencies to the **top level** of your build file, note that this is **not** the `dependencies` block inside the `jvmMain` section, but rather in the usual place for JVM dependencies in non-KMM projects. 
+Add `id("dev.hydraulic.conveyor") version "<<version>>"` to the `plugins` section of the `composeApp/build.gradle.kts` file ([locate the latest version here](https://plugins.gradle.org/plugin/dev.hydraulic.conveyor)).
 
-```kotlin
-kotlin {
-    jvm {
-        withJava()
-    }
-    jvmToolchain(17)
+Set `version = "1.0"`, or whatever your app version is, at the top level of the build file. Conveyor needs the module to be versioned, setting a version number elsewhere isn't enough.
 
-    sourceSets {
-        val jvmMain: KotlinSourceSet by getting {
-            dependencies {
-                // ...
-            }
-        }
-    }
+Locate the line that says `jvm("desktop")` and underneath it add this fragment to set the JDK (you can use any JDK version and vendor):
+
+```
+jvmToolchain {
+    languageVersion.set(JavaLanguageVersion.of(21))
+    vendor.set(JvmVendorSpec.JETBRAINS)
 }
+```
 
+Find the _top level_ `dependencies` block (not the one inside the `kotlin{}` block), or add one if it's missing, and add this:
 
+```
 dependencies {
+    // Use the configurations created by the Conveyor plugin to tell Gradle/Conveyor where to find the artifacts for each platform.
     linuxAmd64(compose.desktop.linux_x64)
     macAmd64(compose.desktop.macos_x64)
     macAarch64(compose.desktop.macos_arm64)
@@ -98,17 +95,23 @@ dependencies {
 }
 ```
 
-* [ ] Add a workaround for [a Compose issue](https://github.com/JetBrains/compose-jb/issues/1404#issuecomment-1146894731).
+There might already be a dependency `debugImplementation(compose.uiTooling)` in this block, in which case it's fine to leave it.
 
-```kotlin
+If you have a `packageName = "example-project"` line inside a `nativeDistributions{}` block, ensure it _isn't_ a reverse DNS name but rather
+an "fsname", i.e. the name you want to appear in file names.
+
+Finally, add this at the bottom of your `build.gradle.kts` file:
+
+```
+// region Work around temporary Compose bugs.
 configurations.all {
     attributes {
+        // https://github.com/JetBrains/compose-jb/issues/1404#issuecomment-1146894731
         attribute(Attribute.of("ui", String::class.java), "awt")
     }
 }
+// endregion
 ```
-
-* [ ] Add `kotlin.mpp.stability.nowarn=true` to your `gradle.properties` file, to silence a warning printed during build configuration time that would interfere with config import otherwise.
 
 ### Setting icons
 
