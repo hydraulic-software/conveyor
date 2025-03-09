@@ -66,7 +66,7 @@ Sometimes you need different versions of a library depending on which OS you use
 ## Adapting a Compose Multiplatform app
 
 !!! tip
-    Use the built-in template apps as a guide by running `conveyor generate compose my-sample-project` and looking at how it's set up.
+    Use the built-in template apps as a guide by running `conveyor generate compose com.mycompany.my-sample-project` and looking at how it's set up, or [browse this git repository](https://github.com/hydraulic-software/compose-multiplatform-starter).
 
 A default, non-Conveyorized Kotlin Compose Multiplatform app can be generated using the [KMP wizard](https://kmp.jetbrains.com/). You should use Compose 1.2 or higher.
 
