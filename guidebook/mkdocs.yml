@@ -14,14 +14,15 @@ nav:
     - sample-apps.md
     - download-conveyor.md
     - Using Conveyor:
-      - running.md
-      - continuous-integration.md
-      - performance.md
-      - configuring-cdns.md
-      - Migrating Electron apps: migrating-electron-apps.md
+        - running.md
+        - continuous-integration.md
+        - performance.md
+        - configuring-cdns.md
+        - Migrating Electron apps: migrating-electron-apps.md
     - Results:
         - Package formats: package-formats.md
         - understanding-updates.md
+        - serving/uploading.md
     - Update control API:
         - JVM API: control-api-jvm.md
         - Electron API: control-api-electron.md
@@ -57,7 +58,6 @@ nav:
     - configs/icons.md
     - configs/inputs.md
     - configs/update-modes.md
-    - configs/download-pages.md
     - configs/os-integration.md
     - configs/keys-and-certificates.md
     - Config Library: stdlib/index.md
