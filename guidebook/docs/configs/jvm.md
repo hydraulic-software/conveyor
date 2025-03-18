@@ -51,7 +51,10 @@ app {
     
     # Args that are always passed.
     constant-app-arguments = [ --app-version, ${app.version} ]
-    
+
+    # Add somewhere in the home directory to the classpath.
+    gui.class-path = [ "*.jar", "~/Library/Application Support/MyApp/drivers" ]
+
     # Add a supplementary CLI tool named foo-tool.
     cli = [ com.foobar.FooTool ]
     
@@ -361,7 +364,9 @@ For each launcher you can specify these keys:
 
 **`exe-name`** The name of the binary executable on disk. You don't need a `.exe` suffix, one will be added for you on Windows. If not specified, will use either the display name or the fsname, depending on platform conventions. 
 
-**`class-path`** A list of file names or globs that select a set of JAR files from the inputs. Defaults to `*.jar` which is usually good enough. Note that explicit JPMS modules don't have to be specified here, as they will be jlinked into the distribution JVM and thus are always available.
+**`class-path`** A list of file names or globs that select a set of JAR files from the inputs. Defaults to `*.jar` which is usually good enough, but deliberately excludes JARs outside the top level directory. You can also add paths starting with `~/` to mean "directory inside the user's home directory", which can be useful in some rare scenarios where plugins need to be loaded onto the application classpath rather than loaded using a classlaoder. Note that explicit JPMS modules don't have to be specified here, as they will be jlinked into the distribution JVM and thus are always available.
+
+**`option`** JVM arguments that are specific to this launcher, added to the main set of JVM options. Options that begin with `~/` or which have a `key=value` form where the value begins with `~/` have the user's home directory prepended.
 
 **`console`** Controls whether the launcher uses console mode on Windows. See the [documentation for the console key](windows.md#console-key) for more details. If not specified, defaults to true for CLI launchers and false for the GUI launcher. You should normally never need to set this, but it may be helpful in some cases if you have CLI launchers that aren't meant to be invoked by the end user directly. Note that setting console = false will suppress the terminal window from popping up, but won't make the app appear in the start menu. You can only have one entry in the start menu.
 
