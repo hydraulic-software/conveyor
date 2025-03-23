@@ -115,28 +115,10 @@ Create a `conveyor.conf` to package your app with Conveyor. You can follow the i
     site used for Squirrel. This is necessary to avoid conflicts.
 
 === ":fontawesome-brands-apple: macOS" 
-    Add the following to your `conveyor.conf` file:
+    Add to following to the top of your `conveyor.conf` file: `include required("/stdlib/electron/squirrel-migration.conf")`
     
-    ```diff title="conveyor.conf"
-      include required("/stdlib/electron/electron.conf")
-      
-      package-json {
-        include required("package-lock.json")
-      }
-        
-    + app.mac {
-    +     aarch64.bundle-extras += ${squirrel.aarch64}
-    +     amd64.bundle-extras += ${squirrel.amd64}
-    +     electron.mac-distribution = mas
-    + }
-      
-      app {
-        // ... Your app config ...
-      }
-    ```
-    
-    This will include the Squirrel framework into your app. It is necessary so that your app gets launched correctly after transitioning on macOS.
-    It also switches the distribution to the Mac App Store version, which is a requirement to use Squirrel migration.
+    This will use the Mac App Store build of Electron and include the Squirrel framework into your app. It is necessary so that your app gets
+    launched correctly after transitioning on macOS.
 
     You should make sure that the Conveyor packaged app is signed with same certificate used to sign the Squirrel packaged app.
     Also make sure that following items match:
