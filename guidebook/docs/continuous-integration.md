@@ -138,7 +138,7 @@ The deployment workflows above wire the secret into the Conveyor GitHub Action v
 ```yaml
 (...)
 - name: Run Conveyor     
-  uses: hydraulic-software/conveyor/actions/build@v9.2
+  uses: hydraulic-software/conveyor/actions/build@v17.0
   with:
     command: make copied-site
     # This example uses a secret named SIGNING_KEY.
