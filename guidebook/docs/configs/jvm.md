@@ -475,7 +475,9 @@ To learn how to specify languages, please read the [jlink user guide](https://do
 
 The output of tools like ProGuard or R8 can be straightforwardly integrated with Conveyor. At this time, Conveyor won't run these tools for you. You should use your build system to do it instead.  
 
-Using ProGuard with Jetpack Compose will require a bit of custom config. `./gradlew proguardReleaseJars` runs ProGuard and put all the JARs for the app in the `build/compose/tmp/main-release/proguard/` directory. The Conveyor Gradle plugin doesn't know about that (yet) and will create config that points to the original jars in your Gradle cache, but it's easy enough to fix. If you run `./gradlew printConveyorConfig` you'll see what it's generating and it's all pretty straightforward. Our goal is to replace the inputs it emits with config that points at ProGuard's output, except for the JAR that provides Skiko for each OS. So something like this should work:
+**Using ProGuard with Jetpack Compose**
+1. Run `./gradlew proguardReleaseJars` instead of `./gradlew desktopJar`. It runs ProGuard and puts all the JARs for the app in the `build/compose/tmp/main-release/proguard/` directory. The Conveyor Gradle plugin doesn't know about that (yet) and so we'll have to update our conveyor.conf.
+2. Update your conveyor.conf
 
 ```
 gradle-cache = ${env.HOME}/.gradle    # Note: UNIX specific config!
@@ -483,22 +485,21 @@ gradle-cache = ${env.HOME}/.gradle    # Note: UNIX specific config!
 app {
     # Import all the obfuscated JARs, except the JAR that contains the platform native graphics code.
     inputs = [{
-      from = build/compose/tmp/main-release/proguard
+      from = composeApp/build/compose/tmp/main-release/proguard
       remap = [
           "**"
           "-skiko-awt-runtime-*.jar"
       ]
     }]
 
-    # Put the dropped JAR back with the right version for each platform. 
-    windows.amd64.inputs = ${app.inputs} [ ${gradle-cache}/caches/modules-2/files-2.1/org.jetbrains.skiko/skiko-awt-runtime-windows-x64/0.7.34/1a302b2d58bdf6627446a94098672ab982b90fd0/skiko-awt-runtime-windows-x64-0.7.34.jar ]
-    mac.amd64.inputs = ${app.inputs} [ ${gradle-cache}/caches/modules-2/files-2.1/org.jetbrains.skiko/skiko-awt-runtime-macos-x64/0.7.34/466356827dcdb20c4202fa280ff95c41b215313/skiko-awt-runtime-macos-x64-0.7.34.jar ]
-    mac.aarch64.inputs = ${app.inputs} [ ${gradle-cache}/caches/modules-2/files-2.1/org.jetbrains.skiko/skiko-awt-runtime-macos-arm64/0.7.34/3f7fe53a3c9c0c96dbe07c22ba4a38234ff13487/skiko-awt-runtime-macos-arm64-0.7.34.jar ]
+    # Put the dropped JAR back with the right version for each platform.
     linux.amd64.inputs = ${app.inputs} [ ${gradle-cache}/caches/modules-2/files-2.1/org.jetbrains.skiko/skiko-awt-runtime-linux-x64/0.7.34/60f05c42be49b3ba7fc98173f4f6e80c3b9de4fd/skiko-awt-runtime-linux-x64-0.7.34.jar ]
+    mac.aarch64.inputs = ${app.inputs} [ ${gradle-cache}/caches/modules-2/files-2.1/org.jetbrains.skiko/skiko-awt-runtime-macos-arm64/0.7.34/3f7fe53a3c9c0c96dbe07c22ba4a38234ff13487/skiko-awt-runtime-macos-arm64-0.7.34.jar ]
+    mac.amd64.inputs = ${app.inputs} [ ${gradle-cache}/caches/modules-2/files-2.1/org.jetbrains.skiko/skiko-awt-runtime-macos-x64/0.7.34/466356827dcdb20c4202fa280ff95c41b215313/skiko-awt-runtime-macos-x64-0.7.34.jar ]
+    windows.amd64.inputs = ${app.inputs} [ ${gradle-cache}/caches/modules-2/files-2.1/org.jetbrains.skiko/skiko-awt-runtime-windows-x64/0.7.34/1a302b2d58bdf6627446a94098672ab982b90fd0/skiko-awt-runtime-windows-x64-0.7.34.jar ]
 }
 ```
-
-The Skiko runtime paths here come from running `./gradlew printConveyorConfig` and looking at the output. You'd need to update them when switching to a new Jetpack Compose version.
+3. Update the paths above with the paths that come from running `./gradlew printConveyorConfig` and looking at the bottom of the output. You'd need to update them when switching to a new Jetpack Compose version.
 
 !!! note "Machine specific configs"
     If you're using the Conveyor Gradle plugin's machine specific configs then this won't work because you'll overwrite the machine-specific inputs lists. So in these more advanced cases you may need to post-process the generated config, or write your own Gradle task to generate it.  
