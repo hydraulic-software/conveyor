@@ -26,8 +26,6 @@ app {
       
       // Optional: override endpoint if using S3 from a different provider:
       endpoint = "s3.us-west-002.backblazeb2.com"
-      // Optional: If you're using an S3 impl which uses https://endpoint/bucket-name e.g. minIO
-      force-path-style = true  
       
       // Optional, 3 is the default.
       retries = 3      
@@ -39,7 +37,7 @@ app {
 1. Set key `app.site.copy-to` to `s3:$bucket/$path`. If your `app.site.base-url` has a host ending with `.s3.amazonaws.com`, you don't need to set the value of `app.site.copy-to`, as Conveyor can infer the correct value.
 2. Set `app.site.s3.region` to the appropriate region for your S3 bucket.
 3. (Optional) Set `app.site.s3.access-key-id` and `app.site.s3.secret-access-key` with the details of your [AWS programmatic access key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey). If you don't provide credentials, they will be [read from your environment as described here](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/credentials-chain.html#credentials-default).
-4. (Optional) If you're using an S3 provider that isn't AWS, set `app.site.s3.endpoint` to their endpoint and possibly `app.site.s3.force-path-style = true`.
+4. (Optional) If you're using an S3 provider that isn't AWS, set `app.site.s3.endpoint` to their endpoint.
 
 Now running `conveyor make copied-site` will build and upload the app to your S3 bucket.
 
