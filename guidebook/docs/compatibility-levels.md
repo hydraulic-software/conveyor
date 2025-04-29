@@ -8,6 +8,10 @@ Additionally, using new config keys requires increasing your compatibility level
 is older than the one expected by the author of the config.
 
 Here is how behaviour changes at each level.
+
+## Level 18
+
+The `app.mac.info-plist.LSMinimumSystemVersion` key was bumped to `11.0` by default, to keep up with the library ecosystem that increasingly depends on this version.
           
 ## Level 17
 
