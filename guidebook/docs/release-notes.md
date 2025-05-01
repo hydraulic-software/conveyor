@@ -1,6 +1,6 @@
 # Release notes
 
-## Conveyor 18 (release date TBD)
+## Conveyor 18 (May 1st 2025)
 
 * The output printed when there's no terminal has been improved, which should make Conveyor's output more pleasant in CI log viewers. It now uses color and has clearer formatting.
 * You can control the use of color and animation explicitly using the new `--console` flag, which is useful if you're redirecting Conveyor's output to a file.
