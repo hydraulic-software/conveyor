@@ -1,5 +1,12 @@
 # Release notes
 
+## Conveyor 18.1 (May 20th 2025)
+
+* Fixed a crash that could occur when the file inputs didn't exist.
+* Fixed a rare problem that could occur when zipping a large file tree containing symlinks.
+* Add compatibility with Java 24.
+* Disable the Gradle configuration cache in the JavaFX sample.
+
 ## Conveyor 18 (May 1st 2025)
 
 * The output printed when there's no terminal has been improved, which should make Conveyor's output more pleasant in CI log viewers. It now uses color and has clearer formatting.
