@@ -484,7 +484,6 @@ app {
     signing-key {
       azure-trusted-signing {
         endpoint = "eus.codesigning.azure.net"  // Your Azure Trusted Signing endpoint region
-        api-access-token = ${env.AZURE_ACCESS_TOKEN}
       }
     }
     signing-key-alias = "your-ats-account-name/your-code-signing-profile-name"  // account/profile format
@@ -496,16 +495,23 @@ Azure Trusted Signing is Microsoft's cost-effective code signing service. You'll
 
 1. **An Azure Trusted Signing account** - Create one in the Azure portal
 2. **A certificate profile** - Set up in your Trusted Signing account  
-3. **An API access token** - Obtain using the Azure CLI:
-   ```bash
-   az account get-access-token --resource https://codesigning.azure.net
-   ```
+3. **Azure CLI** - Install and authenticate with `az login`
 
 The `signing-key-alias` must be in the format `account/profile` where:
 - `account` is your Trusted Signing Account name (globally unique)
 - `profile` is your Certificate Profile name
 
 The `endpoint` should match your Azure region (e.g., `eus.codesigning.azure.net` for East US, `weu.codesigning.azure.net` for West Europe).
+
+**Access Token:** The `api-access-token` is **optional**. If not provided, Conveyor will automatically generate one using the Azure CLI:
+```bash
+az account get-access-token --resource https://codesigning.azure.net
+```
+
+If you prefer to provide the token manually (e.g., for CI/CD environments), you can specify it:
+```hocon
+app.windows.signing-key.azure-trusted-signing.api-access-token = ${env.AZURE_ACCESS_TOKEN}
+```
 
 Azure Trusted Signing stores certificates, so you don't need to specify those separately.
 
