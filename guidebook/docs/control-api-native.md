@@ -24,4 +24,4 @@ After the update applies your app will be restarted at the new version. If no up
 
 ## macOS
 
-Look up the `conveyor_check_for_updates` symbol using dlsym and invoke it. It'll be available in your packaged app, and this will trigger Sparkle's update prompt. The user can then choose whether to install the update or not. There's no way currently to bypass the GUI dialog, so the user always has an option. Your app will be restarted after the update is applied.
+Look up the `conveyor_check_for_updates` symbol using dlsym and invoke it. It'll be available in your packaged app, and this will trigger an immediate update/restart cycle. A download and install progress UI will appear. If no update is available then the "Checking for updates" dialog will appear and then immediately disappear, so it's best to only call this API if you know there's an update available on the server.
