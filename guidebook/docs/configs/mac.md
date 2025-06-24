@@ -82,13 +82,13 @@ Maximum number of previous versions of your app to generate delta updates for. N
 
 An object whose values are put in the `Info.plist` that controls Sparkle's behavior. [See here for a reference guide](https://sparkle-project.org/documentation/customization/). You should normally leave this alone unless you want precise behavioral control.
 
-### `app.mac.sparkle-framework`
+### `app.mac.sparkle`
 
 A single [input definition object](inputs.md) that points to a release of the [Sparkle 2 update framework](https://sparkle-project.org/). You can normally leave this at the default unless you want to use a custom fork of Sparkle for some reason. Note that some Conveyor features, like aggressive updates, aren't supported by upstream Sparkle and thus the default value of this key points to a Conveyor-specific fork. Changing this key to use an upstream release will therefore need careful testing and this key is intended for advanced users only. The default value looks like this:
 
 ```
 # An input definition for where to get the Sparkle framework.
-sparkle-framework {
+app.mac.sparkle = [{
   from = downloads.hydraulic.dev/sparkle/Sparkle-2.5.1-hydraulic.tar.xz
   remap = [
     "Sparkle.framework/**"
@@ -105,7 +105,7 @@ sparkle-framework {
     "-**"
   ]
   to = "Frameworks"
-}
+}]
 ```
 
 It's often easier to customize Sparkle by overwriting files rather than replacing the whole framework. This technique can be useful for customizing the default strings and translations. Here's how:
