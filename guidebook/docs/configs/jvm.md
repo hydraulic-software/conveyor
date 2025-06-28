@@ -141,7 +141,7 @@ In this way you can set JVM flags for every entry point in your app whilst also 
 
 The options to set `app.jvm.system-properties` are added automatically. Options support two special tokens:
 
-* `&&` - this is replaced by the path to the directory where the program executable is found.
+* `&&` - this is replaced by the path to the directory where the application's JARs and other input files are found.
 * `<libpath>` - this is replaced by the path to where JNI libraries are placed. This can be useful for dealing with libraries that don't
   call `System.loadLibrary` before attempting to extract JNI libs to the user's home directory, but do support overriding the behavior
   with a system property.
