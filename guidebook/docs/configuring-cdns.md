@@ -21,7 +21,7 @@ This is required because Conveyor will download data from your `app.site.base-ur
 3. **Package identity change handling**. Windows gets unhappy and requires the [escape hatch mechanism](configs/escape-hatch.md) if your package identity changes (e.g. product rebrand, new company name in the certificate). To detect this case the `metadata.properties` file is read to compare the signing identity of the already published versions against the local signing certificate.
 4. **Backwards compatibility**. Sometimes the way packages are generated needs to be consistent with prior versions across Conveyor upgrades. The site is checked to work out what was previously deployed.
 
-See [Remote Site Checks](configs/download-pages.md#remote-site-checks) for more information.
+See [Remote Site Checks](serving/uploading.md#remote-site-checks) for more information.
 
 ## Caching
 
@@ -47,4 +47,4 @@ Contents-{amd,aarch}64.xz
 ```
 
 !!! important
-    When doing uploads the stable files should go first. When they are uploaded and properly replicated the volatile files can be uploaded. This prevents metadata files being served that point to data files that aren't available yet. If you use the `conveyor make copied-site` task to [upload files for you](configs/download-pages.md#hosting-providers) then upload ordering is handled for you.
+    When doing uploads the stable files should go first. When they are uploaded and properly replicated the volatile files can be uploaded. This prevents metadata files being served that point to data files that aren't available yet. If you use the `conveyor make copied-site` task to [upload files for you](serving/uploading.md) then upload ordering is handled for you.

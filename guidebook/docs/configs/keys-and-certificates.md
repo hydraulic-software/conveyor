@@ -11,7 +11,7 @@
 ## Features
 
 * **Passphrase protection.** You can encrypt your private keys. [See below](#passphrases).
-* **Hardware security modules.** You can use private keys protected by physical tokens, remote HSMs and cloud key storage. [See below](#hardware-security-modules).
+* **Hardware security modules.** You can use private keys protected by physical tokens, remote HSMs and cloud key storage. [See below](#hardware-security-modules-windows-only).
 * **CSR generation**. Conveyor can help you acquire certificates by generating the CSR files you upload to certificate authorities.
 * **Safety checks**. Conveyor will do plenty of sanity checking on your certificates to catch common mistakes. It downloads intermediate certificates automatically if you're missing them. 
 
@@ -563,4 +563,4 @@ Signing should now use your Google-hosted key.
 #### Other HSMs
 
 Please consult your HSM provider's documentation or support to learn where to get the necessary driver, then take a look at the [HSM
-section](#hardware-security-modules) to learn how to configure it.
+section](#hardware-security-modules-windows-only) to learn how to configure it.

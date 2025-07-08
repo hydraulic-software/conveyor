@@ -5,7 +5,7 @@ whatever is provided, however, be aware that changing names can break updates.
 
 ## All platforms
 
-Changing the `app.site.base-url` is now supported. You'll need to configure Conveyor to [update the old site to redirect existing installs to look at the new URL](configs/download-pages.md#relocating-your-download-site).
+Changing the `app.site.base-url` is now supported. You'll need to configure Conveyor to [update the old site to redirect existing installs to look at the new URL](serving/uploading.md#relocating-your-download-site).
 Notice that upon changing the `app.site.base-url` your license key will be associated with the new URL, and you cannot go back.
 
 Changing the *`app.fsname`* key can break updates because this is used to identify the program to the operating system's package manager

@@ -368,7 +368,7 @@ For each launcher you can specify these keys:
 
 **`option`** JVM arguments that are specific to this launcher, added to the main set of JVM options. Options that begin with `~/` or which have a `key=value` form where the value begins with `~/` have the user's home directory prepended.
 
-**`console`** Controls whether the launcher uses console mode on Windows. See the [documentation for the console key](windows.md#console-key) for more details. If not specified, defaults to true for CLI launchers and false for the GUI launcher. You should normally never need to set this, but it may be helpful in some cases if you have CLI launchers that aren't meant to be invoked by the end user directly. Note that setting console = false will suppress the terminal window from popping up, but won't make the app appear in the start menu. You can only have one entry in the start menu.
+**`console`** Controls whether the launcher uses console mode on Windows. See the [documentation for the console key](windows.md#appwindowsconsole) for more details. If not specified, defaults to true for CLI launchers and false for the GUI launcher. You should normally never need to set this, but it may be helpful in some cases if you have CLI launchers that aren't meant to be invoked by the end user directly. Note that setting console = false will suppress the terminal window from popping up, but won't make the app appear in the start menu. You can only have one entry in the start menu.
 
 
 ### Defining launchers

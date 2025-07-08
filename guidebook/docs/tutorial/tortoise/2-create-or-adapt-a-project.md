@@ -53,7 +53,7 @@ There are three steps:
 Don't worry about the details of `conveyor.conf` too much right now. Most projects don't need many settings.
 
 !!! notice "Open source vs commercial apps"
-    If your app is open source, you should set the `app.vcs-url` key to the URL where your source repository can be found. If this is a `https://github.com/org/project` url then the `app.site.base-url` key (where apps will search for online updates) will be [automatically set to use GitHub Releases](../../configs/download-pages.md#publishing-through-github).  
+    If your app is open source, you should set the `app.vcs-url` key to the URL where your source repository can be found. If this is a `https://github.com/org/project` url then the `app.site.base-url` key (where apps will search for online updates) will be [automatically set to use GitHub Releases](../../serving/uploading.md#publishing-through-github).
     
     If your app is commercial, you should set `app.site.base-url` to something like `http://localhost:8888` to start with and later (after you're ready) set it to the real URL e.g. `"https://www.mycompany.com/downloads"`. The first time you use Conveyor a new line will appear in your config file containing a license key, linked to your choice of site URL.   
 
@@ -104,7 +104,7 @@ Don't worry about the details of `conveyor.conf` too much right now. Most projec
         For Sparkle to work it must be initialized at app startup. To avoid you needing to write Mac specific code in Objective-C or Swift, Conveyor will edit the Mach-O headers of your binary when it builds the bundle to inject a shared library that starts up Sparkle for you. This happens automatically for any app that links against Cocoa or AppKit and not Sparkle. This feature is particularly useful for apps that aren't written in C++, as long as they provide sufficient header padding space. The amount of space left for adding headers can be controlled using Apple's `ld` linker with the `-headerpad` flag. If your language toolchain doesn't support header padding, this technique won't work and you'll have to link against `Sparkle.framework` yourself.
 
     ??? note "Icons and manifests on Windows"
-        Windows programs contain embedded metadata like icon files, XML manifests and whether it's a console app. Conveyor will edit the EXE to reflect settings in your config, so you don't need to set these things up in your build system. Any icons or manifests already there will be replaced. [Learn how to control the binary manifest](../../configs/windows.md#manifest-keys).
+        Windows programs contain embedded metadata like icon files, XML manifests and whether it's a console app. Conveyor will edit the EXE to reflect settings in your config, so you don't need to set these things up in your build system. Any icons or manifests already there will be replaced. [Learn how to control the binary manifest](../../configs/windows.md#manifests).
 
     The `CMakeLists.txt` file of the OpenGL sample project contains commands with comments explaining what they do. This build system demonstrates importing a third party library from a source zip, compiling it, dynamically linking against it, and passing the right linker flags to produce binaries that will work with Conveyor. It looks like this:
     
