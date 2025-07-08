@@ -8,7 +8,7 @@ The Control API provides access to the software update engine controlling your p
 
 The exact behavior differs by OS:
 
-* :simple-windows: **Windows.** Triggers a restart and update cycle. Your program will shut down so make sure to have saved any user data. It will restart after the update. Don't call this until you've checked there is actually an update available, as otherwise you'll just restart the program for no reason.
+* :fontawesome-brands-windows: **Windows.** Triggers a restart and update cycle. Your program will shut down so make sure to have saved any user data. It will restart after the update. Don't call this until you've checked there is actually an update available, as otherwise you'll just restart the program for no reason.
 * :simple-apple: **macOS.** If an update is available, immediately downloads and applies it then restarts the app. There are no user prompts. If no update is available the app will _not_ restart, but the user will see a brief flicker due to the "Checking for updates" dialog appearing and disappearing, so it's best to only call this if you know there's an update.
 * :simple-linux: **Linux.** Throws an error/Unimplemented.
 

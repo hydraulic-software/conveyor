@@ -11,7 +11,7 @@ In aggressive mode an update check will be performed synchronously on each app s
 
 In background mode the behaviour differs by OS:
 
-* :simple-windows: The OS itself will check for updates every 8 hours and upgrade the app in the background, even if it's not being used. Your users will never see an update prompt.
+* :fontawesome-brands-windows: The OS itself will check for updates every 8 hours and upgrade the app in the background, even if it's not being used. Your users will never see an update prompt.
 * :simple-apple: The app will check for updates on startup without blocking the user, and on a schedule whilst the app runs. Once the user agrees, updates will be downloaded and applied in the background ready for the next launch.
 * :simple-linux: No difference, forced updates are not supported.
 
@@ -28,7 +28,7 @@ Which mode to use depends heavily on how often your users will start the app and
 
 When updates are aggressive you can force an update by restarting your app:
 
-=== ":simple-windows: Restarting on Windows"
+=== ":fontawesome-brands-windows: Restarting on Windows"
 
     Updates are implemented by a program called `updatecheck.exe`. The start menu entry points at this program, which will do a check and then invoke your real EXE. You can run this and then shut down, or open your app URL in the same way as the start menu does by opening the URL `shell:appsFolder\\$appUserModeID` where the app user model ID can be obtained by running `conveyor make app-user-model-id` (please note that it depends on the signing certificate used so if you sign with test certificates, pay attention to that).
 

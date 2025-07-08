@@ -9,7 +9,7 @@
 
 Now let's build it:
 
-=== ":simple-windows: Windows"
+=== ":fontawesome-brands-windows: Windows"
 
     ```
     flutter build windows --release
@@ -70,7 +70,7 @@ app {
 
 Conveyor can build packages for every OS from any OS, so normally we'd now compile our test app on Windows, macOS and Linux then get all the binaries onto the same machine. To save time for now we'll restrict Conveyor to building packages only for your current OS. Later we'll see how to use GitHub Actions as a source of binaries for each OS.
 
-=== ":simple-windows: Windows"
+=== ":fontawesome-brands-windows: Windows"
 
     * [x] Inside the `app { .. }` block, add `machines = windows.amd64`
 

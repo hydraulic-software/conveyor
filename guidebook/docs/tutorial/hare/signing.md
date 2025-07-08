@@ -35,7 +35,7 @@ and when you do this Microsoft will sign your software for you. This is cheaper 
     
         You'll get a `.cer` file back immediately. There is no review or approval process because the verification is linked to your credit card details.
     
-    === ":simple-windows: Windows"
+    === ":fontawesome-brands-windows: Windows"
 
         * [x] Pick a certificate authority that sells Authenticode certificates. [DigiCert](https://www.digicert.com/dc/code-signing/microsoft-authenticode.htm) is a good choice. Please refer to [this FAQ section](../../faq/signing-and-certificates.md#5-whats-the-difference-between-a-normal-and-ev-certificate) for more information on the difference between normal and EV certificates. 
         * [x] Upload the `windows.csr` file that was created next to your `defaults.conf` when you created a root key above. You will need to verify your identity with the CA. 

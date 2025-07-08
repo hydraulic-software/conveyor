@@ -1,4 +1,4 @@
-=== ":simple-windows: Windows"
+=== ":fontawesome-brands-windows: Windows"
 
     Run the program you installed in the previous step. You should see a window appear with a progress bar, the update be applied and
     the app should then start, all without any user interaction.

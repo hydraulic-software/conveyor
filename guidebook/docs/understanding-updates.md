@@ -23,7 +23,7 @@ update has occurred, re-release the site and restart your app. You should see it
 
 If you use background updates, testing is a little harder and will depend on platform.
 
-=== ":simple-windows: Windows"
+=== ":fontawesome-brands-windows: Windows"
 
     1. By default Windows checks for app updates every eight hours. [Follow these instructions to make the update checks more frequent](configs/windows.md#appwindowsupdates). Unfortunately the highest frequency Windows offers is once an hour, but this doesn't necessarily mean you have to wait an hour. Windows batches update checks together for efficiency, so you may wait a lot less than that. In our testing we often only had to wait ten minutes.
     1. Whilst the app is running, tweak your app and release a new version of it.
@@ -46,7 +46,7 @@ If you use background updates, testing is a little harder and will depend on pla
 
 In background mode an update is downloaded, verified and unpacked in the background. The new version will take effect on app restart. Currently, figuring out if the new version is downloaded is a bit awkward. A future version of Conveyor will offer an API that exposes this in a more natural manner. For now, you can do it like this:
 
-=== ":simple-windows: Windows"
+=== ":fontawesome-brands-windows: Windows"
 
     1. Poll the `metadata.properties` file on the update site URL to find out when a new version is available, and/or receive a message from your server.
     2. Parse out these keys: `windows.package-family-name` and `app.windows.manifests.version-quad`. Call them N and V

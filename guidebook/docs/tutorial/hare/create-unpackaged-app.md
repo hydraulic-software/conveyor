@@ -12,7 +12,7 @@
     conveyor make app
     ```
 
-=== ":simple-windows: Windows"
+=== ":fontawesome-brands-windows: Windows"
     ```
     conveyor make windows-app
     ```

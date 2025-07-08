@@ -10,7 +10,7 @@ We'll generate, compile and package a C++ app that uses OpenGL to render a pixel
 
 ## Create a sample project
 
-=== ":simple-windows: Windows"
+=== ":fontawesome-brands-windows: Windows"
 
     * [ ] Install [CMake](https://cmake.org/) and the compiler toolchain (e.g. Visual Studio).
     * [ ] Run these commands: 
@@ -55,7 +55,7 @@ We'll generate, compile and package a C++ app that uses OpenGL to render a pixel
 
 In this tutorial we'll only build packages for the same OS you're running on, to avoid the need for cross-compilation. 
 
-=== ":simple-windows: Windows"
+=== ":fontawesome-brands-windows: Windows"
 
     * [x] Open `conveyor.conf` and replace the line that says `machines = [windows.amd64, linux.amd64.glibc, mac.amd64, mac.aarch64]` with
           `machines = windows.amd64`

@@ -123,7 +123,7 @@ theme:
   icon:
     admonition:
       mac: simple/apple
-      windows: simple/windows
+      windows: fontawesome/brands/windows
       linux: simple/linux
 
 markdown_extensions:

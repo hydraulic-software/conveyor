@@ -44,7 +44,7 @@ saved by using Conveyor, but nothing will break.
 
 This depends on the platform.
 
-=== ":simple-windows: Windows"
+=== ":fontawesome-brands-windows: Windows"
 
     MSIX is Microsoft's official packaging and deployment system, so it has excellent controls built in to
     Windows. Admins can use standard enterprise IT management tools like InTune to add packages to groups using the `.appinstaller` file, or
