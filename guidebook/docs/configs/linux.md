@@ -196,12 +196,34 @@ The syntax is the same as a regular Debian control file.
 
 If your package contains shared libraries that have dependencies which can't be found in the target distribution, a warning will be generated during the build. You can add the names of the needed shared libraries here (e.g. `[libfoo{,-extras}.so.2]`) to silence these warnings.
 
-### `app.linux.debian.distribution.name`
+### `app.linux.debian.distributions`
 
-Short name of the distro to target, defaults to  `focal` for [*Focal Fossa*](https://releases.ubuntu.com/focal/), which was released in 2020 and is an LTS release supported until 2025. This controls how ELF library names are mapped to packages. You can make packages targeting other Debian-derived distributions by adjusting this and potentially the mirrors list.
+A list of Debian-based distributions to use for dependency resolution. This allows you to generate packages that are compatible with multiple distributions by combining their package indexes during dependency resolution. Each distribution in the list should be an object with `name` and `mirrors` keys.
 
-### `app.linux.debian.distribution.mirrors`
+Defaults to a single distribution targeting Ubuntu Noble Numbat:
 
-List of mirrors of the distro, defaults to `["http://archive.ubuntu.com/ubuntu/"]`.
+```
+app.linux.debian.distributions = [
+  {
+    name = "noble"
+    mirrors = ["http://archive.ubuntu.com/ubuntu/", "http://ports.ubuntu.com/ubuntu-ports/"]
+  }
+]
+```
 
-Most of the time you won't need to change these. They matter more for apps that rely heavily on libraries expected to come with the distribution.
+To create packages compatible with multiple distributions, you can specify multiple entries:
+
+```
+app.linux.debian.distributions = [
+  {
+    name = "noble"
+    mirrors = ["http://archive.ubuntu.com/ubuntu/", "http://ports.ubuntu.com/ubuntu-ports/"]
+  },
+  {
+    name = "bookworm"
+    mirrors = ["http://deb.debian.org/debian/"]
+  }
+]
+```
+
+This approach ensures that the generated dependencies can be satisfied by packages from any of the specified distributions, even if different distributions use different package names for the same library. The dependency resolution will use OR logic to combine package names from different distributions.
