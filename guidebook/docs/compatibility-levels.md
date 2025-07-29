@@ -9,6 +9,11 @@ is older than the one expected by the author of the config.
 
 Here is how behaviour changes at each level.
 
+## Level 19
+
+The `app.linux.debian.distributions` key was introduced, which is a list. The old `app.linux.debian.distribution` key is now the default
+single-item value of the list.
+
 ## Level 18
 
 The `app.mac.info-plist.LSMinimumSystemVersion` key was bumped to `11.0` by default, to keep up with the library ecosystem that increasingly depends on this version.
