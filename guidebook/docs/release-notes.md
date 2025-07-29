@@ -1,6 +1,6 @@
 # Release notes
 
-## Conveyor 19 (July 22nd 2025)
+## Conveyor 19 (July 2025)
 
 ## :fontawesome-brands-windows: Windows
 
