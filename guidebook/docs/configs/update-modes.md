@@ -10,7 +10,7 @@ Conveyor supports five different approaches to software updates:
 
 In aggressive mode an update check will be performed synchronously on each app start. If a new version is available then the update process will start and the update downloaded and applied, without any user interaction being required.
 
-In `aggressive-if-possible` mode the behavior is identical to aggressive mode, except that updates are only applied when the new version is compatible with the current operating system. This prevents users on older OS versions from getting stuck unable to launch their app when a new version requires a newer OS. On macOS, this checks the `LSMinimumSystemVersion` plist entry against the current OS version. Note that this mode is not currently implemented for Windows, where it behaves identically to aggressive mode.
+In `aggressive-if-possible` mode the behavior is identical to aggressive mode, except that updates are only applied when the new version is compatible with the current operating system. This prevents users on older OS versions from getting stuck unable to launch their app when a new version requires a newer OS. On macOS, this checks the `LSMinimumSystemVersion` plist entry against the current OS version. On Windows, this checks the `TargetDeviceFamily MinVersion` from the MSIX manifest against the current Windows version.
 
 In background mode the behaviour differs by OS:
 
