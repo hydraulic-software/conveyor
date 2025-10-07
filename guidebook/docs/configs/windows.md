@@ -312,17 +312,21 @@ If your app needs the MSVC++ runtime DLLs you should ship them with your app, as
 
 ## Requesting administrator access
 
-To show a request Windows administrator access for your program you will need to set two keys:
+To request Windows administrator access for your program, set the `requested-execution-level` in your EXE manifest:
 
 ```
 app {
     // Request administrator access.
-    windows.manifests {
-        exe.requested-execution-level = requireAdministrator
-        msix.capabilities += "rescap:allowElevation"
-    }
+    windows.manifests.exe.requested-execution-level = requireAdministrator
 }
 ```
+
+Conveyor will automatically scan all EXE files in your package and add the required `rescap:allowElevation` capability to the MSIX manifest based on their embedded manifests. This also works for helper EXEs that require elevation.
+
+Similarly, if any EXE has `uiAccess="true"` set in its manifest, Conveyor will automatically add the `rescap:uiAccess` capability.
+
+!!! note
+    If you're including pre-built EXEs that already have administrator access set in their manifests, you don't need to configure anything - Conveyor will detect this automatically.
 
 When they start your app the user will see a UAC prompt that looks like this one:
 
