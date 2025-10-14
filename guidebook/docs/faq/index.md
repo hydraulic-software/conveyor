@@ -36,7 +36,7 @@ to use one key for two projects simultaneously (as it would require switching ba
 ## Am I locked in?
 
 No. Conveyor generates [standard package formats](../package-formats.md) and on macOS it uses an open source update framework called
-[Sparkle](https://www.sparkle-framework.org/). All these can be produced with native toolchains. If you want to stop using Conveyor, you
+[Sparkle](https://sparkle-project.org/). All these can be produced with native toolchains. If you want to stop using Conveyor, you
 will just have to set up your own packaging scripts and do the integration work yourself. In other words you'll have spend the time you
 saved by using Conveyor, but nothing will break.
 
