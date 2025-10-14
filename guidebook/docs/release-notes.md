@@ -1,5 +1,9 @@
 # Release notes
 
+## Conveyor 20.1
+
+- Mac: Upgraded to Sparkle 2.8.0 which has some security fixes and a UI refresh for macOS Tahoe.
+
 ## Conveyor 20 (September 2025)
 
 - A new update mode has been added: `aggressive-if-possible`, which is like regular aggressive updates in that it gives synchronous update without user interaction on each app start, but will allow the user to keep using old versions if they have not upgraded their OS to meet a new minimum.
