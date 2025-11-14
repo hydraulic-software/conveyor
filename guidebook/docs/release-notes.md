@@ -1,15 +1,16 @@
 # Release notes
 
-## Conveyor 20.1
+## Conveyor 21
 
-- Mac: Upgraded to Sparkle 2.8.0 which has some security fixes and a UI refresh for macOS Tahoe.
-
-## Conveyor 20 (September 2025)
-
-- A new update mode has been added: `aggressive-if-possible`, which is like regular aggressive updates in that it gives synchronous update without user interaction on each app start, but will allow the user to keep using old versions if they have not upgraded their OS to meet a new minimum.
-- This release improves the Windows installer experience when there are problems. The installer now opens a web page and reports the error to us instead of showing a dialog box. The web page adapts the advice given based on what error is encountered. The installer now also reports telemetry in the case of a Windows system in which core services have been shut down, as this corrupt system state can cause errors and we're investigating how users can get into this state.
-- Minor bug fixes.
-- JVM: Refresh the JDK library and sample apps. Java 25 is currently not included.
+- :simple-apple: macOS
+    - Upgraded to Sparkle 2.8.0 which has some security fixes and a UI refresh for macOS Tahoe.
+- :fontawesome-brands-windows: Windows
+    - Improved installer reliability by adding more workarounds for Windows bugs, driven by diagnostics reports. Also improved the diagnostics to search for more Windows issues (e.g. damage caused by "debloater" scripts).
+    - The error web page the user sees when their disk is full has been made more helpful. 
+    - Added the `app.windows.installer.elevate` key that makes the installer request administrator access via UAC. You should rarely need to set this as it's inferred automatically from the manifests embedded in EXE files.
+- :fontawesome-brands-java: Java 25 now has entries in the config stdlib.
+- :simple-kotlin: The Compose project template now adds ARM versions of the Compose libraries.
+- Updated some dependencies.
 
 ## Older versions
 
