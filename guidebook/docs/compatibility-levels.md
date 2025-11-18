@@ -9,6 +9,10 @@ is older than the one expected by the author of the config.
 
 Here is how behaviour changes at each level.
 
+## Level 21
+
+The `app.windows.installer.elevate` key was introduced, which is a boolean.
+
 ## Level 19
 
 The `app.linux.debian.distributions` key was introduced, which is a list. The old `app.linux.debian.distribution` key is now the default
