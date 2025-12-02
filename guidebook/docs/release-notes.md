@@ -1,6 +1,6 @@
 # Release notes
 
-## Conveyor 21
+## Conveyor 21 (2025-12-02)
 
 - :simple-apple: macOS
     - Upgraded to Sparkle 2.8.0 which has some security fixes and a UI refresh for macOS Tahoe.
