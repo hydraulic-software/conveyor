@@ -1,5 +1,10 @@
 # Release notes
 
+## Conveyor 21.1 (Jan 17 2025)
+
+- Fixed a regression in macOS code signing that could affect some apps using Electron or JCEF. Upgrading from v21.0 is highly recommended.
+- Improved memory usage when computing delta updates for macOS. Memory requirements should be lower now.
+
 ## Conveyor 21
 
 - :simple-apple: macOS
