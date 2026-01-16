@@ -1,6 +1,11 @@
 # Release notes
 
-## Conveyor 21 (2025-12-02)
+## Conveyor 21.1 (Jan 17 2025)
+
+- Fixed a regression in macOS code signing that could affect some apps using Electron or JCEF. Upgrading from v21.0 is highly recommended.
+- Improved memory usage when computing delta updates for macOS. Memory requirements should be lower now.
+
+## Conveyor 21
 
 - :simple-apple: macOS
     - Upgraded to Sparkle 2.8.0 which has some security fixes and a UI refresh for macOS Tahoe.
