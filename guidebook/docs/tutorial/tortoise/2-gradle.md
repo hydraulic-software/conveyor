@@ -100,19 +100,6 @@ There might already be a dependency `debugImplementation(compose.uiTooling)` in 
 If you have a `packageName = "example-project"` line inside a `nativeDistributions{}` block, ensure it _isn't_ a reverse DNS name but rather
 an "fsname", i.e. the name you want to appear in file names.
 
-Finally, add this at the bottom of your `build.gradle.kts` file:
-
-```
-// region Work around temporary Compose bugs.
-configurations.all {
-    attributes {
-        // https://github.com/JetBrains/compose-jb/issues/1404#issuecomment-1146894731
-        attribute(Attribute.of("ui", String::class.java), "awt")
-    }
-}
-// endregion
-```
-
 ### Setting icons
 
 Compose expects to set the window icon itself, rather than having it be taken from the executable or package automatically. You can use code like this to ensure the window icon is always set correctly:
