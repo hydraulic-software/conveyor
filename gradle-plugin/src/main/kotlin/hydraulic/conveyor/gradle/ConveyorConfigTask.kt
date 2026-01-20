@@ -195,24 +195,30 @@ abstract class ConveyorConfigTask(
             it !in currentMachineDependencies && (!javafx || it.group != "org.openjfx")
         }
 
-        // Make machine configs extend the common classpath so the dependencies are resolved correctly.
-        val expandedConfigsMap: SortedMap<String, Configuration> = machineConfigs.mapNotNull { (machine, config) ->
+        // Resolve machine configs and combine with common classpath files.
+        // We avoid using extendsFrom on detached configurations as Gradle 9 disallows this.
+        // Instead, we resolve each configuration separately and combine the file sets.
+        val commonClasspathFiles = commonClasspath.files
+        val expandedConfigFiles: SortedMap<String, SortedSet<File>> = machineConfigs.mapNotNull { (machine, config) ->
             if (config.isEmpty) null else {
-                machine to config.copy().extendsFrom(commonClasspath).copyRecursive()
+                // Resolve the machine-specific config and combine with common classpath files
+                val configFiles = config.copyRecursive().files
+                val combinedFiles = (configFiles + commonClasspathFiles).toSortedSet()
+                machine to combinedFiles
             }
         }.toMap().toSortedMap()
 
         // If there are any expanded configs, use the intersection as the common files. Otherwise, just use all files from the common
         // classpath. If there are any expanded configs, we can't really use the common classpath, because it might need the platform
         // specific dependencies to properly resolve versions.
-        val commonFilesAsFiles: Set<File> = if (expandedConfigsMap.isNotEmpty())
-            expandedConfigsMap.values.map { it.files }.reduce { a, b -> a.intersect(b) }
+        val commonFilesAsFiles: Set<File> = if (expandedConfigFiles.isNotEmpty())
+            expandedConfigFiles.values.reduce { a, b -> a.intersect(b).toSortedSet() }
         else
-            commonClasspath.files
+            commonClasspathFiles
         commonFiles.addAll(commonFilesAsFiles)
 
-        for ((platform: String, config: Configuration) in expandedConfigsMap) {
-            expandedConfigs.put(platform, config.files.toSortedSet())
+        for ((platform, files) in expandedConfigFiles) {
+            expandedConfigs.put(platform, files)
         }
     }
 
