@@ -9,6 +9,12 @@ is older than the one expected by the author of the config.
 
 Here is how behaviour changes at each level.
 
+## Level 22
+
+These new keys were added:
+
+* `app.jvm.allowed-options`
+
 ## Level 21
 
 The `app.windows.installer.elevate` key was introduced, which is a boolean.

@@ -160,6 +160,32 @@ thus defeating code signing. As a consequence debuggers and profilers won't be a
     On Windows anti-virus checks are done when code is loaded, and so programs that allow arbitrary code injection allow lateral movement 
     by malware.
 
+### `app.jvm.allowed-options`
+
+Conveyor supports a runtime environment variable `CONVEYOR_JVM_OPTIONS` that can be used to append extra JVM flags at launch. For code
+signing security reasons, only options that start with a prefix from this list will be accepted. If an option doesn't match, the launcher exits with an
+error. This is to prevent other programs setting options that can inject malicious code into the JVM.
+
+The env var is parsed as a whitespace-separated list of flags. You can use single or double quotes to include spaces, and backslashes
+to escape characters.
+
+Defaults:
+
+```
+allowed-options = [
+  "-Djava.security.debug="
+  "-Xmx"
+  "-Xms"
+  "-Xss"
+  "-Xlog"
+  "-XshowSettings"
+  "-ea"
+  "-esa"
+  "-da"
+  "-dsa"
+]
+```
+
 ### `app.jvm.modules`
 
 List of modules to take from the underlying JDK for the usage of classpath JARs. The modules and their transitive dependencies will be included, all others will be dropped. Defaults to `[ detect ]`. The special entry `detect`  is replaced with modules detected using the `jdeps` tool (see below). Note that this is *not* the place to list modular JARs in your app - it's only for modules to take from the JDK or any other supplied JMODs. Modular JARs should be added to base inputs like any other JARs.
