@@ -195,16 +195,20 @@ abstract class ConveyorConfigTask(
             it !in currentMachineDependencies && (!javafx || it.group != "org.openjfx")
         }
 
-        // Resolve machine configs and combine with common classpath files.
+        // Resolve machine configs combined with the common classpath.
         // We avoid using extendsFrom on detached configurations as Gradle 9 disallows this.
-        // Instead, we resolve each configuration separately and combine the file sets.
+        // Instead, we create a fresh detached configuration that contains the dependencies from
+        // both the common classpath and the machine-specific config, letting Gradle resolve the
+        // combined graph once so that conflict resolution picks a single version of each library.
         val commonClasspathFiles = commonClasspath.files
         val expandedConfigFiles: SortedMap<String, SortedSet<File>> = machineConfigs.mapNotNull { (machine, config) ->
             if (config.isEmpty) null else {
-                // Resolve the machine-specific config and combine with common classpath files
-                val configFiles = config.copyRecursive().files
-                val combinedFiles = (configFiles + commonClasspathFiles).toSortedSet()
-                machine to combinedFiles
+                // Create a detached configuration combining common + machine-specific dependencies
+                // so Gradle conflict resolution runs across both sets together.
+                val combined = project.configurations.detachedConfiguration()
+                combined.dependencies.addAll(commonClasspath.dependencies)
+                combined.dependencies.addAll(config.dependencies)
+                machine to combined.files.toSortedSet()
             }
         }.toMap().toSortedMap()
 
