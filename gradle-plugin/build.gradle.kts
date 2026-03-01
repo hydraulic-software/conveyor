@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "dev.hydraulic"
-version = "1.13"
+version = "2.0"
 
 repositories {
     mavenCentral()

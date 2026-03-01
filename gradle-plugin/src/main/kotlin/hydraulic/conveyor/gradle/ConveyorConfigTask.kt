@@ -8,7 +8,6 @@ import org.gradle.api.artifacts.DependencySet
 import org.gradle.api.plugins.JavaApplication
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.provider.ListProperty
-import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
@@ -20,13 +19,15 @@ import org.jetbrains.compose.desktop.DesktopExtension
 import org.openjfx.gradle.JavaFXOptions
 import java.io.File
 import java.util.*
+import kotlin.collections.component1
+import kotlin.collections.component2
 
 /**
  * A base class for tasks that work with generated Conveyor configuration.
  */
 @Suppress("LeakingThis")
 abstract class ConveyorConfigTask(
-    machineConfigs: Map<String, Configuration>
+    private val machineConfigs: Map<String, Configuration>
 ) : DefaultTask() {
     @get:Input
     abstract val buildDirectory: Property<String>
@@ -93,19 +94,12 @@ abstract class ConveyorConfigTask(
     @get:Input
     abstract val appJar: Property<File>
 
-    @get:Input
-    abstract val runtimeClasspath: ListProperty<String>
-
-    @get:Input
-    abstract val commonFiles: ListProperty<File>
-
-    @get:Input
-    abstract val expandedConfigs: MapProperty<String, SortedSet<File>>
-
     // Can't use type JavaFXOptions here because Gradle can't decorate the class.
     private val javafx: Boolean
 
     init {
+        notCompatibleWithConfigurationCache("Accesses project.configurations during execution.")
+
         buildDirectory.convention(project.layout.buildDirectory.get().toString())
         projectName.convention(project.name)
         projectVersion.convention(project.version)
@@ -171,59 +165,6 @@ abstract class ConveyorConfigTask(
         // Initialize appJar property
         val jarTask: Task = project.tasks.findByName("desktopJar") ?: project.tasks.findByName("jvmJar") ?: project.tasks.getByName("jar")
         appJar.set(jarTask.outputs.files.singleFile)
-
-        // Initialize runtimeClasspath property
-        val configNames = setOf("runtimeClasspath", "desktopRuntimeClasspath", "jvmRuntimeClasspath")
-        val runtimeClasspathConfiguration = try {
-            configNames.firstNotNullOf { project.configurations.findByName(it) }
-        } catch (e: NoSuchElementException) {
-            throw Exception("Could not locate the classpath configuration, tried $configNames")
-        }
-        // We need to resolve the runtimeClasspath before copying out the dependencies because the at the start of the resolution process
-        // the set of dependencies can be changed via [Configuration.defaultDependencies] or [Configuration.withDependencies].
-        // Also, we can't store a Configuration as a task input property because it doesn't serialize into the configuration cache.
-        runtimeClasspath.addAll(project.files(runtimeClasspathConfiguration.resolve()).map { it.absolutePath })
-
-        val currentMachineConfig = machineConfigs[Machine.current().toString()]!!
-
-        // Exclude current machine specific config from the runtime classpath, to retain only the dependencies that should go
-        // to all platforms.
-        val currentMachineDependencies: DependencySet = currentMachineConfig.dependencies
-        val commonClasspath = runtimeClasspathConfiguration.copyRecursive {
-            // We need to filter the runtimeClasspath here, before making the recursive copy, otherwise the dependencies from the current
-            // machine config won't match.
-            it !in currentMachineDependencies && (!javafx || it.group != "org.openjfx")
-        }
-
-        // Resolve machine configs combined with the common classpath.
-        // We avoid using extendsFrom on detached configurations as Gradle 9 disallows this.
-        // Instead, we create a fresh detached configuration that contains the dependencies from
-        // both the common classpath and the machine-specific config, letting Gradle resolve the
-        // combined graph once so that conflict resolution picks a single version of each library.
-        val commonClasspathFiles = commonClasspath.files
-        val expandedConfigFiles: SortedMap<String, SortedSet<File>> = machineConfigs.mapNotNull { (machine, config) ->
-            if (config.isEmpty) null else {
-                // Create a detached configuration combining common + machine-specific dependencies
-                // so Gradle conflict resolution runs across both sets together.
-                val combined = project.configurations.detachedConfiguration()
-                combined.dependencies.addAll(commonClasspath.dependencies)
-                combined.dependencies.addAll(config.dependencies)
-                machine to combined.files.toSortedSet()
-            }
-        }.toMap().toSortedMap()
-
-        // If there are any expanded configs, use the intersection as the common files. Otherwise, just use all files from the common
-        // classpath. If there are any expanded configs, we can't really use the common classpath, because it might need the platform
-        // specific dependencies to properly resolve versions.
-        val commonFilesAsFiles: Set<File> = if (expandedConfigFiles.isNotEmpty())
-            expandedConfigFiles.values.reduce { a, b -> a.intersect(b).toSortedSet() }
-        else
-            commonClasspathFiles
-        commonFiles.addAll(commonFilesAsFiles)
-
-        for ((platform, files) in expandedConfigFiles) {
-            expandedConfigs.put(platform, files)
-        }
     }
 
     private val hoconForbiddenChars = setOf(
@@ -300,6 +241,61 @@ abstract class ConveyorConfigTask(
     }
 
     private fun StringBuilder.importFromDependencyConfigurations() {
+        // Initialize runtimeClasspath property if necessary.
+        val configNames = setOf("runtimeClasspath", "desktopRuntimeClasspath", "jvmRuntimeClasspath")
+        val runtimeClasspathConfiguration = try {
+            configNames.firstNotNullOf { project.configurations.findByName(it) }
+        } catch (_: NoSuchElementException) {
+            throw Exception("Could not locate the classpath configuration, tried $configNames. The available configurations are: ${project.configurations.map { it.name }}")
+        }
+
+        // We need to resolve the runtimeClasspath before copying out the dependencies because the at the start of the resolution process
+        // the set of dependencies can be changed via [Configuration.defaultDependencies] or [Configuration.withDependencies].
+        // Also, we can't store a Configuration as a task input property because it doesn't serialize into the configuration cache.
+        val runtimeClasspath = ArrayList<String>()
+        runtimeClasspath.addAll(project.files(runtimeClasspathConfiguration.resolve()).map { it.absolutePath })
+
+        val currentMachineConfig = machineConfigs[Machine.current().toString()]!!
+
+        // Exclude current machine specific config from the runtime classpath, to retain only the dependencies that should go
+        // to all platforms.
+        val currentMachineDependencies: DependencySet = currentMachineConfig.dependencies
+        val commonClasspath = runtimeClasspathConfiguration.copyRecursive {
+            // We need to filter the runtimeClasspath here, before making the recursive copy, otherwise the dependencies from the current
+            // machine config won't match.
+            it !in currentMachineDependencies && (!javafx || it.group != "org.openjfx")
+        }
+
+        // Resolve machine configs combined with the common classpath.
+        // We avoid using extendsFrom on detached configurations as Gradle 9 disallows this.
+        // Instead, we create a fresh detached configuration that contains the dependencies from
+        // both the common classpath and the machine-specific config, letting Gradle resolve the
+        // combined graph once so that conflict resolution picks a single version of each library.
+        val commonClasspathFiles = commonClasspath.files
+        val expandedConfigFiles: SortedMap<String, SortedSet<File>> = machineConfigs.mapNotNull { (machine, config) ->
+            if (config.isEmpty) null else {
+                // Create a detached configuration combining common + machine-specific dependencies
+                // so Gradle conflict resolution runs across both sets together.
+                val combined = project.configurations.detachedConfiguration()
+                combined.dependencies.addAll(commonClasspath.dependencies)
+                combined.dependencies.addAll(config.dependencies)
+                machine to combined.files.toSortedSet()
+            }
+        }.toMap().toSortedMap()
+
+        // If there are any expanded configs, use the intersection as the common files. Otherwise, just use all files from the common
+        // classpath. If there are any expanded configs, we can't really use the common classpath, because it might need the platform
+        // specific dependencies to properly resolve versions.
+        val commonFiles: SortedSet<File> = (if (expandedConfigFiles.isNotEmpty())
+            expandedConfigFiles.values.reduce { a, b -> a.intersect(b).toSortedSet() }
+        else
+            commonClasspathFiles).toSortedSet()
+
+        val expandedConfigs = HashMap<String, SortedSet<File>>()
+        for ((platform, files) in expandedConfigFiles) {
+            expandedConfigs[platform] = files
+        }
+
         val fileNames = HashSet<String>()
 
         appendLine()
@@ -327,17 +323,17 @@ abstract class ConveyorConfigTask(
             }
         }
 
-        if (commonFiles.get().isNotEmpty()) {
+        if (commonFiles.isNotEmpty()) {
             appendLine("app.inputs = ${'$'}{app.inputs} [")
-            for (entry: File in commonFiles.get().sorted()) {
+            for (entry: File in commonFiles) {
                 emitInputLine(entry)
             }
             appendLine("]")
         }
 
         // Emit platform specific artifacts into the right config sections.
-        for ((platform, config: SortedSet<File>) in expandedConfigs.get()) {
-            val files: Set<File> = config - commonFiles.get().toSortedSet()
+        for ((platform, config: SortedSet<File>) in expandedConfigs) {
+            val files: Set<File> = config - commonFiles
             if (files.isEmpty()) continue
             appendLine()
             appendLine("app.$platform.inputs = ${'$'}{app.$platform.inputs} [")
