@@ -1,21 +1,17 @@
 # Release notes
 
-## Conveyor 21.1 (Jan 17 2025)
+## Conveyor 22 (March 21 2025)
 
-- Fixed a regression in macOS code signing that could affect some apps using Electron or JCEF. Upgrading from v21.0 is highly recommended.
-- Improved memory usage when computing delta updates for macOS. Memory requirements should be lower now.
+- :simple-linux: The set of mirrors used to fetch Ubuntu/Debian package metadata has been changed to avoid rate limiting on the main mirrors, and to add the ports repos.
+- :fontawesome-brands-java: You can now let users [set JVM command line arguments via environment variables](configs/jvm.md#appjvmallowed-options). This should be used as a last resort for resolving support cases, as the user will have to configure the environment variables themselves.
+- :fontawesome-brands-java: The version of the Gradle plugin used by the project templates has been updated. The new version improves compatibility with Gradle 9. Additionally the set of JDKs known out of the box has been updated.
 
-## Conveyor 21
+### Bug fixes
 
-- :simple-apple: macOS
-    - Upgraded to Sparkle 2.8.0 which has some security fixes and a UI refresh for macOS Tahoe.
-- :fontawesome-brands-windows: Windows
-    - Improved installer reliability by adding more workarounds for Windows bugs, driven by diagnostics reports. Also improved the diagnostics to search for more Windows issues (e.g. damage caused by "debloater" scripts).
-    - The error web page the user sees when their disk is full has been made more helpful. 
-    - Added the `app.windows.installer.elevate` key that makes the installer request administrator access via UAC. You should rarely need to set this as it's inferred automatically from the manifests embedded in EXE files.
-- :fontawesome-brands-java: Java 25 now has entries in the config stdlib.
-- :simple-kotlin: The Compose project template now adds ARM versions of the Compose libraries.
-- Updated some dependencies.
+- Cases where there is no root key password but the HSM does have a password now work correctly.
+- The disk cache's eviction algorithm has been improved.
+- A bad interaction between JavaFX and Debian/Ubuntu package dependencies in newer releases has been fixed.
+- Fixed a bug that could generate a bad update site when Windows ARM64 is used in combination with identity rotation.
 
 ## Older versions
 
