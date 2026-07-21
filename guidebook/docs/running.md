@@ -11,7 +11,10 @@ Conveyor is a build system. You give it a configuration file (`-f=conveyor.conf`
 
 ## Initial setup and default config
 
-The first time you use Conveyor you'll be asked to set a passphrase on a newly generated "root key". This is used to derive any keys you don't explicitly provide. It's written to your per-user defaults file, which can be found here:
+The first time you use Conveyor it generates a [root key](configs/keys-and-certificates.md#root-key), which is used to
+derive any keys you don't explicitly provide. On macOS the root key is stored in your login keychain without a separate
+passphrase. On Windows and Linux you'll be prompted for an optional passphrase, and the root key is stored in your
+per-user defaults file. The defaults file (or, on macOS, the reference to the keychain item) can be found here:
 
 * **Windows:** `%USERPROFILE%\Hydraulic\Conveyor\defaults.conf`
 * **Linux:** `~/.config/hydraulic/conveyor/defaults.conf`
