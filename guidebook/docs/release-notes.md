@@ -9,7 +9,7 @@
 - Fix a bug that could cause relative paths to be resolved incorrectly when the config key declaring them contained an environment variable interpolation ([GitHub issue #81](https://github.com/hydraulic-software/conveyor/issues/81))
 - For JVM projects: updates to the included JDK definitions.
 
-## Conveyor 22 (March 21 2025)
+## Conveyor 22 (March 21 2026)
 
 - :simple-linux: The set of mirrors used to fetch Ubuntu/Debian package metadata has been changed to avoid rate limiting on the main mirrors, and to add the ports repos.
 - :fontawesome-brands-java: You can now let users [set JVM command line arguments via environment variables](configs/jvm.md#appjvmallowed-options). This should be used as a last resort for resolving support cases, as the user will have to configure the environment variables themselves.
