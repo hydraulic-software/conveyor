@@ -443,7 +443,7 @@ app.windows {
       digi-cert-one {
         api-key = your-api-key
         auth-certificate = path/to/client/authentication/certificate.p12
-        password = ${env.DIGICERT_PASSWORD}        
+        password = ${env.DIGICERT_PASSWORD}
       }
   }
   signing-key-alias = cert_number
@@ -454,6 +454,9 @@ You could also hard-code the secret values but the code above reads them from en
 choice when using continuous integration because most CI systems let you store secrets into the environment.
 
 DigiCert ONE provides access to your signing certificate, so you don't need to specify `app.windows.certificate` in your config.
+Conveyor uses DigiCert ONE's US endpoint by default. If your account is hosted in another region, set
+`app.windows.signing-key.digi-cert-one.endpoint` to the client authentication endpoint DigiCert provided, including the `https://`
+scheme.
 
 ### Cloud KMS
 
