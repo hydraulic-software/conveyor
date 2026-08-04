@@ -157,6 +157,12 @@ Apple requires all Developer ID signed apps to be uploaded to them for a form of
 
 Conveyor needs to be provided with credentials for the notarization service. Any Apple ID registered with the developer programme can get these. 
 
+!!! warning "Apple account status can block notarization"
+    If Apple reports `Team is not yet configured for notarization`, or a notarization request remains in progress for an unusually long time,
+    check the [Business section of App Store Connect](https://appstoreconnect.apple.com/business) for outstanding agreements or requests to
+    update business and tax information. Conveyor can't resolve problems with the status of an Apple developer account. If App Store Connect
+    shows no action to take, contact Apple Developer Programs Support as directed by the error message.
+
 To set it up add the following to your config (or better, your [defaults.conf](index.md#per-user-defaults)):
 
 ```
