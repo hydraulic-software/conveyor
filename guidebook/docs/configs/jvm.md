@@ -267,7 +267,21 @@ app.jvm.additional-ca-certs = {
 
 These days there are many distributions of Java to choose from. You've probably already chosen your JVM/JDK for development purposes, but you'll need to specify which one you want so Conveyor can download the different versions for different platforms.
 
-The standard library has many snippets for different distributions and versions of the JVM. [Learn what's available](../stdlib/jdks.md) or run `conveyor jdk-table`.
+#### Gradle projects
+
+If you use the [Conveyor Gradle plugin](maven-gradle.md#gradle), it normally imports the JDK selected by your [Java toolchain](https://docs.gradle.org/current/userguide/toolchains.html). Run `./gradlew -q printConveyorConfig` and look for an `/stdlib/jdk/...` include before adding one yourself. If the generated config already imports a JDK, adding another include manually will produce a duplicate-JDK error.
+
+To choose a different JDK, change the Gradle toolchain's language version and optional vendor. The plugin will use a recognized toolchain to select the matching Conveyor standard-library JDK.
+
+#### Manual imports
+
+For projects that don't import a JDK from Gradle, add a standard-library snippet to your config. For example:
+
+```hocon
+include required("/stdlib/jdk/21/amazon.conf")
+```
+
+See the **[complete JDK version and distribution guide](../stdlib/jdks.md)** or run `conveyor jdk-table` to find the available values for the version and distribution parts of the path.
 
 You can also easily add your own custom JVM by just adding the right inputs:
 
