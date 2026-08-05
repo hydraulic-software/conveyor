@@ -9,6 +9,10 @@ is older than the one expected by the author of the config.
 
 Here is how behaviour changes at each level.
 
+## Level 23
+
+The `conveyor.warnings-as-errors` key was added. It converts user-facing warnings into command failures, and can also be enabled with the `CONVEYOR_WARNINGS_AS_ERRORS=true` environment variable.
+
 ## Level 22
 
 These new keys were added:
