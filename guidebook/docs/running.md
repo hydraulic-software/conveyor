@@ -183,3 +183,12 @@ If you want to understand why some tasks are missing in the cache, set `LOG_CACH
 If anything goes wrong or you are just curious to see what was done, use the `--show-log` flag. On Windows, you get Notepad. On UNIX it will display the last execution's log file in a pager, highlighted and colored. By default lines aren't wrapped, so you can scroll left and right with the arrows. If you'd like to enable wrapping, perhaps to copy some long path or URL, type `-S` (that is, `-` followed by Shift-S). As always, you can press `q` to quit.
 
 Logs are kept for more than just the last execution. At the top of each log file is the path where logs are kept. You can view log files by process ID in that directory.
+
+If Hydraulic support asks you to submit a log, first run the command that demonstrates the problem and then, as a separate command, run:
+
+```bash
+conveyor --show-log=report
+```
+
+This submits the log from the previous Conveyor execution. It does not run a build itself, so don't combine it with a `make` command or
+other options. You can run `conveyor --show-log` first to check that the log contains the problem; viewing it doesn't replace the log.
