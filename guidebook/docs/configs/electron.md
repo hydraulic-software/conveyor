@@ -54,7 +54,7 @@ If you don't have a `package-lock.json` file that's OK, you can still read the E
         electron.version = ${package-json.devDependencies.electron}
     }
 
-#### Reading the Electron version from yarn config
+#### Reading the Electron version from Yarn config
 
 There are a couple of ways to do this.
 
@@ -75,6 +75,39 @@ Mark it executable (`chmod +x get-electron-version.sh`) and it should print out 
 
 !!! important
     The script above requires `yarn` and [`jq`](https://jqlang.github.io/jq/) to be installed.
+
+#### Packaging an app from a Yarn workspace
+
+Yarn workspaces normally hoist dependencies into the workspace root. If your `conveyor.conf` is in a workspace such as `packages/my-app`,
+the default Electron inputs won't find those dependencies because they look for `node_modules` next to the config file. Replace the default
+inputs with ones that copy the application sources and the hoisted dependencies separately:
+
+```
+app {
+    inputs = [
+        "*.{json,js,ts,css,html}"
+        {
+            from = ../../node_modules
+            to = node_modules
+            remap = [
+                "-.bin/**"
+                "-electron/dist/**"
+
+                // Yarn creates this link back to packages/my-app. The app sources
+                // are already copied by the input above.
+                "-my-app"
+            ]
+        }
+    ]
+}
+```
+
+Adjust the relative path and `my-app` package name for your workspace layout. Conveyor will then prune development dependencies and build
+the ASAR as normal. The temporary pruning step may use npm internally, but it doesn't modify your source tree or replace `yarn.lock`.
+
+Yarn Plug'n'Play doesn't create a `node_modules` tree for Conveyor to package. Configure Yarn's
+[`nodeLinker`](https://yarnpkg.com/configuration/yarnrc#nodeLinker) as `node-modules`, or use your existing build to produce an `app.asar`
+and add that file to `app.inputs`.
 
 ### `app.electron.download-base-url`
 
