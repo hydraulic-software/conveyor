@@ -1,9 +1,11 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     `java-gradle-plugin`
     `maven-publish`
     id("com.gradle.plugin-publish") version "1.2.1"
-    kotlin("jvm") version "1.9.20"
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    kotlin("jvm") version "2.4.10"
+    id("com.gradleup.shadow") version "9.6.0"
     // Better test output.
     id("com.adarshr.test-logger") version "3.0.0"
 }
@@ -24,9 +26,7 @@ tasks {
         dependsOn(jar)
         archiveClassifier.set("")
         mergeServiceFiles()
-        dependencies {
-            exclude("kotlin/**")
-        }
+        exclude("kotlin/**")
     }
 }
 
@@ -62,9 +62,12 @@ tasks.named<Test>("test") {
 }
 
 kotlin {
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
-    }
+    compilerOptions.jvmTarget.set(JvmTarget.JVM_11)
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 gradlePlugin {

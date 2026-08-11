@@ -354,7 +354,7 @@ Conveyor has some support for the Java Platform Module System (JPMS a.k.a. Jigsa
 
 **Module system flags.** If non-reflective usage of internal APIs is statically detected you'll get a warning and the necessary `--add-opens` flags will be passed. If you need to access internal APIs that aren't detected by jdeps, you'll need to add the necessary `--add-opens` flags yourself in the `app.jvm.options` key. If you add an inferred flag then that will suppress the warning.
 
-When adding module related flags to the `app.jvm.options` key, be aware that there must not be a space between the flag name and value. Although that works with the normal Java launcher, the special launcher used by Conveyor-packaged apps requires them in native JVM form. Write e.g. `app.jvm.options += "--add-modules=jdk.incubator.foreign"` and not `app.jvm.options += --add-modules jdk.incubator.foreign`.
+When adding module related flags to the `app.jvm.options` key, be aware that there must not be a space between the flag name and value. Although that works with the normal Java launcher, the special launcher used by Conveyor-packaged apps requires them in native JVM form. Write e.g. `app.jvm.options += "--add-modules=jdk.httpserver"` and not `app.jvm.options += --add-modules jdk.httpserver`.
 
 **Placing modules onto the module path.** A module with a `module-info.class` that does _not_ depend on any auto-modules can be placed on the module path by adding the module name to `app.jvm.modules`. Conveyor currently doesn't have any way to add modular JARs to the module path if they have a dependency on an auto-module, because jlink rejects such modules (they would depend on everything). You will also need to list out all the module's transitive dependencies.
 
