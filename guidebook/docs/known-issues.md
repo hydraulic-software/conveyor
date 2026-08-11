@@ -8,7 +8,6 @@
     * Only DEB based Linux distros get native packages. For other distros Conveyor creates a tarball which doesn't auto update. 
       RPM / FlatPak support is on the roadmap.
 * Mac App Store support (Microsoft Store support is available).
-* Support for the new Microsoft Azure Trusted Signing service.
 * Support for selecting the region used in DigiCert KeyLocker.
 
 ## Windows specific issues
