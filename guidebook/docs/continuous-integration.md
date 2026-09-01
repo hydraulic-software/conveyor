@@ -138,7 +138,7 @@ The deployment workflows above wire the secret into the Conveyor GitHub Action v
 ```yaml
 (...)
 - name: Run Conveyor     
-  uses: hydraulic-software/conveyor/actions/build@v22.1
+  uses: hydraulic-software/conveyor/actions/build@v22.2
   with:
     command: make copied-site
     # This example uses a secret named SIGNING_KEY.
@@ -182,7 +182,7 @@ You can change your deployment workflow like this:
 ```yaml
 (...)
 - name: Run Conveyor     
-  uses: hydraulic-software/conveyor/actions/build@v22.1
+  uses: hydraulic-software/conveyor/actions/build@v22.2
   env:
     # The app specific password in this example was  
     # stored into a secret named APPLE_ASP.
