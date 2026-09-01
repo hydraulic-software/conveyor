@@ -180,17 +180,34 @@ and then scanning the Debian package index to find which packages contain those 
 
 ### `app.linux.debian.control.Depends`
 
-A list of _additional_ dependencies to add to the automatically determined set. If you wish to remove
-an automatically determined dependency, you can add an entry that starts with a `-`. You can also give a single comma separated string for
-convenience. Examples:
+A list of _additional_ dependencies to add to the automatically determined set. Each list item is a Debian package relationship:
+
+* A package name on its own accepts any version: `postgresql-client-common`.
+* Put a version constraint in parentheses after the name: `postgresql (>= 12)`. The supported operators are `=`, `>=`, `<=`, `>>`
+  (strictly newer), and `<<` (strictly older).
+* Separate alternatives with `|`: `default-jre-headless | java17-runtime-headless`. Only one alternative has to be installed.
+* Separate requirements with list items, or commas in a single string. Every requirement must be satisfied.
+
+Quote entries that contain spaces, parentheses or `|` so they are parsed as HOCON strings. See Debian Policy's
+[syntax of relationship fields](https://www.debian.org/doc/debian-policy/ch-relationships.html#syntax-of-relationship-fields) for the full
+grammar, including architecture qualifiers and version-number rules.
+
+If you wish to remove an automatically determined dependency, add its exact generated entry with a `-` prefix. This prefix is a Conveyor
+editing feature, not Debian relationship syntax. For example:
 
 ```
 app.linux.debian.control {
-  Depends: [ "postgresql (>= 12)", postgresql-client-common, -libavcodec12 ]
+  Depends: [
+    "postgresql (>= 12)"
+    "default-jre-headless | java17-runtime-headless"
+    postgresql-client-common
+    -libavcodec12
+  ]
 }
 ```
 
-The syntax is the same as a regular Debian control file.
+Here the PostgreSQL server, one of the two Java runtime alternatives, and `postgresql-client-common` are all required. An automatically
+detected `libavcodec12` dependency is removed if present.
 
 ### `app.linux.ignore-dangling-dependencies`
 

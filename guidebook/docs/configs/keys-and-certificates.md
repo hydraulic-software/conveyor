@@ -157,6 +157,12 @@ Apple requires all Developer ID signed apps to be uploaded to them for a form of
 
 Conveyor needs to be provided with credentials for the notarization service. Any Apple ID registered with the developer programme can get these. 
 
+!!! warning "Apple account status can block notarization"
+    If Apple reports `Team is not yet configured for notarization`, or a notarization request remains in progress for an unusually long time,
+    check the [Business section of App Store Connect](https://appstoreconnect.apple.com/business) for outstanding agreements or requests to
+    update business and tax information. Conveyor can't resolve problems with the status of an Apple developer account. If App Store Connect
+    shows no action to take, contact Apple Developer Programs Support as directed by the error message.
+
 To set it up add the following to your config (or better, your [defaults.conf](index.md#per-user-defaults)):
 
 ```
@@ -443,7 +449,7 @@ app.windows {
       digi-cert-one {
         api-key = your-api-key
         auth-certificate = path/to/client/authentication/certificate.p12
-        password = ${env.DIGICERT_PASSWORD}        
+        password = ${env.DIGICERT_PASSWORD}
       }
   }
   signing-key-alias = cert_number
@@ -454,6 +460,9 @@ You could also hard-code the secret values but the code above reads them from en
 choice when using continuous integration because most CI systems let you store secrets into the environment.
 
 DigiCert ONE provides access to your signing certificate, so you don't need to specify `app.windows.certificate` in your config.
+Conveyor uses DigiCert ONE's US endpoint by default. If your account is hosted in another region, set
+`app.windows.signing-key.digi-cert-one.endpoint` to the client authentication endpoint DigiCert provided, including the `https://`
+scheme.
 
 ### Cloud KMS
 
@@ -494,7 +503,34 @@ choice when using continuous integration because most CI systems let you store s
 
 #### Azure Key Vault 
 
-To sign with [Azure Key Vault](https://azure.microsoft.com/en-us/products/key-vault) specify:
+To sign with [Azure Key Vault](https://azure.microsoft.com/en-us/products/key-vault), first create an app registration that Conveyor can use:
+
+1. In the Microsoft Entra admin center, [register an application](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app).
+   Save its **Application (client) ID** and **Directory (tenant) ID**.
+2. Under **Certificates & secrets**, create a client secret and save its **Value** when it is displayed. The value is shown only once and is
+   different from the secret ID.
+3. Open the vault's **Access control (IAM)** page and [assign the app's service principal](https://learn.microsoft.com/en-us/azure/key-vault/general/rbac-guide)
+   the **Key Vault Crypto User** role at the vault scope. This role allows Conveyor to read the public key and sign with the private key.
+
+Store the client ID, tenant ID, and client secret as secrets in your CI system. At the start of the build, use them to sign in with the
+[Azure CLI](https://learn.microsoft.com/en-us/cli/azure/authenticate-azure-cli-service-principal) and request an access token for Key Vault:
+
+```shell
+az login --service-principal \
+  --username "$AZURE_CLIENT_ID" \
+  --password "$AZURE_CLIENT_SECRET" \
+  --tenant "$AZURE_TENANT_ID"
+
+export AZURE_API_ACCESS_TOKEN="$(
+  az account get-access-token \
+    --resource https://vault.azure.net \
+    --query accessToken \
+    --output tsv
+)"
+```
+
+Access tokens are short-lived, so obtain one immediately before running Conveyor rather than storing one permanently. Then specify the vault,
+token, and the name of the signing key or certificate:
 
 ```hocon
 app {
@@ -512,8 +548,7 @@ app {
 
 The Azure Key Vault service stores certificates, so you don't need to specify those.
 
-You could also hard-code the secret values but the code above reads them from environment variables. That's usually a better choice when
-using continuous integration because most CI systems let you store secrets into the environment.
+The configuration reads the access token from the environment so it isn't stored in source control or printed as part of the configuration.
 
 #### Google Cloud Platform
 

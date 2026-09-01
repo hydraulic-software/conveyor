@@ -3,6 +3,8 @@
 The build action downloads, installs and executes Conveyor. It caches both the installation and the Conveyor cache itself,
 so that subsequent runs can go faster.
 
+If Conveyor fails, the action uploads its latest log as a `conveyor-log-<job>` workflow artifact for easier diagnosis.
+
 If the instructions here aren't enough, [please see the user guide](https://conveyor.hydraulic.dev/latest/continuous-integration/#forcing-re-downloads-of-artifacts).
 
 It needs to be run from a Linux runner (e.g. `ubuntu-latest`).

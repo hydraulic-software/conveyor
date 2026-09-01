@@ -23,6 +23,10 @@ Config placed in the following location will be merged into every build file:
 
 The `conveyor.compatibility-level` key will be added automatically on first run if you don't specify it. If you use a key added in a newer version of Conveyor you'll be asked to increase your compatibility level to enable it's usage, and this will stop old versions from processing the config (which they would not fully understand). If new versions of Conveyor make changes that would be backwards incompatible, they will only take effect if you opt in by incrementing your compatibility level. Otherwise, the old behaviors will be preserved.
 
+## Treating warnings as errors
+
+**`conveyor.warnings-as-errors`** Stops the current command when Conveyor emits a user-facing warning. This is useful in CI and release automation where a warning should block publication. It does not affect diagnostic warnings written only to log files. You can also enable this before configuration is loaded by setting the `CONVEYOR_WARNINGS_AS_ERRORS=true` environment variable.
+
 ## License keys
 
 To use Conveyor you must meet one of the following criteria:

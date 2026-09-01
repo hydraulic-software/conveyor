@@ -56,17 +56,20 @@ Be aware of the following:
 
 **Your app will start a bit slower.** This is of course also no different to a web app, which will also check with a web server on every startup. If the update check takes longer than two seconds then a progress UI will appear.
 
-**Aggressive updates and aggressive-if-possible aren't implemented on Linux**. It's unconventional for apps to control their own update process on this platform.  If distributing to Linux you should check [the `metadata.properties` file](download-pages.md#exporting-to-metadataproperties) that's  generated as part of your download/update site (`conveyor make site`) by looking at the `app.version` key, and then ask the user to update themselves if they've fallen behind in your UI.
+**Aggressive updates and aggressive-if-possible aren't implemented on Linux**. It's unconventional for apps to control their own update process on this platform. If you're distributing Linux tarballs, the recommended first step is a metadata-driven "update available" flow: check [the `metadata.properties` file](download-pages.md#exporting-to-metadataproperties) generated as part of your download/update site (`conveyor make site`), compare its `app.version` key to the version currently running, and then prompt the user to update themselves in your UI.
+
+For Debian/Ubuntu packages the system package manager remains the update mechanism, so the metadata-driven approach is mainly for tarball-style distributions and CLI apps.
 
 ??? info "Checking for new versions in JVM apps"
     When packaged the `app.repositoryUrl` system property will contain the site base URL, and `app.version` contains the content of the
     `app.version` key. Note: this does not include the revision, as that's meant only for changes to the package itself not the contained
-    software, but `app.revision` is also set if you want to compare against that too. So to implement an update check on Linux add
+    software, but `app.revision` is also set if you want to compare against that too. So to implement the recommended Linux tarball update-available check, add
     `/metadata.properties` to the value of that system property, download it over HTTPS, parse it with the `java.util.Properties` class,
     extract the `app.version` key from the parsed file and then compare it with the `app.version` system property. The
     [`ComparableVersion`](https://github.com/apache/maven/blob/master/maven-artifact/src/main/java/org/apache/maven/artifact/versioning/ComparableVersion.java)
     class from the Maven source code is an easy way to compare version numbers; it can be copy/pasted into your source tree. If the app
-    is behind then hide the main screen and show a message to the user asking them to upgrade their package by using apt-get.
+    is behind then show a message to the user asking them to download or install the newer tarball. If you're using Debian/Ubuntu packages
+    instead, ask them to upgrade via apt or their normal graphical software updater.
 
 ??? info "Checking for new versions in Electron apps"
     After fetching the `metadata.properties` file the [dot-properties](https://github.com/eemeli/dot-properties) package can be used to

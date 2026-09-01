@@ -51,7 +51,7 @@ Each operating system has its own approach to how and when updates are applied.
 
 === "Linux"
 
-    For Debian/Ubuntu derived distros use `apt-get update && apt-get upgrade` as per normal. Updates will also be presented via the normal graphical software update tool, along side OS updates. The tarball version doesn't self update.
+    For Debian/Ubuntu derived distros use `apt-get update && apt-get upgrade` as per normal. Updates will also be presented via the normal graphical software update tool, along side OS updates. The tarball version doesn't self update, so for tarball-based Linux installs the usual pattern is to poll the generated `metadata.properties` file and prompt the user when a newer version is available.
 
 * [ ] You can now test the update procedure.
 

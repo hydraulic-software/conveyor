@@ -95,6 +95,14 @@ runs:
         PATH="$PATH:${{ inputs.cache_path }}/install/conveyor-${{ inputs.conveyor_version }}/bin"
         conveyor --cache-dir="${{ inputs.cache_path }}/cache" "-Kapp.signing-key=$SIGNING_KEY" ${{ inputs.extra_flags }} ${{ inputs.command }}
 
+    - name: Upload Conveyor log
+      if: ${{ failure() }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: conveyor-log-${{ github.job }}
+        path: ~/.cache/hydraulic/conveyor/logs/log.latest.txt
+        if-no-files-found: ignore
+
 branding:
   icon: 'package'
   color: 'blue'

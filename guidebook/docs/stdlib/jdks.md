@@ -1,6 +1,9 @@
 # JDKs
 
-Import a JDK:
+!!! note "Gradle projects usually import a JDK automatically"
+    The [Conveyor Gradle plugin](../configs/maven-gradle.md#gradle) normally selects a JDK from the Java toolchain configuration. Run `./gradlew -q printConveyorConfig` and check for an `/stdlib/jdk/...` include before adding one manually. Importing both the Gradle-selected JDK and a snippet from this page causes a duplicate-JDK error.
+
+For projects that don't import a JDK from Gradle, add a standard-library snippet to your Conveyor config:
 
 ```
 include required("/stdlib/jdk/YOUR_VERSION/YOUR_DISTRO.conf")

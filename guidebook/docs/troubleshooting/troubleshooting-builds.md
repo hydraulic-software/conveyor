@@ -61,7 +61,7 @@ Two possibilities:
 
 ## Viewing logs and rerunning tasks
 
-If Conveyor isn't working or you aren't sure why something is happening, try running it with the `--show-log` parameter. You should see logs from your last execution. Run with the `LOGGING=trace` environment variable to get lots more detail. You can also write logs to the terminal as it runs by using the `-v` and for even more detail the `-vv` flag.
+If Conveyor isn't working or you aren't sure why something is happening, try running it with the `--show-log` parameter. You should see logs from your last execution. Run with the `LOGGING=trace` environment variable to get lots more detail. You can also write logs to the terminal as it runs by using the `-v` and for even more detail the `-vv` flag. To submit a log when Hydraulic support requests one, follow the [two-step reporting instructions](../running.md#viewing-logs); `--show-log=report` must be run separately after the command that demonstrates the problem.
 
 If a change you're making doesn't seem to be picked up on a re-run of your chosen task, you might have found a caching bug. We aren't aware of any at this time but if you find one please report it to us and then use the `--rerun` flag to force a complete rebuild of the intermediate files used in packaging.
 

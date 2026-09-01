@@ -118,6 +118,25 @@ Certain keys are derived from the name of the first input if not specified, whic
 
 Paths should always use the UNIX path separator (`/`) and are interpreted relative to the location of the config file containing the input definition (i.e. if you include a file that specifies inputs, relative paths are relative to the *included* file, not the *including* file).
 
+## Using task outputs as inputs
+
+Paths beginning with `TASK/` refer to files produced by another Conveyor build task instead of files next to your config. The first path
+component after the prefix is the task name, and the rest is a path inside that task's output directory. Referencing a task this way also
+makes it a dependency, so Conveyor builds the files before consuming them.
+
+For example, the `rendered-icons` task generates platform-specific versions of your app icon. They can be included in the packaged app like
+this:
+
+```hocon
+app {
+  windows.inputs += TASK/rendered-icons/windows
+  linux.inputs += TASK/rendered-icons/linux
+}
+```
+
+Use `conveyor make <task-name>` to build a task's output directly, for example `conveyor make rendered-icons`. Task output paths always use
+the `TASK/<task-name>/...` form; ordinary relative paths continue to resolve from the config file that declares them.
+
 ## Object syntax
 
 The string syntax is shorthand for the object syntax, they can always be treated identically. Objects may consist of these keys:

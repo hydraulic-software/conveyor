@@ -1,5 +1,17 @@
 # Release notes
 
+## Conveyor 22.2 (September 1 2026)
+
+- Windows launchers now contain standard version metadata, and packaged update checkers no longer request administrator privileges when the standalone installer does.
+- Fixed custom Windows signing configurations that use a single script for both files and containers.
+- Native Python extension modules are now signed in macOS app bundles, and Conveyor warns when native executables are missing the rpath needed to load bundled frameworks.
+- Fixed JVM image creation dropping JCEF sidecar files, and select a compatible linker when packaging with JDK 26.
+- Fixed ZIP symlinks so archives unpack correctly with Apple Archive Utility.
+- Fixed native Electron modules being missed when Gradle stores their JARs in hidden cache directories, and ensure packaged Electron apps know their update-site URL.
+- Improved automatic main-class selection for JARs containing multiple candidates and diagnostics for entry points that require a newer Java version.
+- Updated generated Compose Multiplatform projects to the current JetBrains template layout.
+- Improved diagnostics for Windows secure-connection failures and support for regional DigiCert ONE endpoints.
+
 ## Conveyor 22.1 (July 21 2026)
 
 - Fix a crash when using DigiCert's remote CA due to a protocol change on their side.

@@ -50,6 +50,10 @@ app.site {
   # subdirectory or not. If not set this is inferred automatically.
   # You should normally never need to set this. 
   flat = true/false
+
+  # Skip portable archives if you only distribute native packages.
+  windows-zip = true
+  linux-tarball = true
   
   # Whether to show the "Packaged by Conveyor" badge at the bottom of the download page.
   # Can only be disabled for commercial products. 
@@ -64,6 +68,12 @@ app.site {
   }
 }
 ```
+
+## Optional portable archives
+
+Generated sites include a plain Windows zip and Linux tarball by default. If you only distribute native packages and want to reduce build
+and upload time, set `app.site.windows-zip = false` and/or `app.site.linux-tarball = false`. This removes the corresponding archives and
+download links from the site without disabling the Windows MSIX/installer or Linux Debian packages.
 
 ## Icon
 
