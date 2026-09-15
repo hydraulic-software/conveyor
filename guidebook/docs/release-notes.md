@@ -1,5 +1,9 @@
 # Release notes
 
+## Conveyor 22.3 (September 15 2026)
+
+- Updated Sparkle to 2.9.6, which brings in a variety of bug fixes.
+
 ## Conveyor 22.2 (September 1 2026)
 
 - Windows launchers now contain standard version metadata, and packaged update checkers no longer request administrator privileges when the standalone installer does.
