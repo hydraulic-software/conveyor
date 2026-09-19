@@ -1,6 +1,6 @@
 # Release notes
 
-## Conveyor 22.3 (September 15 2026)
+## Conveyor 22.3.1 (September 15 2026)
 
 - Updated Sparkle to 2.9.6, which brings in a variety of bug fixes.
 
