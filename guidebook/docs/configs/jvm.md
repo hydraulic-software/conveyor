@@ -190,6 +190,32 @@ allowed-options = [
 
 List of modules to take from the underlying JDK for the usage of classpath JARs. The modules and their transitive dependencies will be included, all others will be dropped. Defaults to `[ detect ]`. The special entry `detect`  is replaced with modules detected using the `jdeps` tool (see below). Note that this is *not* the place to list modular JARs in your app - it's only for modules to take from the JDK or any other supplied JMODs. Modular JARs should be added to base inputs like any other JARs.
 
+### `app.jvm.linker-jdk.<build-host>.inputs`
+
+Optional override for the JDK whose tools Conveyor runs during packaging. Normally Conveyor resolves a trusted host JDK
+automatically. To avoid depending on the resolver service, supply one complete JDK archive or local directory using the
+normal [input syntax](inputs.md). For example, when building on Linux x86-64:
+
+```hocon
+app.jvm.linker-jdk.linux.amd64.inputs = [ "/opt/openjdk-25.0.2" ]
+```
+
+The machine identifies the **build host**, not the app's target platforms. Other hosts retain automatic resolution unless
+their own override is set. On Linux, `linux.amd64.glibc.inputs` or `linux.amd64.muslc.inputs` can select a specific C library
+and takes precedence over `linux.amd64.inputs` (likewise for other CPU architectures).
+This input is used only for packaging and isn't added to the app. Include the complete JDK,
+with its `release` file, executable tools and real JMODs at the input root (or `Contents/Home` for a macOS bundle).
+Empty, missing, optional or incompatible inputs fail the build rather than silently falling back to the resolver.
+
+Use the same Java feature release as all target JDKs. For Java 26 and later the Java version and build number must also
+match. An override cannot make incompatible vendor JMODs cross-linkable.
+For Java 26+, the `release` file must record the build in `JAVA_VERSION` or `JAVA_RUNTIME_VERSION`; otherwise Conveyor
+cannot verify compatibility and rejects the override.
+
+!!! warning "Trust the configured linker JDK"
+    Conveyor executes this JDK's `jlink`, `jdeps`, `jar` and other tools with your account's permissions. Only configure
+    JDKs you trust, and pin remote archives to a specific version. Do not use an untrusted app configuration.
+
 ### `app.jvm.jlink-flags`
 
 Extra flags passed to the `jlink` command. Can be used to invoke plugins and so on. See the output of `jlink --help` and `jlink --list-plugins` to see what's available. By default this adds `--ignore-signing-information` and specifies a jimage file ordering, which helps with startup time.
