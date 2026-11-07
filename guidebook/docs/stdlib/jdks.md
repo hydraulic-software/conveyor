@@ -54,6 +54,29 @@ app.jvm {
 
 You can easily point your config at any set of JDK distributions. The exact internal layout doesn't matter - JMODs will be located regardless of where they are in the directory or archive.
 
+## JMOD-only inputs
+
+Conveyor links a minimal Java runtime containing only the modules your app needs, using the JDK's JMOD files. Starting with Java 24 some vendors, including Eclipse Temurin, no longer put JMOD files in their JDK downloads. Given a JDK without them Conveyor has to bundle the entire JDK, making your app several times bigger.
+
+Temurin publishes its JMOD files as a separate download, so for Temurin 24.0.2 onwards the `eclipse` snippets download only those instead of the full JDK. If Temurin hasn't published JMODs for a platform, the snippet uses the full JDK for that platform.
+
+You can write JMOD-only inputs for other JDKs too. Because JMODs don't record everything Conveyor needs to know about the JDK, you must also supply a `release` file giving the version (including the build number), vendor, OS, CPU architecture and, on Linux, the C library. These values must describe exactly the same build as the JMODs, so don't mix them up between versions or vendors. For example:
+
+```
+app.jvm {
+    linux.amd64.glibc.inputs += { from = "https://example.com/jdk-25.0.1+8-linux-x64-jmods.tar.gz", to = jmods }
+    linux.amd64.glibc.inputs += { to = release, content = """
+JAVA_VERSION="25.0.1+8"
+IMPLEMENTOR="Example Vendor"
+IMPLEMENTOR_VERSION="ExampleJDK-25.0.1+8"
+OS_NAME="linux"
+OS_ARCH="x64"
+MODULES=""
+LIBC="glibc"
+    """ }
+}
+```
+
 ## GraalVM
 
 You can write config to point at a GraalVM install, but please be aware that this won't let you select languages. GraalVM uses a different packaging system to other JDKs and thus the normal linking process isn't sufficient to create a minimal JDK with support for Truffle languages. Improved support for GraalVM is planned for a future release.

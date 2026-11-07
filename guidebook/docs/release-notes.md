@@ -3,6 +3,17 @@
 ## Conveyor 22.3.1 (September 15 2026)
 
 - Updated Sparkle to 2.9.6, which brings in a variety of bug fixes.
+- Updated the bundled JDK definitions, including Java 25. Temurin 24.0.2 and later definitions use separately published JMODs where available, allowing Conveyor to create smaller linked runtimes instead of bundling an entire JDK.
+- Added support for [JMOD-only target inputs](configs/jvm.md) and explicit build-host linker JDK inputs. Linker JDK downloads can fall back to the official OpenJDK archives when the required builds are missing from Foojay.
+- Improved HTTP download caching, concurrent cache access, download progress reporting and support for HTTP proxy environment variables.
+
+### Bug fixes
+
+- Fixed packaging with JDKs that do not include JMODs, and automatic module detection when only target JMODs are supplied.
+- Fixed intermittent Windows recursive-deletion failures and shortened cache workspace paths to reduce Windows path-limit failures, with clearer diagnostics when limits are exceeded.
+- Hardened archive extraction against symbolic-link traversal outside the extraction directory.
+- Fixed generated Compose projects missing their JVM toolchain, and improved compatibility of the Compose template maintenance script with current Gradle versions.
+- Fixed macOS signing verification rejecting additional informational output from `codesign`.
 
 ## Conveyor 22.2 (September 1 2026)
 
